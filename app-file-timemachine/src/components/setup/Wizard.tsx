@@ -38,7 +38,8 @@ export default function Wizard({ onComplete }: WizardProps) {
     checkDeps();
   }, []);
 
-  const allInstalled = status ? status.git && status.brew && status.gh : false;
+  const isMac = /Mac|iPod|iPhone|iPad/.test(navigator.platform);
+  const allInstalled = status ? status.git && status.gh && (isMac ? status.brew : true) : false;
 
   return (
     <main className="wizard-container">
@@ -67,11 +68,13 @@ export default function Wizard({ onComplete }: WizardProps) {
                   installed={status?.git}
                   installGuide="https://git-scm.com/downloads"
                 />
-                <DependencyItem
-                  label={t("setup.brew")}
-                  installed={status?.brew}
-                  installGuide="https://brew.sh/"
-                />
+                {isMac && (
+                  <DependencyItem
+                    label={t("setup.brew")}
+                    installed={status?.brew}
+                    installGuide="https://brew.sh/"
+                  />
+                )}
                 <DependencyItem
                   label={t("setup.gh")}
                   installed={status?.gh}
