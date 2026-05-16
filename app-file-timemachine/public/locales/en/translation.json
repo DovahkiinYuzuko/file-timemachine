@@ -9,7 +9,19 @@
       "file_tree": "(File tree will be displayed here)",
       "root_management": "(Root management will be displayed here)",
       "history_list": "(History list will be displayed here)",
-      "preview": "(Preview will be displayed here)"
+      "preview": "(Preview will be displayed here)",
+      "select_file_to_preview": "Select a file to preview",
+      "binary_file_preview_not_supported": "Preview for binary files is not supported",
+      "unknown_file_type": "Unknown file type",
+      "no_history": "No history found"
+    },
+    "error": {
+      "failed_to_fetch_logs": "Failed to fetch commit history"
+    },
+    "aria": {
+      "git_graph_description": "Visual graph of Git commit history",
+      "file_preview": "Preview of {{path}}",
+      "preview_of": "Content of {{path}}"
     }
   },
   "setup": {

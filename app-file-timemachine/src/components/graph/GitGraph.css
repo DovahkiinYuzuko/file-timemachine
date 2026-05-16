@@ -1,0 +1,35 @@
+.git-graph-wrapper {
+  padding: 1rem;
+  overflow: auto;
+  height: 100%;
+  background-color: #ffffff;
+}
+
+.git-graph-svg-container {
+  min-width: 600px;
+}
+
+.graph-error {
+  color: #ef4444;
+  padding: 1rem;
+  font-weight: bold;
+}
+
+.graph-empty {
+  color: #6b7280;
+  padding: 1rem;
+  font-style: italic;
+}
+
+/* スクリーンリーダー専用（視覚的に隠す） */
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border-width: 0;
+}

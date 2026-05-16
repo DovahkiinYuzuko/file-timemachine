@@ -9,7 +9,19 @@
       "file_tree": "（ここにファイルツリーが表示されるよ）",
       "root_management": "（ここにルート管理が表示されるよ）",
       "history_list": "（ここに履歴リストが表示されるよ）",
-      "preview": "（ここにプレビューが表示されるよ）"
+      "preview": "（ここにプレビューが表示されるよ）",
+      "select_file_to_preview": "ファイルを選択するとプレビューが表示されるよ",
+      "binary_file_preview_not_supported": "バイナリファイルのプレビューには対応していないよ",
+      "unknown_file_type": "不明なファイル形式だよ",
+      "no_history": "履歴がまだないみたい"
+    },
+    "error": {
+      "failed_to_fetch_logs": "履歴の取得に失敗しちゃった"
+    },
+    "aria": {
+      "git_graph_description": "Gitのコミット履歴を可視化したグラフだよ",
+      "file_preview": "{{path}} のプレビュー",
+      "preview_of": "{{path}} の内容"
     }
   },
   "setup": {

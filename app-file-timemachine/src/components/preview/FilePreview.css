@@ -1,0 +1,53 @@
+.file-preview-container {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  background-color: #f9fafb;
+}
+
+.preview-info {
+  padding: 0.5rem 1rem;
+  background-color: #f3f4f6;
+  border-bottom: 1px solid #e5e7eb;
+}
+
+.preview-info h3 {
+  margin: 0;
+  font-size: 0.875rem;
+  color: #374151;
+  word-break: break-all;
+}
+
+.preview-body {
+  flex: 1;
+  overflow: auto;
+  padding: 1rem;
+}
+
+.text-preview {
+  margin: 0;
+  font-family: 'Cascadia Code', 'Consolas', 'Courier New', monospace;
+  font-size: 0.875rem;
+  line-height: 1.5;
+  color: #1f2937;
+  white-space: pre-wrap;
+  word-break: break-all;
+}
+
+.image-preview img {
+  max-width: 100%;
+  height: auto;
+  border-radius: 4px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.preview-empty, .binary-preview, .unknown-preview {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  color: #6b7280;
+  font-style: italic;
+  text-align: center;
+  padding: 2rem;
+}

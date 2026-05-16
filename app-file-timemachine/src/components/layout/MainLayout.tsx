@@ -1,6 +1,8 @@
 import { type FC } from "react";
 import { useTranslation } from "react-i18next";
 import { Panel, Group as PanelGroup, Separator as PanelResizeHandle } from "react-resizable-panels";
+import GitGraph from "../graph/GitGraph";
+import FilePreview from "../preview/FilePreview";
 import "./MainLayout.css";
 
 /**
@@ -24,19 +26,21 @@ const MainLayout: FC = () => {
             <header className="panel-header">
               <h2>{t("common.file_tree")}</h2>
             </header>
-            <div>{t("common.placeholder.file_tree")}</div>
+            <div className="panel-body">{t("common.placeholder.file_tree")}</div>
           </section>
         </Panel>
 
         <PanelResizeHandle className="resize-handle" />
 
-        {/* ルート管理パネル */}
+        {/* ルート管理パネル（Gitグラフ） */}
         <Panel defaultSize={15} minSize={10}>
           <section className="panel-content" aria-label={t("common.root_management")}>
             <header className="panel-header">
               <h2>{t("common.root_management")}</h2>
             </header>
-            <div>{t("common.placeholder.root_management")}</div>
+            <div className="panel-body">
+              <GitGraph />
+            </div>
           </section>
         </Panel>
 
@@ -48,7 +52,7 @@ const MainLayout: FC = () => {
             <header className="panel-header">
               <h2>{t("common.history_list")}</h2>
             </header>
-            <div>{t("common.placeholder.history_list")}</div>
+            <div className="panel-body">{t("common.placeholder.history_list")}</div>
           </section>
         </Panel>
 
@@ -60,7 +64,9 @@ const MainLayout: FC = () => {
             <header className="panel-header">
               <h2>{t("common.preview")}</h2>
             </header>
-            <div>{t("common.placeholder.preview")}</div>
+            <div className="panel-body">
+              <FilePreview />
+            </div>
           </section>
         </Panel>
       </PanelGroup>
