@@ -1,0 +1,39 @@
+.main-layout-container {
+  display: flex;
+  height: 100vh;
+  width: 100vw;
+  background-color: #1e1e1e;
+  color: #cccccc;
+  overflow: hidden;
+}
+
+.panel-content {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  padding: 1rem;
+  overflow: auto;
+  background-color: #252526;
+  border: 1px solid #333333;
+}
+
+.panel-header {
+  font-size: 0.8rem;
+  font-weight: bold;
+  margin-bottom: 0.5rem;
+  text-transform: uppercase;
+  color: #858585;
+  user-select: none;
+}
+
+.resize-handle {
+  width: 4px;
+  background-color: transparent;
+  transition: background-color 0.2s;
+  cursor: col-resize;
+}
+
+.resize-handle:hover,
+.resize-handle[data-resize-handle-active] {
+  background-color: #007acc;
+}
