@@ -18,12 +18,16 @@
 }
 
 .panel-header {
-  font-size: 0.8rem;
-  font-weight: bold;
   margin-bottom: 0.5rem;
-  text-transform: uppercase;
   color: #858585;
   user-select: none;
+}
+
+.panel-header h2 {
+  font-size: 0.8rem;
+  font-weight: bold;
+  text-transform: uppercase;
+  margin: 0;
 }
 
 .resize-handle {
@@ -31,9 +35,16 @@
   background-color: transparent;
   transition: background-color 0.2s;
   cursor: col-resize;
+  outline: none; /* Hide default outline to replace with focus-visible */
 }
 
 .resize-handle:hover,
-.resize-handle[data-resize-handle-active] {
+.resize-handle[data-resize-handle-active],
+.resize-handle:focus-visible {
   background-color: #007acc;
+}
+
+.resize-handle:focus-visible {
+  outline: 2px solid #007acc;
+  outline-offset: 1px;
 }
