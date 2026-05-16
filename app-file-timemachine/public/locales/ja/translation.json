@@ -1,0 +1,15 @@
+{
+  "common": {
+    "app_title": "ファイルタイムマシン",
+    "file_tree": "ファイルツリー",
+    "root_management": "ルート管理",
+    "history_list": "履歴リスト",
+    "preview": "プレビュー",
+    "placeholder": {
+      "file_tree": "（ここにファイルツリーが表示されるよ）",
+      "root_management": "（ここにルート管理が表示されるよ）",
+      "history_list": "（ここに履歴リストが表示されるよ）",
+      "preview": "（ここにプレビューが表示されるよ）"
+    }
+  }
+}

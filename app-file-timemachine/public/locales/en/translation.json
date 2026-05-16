@@ -1,0 +1,15 @@
+{
+  "common": {
+    "app_title": "File Time Machine",
+    "file_tree": "File Tree",
+    "root_management": "Root Management",
+    "history_list": "History List",
+    "preview": "Preview",
+    "placeholder": {
+      "file_tree": "(File tree will be displayed here)",
+      "root_management": "(Root management will be displayed here)",
+      "history_list": "(History list will be displayed here)",
+      "preview": "(Preview will be displayed here)"
+    }
+  }
+}

@@ -1,4 +1,5 @@
-import React from "react";
+import { type FC } from "react";
+import { useTranslation } from "react-i18next";
 import { Panel, Group as PanelGroup, Separator as PanelResizeHandle } from "react-resizable-panels";
 import "./MainLayout.css";
 
@@ -8,19 +9,22 @@ import "./MainLayout.css";
  * - Each resizable panel uses a <section> with an aria-label, which implicitly maps to role="region".
  * - Use <h2> tags within panel headers for proper document outline.
  * - PanelResizeHandle provides a visual and interactive indicator for resizing with focus-visible styles.
+ * - Labels and headings are internationalized using i18next.
  */
 
-const MainLayout: React.FC = () => {
+const MainLayout: FC = () => {
+  const { t } = useTranslation();
+
   return (
-    <main className="main-layout-container" aria-label="ファイルタイムマシン メインレイアウト">
+    <main className="main-layout-container" aria-label={t("common.app_title")}>
       <PanelGroup orientation="horizontal">
         {/* ファイルツリーパネル */}
         <Panel defaultSize={20} minSize={15}>
-          <section className="panel-content" aria-label="ファイルツリー">
+          <section className="panel-content" aria-label={t("common.file_tree")}>
             <header className="panel-header">
-              <h2>ファイルツリー</h2>
+              <h2>{t("common.file_tree")}</h2>
             </header>
-            <div>（ここにファイルツリーが表示されるよ）</div>
+            <div>{t("common.placeholder.file_tree")}</div>
           </section>
         </Panel>
 
@@ -28,11 +32,11 @@ const MainLayout: React.FC = () => {
 
         {/* ルート管理パネル */}
         <Panel defaultSize={15} minSize={10}>
-          <section className="panel-content" aria-label="ルート管理">
+          <section className="panel-content" aria-label={t("common.root_management")}>
             <header className="panel-header">
-              <h2>ルート管理</h2>
+              <h2>{t("common.root_management")}</h2>
             </header>
-            <div>（ここにルート管理が表示されるよ）</div>
+            <div>{t("common.placeholder.root_management")}</div>
           </section>
         </Panel>
 
@@ -40,11 +44,11 @@ const MainLayout: React.FC = () => {
 
         {/* 履歴リストパネル */}
         <Panel defaultSize={25} minSize={15}>
-          <section className="panel-content" aria-label="履歴リスト">
+          <section className="panel-content" aria-label={t("common.history_list")}>
             <header className="panel-header">
-              <h2>履歴リスト</h2>
+              <h2>{t("common.history_list")}</h2>
             </header>
-            <div>（ここに履歴リストが表示されるよ）</div>
+            <div>{t("common.placeholder.history_list")}</div>
           </section>
         </Panel>
 
@@ -52,11 +56,11 @@ const MainLayout: React.FC = () => {
 
         {/* プレビューパネル */}
         <Panel defaultSize={40} minSize={20}>
-          <section className="panel-content" aria-label="プレビュー">
+          <section className="panel-content" aria-label={t("common.preview")}>
             <header className="panel-header">
-              <h2>プレビュー</h2>
+              <h2>{t("common.preview")}</h2>
             </header>
-            <div>（ここにプレビューが表示されるよ）</div>
+            <div>{t("common.placeholder.preview")}</div>
           </section>
         </Panel>
       </PanelGroup>
