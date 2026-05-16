@@ -1,0 +1,153 @@
+.safety-dialog-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.6);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+  backdrop-filter: blur(4px);
+}
+
+.safety-dialog-container {
+  background-color: var(--panel-bg, #ffffff);
+  color: var(--text-color, #333333);
+  width: 90%;
+  max-width: 600px;
+  border-radius: 12px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+  padding: 24px;
+  animation: dialog-fade-in 0.2s ease-out;
+}
+
+@keyframes dialog-fade-in {
+  from {
+    opacity: 0;
+    transform: translateY(10px) scale(0.98);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+.safety-dialog-header {
+  border-bottom: 2px solid #ff4444;
+  margin-bottom: 16px;
+  padding-bottom: 8px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.safety-dialog-header h2 {
+  margin: 0;
+  font-size: 1.5rem;
+  color: #ff4444;
+}
+
+.safety-dialog-warning-icon {
+  font-size: 1.8rem;
+}
+
+.safety-dialog-body {
+  margin-bottom: 24px;
+}
+
+.safety-dialog-description {
+  margin-bottom: 16px;
+  line-height: 1.6;
+}
+
+.safety-issue-list {
+  background-color: rgba(255, 68, 68, 0.05);
+  border: 1px solid rgba(255, 68, 68, 0.2);
+  border-radius: 8px;
+  padding: 12px;
+  max-height: 300px;
+  overflow-y: auto;
+}
+
+.safety-issue-list h3 {
+  margin-top: 0;
+  margin-bottom: 8px;
+  font-size: 1rem;
+}
+
+.safety-issue-item {
+  display: flex;
+  flex-direction: column;
+  padding: 8px;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+.safety-issue-item:last-child {
+  border-bottom: none;
+}
+
+.issue-path {
+  font-family: monospace;
+  font-weight: bold;
+  word-break: break-all;
+}
+
+.issue-reason {
+  font-size: 0.9rem;
+  color: #666;
+  margin-top: 4px;
+}
+
+.safety-issue-item.danger .issue-path {
+  color: #d32f2f;
+}
+
+.safety-dialog-footer {
+  display: flex;
+  justify-content: flex-end;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.safety-btn {
+  padding: 10px 20px;
+  border-radius: 6px;
+  font-weight: bold;
+  cursor: pointer;
+  border: none;
+  transition: all 0.2s;
+}
+
+.safety-btn:focus-visible {
+  outline: 3px solid #0078d4;
+  outline-offset: 2px;
+}
+
+.safety-btn-cancel {
+  background-color: #f3f3f3;
+  color: #333;
+}
+
+.safety-btn-cancel:hover {
+  background-color: #e5e5e5;
+}
+
+.safety-btn-exclude {
+  background-color: #28a745;
+  color: white;
+}
+
+.safety-btn-exclude:hover {
+  background-color: #218838;
+}
+
+.safety-btn-anyway {
+  background-color: #ff4444;
+  color: white;
+}
+
+.safety-btn-anyway:hover {
+  background-color: #cc0000;
+}

@@ -38,5 +38,20 @@
     "next": "Next",
     "finish": "Finish and Start App",
     "retry": "Retry"
+  },
+  "safety": {
+    "title": "Safety Guard",
+    "description": "We found security risks or huge files among the files you are trying to save!",
+    "issue_list_title": "Issues found:",
+    "reason": {
+      "security_risk_extension": "Potentially a private key or config file",
+      "inappropriate_directory": "Includes directories that should be excluded from management",
+      "large_file": "File is too large and might slow down the repository (over 100MB)"
+    },
+    "action": {
+      "exclude_and_save": "Exclude these and Save",
+      "save_anyway": "Save anyway",
+      "cancel": "Cancel"
+    }
   }
 }

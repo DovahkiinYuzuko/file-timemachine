@@ -38,5 +38,20 @@
     "next": "次へ",
     "finish": "完了してアプリを起動",
     "retry": "再試行"
+  },
+  "safety": {
+    "title": "安全ガード",
+    "description": "保存しようとしているファイルの中に、セキュリティリスクや巨大なファイルが見つかったよ！",
+    "issue_list_title": "見つかった問題:",
+    "reason": {
+      "security_risk_extension": "秘密鍵や設定ファイルの可能性があるよ",
+      "inappropriate_directory": "管理対象外にするべきディレクトリが含まれているよ",
+      "large_file": "ファイルがデカすぎてリポジトリが重くなっちゃうかも (100MB超え)"
+    },
+    "action": {
+      "exclude_and_save": "これらを除外して保存",
+      "save_anyway": "構わず保存",
+      "cancel": "キャンセル"
+    }
   }
 }
