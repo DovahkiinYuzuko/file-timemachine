@@ -1,0 +1,156 @@
+.wizard-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  background-color: #f9fafb;
+  padding: 1.5rem;
+  font-family: "Helvetica Neue", Arial, "Hiragino Kaku Gothic ProN", "Hiragino Sans", "Yu Gothic", sans-serif;
+  line-height: 1.6;
+  letter-spacing: 0.02em;
+}
+
+.wizard-card {
+  background: white;
+  padding: 2.5rem;
+  border-radius: 1.25rem;
+  box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.1);
+  max-width: 500px;
+  width: 100%;
+}
+
+.wizard-title {
+  font-size: 1.75rem;
+  font-weight: 800;
+  color: #111827;
+  margin-bottom: 0.75rem;
+  text-align: center;
+}
+
+.wizard-description {
+  color: #4b5563;
+  margin-bottom: 2rem;
+  text-align: center;
+  font-size: 0.95rem;
+}
+
+.wizard-content {
+  min-height: 200px;
+  display: flex;
+  flex-direction: column;
+}
+
+.wizard-loading {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+  color: #6366f1;
+}
+
+.dependency-list {
+  list-style: none;
+  padding: 0;
+  margin: 0 0 1.5rem 0;
+}
+
+.dependency-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1rem;
+  border-bottom: 1px solid #f3f4f6;
+}
+
+.dependency-item:last-child {
+  border-bottom: none;
+}
+
+.dependency-info {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.icon-success {
+  color: #10b981;
+}
+
+.icon-error {
+  color: #ef4444;
+}
+
+.dependency-label {
+  font-weight: 600;
+  color: #374151;
+}
+
+.status-installed {
+  font-size: 0.85rem;
+  color: #10b981;
+  font-weight: 500;
+}
+
+.status-missing {
+  font-size: 0.85rem;
+  color: #6366f1;
+  font-weight: 500;
+  text-decoration: underline;
+}
+
+.wizard-guide-alert {
+  background-color: #fef2f2;
+  border-left: 4px solid #ef4444;
+  padding: 0.75rem 1rem;
+  color: #991b1b;
+  font-size: 0.875rem;
+  margin-bottom: 1.5rem;
+  border-radius: 0.25rem;
+}
+
+.wizard-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  margin-top: auto;
+}
+
+.wizard-button {
+  padding: 0.75rem 1.5rem;
+  border-radius: 0.75rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.2s;
+  border: none;
+  font-size: 1rem;
+  text-align: center;
+}
+
+.wizard-button.primary {
+  background-color: #6366f1;
+  color: white;
+}
+
+.wizard-button.primary:hover {
+  background-color: #4f46e5;
+}
+
+.wizard-button.secondary {
+  background-color: #f3f4f6;
+  color: #374151;
+}
+
+.wizard-button.secondary:hover {
+  background-color: #e5e7eb;
+}
+
+.animate-spin {
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}

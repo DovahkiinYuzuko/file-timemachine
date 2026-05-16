@@ -11,5 +11,20 @@
       "history_list": "(History list will be displayed here)",
       "preview": "(Preview will be displayed here)"
     }
+  },
+  "setup": {
+    "title": "Environment Setup Wizard",
+    "description": "We will diagnose the installation status of tools required to use File Time Machine.",
+    "checking": "Diagnosing...",
+    "results": "Diagnosis Results",
+    "git": "Git",
+    "brew": "Homebrew",
+    "gh": "GitHub CLI (gh)",
+    "status_installed": "Installed",
+    "status_missing": "Not Installed",
+    "guide_missing": "The following tools are missing. Please check the installation guide.",
+    "next": "Next",
+    "finish": "Finish and Start App",
+    "retry": "Retry"
   }
 }

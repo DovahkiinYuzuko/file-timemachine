@@ -11,5 +11,20 @@
       "history_list": "（ここに履歴リストが表示されるよ）",
       "preview": "（ここにプレビューが表示されるよ）"
     }
+  },
+  "setup": {
+    "title": "環境診断ウィザード",
+    "description": "ファイルタイムマシンを使用するために必要なツールのインストール状況を診断します。",
+    "checking": "診断中...",
+    "results": "診断結果",
+    "git": "Git",
+    "brew": "Homebrew",
+    "gh": "GitHub CLI (gh)",
+    "status_installed": "インストール済み",
+    "status_missing": "未インストール",
+    "guide_missing": "以下のツールが不足しています。インストールガイドを確認してください。",
+    "next": "次へ",
+    "finish": "完了してアプリを起動",
+    "retry": "再試行"
   }
 }
