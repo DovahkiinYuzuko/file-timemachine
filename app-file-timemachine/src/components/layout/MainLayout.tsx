@@ -36,14 +36,17 @@ const MainLayout: FC = () => {
 
   // フォルダ選択時の処理
   const handleOpenFolder = (path: string) => {
+    logger.info(`フォルダを選択したよ: ${path}`);
     setProjectPath(path);
   };
 
   // 保存ボタンが押された時のシミュレーション
   const handleSaveClick = () => {
+    logger.info("保存ボタンが押されたよ。安全スキャンを開始するね");
     const isAutoScanEnabled = localStorage.getItem("settings_auto_scan") !== "false";
 
     if (isAutoScanEnabled) {
+      logger.debug("自動脆弱性スキャンが有効だよ");
       // デモ用のモックファイルデータ
       const mockFiles = [
         { path: "src/App.tsx", size: 1024 },
@@ -54,35 +57,41 @@ const MainLayout: FC = () => {
       ];
 
       const issues = analyzeFilesForSafety(mockFiles);
-      
+
       if (issues.length > 0) {
+        logger.warn(`${issues.length} 件のセキュリティリスクが見つかったよ！`);
         setSafetyIssues(issues);
         setIsSafetyDialogOpen(true);
         return;
       }
+      logger.debug("リスクは見つからなかったよ。クリーンだね！");
     }
-    
+
     alert("保存したよ！（自動スキャン: " + (isAutoScanEnabled ? "ON" : "OFF") + "）");
+    logger.info("保存が完了したよ");
   };
 
   const handleTabChange = (tab: SidebarTab) => {
+    logger.debug(`サイドバーのアクションを受け取ったよ: ${tab}`);
     if (tab === "settings") {
       setIsSettingsModalOpen(true);
     } else if (tab === "help") {
       setIsHelpModalOpen(true);
     } else {
+      logger.info(`アクティブなタブを切り替えるよ: ${tab}`);
       setActiveTab(tab);
     }
   };
 
   const handleSettingsClose = () => {
+    logger.debug("設定モーダルを閉じるよ");
     setIsSettingsModalOpen(false);
   };
 
   const handleHelpClose = () => {
+    logger.debug("ヘルプモーダルを閉じるよ");
     setIsHelpModalOpen(false);
   };
-
   return (
     <div className="layout-wrapper">
       <Sidebar 

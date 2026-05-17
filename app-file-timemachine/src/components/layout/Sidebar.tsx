@@ -2,6 +2,7 @@ import { type FC } from "react";
 import { useTranslation } from "react-i18next";
 import { Files, History, Settings, HelpCircle, FolderOpen } from "lucide-react";
 import { open } from "@tauri-apps/plugin-dialog";
+import logger from "../../utils/logger";
 import "./Sidebar.css";
 
 export type SidebarTab = "files" | "history" | "settings" | "help";
@@ -18,7 +19,7 @@ interface SidebarProps {
  * - Use <button> elements for interactive icons.
  * - Each button has an aria-label for screen readers.
  * - aria-pressed indicates the current active state of the tab.
- * - Tooltips or visible labels should ideally be present, but for a "slim" sidebar, 
+ * - Tooltips or visible labels should ideally be present, but for a "slim" sidebar,
  *   aria-labels are essential.
  * - Folder selection button is placed at the top for quick access.
  */
@@ -26,6 +27,7 @@ const Sidebar: FC<SidebarProps> = ({ activeTab, onTabChange, onOpenFolder }) => 
   const { t } = useTranslation();
 
   const handleOpenFolder = async () => {
+    logger.debug("フォルダ選択ダイアログを開くよ");
     try {
       const selected = await open({
         directory: true,
@@ -33,10 +35,13 @@ const Sidebar: FC<SidebarProps> = ({ activeTab, onTabChange, onOpenFolder }) => 
         title: t("common.sidebar.open_folder"),
       });
       if (selected && typeof selected === "string") {
+        logger.info(`フォルダが選択されたよ: ${selected}`);
         onOpenFolder(selected);
+      } else {
+        logger.debug("フォルダ選択がキャンセルされたよ");
       }
     } catch (error) {
-      console.error("Failed to open directory:", error);
+      logger.error(`フォルダ選択でエラーが発生したよ: ${error}`);
     }
   };
 
@@ -69,7 +74,10 @@ const Sidebar: FC<SidebarProps> = ({ activeTab, onTabChange, onOpenFolder }) => 
             <button
               key={tab.id}
               className={`sidebar-item ${isActive ? "active" : ""}`}
-              onClick={() => onTabChange(tab.id)}
+              onClick={() => {
+                logger.debug(`サイドバーのタブがクリックされたよ: ${tab.id}`);
+                onTabChange(tab.id);
+              }}
               aria-label={t(tab.labelKey)}
               aria-pressed={isActive}
               title={t(tab.labelKey)}

@@ -34,6 +34,29 @@
       "preview_of": "Content of {{path}}"
     }
   },
+  "settings": {
+    "github": {
+      "title": "GitHub Integration",
+      "login": "Login with GitHub",
+      "desc": "Required for repository synchronization and backup features."
+    },
+    "language": {
+      "title": "Language Settings",
+      "select": "Select display language"
+    },
+    "behavior": {
+      "title": "App Behavior",
+      "save_label": "Save behavior on root switch",
+      "confirm": "Confirm every time (Recommended)",
+      "auto": "Auto save",
+      "none": "Don't save"
+    },
+    "security": {
+      "title": "Security",
+      "auto_scan": "Auto Vulnerability Scan",
+      "auto_scan_desc": "Checks for dependency vulnerabilities before saving."
+    }
+  },
   "setup": {
     "title": "Environment Setup Wizard",
     "description": "We will diagnose the installation status of tools required to use File Time Machine.",

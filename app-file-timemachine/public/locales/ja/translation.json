@@ -34,6 +34,29 @@
       "preview_of": "{{path}} の内容"
     }
   },
+  "settings": {
+    "github": {
+      "title": "GitHub 連携",
+      "login": "GitHubでログイン",
+      "desc": "リポジトリの同期やバックアップ機能を利用するために必要です。"
+    },
+    "language": {
+      "title": "言語設定 (Language)",
+      "select": "表示言語を選択してください"
+    },
+    "behavior": {
+      "title": "アプリの挙動",
+      "save_label": "ルート切り替え時の保存設定",
+      "confirm": "毎回確認する (推奨)",
+      "auto": "全自動で保存する",
+      "none": "保存しない"
+    },
+    "security": {
+      "title": "セキュリティ",
+      "auto_scan": "自動脆弱性スキャン",
+      "auto_scan_desc": "保存前に依存関係の脆弱性をチェックします。"
+    }
+  },
   "setup": {
     "title": "環境診断ウィザード",
     "description": "ファイルタイムマシンを使用するために必要なツールのインストール状況を診断します。",

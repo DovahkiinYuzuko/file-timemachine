@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import { useTranslation } from "react-i18next";
 import { invoke } from "@tauri-apps/api/core";
 import { CheckCircle2, XCircle, Loader2 } from "lucide-react";
+import logger from "../../utils/logger";
 import "./Wizard.css";
 
 interface DependencyStatus {
@@ -23,12 +24,15 @@ export default function Wizard({ onComplete }: WizardProps) {
   const checkDeps = async () => {
     setLoading(true);
     setError(null);
+    logger.info("依存関係の診断を開始するよ");
     try {
       const result = await invoke<DependencyStatus>("check_dependencies");
       setStatus(result);
+      logger.debug(`診断結果: Git=${result.git}, Brew=${result.brew}, gh=${result.gh}`);
     } catch (e) {
-      console.error(e);
-      setError(String(e));
+      const errMsg = String(e);
+      logger.error(`診断中にエラーが発生したよ: ${errMsg}`);
+      setError(errMsg);
     } finally {
       setLoading(false);
     }

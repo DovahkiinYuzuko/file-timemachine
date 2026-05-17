@@ -2,6 +2,7 @@ import { type FC, useState, useEffect } from "react";
 import { useTranslation } from "react-i18next";
 import { X, GitBranch, Languages, Settings2, ShieldCheck, Cpu } from "lucide-react";
 import { open } from "@tauri-apps/plugin-shell";
+import logger from "../../utils/logger";
 import "./SettingsModal.css";
 
 interface SettingsModalProps {
@@ -28,23 +29,33 @@ const SettingsModal: FC<SettingsModalProps> = ({ isOpen, onClose }) => {
     const savedBehavior = localStorage.getItem("settings_save_behavior") as SaveBehavior;
     const savedAutoScan = localStorage.getItem("settings_auto_scan");
 
-    if (savedBehavior) setSaveBehavior(savedBehavior);
-    if (savedAutoScan !== null) setAutoScan(savedAutoScan === "true");
+    if (savedBehavior) {
+      setSaveBehavior(savedBehavior);
+      logger.debug(`設定を読み込んだよ: 保存挙動 = ${savedBehavior}`);
+    }
+    if (savedAutoScan !== null) {
+      const isAuto = savedAutoScan === "true";
+      setAutoScan(isAuto);
+      logger.debug(`設定を読み込んだよ: 自動スキャン = ${isAuto}`);
+    }
   }, []);
 
   // Save settings to localStorage when they change
   useEffect(() => {
     localStorage.setItem("settings_save_behavior", saveBehavior);
+    logger.info(`保存挙動の設定を変更したよ: ${saveBehavior}`);
   }, [saveBehavior]);
 
   useEffect(() => {
     localStorage.setItem("settings_auto_scan", String(autoScan));
+    logger.info(`自動スキャンの設定を変更したよ: ${autoScan}`);
   }, [autoScan]);
 
   // Accessibility: Handle Escape key
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
       if (e.key === "Escape" && isOpen) {
+        logger.debug("Escapeキーで設定モーダルを閉じるよ");
         onClose();
       }
     };
@@ -52,21 +63,31 @@ const SettingsModal: FC<SettingsModalProps> = ({ isOpen, onClose }) => {
     return () => window.removeEventListener("keydown", handleKeyDown);
   }, [isOpen, onClose]);
 
+  useEffect(() => {
+    if (isOpen) {
+      logger.debug("設定モーダルを開いたよ");
+    }
+  }, [isOpen]);
+
   if (!isOpen) return null;
 
   const handleGithubConnect = async () => {
+    logger.info("GitHub連携を開始するよ");
     // 実際の実装ではClient IDなどを指定するが、今回は基盤実装としてGitHub認証ページを開く
     const clientId = "YOUR_GITHUB_CLIENT_ID"; // 本来は環境変数等から取得
     const authUrl = `https://github.com/login/oauth/authorize?client_id=${clientId}&scope=repo,user`;
     try {
       await open(authUrl);
+      logger.debug(`GitHub認証URLを開いたよ: ${authUrl}`);
     } catch (error) {
-      console.error("Failed to open browser:", error);
+      logger.error(`ブラウザを開くのに失敗したよ: ${error}`);
     }
   };
 
-  const handleLanguageChange = (lng: string) => {
-    i18n.changeLanguage(lng);
+  const handleLanguageChange = async (lng: string) => {
+    logger.info(`言語を切り替えるよ: ${lng}`);
+    await i18n.changeLanguage(lng);
+    logger.debug(`言語の切り替えが完了したよ: ${i18n.language}`);
   };
 
   const languages = [
@@ -89,13 +110,16 @@ const SettingsModal: FC<SettingsModalProps> = ({ isOpen, onClose }) => {
   ];
 
   return (
-    <div 
-      className="settings-modal-overlay" 
-      onClick={onClose}
+    <div
+      className="settings-modal-overlay"
+      onClick={() => {
+        logger.debug("オーバーレイクリックで設定モーダルを閉じるよ");
+        onClose();
+      }}
       role="presentation"
     >
-      <div 
-        className="settings-modal-content" 
+      <div
+        className="settings-modal-content"
         onClick={(e) => e.stopPropagation()}
         role="dialog"
         aria-modal="true"
@@ -106,9 +130,12 @@ const SettingsModal: FC<SettingsModalProps> = ({ isOpen, onClose }) => {
             <Settings2 size={20} />
             {t("common.sidebar.settings")}
           </h2>
-          <button 
-            className="close-btn" 
-            onClick={onClose}
+          <button
+            className="close-btn"
+            onClick={() => {
+              logger.debug("閉じるボタンで設定モーダルを閉じるよ");
+              onClose();
+            }}
             aria-label={t("common.action.close")}
           >
             <X size={20} />
@@ -120,18 +147,18 @@ const SettingsModal: FC<SettingsModalProps> = ({ isOpen, onClose }) => {
           <section className="settings-section">
             <h3>
               <GitBranch size={16} />
-              GitHub 連携
+              {t("settings.github.title")}
             </h3>
             <div className="settings-row">
-              <button 
+              <button
                 className="github-connect-btn"
                 onClick={handleGithubConnect}
               >
                 <GitBranch size={20} />
-                GitHubでログイン
+                {t("settings.github.login")}
               </button>
               <p style={{ fontSize: '0.8rem', color: 'var(--text-muted)', margin: 0 }}>
-                リポジトリの同期やバックアップ機能を利用するために必要です。
+                {t("settings.github.desc")}
               </p>
             </div>
           </section>
@@ -140,11 +167,11 @@ const SettingsModal: FC<SettingsModalProps> = ({ isOpen, onClose }) => {
           <section className="settings-section">
             <h3>
               <Languages size={16} />
-              言語設定 (Language)
+              {t("settings.language.title")}
             </h3>
             <div className="settings-control">
-              <label htmlFor="language-select">表示言語を選択してください</label>
-              <select 
+              <label htmlFor="language-select">{t("settings.language.select")}</label>
+              <select
                 id="language-select"
                 className="settings-select"
                 value={i18n.language}
@@ -163,37 +190,37 @@ const SettingsModal: FC<SettingsModalProps> = ({ isOpen, onClose }) => {
           <section className="settings-section">
             <h3>
               <Cpu size={16} />
-              アプリの挙動
+              {t("settings.behavior.title")}
             </h3>
             <div className="settings-control">
-              <label>ルート切り替え時の保存設定</label>
+              <label>{t("settings.behavior.save_label")}</label>
               <div className="radio-group" role="radiogroup">
                 <label className="radio-label">
-                  <input 
+                  <input
                     type="radio" 
-                    name="save-behavior" 
+                    name="save-behavior"
                     checked={saveBehavior === "confirm"}
                     onChange={() => setSaveBehavior("confirm")}
                   />
-                  毎回確認する (推奨)
+                  {t("settings.behavior.confirm")}
                 </label>
                 <label className="radio-label">
-                  <input 
-                    type="radio" 
-                    name="save-behavior" 
+                  <input
+                    type="radio"
+                    name="save-behavior"
                     checked={saveBehavior === "auto"}
                     onChange={() => setSaveBehavior("auto")}
                   />
-                  全自動で保存する
+                  {t("settings.behavior.auto")}
                 </label>
                 <label className="radio-label">
-                  <input 
-                    type="radio" 
-                    name="save-behavior" 
+                  <input
+                    type="radio"
+                    name="save-behavior"
                     checked={saveBehavior === "none"}
                     onChange={() => setSaveBehavior("none")}
                   />
-                  保存しない
+                  {t("settings.behavior.none")}
                 </label>
               </div>
             </div>
@@ -203,19 +230,19 @@ const SettingsModal: FC<SettingsModalProps> = ({ isOpen, onClose }) => {
           <section className="settings-section">
             <h3>
               <ShieldCheck size={16} />
-              セキュリティ
+              {t("settings.security.title")}
             </h3>
             <div className="toggle-row">
               <div className="settings-control">
-                <label htmlFor="auto-scan-toggle" style={{ fontWeight: 600 }}>自動脆弱性スキャン</label>
+                <label htmlFor="auto-scan-toggle" style={{ fontWeight: 600 }}>{t("settings.security.auto_scan")}</label>     
                 <span style={{ fontSize: '0.8rem', color: 'var(--text-muted)' }}>
-                  保存前に依存関係の脆弱性をチェックします。
+                  {t("settings.security.auto_scan_desc")}
                 </span>
               </div>
               <label className="toggle-switch">
-                <input 
+                <input
                   id="auto-scan-toggle"
-                  type="checkbox" 
+                  type="checkbox"
                   checked={autoScan}
                   onChange={(e) => setAutoScan(e.target.checked)}
                 />
