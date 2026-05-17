@@ -1,4 +1,4 @@
-import { type FC, useEffect, useState, useMemo } from "react";
+import { type FC, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { invoke, convertFileSrc } from "@tauri-apps/api/core";
 import { Info, Loader2, FileText, AlertCircle, FileQuestion } from "lucide-react";
@@ -19,9 +19,9 @@ interface FileMetadata {
   name: string;
   size: number;
   modified: string;
+  file_type: string;
+  mime_type: string;
 }
-
-type FileType = "image" | "video" | "audio" | "text" | "unknown";
 
 /**
  * Accessibility Strategy:
@@ -41,19 +41,6 @@ const FilePreview: FC<FilePreviewProps> = ({ filePath }) => {
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
 
-  // Determine file type from extension
-  const fileType = useMemo((): FileType => {
-    if (!filePath) return "unknown";
-    const ext = filePath.split(".").pop()?.toLowerCase() || "";
-    
-    if (["png", "jpg", "jpeg", "gif", "webp", "svg", "bmp", "ico"].includes(ext)) return "image";
-    if (["mp4", "webm"].includes(ext)) return "video";
-    if (["mp3", "m4a", "wav", "ogg"].includes(ext)) return "audio";
-    if (["txt", "md", "json", "js", "ts", "tsx", "css", "html", "rs", "py", "go", "c", "cpp", "h", "java", "sh", "yml", "yaml", "toml", "env"].includes(ext)) return "text";
-    
-    return "unknown";
-  }, [filePath]);
-
   useEffect(() => {
     if (!filePath) {
       setTextContent(null);
@@ -71,7 +58,7 @@ const FilePreview: FC<FilePreviewProps> = ({ filePath }) => {
         const meta = await invoke<FileMetadata>("get_file_info", { path: filePath });
         setMetadata(meta);
 
-        if (fileType === "text") {
+        if (meta.file_type === "text") {
           logger.info(`Fetching text content for: ${filePath}`);
           const result = await invoke<PreviewContent>("read_file_content", { path: filePath });
           setTextContent(result.content);
@@ -87,7 +74,7 @@ const FilePreview: FC<FilePreviewProps> = ({ filePath }) => {
     };
 
     fetchData();
-  }, [filePath, fileType]);
+  }, [filePath]);
 
   const formatSize = (bytes: number) => {
     if (bytes === 0) return "0 B";
@@ -134,7 +121,7 @@ const FilePreview: FC<FilePreviewProps> = ({ filePath }) => {
       </header>
       
       <div className="preview-body">
-        {fileType === "image" && (
+        {metadata?.file_type === "image" && (
           <div className="image-preview">
             <img 
               src={assetUrl} 
@@ -143,7 +130,7 @@ const FilePreview: FC<FilePreviewProps> = ({ filePath }) => {
           </div>
         )}
 
-        {fileType === "video" && (
+        {metadata?.file_type === "video" && (
           <div className="video-preview">
             <video 
               controls 
@@ -155,7 +142,7 @@ const FilePreview: FC<FilePreviewProps> = ({ filePath }) => {
           </div>
         )}
 
-        {fileType === "audio" && (
+        {metadata?.file_type === "audio" && (
           <div className="audio-preview">
             <audio 
               controls 
@@ -167,13 +154,13 @@ const FilePreview: FC<FilePreviewProps> = ({ filePath }) => {
           </div>
         )}
 
-        {fileType === "text" && textContent !== null && (
+        {metadata?.file_type === "text" && textContent !== null && (
           <pre className="text-preview" aria-readonly="true">
             <code>{textContent}</code>
           </pre>
         )}
 
-        {fileType === "unknown" && metadata && (
+        {metadata?.file_type === "unknown" && metadata && (
           <div className="info-card">
             <div className="info-icon-wrapper">
               <Info size={40} />
