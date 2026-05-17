@@ -1,37 +1,46 @@
-import { type FC, type ReactNode } from "react";
+import { type FC, useState, useId } from "react";
 import { HelpCircle } from "lucide-react";
 import "./Tooltip.css";
 
 interface TooltipProps {
   content: string;
-  children?: ReactNode;
 }
 
 /**
  * Accessibility Strategy:
- * - Use <button> as the trigger for keyboard accessibility.
- * - Use aria-describedby for connecting the trigger with the tooltip content.
- * - Tooltip content is shown on hover and focus.
+ * - Use useId to generate unique IDs for aria-describedby.
+ * - Tooltip container has role="tooltip".
+ * - The trigger button uses aria-describedby to link to the tooltip content.
+ * - Keyboard focus and mouse hover both trigger the tooltip.
  */
-const Tooltip: FC<TooltipProps> = ({ content, children }) => {
-  const tooltipId = `tooltip-${Math.random().toString(36).substring(2, 9)}`;
+const Tooltip: FC<TooltipProps> = ({ content }) => {
+  const [isVisible, setIsVisible] = useState(false);
+  const tooltipId = useId();
 
   return (
     <div className="tooltip-container">
-      <button 
-        className="tooltip-trigger" 
+      <button
+        className="tooltip-trigger"
+        onMouseEnter={() => setIsVisible(true)}
+        onMouseLeave={() => setIsVisible(false)}
+        onFocus={() => setIsVisible(true)}
+        onBlur={() => setIsVisible(false)}
         aria-describedby={tooltipId}
         type="button"
       >
-        {children || <HelpCircle size={16} />}
+        <HelpCircle size={14} className="tooltip-icon" />
+        <span className="sr-only">ヘルプを表示</span>
       </button>
-      <div 
-        id={tooltipId} 
-        className="tooltip-content" 
-        role="tooltip"
-      >
-        {content}
-      </div>
+      
+      {isVisible && (
+        <div 
+          id={tooltipId}
+          className="tooltip-content" 
+          role="tooltip"
+        >
+          {content}
+        </div>
+      )}
     </div>
   );
 };

@@ -11,6 +11,9 @@
       "settings": "Settings",
       "help": "Help"
     },
+    "action": {
+      "close": "Close"
+    },
     "placeholder": {
       "file_tree": "(File tree will be displayed here)",
       "root_management": "(Root management will be displayed here)",
@@ -59,5 +62,52 @@
       "save_anyway": "Save anyway",
       "cancel": "Cancel"
     }
+  },
+  "help": {
+    "title": "Help & Git Commands Cheatsheet",
+    "description": "Explanation of app operations and corresponding Git commands.",
+    "table": {
+      "operation": "App Operation",
+      "command": "Git Command",
+      "explanation": "Explanation"
+    },
+    "commands": {
+      "save": {
+        "op": "Save",
+        "cmd": "git commit",
+        "desc": "Records the current state."
+      },
+      "trial": {
+        "op": "Trial Route",
+        "cmd": "git branch",
+        "desc": "Creates a new path (branch)."
+      },
+      "switch": {
+        "op": "Switch",
+        "cmd": "git checkout",
+        "desc": "Moves to a past or different path."
+      },
+      "merge": {
+        "op": "Adopt to Main",
+        "cmd": "git merge",
+        "desc": "Merges a good idea into the main path."
+      },
+      "search": {
+        "op": "Search Content",
+        "cmd": "git grep",
+        "desc": "Searches through all past records."
+      },
+      "sync": {
+        "op": "Sync",
+        "cmd": "git push/pull",
+        "desc": "Syncs with the online vault."
+      }
+    },
+    "footer": "*Check the '?' next to each button for more detailed terms."
+  },
+  "tooltip": {
+    "root_management": "Called 'Branch' in Git. Manages different paths of work.",
+    "history_list": "Called 'Log' in Git. Check your save history.",
+    "save_button": "Called 'Commit' in Git. Save current state with a name."
   }
 }

@@ -99,7 +99,7 @@ const MainLayout: FC = () => {
                     <header className="panel-header">
                       <h2>
                         {t("common.root_management")}
-                        <Tooltip content="Git用語では「ブランチ(branch)」と呼びます。新しい試みを安全に行うための分かれ道です。" />
+                        <Tooltip content={t("tooltip.root_management")} />
                       </h2>
                     </header>
                     <div className="panel-body">
@@ -116,7 +116,7 @@ const MainLayout: FC = () => {
                     <header className="panel-header">
                       <h2>
                         {t("common.history_list")}
-                        <Tooltip content="Git用語では「ログ(log)」と呼びます。過去に行った「保存（コミット）」の記録です。" />
+                        <Tooltip content={t("tooltip.history_list")} />
                       </h2>
                     </header>
                     <div className="panel-body">{t("common.placeholder.history_list")}</div>
@@ -148,9 +148,9 @@ const MainLayout: FC = () => {
               onClick={handleSaveClick}
               aria-haspopup="dialog"
             >
-              {t("safety.action.save_anyway")} (Demo)
+              {t("help.commands.save.op")} (Demo)
             </button>
-            <Tooltip content="Git用語では「コミット(commit)」と呼びます。現在の作業状態に名前をつけて保存します。" />
+            <Tooltip content={t("tooltip.save_button")} />
           </div>
         </footer>
       </div>

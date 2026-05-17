@@ -11,6 +11,9 @@
       "settings": "設定",
       "help": "ヘルプ"
     },
+    "action": {
+      "close": "閉じる"
+    },
     "placeholder": {
       "file_tree": "（ここにファイルツリーが表示されます）",
       "root_management": "（ここにルート管理が表示されます）",
@@ -59,5 +62,52 @@
       "save_anyway": "構わず保存",
       "cancel": "キャンセル"
     }
+  },
+  "help": {
+    "title": "ヘルプ ＆ Gitコマンド早見表",
+    "description": "アプリの操作と対応するGitコマンドの解説です。",
+    "table": {
+      "operation": "アプリの操作",
+      "command": "Gitコマンド",
+      "explanation": "解説"
+    },
+    "commands": {
+      "save": {
+        "op": "保存する",
+        "cmd": "git commit",
+        "desc": "今の状態を記録します。"
+      },
+      "trial": {
+        "op": "お試しルート",
+        "cmd": "git branch",
+        "desc": "別の道（分岐）を作ります。"
+      },
+      "switch": {
+        "op": "切り替える",
+        "cmd": "git checkout",
+        "desc": "過去や別の道へ移動します。"
+      },
+      "merge": {
+        "op": "本番に採用",
+        "cmd": "git merge",
+        "desc": "良い案をメインに合流させます。"
+      },
+      "search": {
+        "op": "中身で探す",
+        "cmd": "git grep",
+        "desc": "過去の全記録から検索します。"
+      },
+      "sync": {
+        "op": "同期",
+        "cmd": "git push/pull",
+        "desc": "ネットの金庫とやり取りします。"
+      }
+    },
+    "footer": "※さらに詳しい用語解説は各ボタンの「？」を見てください。"
+  },
+  "tooltip": {
+    "root_management": "Gitでは「ブランチ」と呼びます。作業の分かれ道を管理します。",
+    "history_list": "Gitでは「ログ」と呼びます。これまでの保存記録を確認できます。",
+    "save_button": "Gitでは「コミット」と呼びます。今の状態に名前をつけて保存します。"
   }
 }

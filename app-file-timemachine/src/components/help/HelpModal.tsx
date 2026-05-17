@@ -1,4 +1,5 @@
 import { type FC, useEffect } from "react";
+import { useTranslation } from "react-i18next";
 import { X } from "lucide-react";
 import "./HelpModal.css";
 
@@ -15,6 +16,8 @@ interface HelpModalProps {
  * - Close button has aria-label.
  */
 const HelpModal: FC<HelpModalProps> = ({ isOpen, onClose }) => {
+  const { t } = useTranslation();
+
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
       if (e.key === "Escape") {
@@ -36,12 +39,12 @@ const HelpModal: FC<HelpModalProps> = ({ isOpen, onClose }) => {
   if (!isOpen) return null;
 
   const gitCommands = [
-    { action: "保存", command: "git commit", description: "現在の状態を記録します。" },
-    { action: "お試しルート", command: "git branch", description: "新しい作業ラインを作ります。" },
-    { action: "切り替える", command: "git checkout", description: "他のルートに移動します。" },
-    { action: "採用", command: "git merge", description: "他のルートの変更を取り込みます。" },
-    { action: "中身で探す", command: "git grep", description: "全ファイルの中から文字列を検索します。" },
-    { action: "同期", command: "git push / pull", description: "クラウド（リモート）と同期します。" },
+    { key: "save", icon: "●" },
+    { key: "trial", icon: "🌱" },
+    { key: "switch", icon: "🔄" },
+    { key: "merge", icon: "✅" },
+    { key: "search", icon: "🔍" },
+    { key: "sync", icon: "🏠" },
   ];
 
   return (
@@ -54,36 +57,33 @@ const HelpModal: FC<HelpModalProps> = ({ isOpen, onClose }) => {
         onClick={(e) => e.stopPropagation()}
       >
         <header className="help-modal-header">
-          <h2 id="help-modal-title">Gitコマンド早見表</h2>
+          <h2 id="help-modal-title">{t("help.title")}</h2>
           <button 
             className="help-modal-close-btn" 
             onClick={onClose}
-            aria-label="閉じる"
+            aria-label={t("common.action.close")}
           >
             <X size={24} />
           </button>
         </header>
         
         <div className="help-modal-content">
-          <p>
-            ファイルタイムマシンの裏側では、世界中のエンジニアが使っている「Git」という仕組みが動いています。
-            どの操作がどのコマンドに対応しているか知ることで、より深くファイルを管理できるようになります。
-          </p>
+          <p>{t("help.description")}</p>
           
           <table className="git-commands-table">
             <thead>
               <tr>
-                <th>アプリの操作</th>
-                <th>Gitコマンド</th>
-                <th>説明</th>
+                <th>{t("help.table.operation")}</th>
+                <th>{t("help.table.command")}</th>
+                <th>{t("help.table.explanation")}</th>
               </tr>
             </thead>
             <tbody>
-              {gitCommands.map((item, index) => (
-                <tr key={index}>
-                  <td>{item.action}</td>
-                  <td><code>{item.command}</code></td>
-                  <td>{item.description}</td>
+              {gitCommands.map((item) => (
+                <tr key={item.key}>
+                  <td>{item.icon} {t(`help.commands.${item.key}.op`)}</td>
+                  <td><code>{t(`help.commands.${item.key}.cmd`)}</code></td>
+                  <td>{t(`help.commands.${item.key}.desc`)}</td>
                 </tr>
               ))}
             </tbody>
@@ -91,8 +91,11 @@ const HelpModal: FC<HelpModalProps> = ({ isOpen, onClose }) => {
         </div>
 
         <footer className="help-modal-footer">
+          <p style={{ fontSize: '0.9rem', color: 'var(--text-muted)' }}>
+            {t("help.footer")}
+          </p>
           <button className="help-modal-footer-btn" onClick={onClose}>
-            わかった！
+            OK
           </button>
         </footer>
       </div>
