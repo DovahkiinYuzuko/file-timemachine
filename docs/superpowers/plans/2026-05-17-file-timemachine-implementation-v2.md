@@ -12,6 +12,28 @@
 
 ---
 
+### Task 0: 統一ログ基盤 (tauri-plugin-log) のセットアップ
+
+**Files:**
+- Modify: `app-file-timemachine/src-tauri/Cargo.toml`
+- Modify: `app-file-timemachine/src-tauri/src/lib.rs`
+- Create: `app-file-timemachine/src/utils/logger.ts`
+
+- [ ] **Step 1: Rust側プラグインの導入と初期化**
+`tauri-plugin-log` を導入し、`lib.rs` で `Stdout`, `Webview`, `LogDir` をターゲットに設定して初期化する。
+
+- [ ] **Step 2: 権限 (Capabilities) の設定**
+`src-tauri/capabilities/default.json` に `log:default` 権限を追加して、フロントエンドからのログ出力を許可する。
+
+- [ ] **Step 3: フロントエンド共通ロガーの作成**
+`@tauri-apps/plugin-log` をインストールし、`logger.ts` で使いやすいラッパーを作成する。各コンポーネントでこれを使用してデバッグログを出力できるようにする。
+
+- [ ] **Step 4: Commit**
+```bash
+git add .
+git commit -m "feat: tauri-plugin-log による統一ログ基盤のセットアップ"
+```
+
 ### Task 1: ハイブリッドUIへのレイアウト刷新
 
 **Files:**
