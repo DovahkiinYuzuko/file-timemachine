@@ -17,6 +17,12 @@
   width: 100%;
 }
 
+.sidebar-separator {
+  height: 1px;
+  background-color: #444444;
+  margin: 4px 12px;
+}
+
 .sidebar-item {
   background: none;
   border: none;

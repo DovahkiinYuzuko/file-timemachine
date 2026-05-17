@@ -27,10 +27,17 @@ import "./MainLayout.css";
 const MainLayout: FC = () => {
   const { t } = useTranslation();
   const [activeTab, setActiveTab] = useState<SidebarTab>("files");
+  const [projectPath, setProjectPath] = useState<string | null>(null);
   const [isSafetyDialogOpen, setIsSafetyDialogOpen] = useState(false);
   const [isSettingsModalOpen, setIsSettingsModalOpen] = useState(false);
   const [isHelpModalOpen, setIsHelpModalOpen] = useState(false);
   const [safetyIssues, setSafetyIssues] = useState<SafetyIssue[]>([]);
+
+  // フォルダ選択時の処理
+  const handleOpenFolder = (path: string) => {
+    setProjectPath(path);
+    console.log("Selected project path:", path);
+  };
 
   // 保存ボタンが押された時のシミュレーション
   const handleSaveClick = () => {
@@ -78,7 +85,11 @@ const MainLayout: FC = () => {
 
   return (
     <div className="layout-wrapper">
-      <Sidebar activeTab={activeTab} onTabChange={handleTabChange} />
+      <Sidebar 
+        activeTab={activeTab} 
+        onTabChange={handleTabChange} 
+        onOpenFolder={handleOpenFolder} 
+      />
       
       <div className="layout-main-content">
         <main className="main-layout-container" aria-label={t("common.app_title")}>
@@ -91,7 +102,14 @@ const MainLayout: FC = () => {
                     <header className="panel-header">
                       <h2>{t("common.file_tree")}</h2>
                     </header>
-                    <div className="panel-body">{t("common.placeholder.file_tree")}</div>
+                    <div className="panel-body">
+                      {projectPath && (
+                        <div style={{ padding: '4px 8px', fontSize: '11px', color: '#888', borderBottom: '1px solid #333', marginBottom: '8px', wordBreak: 'break-all' }}>
+                          {projectPath}
+                        </div>
+                      )}
+                      {t("common.placeholder.file_tree")}
+                    </div>
                   </section>
                 </Panel>
                 <PanelResizeHandle className="resize-handle" />
