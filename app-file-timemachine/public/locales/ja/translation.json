@@ -5,6 +5,12 @@
     "root_management": "ルート管理",
     "history_list": "履歴リスト",
     "preview": "プレビュー",
+    "sidebar": {
+      "files": "ファイル",
+      "history": "履歴",
+      "settings": "設定",
+      "help": "ヘルプ"
+    },
     "placeholder": {
       "file_tree": "（ここにファイルツリーが表示されます）",
       "root_management": "（ここにルート管理が表示されます）",

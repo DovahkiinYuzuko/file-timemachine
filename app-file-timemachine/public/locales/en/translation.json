@@ -5,6 +5,12 @@
     "root_management": "Root Management",
     "history_list": "History List",
     "preview": "Preview",
+    "sidebar": {
+      "files": "Files",
+      "history": "History",
+      "settings": "Settings",
+      "help": "Help"
+    },
     "placeholder": {
       "file_tree": "(File tree will be displayed here)",
       "root_management": "(Root management will be displayed here)",

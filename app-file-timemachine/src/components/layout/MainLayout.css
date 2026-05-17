@@ -1,8 +1,17 @@
 .layout-wrapper {
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
   height: 100vh;
   width: 100vw;
+  overflow: hidden;
+  background-color: #1e1e1e;
+}
+
+.layout-main-content {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
   overflow: hidden;
 }
 
@@ -19,7 +28,7 @@
   display: flex;
   flex-direction: column;
   padding: 1rem;
-  overflow: auto;
+  overflow: hidden;
   background-color: #252526;
   border: 1px solid #333333;
 }
@@ -37,12 +46,18 @@
   margin: 0;
 }
 
+.panel-body {
+  flex: 1;
+  overflow: auto;
+}
+
 .resize-handle {
   width: 4px;
   background-color: transparent;
   transition: background-color 0.2s;
   cursor: col-resize;
   outline: none;
+  z-index: 5;
 }
 
 .resize-handle:hover,
@@ -51,7 +66,23 @@
   background-color: #007acc;
 }
 
-.resize-handle:focus-visible {
+.resize-handle-vertical {
+  height: 4px;
+  background-color: transparent;
+  transition: background-color 0.2s;
+  cursor: row-resize;
+  outline: none;
+  z-index: 5;
+}
+
+.resize-handle-vertical:hover,
+.resize-handle-vertical[data-resize-handle-active],
+.resize-handle-vertical:focus-visible {
+  background-color: #007acc;
+}
+
+.resize-handle:focus-visible,
+.resize-handle-vertical:focus-visible {
   outline: 2px solid #007acc;
   outline-offset: 1px;
 }
@@ -64,6 +95,7 @@
   justify-content: flex-end;
   padding: 0 16px;
   box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.2);
+  z-index: 20;
 }
 
 .save-state-btn {
