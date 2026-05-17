@@ -6,6 +6,8 @@ import GitGraph from "../graph/GitGraph";
 import FilePreview from "../preview/FilePreview";
 import SafetyDialog from "../guard/SafetyDialog";
 import SettingsModal from "../settings/SettingsModal";
+import HelpModal from "../help/HelpModal";
+import Tooltip from "../common/Tooltip";
 import { analyzeFilesForSafety, type SafetyIssue } from "../../utils/safety";
 import "./MainLayout.css";
 
@@ -18,6 +20,8 @@ import "./MainLayout.css";
  * - PanelResizeHandle provides visual and keyboard-accessible resizing.
  * - Screen reader announcements for safety dialog.
  * - SettingsModal for app configuration.
+ * - HelpModal for Git command cheat sheet.
+ * - Tooltips for context-sensitive Git explanations.
  */
 
 const MainLayout: FC = () => {
@@ -25,6 +29,7 @@ const MainLayout: FC = () => {
   const [activeTab, setActiveTab] = useState<SidebarTab>("files");
   const [isSafetyDialogOpen, setIsSafetyDialogOpen] = useState(false);
   const [isSettingsModalOpen, setIsSettingsModalOpen] = useState(false);
+  const [isHelpModalOpen, setIsHelpModalOpen] = useState(false);
   const [safetyIssues, setSafetyIssues] = useState<SafetyIssue[]>([]);
 
   // 保存ボタンが押された時のシミュレーション
@@ -51,6 +56,8 @@ const MainLayout: FC = () => {
   const handleTabChange = (tab: SidebarTab) => {
     if (tab === "settings") {
       setIsSettingsModalOpen(true);
+    } else if (tab === "help") {
+      setIsHelpModalOpen(true);
     } else {
       setActiveTab(tab);
     }
@@ -58,7 +65,10 @@ const MainLayout: FC = () => {
 
   const handleSettingsClose = () => {
     setIsSettingsModalOpen(false);
-    // モーダルを閉じても、サイドバーのアクティブなタブは変更しない（前のタブを維持）
+  };
+
+  const handleHelpClose = () => {
+    setIsHelpModalOpen(false);
   };
 
   return (
@@ -87,7 +97,10 @@ const MainLayout: FC = () => {
                 <Panel defaultSize={50} minSize={20}>
                   <section className="panel-content" aria-label={t("common.root_management")}>
                     <header className="panel-header">
-                      <h2>{t("common.root_management")}</h2>
+                      <h2>
+                        {t("common.root_management")}
+                        <Tooltip content="Git用語では「ブランチ(branch)」と呼びます。新しい試みを安全に行うための分かれ道です。" />
+                      </h2>
                     </header>
                     <div className="panel-body">
                       <GitGraph />
@@ -101,7 +114,10 @@ const MainLayout: FC = () => {
                 <Panel defaultSize={50} minSize={20}>
                   <section className="panel-content" aria-label={t("common.history_list")}>
                     <header className="panel-header">
-                      <h2>{t("common.history_list")}</h2>
+                      <h2>
+                        {t("common.history_list")}
+                        <Tooltip content="Git用語では「ログ(log)」と呼びます。過去に行った「保存（コミット）」の記録です。" />
+                      </h2>
                     </header>
                     <div className="panel-body">{t("common.placeholder.history_list")}</div>
                   </section>
@@ -126,13 +142,16 @@ const MainLayout: FC = () => {
         </main>
 
         <footer className="main-footer" role="contentinfo">
-          <button 
-            className="save-state-btn" 
-            onClick={handleSaveClick}
-            aria-haspopup="dialog"
-          >
-            {t("safety.action.save_anyway")} (Demo)
-          </button>
+          <div className="footer-actions">
+            <button 
+              className="save-state-btn" 
+              onClick={handleSaveClick}
+              aria-haspopup="dialog"
+            >
+              {t("safety.action.save_anyway")} (Demo)
+            </button>
+            <Tooltip content="Git用語では「コミット(commit)」と呼びます。現在の作業状態に名前をつけて保存します。" />
+          </div>
         </footer>
       </div>
 
@@ -153,6 +172,11 @@ const MainLayout: FC = () => {
       <SettingsModal 
         isOpen={isSettingsModalOpen}
         onClose={handleSettingsClose}
+      />
+
+      <HelpModal 
+        isOpen={isHelpModalOpen}
+        onClose={handleHelpClose}
       />
     </div>
   );

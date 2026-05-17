@@ -1,0 +1,117 @@
+.help-modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.75);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 2000;
+  backdrop-filter: blur(4px);
+}
+
+.help-modal {
+  background-color: #242424;
+  border-radius: 12px;
+  width: 90%;
+  max-width: 700px;
+  max-height: 90vh;
+  overflow-y: auto;
+  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.5), 0 10px 10px -5px rgba(0, 0, 0, 0.4);
+  border: 1px solid #333;
+  color: #e0e0e0;
+}
+
+.help-modal-header {
+  padding: 1.5rem;
+  border-bottom: 1px solid #333;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.help-modal-header h2 {
+  margin: 0;
+  font-size: 1.5rem;
+  color: #646cff;
+}
+
+.help-modal-close-btn {
+  background: none;
+  border: none;
+  color: #999;
+  cursor: pointer;
+  padding: 0.5rem;
+  border-radius: 4px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background-color 0.2s, color 0.2s;
+}
+
+.help-modal-close-btn:hover {
+  background-color: #333;
+  color: #fff;
+}
+
+.help-modal-content {
+  padding: 1.5rem;
+}
+
+.help-modal-content p {
+  margin-top: 0;
+  margin-bottom: 1.5rem;
+  line-height: 1.6;
+  opacity: 0.9;
+}
+
+.git-commands-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-bottom: 1rem;
+}
+
+.git-commands-table th,
+.git-commands-table td {
+  padding: 1rem;
+  text-align: left;
+  border-bottom: 1px solid #333;
+}
+
+.git-commands-table th {
+  background-color: #1a1a1a;
+  color: #646cff;
+  font-weight: 600;
+}
+
+.git-commands-table code {
+  background-color: #1a1a1a;
+  padding: 0.2rem 0.4rem;
+  border-radius: 4px;
+  color: #ffca28;
+  font-family: 'Fira Code', 'Courier New', Courier, monospace;
+}
+
+.help-modal-footer {
+  padding: 1.5rem;
+  border-top: 1px solid #333;
+  text-align: right;
+  background-color: #1a1a1a;
+}
+
+.help-modal-footer-btn {
+  background-color: #646cff;
+  color: white;
+  border: none;
+  padding: 0.5rem 1.5rem;
+  border-radius: 4px;
+  cursor: pointer;
+  font-weight: 600;
+  transition: background-color 0.2s;
+}
+
+.help-modal-footer-btn:hover {
+  background-color: #535bf2;
+}
