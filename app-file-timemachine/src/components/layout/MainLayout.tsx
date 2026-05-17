@@ -130,7 +130,8 @@ const MainLayout: FC = () => {
                         <div className="panel-body">
                           {/* <GitGraph /> */}
                           <div>(Git Graph Placeholder)</div>
-                        </div>                      </section>
+                        </div>
+                      </section>
                     </Panel>
 
                     <PanelResizeHandle className="resize-handle-vertical" />
