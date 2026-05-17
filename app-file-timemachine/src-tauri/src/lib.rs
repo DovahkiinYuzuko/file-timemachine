@@ -2,7 +2,7 @@ mod commands;
 
 use commands::setup::check_dependencies;
 use commands::git::{git_init, git_commit, git_log, update_gitignore};
-use commands::files::get_file_tree;
+use commands::files::{get_file_tree, get_file_info};
 use commands::config::{get_project_config, set_project_config};
 use commands::preview::read_file_content;
 
@@ -33,6 +33,7 @@ pub fn run() {
             git_log,
             update_gitignore,
             get_file_tree,
+            get_file_info,
             get_project_config,
             set_project_config,
             read_file_content

@@ -1,53 +1,177 @@
+/* FilePreview.css - Polished Japanese Typography & Fallback UI */
+
 .file-preview-container {
   display: flex;
   flex-direction: column;
   height: 100%;
-  background-color: var(--bg-color);
+  background-color: #f7f7f8; /* Background color from DESIGN.md */
+  color: #1a1a1c; /* Text Primary from DESIGN.md */
+  font-family: -apple-system, "BlinkMacSystemFont", "Hiragino Sans", "Hiragino Kaku Gothic ProN", "Yu Gothic", "Meiryo", sans-serif;
 }
 
 .preview-info {
-  padding: 0.5rem 1rem;
-  background-color: var(--panel-bg);
-  border-bottom: 1px solid var(--border-color);
+  padding: 12px 16px;
+  background-color: #ffffff;
+  border-bottom: 1px solid #d1d1d3;
+  display: flex;
+  align-items: center;
+  gap: 8px;
 }
 
 .preview-info h3 {
   margin: 0;
-  font-size: 0.875rem;
-  color: var(--text-color);
+  font-size: 14px;
+  font-weight: 600;
+  color: #626264; /* Text Secondary */
   word-break: break-all;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .preview-body {
   flex: 1;
   overflow: auto;
-  padding: 1rem;
+  padding: 24px;
+  display: flex;
+  flex-direction: column;
 }
 
+/* Text Preview Polishing */
 .text-preview {
   margin: 0;
-  font-family: 'Cascadia Code', 'Consolas', 'Courier New', monospace;
-  font-size: 0.875rem;
-  line-height: 1.5;
-  color: var(--text-color);
+  padding: 16px;
+  background-color: #ffffff;
+  border: 1px solid #d1d1d3;
+  border-radius: 6px;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+  font-size: 14px;
+  line-height: 1.7; /* Best Practice for Japanese */
+  letter-spacing: 0.04em; /* Best Practice for Japanese */
+  color: #1a1a1c;
   white-space: pre-wrap;
   word-break: break-all;
+  tab-size: 4;
+}
+
+/* Image/Video/Audio Preview */
+.image-preview, .video-preview, .audio-preview {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #ffffff;
+  border: 1px solid #d1d1d3;
+  border-radius: 8px;
+  padding: 16px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
 }
 
 .image-preview img {
   max-width: 100%;
+  max-height: 70vh;
   height: auto;
-  border-radius: 4px;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  object-fit: contain;
 }
 
-.preview-empty, .binary-preview, .unknown-preview {
+.video-preview video {
+  max-width: 100%;
+  max-height: 70vh;
+}
+
+.audio-preview audio {
+  width: 100%;
+}
+
+/* Information Card (Fallback UI) */
+.info-card {
   display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 24px;
+  padding: 48px 32px;
+  background-color: #ffffff;
+  border: 1px solid #d1d1d3;
+  border-radius: 12px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+  max-width: 500px;
+  margin: 0 auto;
+}
+
+.info-icon-wrapper {
+  color: #0066ff; /* Primary color */
+  background-color: rgba(0, 102, 255, 0.05);
+  padding: 20px;
+  border-radius: 50%;
+}
+
+.info-content {
+  text-align: center;
+  width: 100%;
+}
+
+.info-content h2 {
+  font-size: 18px;
+  font-weight: 700;
+  margin-bottom: 12px;
+  color: #1a1a1c;
+}
+
+.info-message {
+  font-size: 14px;
+  color: #626264;
+  line-height: 1.6;
+  margin-bottom: 24px;
+}
+
+.info-details {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 8px 16px;
+  text-align: left;
+  background-color: #f7f7f8;
+  padding: 16px;
+  border-radius: 8px;
+  font-size: 13px;
+}
+
+.detail-label {
+  font-weight: 600;
+  color: #626264;
+}
+
+.detail-value {
+  color: #1a1a1c;
+  word-break: break-all;
+}
+
+/* States */
+.preview-empty, .preview-loading, .preview-error {
+  display: flex;
+  flex-direction: column;
   align-items: center;
   justify-content: center;
   height: 100%;
-  color: var(--text-muted);
-  font-style: italic;
+  color: #626264;
   text-align: center;
-  padding: 2rem;
+  padding: 48px;
+  gap: 16px;
+}
+
+.preview-empty p {
+  font-style: italic;
+  font-size: 16px;
+}
+
+.loader-spinner {
+  animation: spin 1s linear infinite;
+  color: #0066ff;
+}
+
+@keyframes spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+.preview-error {
+  color: #e02020;
 }

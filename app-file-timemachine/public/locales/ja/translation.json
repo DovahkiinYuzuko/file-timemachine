@@ -38,6 +38,16 @@
       "whitelist": "厳選",
       "blacklist": "おまかせ",
       "tooltip": "クリックでモードを切り替えるよ！"
+    },
+    "file_name": "ファイル名",
+    "file_size": "サイズ",
+    "last_modified": "最終更新",
+    "loading": "読み込み中..."
+  },
+  "preview": {
+    "unknown_type": {
+      "title": "バイナリファイル",
+      "message": "このファイル形式のプレビューはサポートされていませんが、大切なデータとして管理されています。"
     }
   },
   "settings": {

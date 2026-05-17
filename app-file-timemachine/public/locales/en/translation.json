@@ -38,6 +38,16 @@
       "whitelist": "Whitelist",
       "blacklist": "Blacklist",
       "tooltip": "Click to toggle Git mode!"
+    },
+    "file_name": "File Name",
+    "file_size": "Size",
+    "last_modified": "Last Modified",
+    "loading": "Loading..."
+  },
+  "preview": {
+    "unknown_type": {
+      "title": "Binary File",
+      "message": "Preview for this file type is not supported, but it is managed as important data."
     }
   },
   "settings": {
