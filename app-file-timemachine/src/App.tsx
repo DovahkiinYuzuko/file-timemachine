@@ -1,7 +1,7 @@
-import { useState, useEffect } from "react";
-import { useTranslation } from "react-i18next";
+import { useEffect, useState } from "react";
 import MainLayout from "./components/layout/MainLayout";
 import Wizard from "./components/setup/Wizard";
+
 import "./App.css";
 
 function App() {

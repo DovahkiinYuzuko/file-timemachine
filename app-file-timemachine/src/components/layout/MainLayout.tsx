@@ -5,6 +5,7 @@ import Sidebar, { type SidebarTab } from "./Sidebar";
 import GitGraph from "../graph/GitGraph";
 import FilePreview from "../preview/FilePreview";
 import SafetyDialog from "../guard/SafetyDialog";
+import SettingsModal from "../settings/SettingsModal";
 import { analyzeFilesForSafety, type SafetyIssue } from "../../utils/safety";
 import "./MainLayout.css";
 
@@ -16,12 +17,14 @@ import "./MainLayout.css";
  * - Vertical PanelGroup used in the middle column for combined Route and History view.
  * - PanelResizeHandle provides visual and keyboard-accessible resizing.
  * - Screen reader announcements for safety dialog.
+ * - SettingsModal for app configuration.
  */
 
 const MainLayout: FC = () => {
   const { t } = useTranslation();
   const [activeTab, setActiveTab] = useState<SidebarTab>("files");
   const [isSafetyDialogOpen, setIsSafetyDialogOpen] = useState(false);
+  const [isSettingsModalOpen, setIsSettingsModalOpen] = useState(false);
   const [safetyIssues, setSafetyIssues] = useState<SafetyIssue[]>([]);
 
   // 保存ボタンが押された時のシミュレーション
@@ -45,9 +48,22 @@ const MainLayout: FC = () => {
     }
   };
 
+  const handleTabChange = (tab: SidebarTab) => {
+    if (tab === "settings") {
+      setIsSettingsModalOpen(true);
+    } else {
+      setActiveTab(tab);
+    }
+  };
+
+  const handleSettingsClose = () => {
+    setIsSettingsModalOpen(false);
+    // モーダルを閉じても、サイドバーのアクティブなタブは変更しない（前のタブを維持）
+  };
+
   return (
     <div className="layout-wrapper">
-      <Sidebar activeTab={activeTab} onTabChange={setActiveTab} />
+      <Sidebar activeTab={activeTab} onTabChange={handleTabChange} />
       
       <div className="layout-main-content">
         <main className="main-layout-container" aria-label={t("common.app_title")}>
@@ -132,6 +148,11 @@ const MainLayout: FC = () => {
           setIsSafetyDialogOpen(false);
           alert("ヤバいファイルを除いて保存したよ！");
         }}
+      />
+
+      <SettingsModal 
+        isOpen={isSettingsModalOpen}
+        onClose={handleSettingsClose}
       />
     </div>
   );
