@@ -23,6 +23,24 @@ const SettingsModal: FC<SettingsModalProps> = ({ isOpen, onClose }) => {
   const [saveBehavior, setSaveBehavior] = useState<SaveBehavior>("confirm");
   const [autoScan, setAutoScan] = useState(true);
 
+  // Load settings from localStorage on mount
+  useEffect(() => {
+    const savedBehavior = localStorage.getItem("settings_save_behavior") as SaveBehavior;
+    const savedAutoScan = localStorage.getItem("settings_auto_scan");
+
+    if (savedBehavior) setSaveBehavior(savedBehavior);
+    if (savedAutoScan !== null) setAutoScan(savedAutoScan === "true");
+  }, []);
+
+  // Save settings to localStorage when they change
+  useEffect(() => {
+    localStorage.setItem("settings_save_behavior", saveBehavior);
+  }, [saveBehavior]);
+
+  useEffect(() => {
+    localStorage.setItem("settings_auto_scan", String(autoScan));
+  }, [autoScan]);
+
   // Accessibility: Handle Escape key
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {

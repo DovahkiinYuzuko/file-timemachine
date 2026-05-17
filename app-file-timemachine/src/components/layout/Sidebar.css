@@ -34,20 +34,23 @@
 
 .sidebar-item:hover {
   color: #ffffff;
+  background-color: #444444;
 }
 
 .sidebar-item.active {
   color: #ffffff;
+  background-color: #37373d;
 }
 
 .sidebar-item.active::before {
   content: "";
   position: absolute;
   left: 0;
-  top: 0;
-  bottom: 0;
+  top: 15%;
+  bottom: 15%;
   width: 2px;
   background-color: #007acc;
+  border-radius: 0 2px 2px 0;
 }
 
 .sidebar-item:focus-visible {

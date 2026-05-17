@@ -34,23 +34,28 @@ const MainLayout: FC = () => {
 
   // 保存ボタンが押された時のシミュレーション
   const handleSaveClick = () => {
-    // デモ用のモックファイルデータ
-    const mockFiles = [
-      { path: "src/App.tsx", size: 1024 },
-      { path: ".env", size: 100 },
-      { path: "node_modules/react/index.js", size: 5000 },
-      { path: "assets/large_video.mp4", size: 150 * 1024 * 1024 },
-      { path: "secrets.pem", size: 2048 },
-    ];
+    const isAutoScanEnabled = localStorage.getItem("settings_auto_scan") !== "false";
 
-    const issues = analyzeFilesForSafety(mockFiles);
-    
-    if (issues.length > 0) {
-      setSafetyIssues(issues);
-      setIsSafetyDialogOpen(true);
-    } else {
-      alert("保存したよ！（問題なし）");
+    if (isAutoScanEnabled) {
+      // デモ用のモックファイルデータ
+      const mockFiles = [
+        { path: "src/App.tsx", size: 1024 },
+        { path: ".env", size: 100 },
+        { path: "node_modules/react/index.js", size: 5000 },
+        { path: "assets/large_video.mp4", size: 150 * 1024 * 1024 },
+        { path: "secrets.pem", size: 2048 },
+      ];
+
+      const issues = analyzeFilesForSafety(mockFiles);
+      
+      if (issues.length > 0) {
+        setSafetyIssues(issues);
+        setIsSafetyDialogOpen(true);
+        return;
+      }
     }
+    
+    alert("保存したよ！（自動スキャン: " + (isAutoScanEnabled ? "ON" : "OFF") + "）");
   };
 
   const handleTabChange = (tab: SidebarTab) => {
@@ -78,57 +83,63 @@ const MainLayout: FC = () => {
       <div className="layout-main-content">
         <main className="main-layout-container" aria-label={t("common.app_title")}>
           <PanelGroup orientation="horizontal">
-            {/* 1. ファイルツリーパネル（左） */}
-            <Panel defaultSize={20} minSize={15}>
-              <section className="panel-content" aria-label={t("common.file_tree")}>
-                <header className="panel-header">
-                  <h2>{t("common.file_tree")}</h2>
-                </header>
-                <div className="panel-body">{t("common.placeholder.file_tree")}</div>
-              </section>
-            </Panel>
-
-            <PanelResizeHandle className="resize-handle" />
-
-            {/* 2. 履歴・ルート管理パネル（中央：上下分割） */}
-            <Panel defaultSize={35} minSize={25}>
-              <PanelGroup orientation="vertical">
-                {/* 上段：GitGraph */}
-                <Panel defaultSize={50} minSize={20}>
-                  <section className="panel-content" aria-label={t("common.root_management")}>
+            {/* 1. ファイルツリーパネル（左）：Filesタブの時のみ表示 */}
+            {activeTab === "files" && (
+              <>
+                <Panel defaultSize={25} minSize={20}>
+                  <section className="panel-content" aria-label={t("common.file_tree")}>
                     <header className="panel-header">
-                      <h2>
-                        {t("common.root_management")}
-                        <Tooltip content={t("tooltip.root_management")} />
-                      </h2>
+                      <h2>{t("common.file_tree")}</h2>
                     </header>
-                    <div className="panel-body">
-                      <GitGraph />
-                    </div>
+                    <div className="panel-body">{t("common.placeholder.file_tree")}</div>
                   </section>
                 </Panel>
+                <PanelResizeHandle className="resize-handle" />
+              </>
+            )}
 
-                <PanelResizeHandle className="resize-handle-vertical" />
+            {/* 2. 履歴・ルート管理パネル（中央：上下分割）：Historyタブの時のみ表示 */}
+            {activeTab === "history" && (
+              <>
+                <Panel defaultSize={40} minSize={30}>
+                  <PanelGroup orientation="vertical">
+                    {/* 上段：GitGraph */}
+                    <Panel defaultSize={50} minSize={20}>
+                      <section className="panel-content" aria-label={t("common.root_management")}>
+                        <header className="panel-header">
+                          <h2>
+                            {t("common.root_management")}
+                            <Tooltip content={t("tooltip.root_management")} />
+                          </h2>
+                        </header>
+                        <div className="panel-body">
+                          <GitGraph />
+                        </div>
+                      </section>
+                    </Panel>
 
-                {/* 下段：履歴リスト */}
-                <Panel defaultSize={50} minSize={20}>
-                  <section className="panel-content" aria-label={t("common.history_list")}>
-                    <header className="panel-header">
-                      <h2>
-                        {t("common.history_list")}
-                        <Tooltip content={t("tooltip.history_list")} />
-                      </h2>
-                    </header>
-                    <div className="panel-body">{t("common.placeholder.history_list")}</div>
-                  </section>
+                    <PanelResizeHandle className="resize-handle-vertical" />
+
+                    {/* 下段：履歴リスト */}
+                    <Panel defaultSize={50} minSize={20}>
+                      <section className="panel-content" aria-label={t("common.history_list")}>
+                        <header className="panel-header">
+                          <h2>
+                            {t("common.history_list")}
+                            <Tooltip content={t("tooltip.history_list")} />
+                          </h2>
+                        </header>
+                        <div className="panel-body">{t("common.placeholder.history_list")}</div>
+                      </section>
+                    </Panel>
+                  </PanelGroup>
                 </Panel>
-              </PanelGroup>
-            </Panel>
+                <PanelResizeHandle className="resize-handle" />
+              </>
+            )}
 
-            <PanelResizeHandle className="resize-handle" />
-
-            {/* 3. プレビューパネル（右） */}
-            <Panel defaultSize={45} minSize={30}>
+            {/* 3. プレビューパネル（右）：常に表示 */}
+            <Panel defaultSize={activeTab === "files" ? 75 : 60} minSize={30}>
               <section className="panel-content" aria-label={t("common.preview")}>
                 <header className="panel-header">
                   <h2>{t("common.preview")}</h2>
