@@ -5,9 +5,9 @@ import { useTranslation } from "react-i18next";
 import "./GitGraph.css";
 
 interface CommitLog {
-  hash: String;
+  hash: string;
   timestamp: number;
-  message: String;
+  message: string;
 }
 
 /**

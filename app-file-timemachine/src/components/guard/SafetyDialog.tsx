@@ -1,5 +1,6 @@
 import { type FC, useEffect, useRef } from "react";
 import { useTranslation } from "react-i18next";
+import { AlertTriangle } from "lucide-react";
 import type { SafetyIssue } from "../../utils/safety";
 import "./SafetyDialog.css";
 
@@ -63,7 +64,7 @@ const SafetyDialog: FC<SafetyDialogProps> = ({
         onClick={(e) => e.stopPropagation()} // 背景クリックで閉じないように
       >
         <header className="safety-dialog-header">
-          <span className="safety-dialog-warning-icon" aria-hidden="true">⚠️</span>
+          <AlertTriangle size={32} className="safety-dialog-warning-icon" aria-hidden="true" />
           <h2 id="safety-dialog-title">{t("safety.title")}</h2>
         </header>
 

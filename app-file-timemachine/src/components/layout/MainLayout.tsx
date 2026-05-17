@@ -1,6 +1,7 @@
 import { type FC, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Panel, Group as PanelGroup, Separator as PanelResizeHandle } from "react-resizable-panels";
+import { Save } from "lucide-react";
 import Sidebar, { type SidebarTab } from "./Sidebar";
 import SafetyDialog from "../guard/SafetyDialog";
 import SettingsModal from "../settings/SettingsModal";
@@ -176,12 +177,14 @@ const MainLayout: FC = () => {
               onClick={handleSaveClick}
               aria-haspopup="dialog"
             >
+              <Save size={18} aria-hidden="true" />
               {t("help.commands.save.op")} (Demo)
             </button>
             <Tooltip content={t("tooltip.save_button")} />
           </div>
         </footer>
       </div>
+
 
       <SafetyDialog
         isOpen={isSafetyDialogOpen}

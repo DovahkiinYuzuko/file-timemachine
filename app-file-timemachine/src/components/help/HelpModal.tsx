@@ -1,6 +1,6 @@
 import { type FC, useEffect } from "react";
 import { useTranslation } from "react-i18next";
-import { X } from "lucide-react";
+import { X, CheckCircle, GitBranch, RefreshCw, Search, Home } from "lucide-react";
 import "./HelpModal.css";
 
 interface HelpModalProps {
@@ -39,12 +39,12 @@ const HelpModal: FC<HelpModalProps> = ({ isOpen, onClose }) => {
   if (!isOpen) return null;
 
   const gitCommands = [
-    { key: "save", icon: "●" },
-    { key: "trial", icon: "🌱" },
-    { key: "switch", icon: "🔄" },
-    { key: "merge", icon: "✅" },
-    { key: "search", icon: "🔍" },
-    { key: "sync", icon: "🏠" },
+    { key: "save", icon: CheckCircle },
+    { key: "trial", icon: GitBranch },
+    { key: "switch", icon: RefreshCw },
+    { key: "merge", icon: CheckCircle },
+    { key: "search", icon: Search },
+    { key: "sync", icon: Home },
   ];
 
   return (
@@ -79,19 +79,27 @@ const HelpModal: FC<HelpModalProps> = ({ isOpen, onClose }) => {
               </tr>
             </thead>
             <tbody>
-              {gitCommands.map((item) => (
-                <tr key={item.key}>
-                  <td>{item.icon} {t(`help.commands.${item.key}.op`)}</td>
-                  <td><code>{t(`help.commands.${item.key}.cmd`)}</code></td>
-                  <td>{t(`help.commands.${item.key}.desc`)}</td>
-                </tr>
-              ))}
+              {gitCommands.map((item) => {
+                const Icon = item.icon;
+                return (
+                  <tr key={item.key}>
+                    <td>
+                      <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+                        <Icon size={18} style={{ color: 'var(--primary-color, #646cff)' }} aria-hidden="true" />
+                        {t(`help.commands.${item.key}.op`)}
+                      </div>
+                    </td>
+                    <td><code>{t(`help.commands.${item.key}.cmd`)}</code></td>
+                    <td>{t(`help.commands.${item.key}.desc`)}</td>
+                  </tr>
+                );
+              })}
             </tbody>
           </table>
         </div>
 
         <footer className="help-modal-footer">
-          <p style={{ fontSize: '0.9rem', color: 'var(--text-muted)' }}>
+          <p style={{ fontSize: '0.9rem', color: 'var(--text-muted)', marginBottom: '1rem' }}>
             {t("help.footer")}
           </p>
           <button className="help-modal-footer-btn" onClick={onClose}>
@@ -102,5 +110,6 @@ const HelpModal: FC<HelpModalProps> = ({ isOpen, onClose }) => {
     </div>
   );
 };
+
 
 export default HelpModal;

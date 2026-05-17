@@ -9,11 +9,11 @@
   align-items: center;
   justify-content: center;
   z-index: 2000;
-  backdrop-filter: blur(4px);
+  backdrop-filter: blur(8px);
 }
 
 .help-modal {
-  background-color: #242424;
+  background-color: #1e1e1e;
   border-radius: 12px;
   width: 90%;
   max-width: 700px;
@@ -30,6 +30,7 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
+  background-color: #1e1e1e;
 }
 
 .help-modal-header h2 {
@@ -37,6 +38,7 @@
   font-size: 1.5rem;
   color: #646cff;
 }
+
 
 .help-modal-close-btn {
   background: none;

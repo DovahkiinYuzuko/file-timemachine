@@ -5,7 +5,7 @@
   width: 100vw;
   height: 100vh;
   background-color: rgba(0, 0, 0, 0.6);
-  backdrop-filter: blur(4px);
+  backdrop-filter: blur(8px);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -14,7 +14,7 @@
 }
 
 .settings-modal-content {
-  background-color: var(--panel-bg);
+  background-color: #1e1e1e;
   border: 1px solid var(--border-color);
   border-radius: 12px;
   width: 90%;
@@ -23,7 +23,7 @@
   overflow-y: auto;
   box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
   display: flex;
-  flex-column: column;
+  flex-direction: column;
 }
 
 .settings-modal-header {
@@ -34,7 +34,7 @@
   align-items: center;
   position: sticky;
   top: 0;
-  background-color: var(--panel-bg);
+  background-color: #1e1e1e;
   z-index: 10;
 }
 
