@@ -39,9 +39,11 @@ const FilePreview: FC<FilePreviewProps> = ({ filePath }) => {
     const fetchContent = async () => {
       setLoading(true);
       setError(null);
+      logger.info(`Starting to fetch content for: ${filePath}`);
       try {
         const result = await invoke<PreviewContent>("read_file_content", { path: filePath });
         setPreview(result);
+        logger.debug("Successfully loaded preview content");
       } catch (err) {
         logger.error(`Failed to read file: ${err}`);
         setError(String(err));

@@ -131,9 +131,11 @@ const FileTree: FC<FileTreeProps> = ({ rootPath, onFileSelect }) => {
 
     setIsLoading(true);
     setError(null);
+    logger.debug(`Starting to fetch file tree for: ${rootPath}`);
     try {
       const data = await invoke<FileEntry[]>("get_file_tree", { rootPath });
       setTreeData(data);
+      logger.info(`Successfully fetched file tree with ${data.length} root items`);
     } catch (err) {
       setError(String(err));
     } finally {

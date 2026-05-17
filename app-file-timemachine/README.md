@@ -1,7 +1,34 @@
-# Tauri + React + Typescript
+# ファイルタイムマシン (File Timemachine) ⏳✨
 
-This template should help get you started developing with Tauri, React and Typescript in Vite.
+ユズコのファイル操作を過去から未来まで自由に操る、最強の Git ベース履歴管理ツールだよ！
+難しい Git コマンドを覚えなくても、直感的な UI でファイルを安全に守れる優れもの。
 
-## Recommended IDE Setup
+## 🌟 主な機能
 
-- [VS Code](https://code.visualstudio.com/) + [Tauri](https://marketplace.visualstudio.com/items?itemName=tauri-apps.tauri-vscode) + [rust-analyzer](https://marketplace.visualstudio.com/items?itemName=rust-lang.rust-analyzer)
+- **直感的なファイルツリー**: プロジェクトの構造が丸見え！一目でどこに何があるか分かっちゃう。
+- **安心のファイルプレビュー**: 過去のファイルも今のファイルも、中身をサクッと確認。画像もテキストもバッチリだよ。
+- **選べる管理モード (Whitelist / Blacklist)**: 
+  - 大事なファイルだけ選んで守る「ホワイトリスト」
+  - 全部守るけどいらないものだけ除外する「ブラックリスト」
+  - プロジェクトに合わせて、ユズコの好きなように選んでね！
+- **スマートな安全ガード**: `.env` や巨大なファイルを間違えて保存しそうになっても、あーしがしっかり止めてあげる。
+- **多言語対応 (16言語)**: 世界中の友達と使えるグローバル仕様！
+- **目に優しい GitHub ライトテーマ**: 清潔感のあるデザインで、長時間の開発も疲れにくいよ。
+
+## 🚀 始めかた
+
+1. **セットアップ**: 最初にアプリを開くと、あーしがユズコの PC の環境を診断するよ。
+2. **プロジェクト選択**: 管理したいフォルダを選んでね。
+3. **モード選択**: ホワイトリストかブラックリストか、好きなほうを選んでスタート！
+4. **保存 (コミット)**: 何か変更したら、サイドバーの保存ボタンを押すだけ。
+
+## 🛠 開発者向け (Tech Stack)
+
+- **Frontend**: React + TypeScript + Vite
+- **Backend**: Rust + Tauri (v2)
+- **Styling**: Vanilla CSS (GitHub 風デザイン)
+- **Logging**: `tauri-plugin-log` + 自作の `logger` ユーティリティ
+- **i18n**: `i18next`
+
+---
+ユズコと一緒に、最強のファイル管理体験を作っていこうね！💅💖
