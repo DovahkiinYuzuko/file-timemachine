@@ -44,6 +44,12 @@
       "title": "Language Settings",
       "select": "Select display language"
     },
+    "theme": {
+      "title": "Theme Settings",
+      "select": "Select app theme",
+      "light": "Light (GitHub Recommended)",
+      "dark": "Dark"
+    },
     "behavior": {
       "title": "App Behavior",
       "save_label": "Save behavior on root switch",

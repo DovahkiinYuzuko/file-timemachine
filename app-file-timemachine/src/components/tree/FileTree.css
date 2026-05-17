@@ -5,7 +5,7 @@
   overflow-y: auto;
   user-select: none;
   font-size: 13px;
-  color: var(--fg-default, #1f2328);
+  color: var(--text-color);
 }
 
 .file-tree-item-wrapper {
@@ -23,11 +23,11 @@
 }
 
 .file-tree-item:hover {
-  background-color: var(--bg-hover, #f6f8fa);
+  background-color: var(--hover-bg);
 }
 
 .file-tree-item:focus-visible {
-  outline: 2px solid var(--accent, #0969da);
+  outline: 2px solid var(--accent-color);
   outline-offset: -2px;
 }
 
@@ -35,7 +35,7 @@
   display: flex;
   align-items: center;
   margin-right: 6px;
-  color: var(--fg-muted, #636c76);
+  color: var(--text-muted);
 }
 
 .chevron {
@@ -48,11 +48,11 @@
 }
 
 .folder-icon {
-  color: var(--folder-icon, #54aeff);
+  color: #54aeff;
 }
 
 .file-icon {
-  color: var(--fg-muted, #636c76);
+  color: var(--text-muted);
 }
 
 .item-name {
@@ -72,12 +72,12 @@
   height: 100%;
   padding: 20px;
   text-align: center;
-  color: var(--fg-muted, #636c76);
+  color: var(--text-muted);
   font-size: 14px;
 }
 
 .file-tree-error {
-  color: var(--danger, #cf222e);
+  color: var(--danger-color);
 }
 
 .animate-spin {

@@ -4,7 +4,7 @@
   height: 100vh;
   width: 100vw;
   overflow: hidden;
-  background-color: #1e1e1e;
+  background-color: var(--bg-color);
 }
 
 .layout-main-content {
@@ -18,8 +18,8 @@
 .main-layout-container {
   flex: 1;
   display: flex;
-  background-color: #1e1e1e;
-  color: #cccccc;
+  background-color: var(--bg-color);
+  color: var(--text-color);
   overflow: hidden;
 }
 
@@ -29,13 +29,13 @@
   flex-direction: column;
   padding: 1rem;
   overflow: hidden;
-  background-color: #252526;
-  border: 1px solid #333333;
+  background-color: var(--panel-bg);
+  border: 1px solid var(--border-color);
 }
 
 .panel-header {
   margin-bottom: 0.5rem;
-  color: #858585;
+  color: var(--text-muted);
   user-select: none;
 }
 
@@ -66,7 +66,7 @@
 .resize-handle:hover,
 .resize-handle[data-resize-handle-active],
 .resize-handle:focus-visible {
-  background-color: #007acc;
+  background-color: var(--accent-color);
 }
 
 .resize-handle-vertical {
@@ -81,19 +81,19 @@
 .resize-handle-vertical:hover,
 .resize-handle-vertical[data-resize-handle-active],
 .resize-handle-vertical:focus-visible {
-  background-color: #007acc;
+  background-color: var(--accent-color);
 }
 
 .resize-handle:focus-visible,
 .resize-handle-vertical:focus-visible {
-  outline: 2px solid #007acc;
+  outline: 2px solid var(--accent-color);
   outline-offset: 1px;
 }
 
 .main-footer {
   height: 48px;
-  background-color: #252526;
-  border-top: 1px solid #333333;
+  background-color: var(--panel-bg);
+  border-top: 1px solid var(--border-color);
   display: flex;
   align-items: center;
   justify-content: flex-end;
@@ -108,7 +108,7 @@
 }
 
 .save-state-btn {
-  background-color: #007acc;
+  background-color: var(--accent-color);
   color: white;
   border: none;
   padding: 8px 20px;
@@ -121,7 +121,7 @@
 }
 
 .save-state-btn:hover {
-  background-color: #008be5;
+  filter: brightness(1.1);
   transform: translateY(-2px);
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
 }
@@ -139,8 +139,8 @@
 .project-path-display {
   padding: 4px 8px;
   font-size: 11px;
-  color: #888;
-  border-bottom: 1px solid #333;
+  color: var(--text-muted);
+  border-bottom: 1px solid var(--border-color);
   margin-bottom: 8px;
   word-break: break-all;
 }

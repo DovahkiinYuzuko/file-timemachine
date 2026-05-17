@@ -1,4 +1,20 @@
 :root {
+  /* Light Theme (GitHub Inspired) */
+  --bg-color: #ffffff;
+  --panel-bg: #f8fafc;
+  --border-color: #e2e8f0;
+  --text-color: #0f172a;
+  --text-muted: #94a3b8;
+  --hover-bg: #f1f5f9;
+  --accent-color: #3b82f6;
+  --danger-color: #ef4444;
+  --success-color: #22c55e;
+  --warning-color: #f59e0b;
+  --input-bg: #ffffff;
+}
+
+[data-theme="dark"] {
+  /* Dark Theme */
   --bg-color: #1e1e1e;
   --panel-bg: #252526;
   --border-color: #333333;
@@ -6,6 +22,9 @@
   --text-muted: #858585;
   --hover-bg: #2a2d2e;
   --accent-color: #007acc;
+  --danger-color: #f87171;
+  --success-color: #4ade80;
+  --warning-color: #fbbf24;
   --input-bg: #3c3c3c;
 }
 
@@ -21,6 +40,7 @@ body,
   font-family: Inter, Avenir, Helvetica, Arial, sans-serif;
   background-color: var(--bg-color);
   color: var(--text-color);
+  transition: background-color 0.2s, color 0.2s;
 }
 
 .app-container {

@@ -44,6 +44,12 @@
       "title": "言語設定 (Language)",
       "select": "表示言語を選択してください"
     },
+    "theme": {
+      "title": "テーマ設定",
+      "select": "アプリのテーマを選択してください",
+      "light": "ライト (GitHubオススメ)",
+      "dark": "ダーク"
+    },
     "behavior": {
       "title": "アプリの挙動",
       "save_label": "ルート切り替え時の保存設定",

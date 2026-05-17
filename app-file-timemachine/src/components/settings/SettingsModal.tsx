@@ -1,6 +1,6 @@
 import { type FC, useState, useEffect } from "react";
 import { useTranslation } from "react-i18next";
-import { X, GitBranch, Languages, Settings2, ShieldCheck, Cpu } from "lucide-react";
+import { X, GitBranch, Languages, Settings2, ShieldCheck, Cpu, Palette } from "lucide-react";
 import { open } from "@tauri-apps/plugin-shell";
 import logger from "../../utils/logger";
 import "./SettingsModal.css";
@@ -11,23 +11,27 @@ interface SettingsModalProps {
 }
 
 type SaveBehavior = "confirm" | "auto" | "none";
+type Theme = "light" | "dark";
 
 /**
  * Accessibility Strategy:
  * - Role "dialog" and aria-modal="true" for the modal.
  * - Focus management: Focus trapped inside modal when open (simplified here).
  * - Close on Escape key and close button.
- * - Labels for all form controls.
+ * - Labels for all form controls (Theme, Language, Behavior).
+ * - Semantic sections for grouped settings.
  */
 const SettingsModal: FC<SettingsModalProps> = ({ isOpen, onClose }) => {
   const { t, i18n } = useTranslation();
   const [saveBehavior, setSaveBehavior] = useState<SaveBehavior>("confirm");
   const [autoScan, setAutoScan] = useState(true);
+  const [theme, setTheme] = useState<Theme>("light");
 
   // Load settings from localStorage on mount
   useEffect(() => {
     const savedBehavior = localStorage.getItem("settings_save_behavior") as SaveBehavior;
     const savedAutoScan = localStorage.getItem("settings_auto_scan");
+    const savedTheme = localStorage.getItem("settings_theme") as Theme;
 
     if (savedBehavior) {
       setSaveBehavior(savedBehavior);
@@ -37,6 +41,10 @@ const SettingsModal: FC<SettingsModalProps> = ({ isOpen, onClose }) => {
       const isAuto = savedAutoScan === "true";
       setAutoScan(isAuto);
       logger.debug(`設定を読み込んだよ: 自動スキャン = ${isAuto}`);
+    }
+    if (savedTheme) {
+      setTheme(savedTheme);
+      logger.debug(`設定を読み込んだよ: テーマ = ${savedTheme}`);
     }
   }, []);
 
@@ -50,6 +58,12 @@ const SettingsModal: FC<SettingsModalProps> = ({ isOpen, onClose }) => {
     localStorage.setItem("settings_auto_scan", String(autoScan));
     logger.info(`自動スキャンの設定を変更したよ: ${autoScan}`);
   }, [autoScan]);
+
+  useEffect(() => {
+    localStorage.setItem("settings_theme", theme);
+    document.documentElement.setAttribute("data-theme", theme);
+    logger.info(`テーマの設定を変更したよ: ${theme}`);
+  }, [theme]);
 
   // Accessibility: Handle Escape key
   useEffect(() => {
@@ -163,7 +177,27 @@ const SettingsModal: FC<SettingsModalProps> = ({ isOpen, onClose }) => {
             </div>
           </section>
 
-          {/* 2. 言語設定 */}
+          {/* 2. テーマ設定 */}
+          <section className="settings-section">
+            <h3>
+              <Palette size={16} />
+              {t("settings.theme.title")}
+            </h3>
+            <div className="settings-control">
+              <label htmlFor="theme-select">{t("settings.theme.select")}</label>
+              <select
+                id="theme-select"
+                className="settings-select"
+                value={theme}
+                onChange={(e) => setTheme(e.target.value as Theme)}
+              >
+                <option value="light">{t("settings.theme.light")}</option>
+                <option value="dark">{t("settings.theme.dark")}</option>
+              </select>
+            </div>
+          </section>
+
+          {/* 3. 言語設定 */}
           <section className="settings-section">
             <h3>
               <Languages size={16} />
@@ -186,7 +220,7 @@ const SettingsModal: FC<SettingsModalProps> = ({ isOpen, onClose }) => {
             </div>
           </section>
 
-          {/* 3. アプリ挙動 */}
+          {/* 4. アプリ挙動 */}
           <section className="settings-section">
             <h3>
               <Cpu size={16} />
@@ -226,7 +260,7 @@ const SettingsModal: FC<SettingsModalProps> = ({ isOpen, onClose }) => {
             </div>
           </section>
 
-          {/* 4. セキュリティ */}
+          {/* 5. セキュリティ */}
           <section className="settings-section">
             <h3>
               <ShieldCheck size={16} />

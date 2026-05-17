@@ -13,6 +13,11 @@ function App() {
     const completed = localStorage.getItem("setup_completed") === "true";
     setSetupCompleted(completed);
     logger.debug(`セットアップ状況を読み込んだよ: ${completed}`);
+
+    // テーマの初期適用
+    const savedTheme = localStorage.getItem("settings_theme") || "light";
+    document.documentElement.setAttribute("data-theme", savedTheme);
+    logger.debug(`初期テーマを適用したよ: ${savedTheme}`);
   }, []);
 
   const handleSetupComplete = () => {

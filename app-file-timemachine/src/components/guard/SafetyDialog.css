@@ -13,8 +13,8 @@
 }
 
 .safety-dialog-container {
-  background-color: var(--panel-bg, #ffffff);
-  color: var(--text-color, #333333);
+  background-color: var(--panel-bg);
+  color: var(--text-color);
   width: 90%;
   max-width: 600px;
   border-radius: 12px;
@@ -35,7 +35,7 @@
 }
 
 .safety-dialog-header {
-  border-bottom: 2px solid #ff4444;
+  border-bottom: 2px solid var(--danger-color);
   margin-bottom: 16px;
   padding-bottom: 8px;
   display: flex;
@@ -46,7 +46,7 @@
 .safety-dialog-header h2 {
   margin: 0;
   font-size: 1.5rem;
-  color: #ff4444;
+  color: var(--danger-color);
 }
 
 .safety-dialog-warning-icon {
@@ -63,8 +63,8 @@
 }
 
 .safety-issue-list {
-  background-color: rgba(255, 68, 68, 0.05);
-  border: 1px solid rgba(255, 68, 68, 0.2);
+  background-color: var(--panel-bg);
+  border: 1px solid var(--border-color);
   border-radius: 8px;
   padding: 12px;
   max-height: 300px;
@@ -81,7 +81,7 @@
   display: flex;
   flex-direction: column;
   padding: 8px;
-  border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+  border-bottom: 1px solid var(--border-color);
 }
 
 .safety-issue-item:last-child {
@@ -96,12 +96,12 @@
 
 .issue-reason {
   font-size: 0.9rem;
-  color: #666;
+  color: var(--text-muted);
   margin-top: 4px;
 }
 
 .safety-issue-item.danger .issue-path {
-  color: #d32f2f;
+  color: var(--danger-color);
 }
 
 .safety-dialog-footer {
@@ -121,33 +121,33 @@
 }
 
 .safety-btn:focus-visible {
-  outline: 3px solid #0078d4;
+  outline: 3px solid var(--accent-color);
   outline-offset: 2px;
 }
 
 .safety-btn-cancel {
-  background-color: #f3f3f3;
-  color: #333;
+  background-color: var(--hover-bg);
+  color: var(--text-color);
 }
 
 .safety-btn-cancel:hover {
-  background-color: #e5e5e5;
+  filter: brightness(0.9);
 }
 
 .safety-btn-exclude {
-  background-color: #28a745;
+  background-color: var(--success-color);
   color: white;
 }
 
 .safety-btn-exclude:hover {
-  background-color: #218838;
+  filter: brightness(1.1);
 }
 
 .safety-btn-anyway {
-  background-color: #ff4444;
+  background-color: var(--danger-color);
   color: white;
 }
 
 .safety-btn-anyway:hover {
-  background-color: #cc0000;
+  filter: brightness(1.1);
 }

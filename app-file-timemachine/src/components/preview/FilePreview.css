@@ -2,19 +2,19 @@
   display: flex;
   flex-direction: column;
   height: 100%;
-  background-color: #f9fafb;
+  background-color: var(--bg-color);
 }
 
 .preview-info {
   padding: 0.5rem 1rem;
-  background-color: #f3f4f6;
-  border-bottom: 1px solid #e5e7eb;
+  background-color: var(--panel-bg);
+  border-bottom: 1px solid var(--border-color);
 }
 
 .preview-info h3 {
   margin: 0;
   font-size: 0.875rem;
-  color: #374151;
+  color: var(--text-color);
   word-break: break-all;
 }
 
@@ -29,7 +29,7 @@
   font-family: 'Cascadia Code', 'Consolas', 'Courier New', monospace;
   font-size: 0.875rem;
   line-height: 1.5;
-  color: #1f2937;
+  color: var(--text-color);
   white-space: pre-wrap;
   word-break: break-all;
 }
@@ -46,7 +46,7 @@
   align-items: center;
   justify-content: center;
   height: 100%;
-  color: #6b7280;
+  color: var(--text-muted);
   font-style: italic;
   text-align: center;
   padding: 2rem;
