@@ -1,0 +1,63 @@
+{
+  "common": {
+    "app_title": "Cỗ Máy Thời Gian Tệp",
+    "file_tree": "Cây tệp",
+    "root_management": "Quản lý gốc",
+    "history_list": "Danh sách lịch sử",
+    "preview": "Xem trước",
+    "sidebar": {
+      "files": "Tệp",
+      "history": "Lịch sử",
+      "settings": "Cài đặt",
+      "help": "Trợ giúp"
+    },
+    "placeholder": {
+      "file_tree": "(Cây tệp sẽ hiển thị ở đây)",
+      "root_management": "(Quản lý gốc sẽ hiển thị ở đây)",
+      "history_list": "(Danh sách lịch sử sẽ hiển thị ở đây)",
+      "preview": "(Xem trước sẽ hiển thị ở đây)",
+      "select_file_to_preview": "Chọn một tệp để xem trước",
+      "binary_file_preview_not_supported": "Không hỗ trợ xem trước tệp nhị phân",
+      "unknown_file_type": "Định dạng tệp không xác định",
+      "no_history": "Chưa có lịch sử"
+    },
+    "error": {
+      "failed_to_fetch_logs": "Lấy lịch sử thất bại"
+    },
+    "aria": {
+      "git_graph_description": "Biểu đồ trực quan hóa lịch sử commit Git",
+      "file_preview": "Xem trước của {{path}}",
+      "preview_of": "Nội dung của {{path}}"
+    }
+  },
+  "setup": {
+    "title": "Trình hướng dẫn chẩn đoán môi trường",
+    "description": "Chẩn đoán tình trạng cài đặt các công cụ cần thiết để sử dụng Cỗ Máy Thời Gian Tệp.",
+    "checking": "Đang chẩn đoán...",
+    "results": "Kết quả chẩn đoán",
+    "git": "Git",
+    "brew": "Homebrew",
+    "gh": "GitHub CLI (gh)",
+    "status_installed": "Đã cài đặt",
+    "status_missing": "Chưa cài đặt",
+    "guide_missing": "Thiếu các công cụ sau. Vui lòng kiểm tra hướng dẫn cài đặt.",
+    "next": "Tiếp theo",
+    "finish": "Hoàn tất và khởi chạy ứng dụng",
+    "retry": "Thử lại"
+  },
+  "safety": {
+    "title": "Bảo vệ an toàn",
+    "description": "Phát hiện rủi ro bảo mật hoặc tệp lớn trong các tệp bạn đang cố lưu.",
+    "issue_list_title": "Các vấn đề phát hiện:",
+    "reason": {
+      "security_risk_extension": "Có thể là khóa bí mật hoặc tệp cấu hình",
+      "inappropriate_directory": "Bao gồm các thư mục nên được loại trừ khỏi quản lý",
+      "large_file": "Tệp lớn và có thể làm chậm hoạt động (trên 100MB)"
+    },
+    "action": {
+      "exclude_and_save": "Loại trừ và lưu",
+      "save_anyway": "Vẫn lưu",
+      "cancel": "Hủy"
+    }
+  }
+}

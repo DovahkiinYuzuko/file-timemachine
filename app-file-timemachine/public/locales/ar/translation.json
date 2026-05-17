@@ -1,0 +1,63 @@
+{
+  "common": {
+    "app_title": "آلة الزمن للملفات",
+    "file_tree": "شجرة الملفات",
+    "root_management": "إدارة الجذر",
+    "history_list": "قائمة السجل",
+    "preview": "معاينة",
+    "sidebar": {
+      "files": "الملفات",
+      "history": "السجل",
+      "settings": "الإعدادات",
+      "help": "مساعدة"
+    },
+    "placeholder": {
+      "file_tree": "(ستظهر شجرة الملفات هنا)",
+      "root_management": "(ستظهر إدارة الجذر هنا)",
+      "history_list": "(ستظهر قائمة السجل هنا)",
+      "preview": "(ستظهر المعاينة هنا)",
+      "select_file_to_preview": "اختر ملفاً للمعاينة",
+      "binary_file_preview_not_supported": "معاينة الملفات الثنائية غير مدعومة",
+      "unknown_file_type": "تنسيق ملف غير معروف",
+      "no_history": "لا يوجد سجل بعد"
+    },
+    "error": {
+      "failed_to_fetch_logs": "فشل في جلب السجل"
+    },
+    "aria": {
+      "git_graph_description": "رسم بياني لتصور سجل التزام Git",
+      "file_preview": "معاينة {{path}}",
+      "preview_of": "محتوى {{path}}"
+    }
+  },
+  "setup": {
+    "title": "معالج تشخيص البيئة",
+    "description": "تشخيص حالة تثبيت الأدوات اللازمة لاستخدام آلة الزمن للملفات.",
+    "checking": "جاري التشخيص...",
+    "results": "نتائج التشخيص",
+    "git": "Git",
+    "brew": "Homebrew",
+    "gh": "GitHub CLI (gh)",
+    "status_installed": "مثبت",
+    "status_missing": "غير مثبت",
+    "guide_missing": "الأدوات التالية مفقودة. يرجى التحقق من دليل التثبيت.",
+    "next": "التالي",
+    "finish": "إنهاء وتشغيل التطبيق",
+    "retry": "إعادة المحاولة"
+  },
+  "safety": {
+    "title": "حارس الأمان",
+    "description": "تم اكتشاف مخاطر أمنية أو ملفات كبيرة في الملفات التي تحاول حفظها.",
+    "issue_list_title": "المشكلات المكتشفة:",
+    "reason": {
+      "security_risk_extension": "قد يكون مفتاحاً خاصاً أو ملف تكوين",
+      "inappropriate_directory": "يتضمن أدلة يجب استبعادها من الإدارة",
+      "large_file": "حجم الملف كبير وقد يؤدي إلى إبطاء العمليات (أكثر من 100 ميجابايت)"
+    },
+    "action": {
+      "exclude_and_save": "استبعاد وحفظ",
+      "save_anyway": "حفظ على أي حال",
+      "cancel": "إلغاء"
+    }
+  }
+}

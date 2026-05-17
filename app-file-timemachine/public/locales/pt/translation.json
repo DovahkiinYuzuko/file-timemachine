@@ -1,0 +1,63 @@
+{
+  "common": {
+    "app_title": "Máquina do Tempo de Arquivos",
+    "file_tree": "Árvore de arquivos",
+    "root_management": "Gestão de raiz",
+    "history_list": "Lista de histórico",
+    "preview": "Pré-visualização",
+    "sidebar": {
+      "files": "Arquivos",
+      "history": "Histórico",
+      "settings": "Configurações",
+      "help": "Ajuda"
+    },
+    "placeholder": {
+      "file_tree": "(A árvore de arquivos será exibida aqui)",
+      "root_management": "(A gestão de raiz será exibida aqui)",
+      "history_list": "(A lista de histórico será exibida aqui)",
+      "preview": "(A pré-visualização será exibida aqui)",
+      "select_file_to_preview": "Selecione um arquivo para ver a pré-visualização",
+      "binary_file_preview_not_supported": "A pré-visualização de arquivos binários não é suportada",
+      "unknown_file_type": "Formato de arquivo desconhecido",
+      "no_history": "Ainda não há histórico"
+    },
+    "error": {
+      "failed_to_fetch_logs": "Falha ao obter o histórico"
+    },
+    "aria": {
+      "git_graph_description": "Gráfico de visualização do histórico de commits do Git",
+      "file_preview": "Pré-visualização de {{path}}",
+      "preview_of": "Conteúdo de {{path}}"
+    }
+  },
+  "setup": {
+    "title": "Assistente de diagnóstico de ambiente",
+    "description": "Diagnostica o status de instalação das ferramentas necessárias para usar a Máquina do Tempo de Arquivos.",
+    "checking": "Diagnosticando...",
+    "results": "Resultados do diagnóstico",
+    "git": "Git",
+    "brew": "Homebrew",
+    "gh": "GitHub CLI (gh)",
+    "status_installed": "Instalado",
+    "status_missing": "Não instalado",
+    "guide_missing": "Faltam as seguintes ferramentas. Por favor, consulte o guia de instalação.",
+    "next": "Próximo",
+    "finish": "Concluir e iniciar o aplicativo",
+    "retry": "Repetir"
+  },
+  "safety": {
+    "title": "Protetor de segurança",
+    "description": "Foram detectados riscos de segurança ou arquivos grandes nos arquivos que você está tentando salvar.",
+    "issue_list_title": "Problemas detectados:",
+    "reason": {
+      "security_risk_extension": "Pode ser uma chave privada ou um arquivo de configuração",
+      "inappropriate_directory": "Inclui diretórios que devem ser excluídos da gestão",
+      "large_file": "O arquivo é grande e pode tornar a operação lenta (mais de 100 MB)"
+    },
+    "action": {
+      "exclude_and_save": "Excluir e salvar",
+      "save_anyway": "Salvar mesmo assim",
+      "cancel": "Cancelar"
+    }
+  }
+}

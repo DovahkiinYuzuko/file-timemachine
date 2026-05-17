@@ -1,0 +1,63 @@
+{
+  "common": {
+    "app_title": "文件时光机",
+    "file_tree": "文件树",
+    "root_management": "根目录管理",
+    "history_list": "历史列表",
+    "preview": "预览",
+    "sidebar": {
+      "files": "文件",
+      "history": "历史",
+      "settings": "设置",
+      "help": "帮助"
+    },
+    "placeholder": {
+      "file_tree": "（此处将显示文件树）",
+      "root_management": "（此处将显示根目录管理）",
+      "history_list": "（此处将显示历史列表）",
+      "preview": "（此处将显示预览）",
+      "select_file_to_preview": "选择文件以查看预览",
+      "binary_file_preview_not_supported": "不支持二进制文件预览",
+      "unknown_file_type": "未知文件格式",
+      "no_history": "尚无历史记录"
+    },
+    "error": {
+      "failed_to_fetch_logs": "获取历史记录失败"
+    },
+    "aria": {
+      "git_graph_description": "Git 提交历史可视化图表",
+      "file_preview": "{{path}} 的预览",
+      "preview_of": "{{path}} 的内容"
+    }
+  },
+  "setup": {
+    "title": "环境诊断向导",
+    "description": "诊断使用文件时光机所需的工具安装状态。",
+    "checking": "正在诊断...",
+    "results": "诊断结果",
+    "git": "Git",
+    "brew": "Homebrew",
+    "gh": "GitHub CLI (gh)",
+    "status_installed": "已安装",
+    "status_missing": "未安装",
+    "guide_missing": "缺少以下工具。请查看安装指南。",
+    "next": "下一步",
+    "finish": "完成并启动应用",
+    "retry": "重试"
+  },
+  "safety": {
+    "title": "安全卫士",
+    "description": "在尝试保存的文件中检测到安全风险或大文件。",
+    "issue_list_title": "检测到的问题：",
+    "reason": {
+      "security_risk_extension": "可能是私钥或配置文件",
+      "inappropriate_directory": "包含应排除在外的目录",
+      "large_file": "文件过大，可能会导致操作变慢（超过 100MB）"
+    },
+    "action": {
+      "exclude_and_save": "排除并保存",
+      "save_anyway": "仍然保存",
+      "cancel": "取消"
+    }
+  }
+}

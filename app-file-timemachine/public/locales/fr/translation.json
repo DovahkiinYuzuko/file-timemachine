@@ -1,0 +1,63 @@
+{
+  "common": {
+    "app_title": "Machine du Temps des Fichiers",
+    "file_tree": "Arborescence des fichiers",
+    "root_management": "Gestion de la racine",
+    "history_list": "Liste d'historique",
+    "preview": "Aperçu",
+    "sidebar": {
+      "files": "Fichiers",
+      "history": "Historique",
+      "settings": "Paramètres",
+      "help": "Aide"
+    },
+    "placeholder": {
+      "file_tree": "(L'arborescence des fichiers s'affichera ici)",
+      "root_management": "(La gestion de la racine s'affichera ici)",
+      "history_list": "(La liste d'historique s'affichera ici)",
+      "preview": "(L'aperçu s'affichera ici)",
+      "select_file_to_preview": "Sélectionnez un fichier pour voir l'aperçu",
+      "binary_file_preview_not_supported": "L'aperçu des fichiers binaires n'est pas pris en charge",
+      "unknown_file_type": "Format de fichier inconnu",
+      "no_history": "Pas encore d'historique"
+    },
+    "error": {
+      "failed_to_fetch_logs": "Échec de la récupération de l'historique"
+    },
+    "aria": {
+      "git_graph_description": "Graphique de visualisation de l'historique des commits Git",
+      "file_preview": "Aperçu de {{path}}",
+      "preview_of": "Contenu de {{path}}"
+    }
+  },
+  "setup": {
+    "title": "Assistant de diagnostic de l'environnement",
+    "description": "Diagnostique l'état d'installation des outils nécessaires pour utiliser la Machine du Temps des Fichiers.",
+    "checking": "Diagnostic en cours...",
+    "results": "Résultats du diagnostic",
+    "git": "Git",
+    "brew": "Homebrew",
+    "gh": "GitHub CLI (gh)",
+    "status_installed": "Installé",
+    "status_missing": "Non installé",
+    "guide_missing": "Les outils suivants sont manquants. Veuillez consulter le guide d'installation.",
+    "next": "Suivant",
+    "finish": "Terminer et lancer l'application",
+    "retry": "Réessayer"
+  },
+  "safety": {
+    "title": "Protecteur de sécurité",
+    "description": "Des risques de sécurité ou des fichiers volumineux ont été détectés dans les fichiers que vous tentez d'enregistrer.",
+    "issue_list_title": "Problèmes détectés :",
+    "reason": {
+      "security_risk_extension": "Peut être une clé privée ou un fichier de configuration",
+      "inappropriate_directory": "Inclut des répertoires qui devraient être exclus de la gestion",
+      "large_file": "Le fichier est volumineux et peut ralentir le fonctionnement (plus de 100 Mo)"
+    },
+    "action": {
+      "exclude_and_save": "Exclure et enregistrer",
+      "save_anyway": "Enregistrer quand même",
+      "cancel": "Annuler"
+    }
+  }
+}

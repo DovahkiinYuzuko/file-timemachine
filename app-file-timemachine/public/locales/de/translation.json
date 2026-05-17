@@ -1,0 +1,63 @@
+{
+  "common": {
+    "app_title": "Datei-Zeitmaschine",
+    "file_tree": "Dateibaum",
+    "root_management": "Root-Verwaltung",
+    "history_list": "Verlaufsliste",
+    "preview": "Vorschau",
+    "sidebar": {
+      "files": "Dateien",
+      "history": "Verlauf",
+      "settings": "Einstellungen",
+      "help": "Hilfe"
+    },
+    "placeholder": {
+      "file_tree": "(Hier wird der Dateibaum angezeigt)",
+      "root_management": "(Hier wird die Root-Verwaltung angezeigt)",
+      "history_list": "(Hier wird die Verlaufsliste angezeigt)",
+      "preview": "(Hier wird die Vorschau angezeigt)",
+      "select_file_to_preview": "Datei auswählen, um die Vorschau anzuzeigen",
+      "binary_file_preview_not_supported": "Vorschau von Binärdateien wird nicht unterstützt",
+      "unknown_file_type": "Unbekanntes Dateiformat",
+      "no_history": "Noch kein Verlauf vorhanden"
+    },
+    "error": {
+      "failed_to_fetch_logs": "Fehler beim Abrufen des Verlaufs"
+    },
+    "aria": {
+      "git_graph_description": "Visualisierungsgrafik des Git-Commit-Verlaufs",
+      "file_preview": "Vorschau von {{path}}",
+      "preview_of": "Inhalt von {{path}}"
+    }
+  },
+  "setup": {
+    "title": "Umgebungsdiagnose-Assistent",
+    "description": "Diagnostiziert den Installationsstatus der für die Verwendung der Datei-Zeitmaschine erforderlichen Tools.",
+    "checking": "Diagnose läuft...",
+    "results": "Diagnoseergebnisse",
+    "git": "Git",
+    "brew": "Homebrew",
+    "gh": "GitHub CLI (gh)",
+    "status_installed": "Installiert",
+    "status_missing": "Nicht installiert",
+    "guide_missing": "Die folgenden Tools fehlen. Bitte lesen Sie die Installationsanleitung.",
+    "next": "Weiter",
+    "finish": "Abschließen und App starten",
+    "retry": "Wiederholen"
+  },
+  "safety": {
+    "title": "Sicherheitsschutz",
+    "description": "In den Dateien, die Sie zu speichern versuchen, wurden Sicherheitsrisiken oder große Dateien erkannt.",
+    "issue_list_title": "Erkannte Probleme:",
+    "reason": {
+      "security_risk_extension": "Könnte ein privater Schlüssel oder eine Konfigurationsdatei sein",
+      "inappropriate_directory": "Enthält Verzeichnisse, die von der Verwaltung ausgeschlossen werden sollten",
+      "large_file": "Datei ist groß und kann den Betrieb verlangsamen (über 100 MB)"
+    },
+    "action": {
+      "exclude_and_save": "Ausschließen und speichern",
+      "save_anyway": "Trotzdem speichern",
+      "cancel": "Abbrechen"
+    }
+  }
+}

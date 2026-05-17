@@ -1,0 +1,63 @@
+{
+  "common": {
+    "app_title": "Macchina del Tempo dei File",
+    "file_tree": "Albero dei file",
+    "root_management": "Gestione root",
+    "history_list": "Elenco cronologia",
+    "preview": "Anteprima",
+    "sidebar": {
+      "files": "File",
+      "history": "Cronologia",
+      "settings": "Impostazioni",
+      "help": "Aiuto"
+    },
+    "placeholder": {
+      "file_tree": "(L'albero dei file verrà visualizzato qui)",
+      "root_management": "(La gestione root verrà visualizzata qui)",
+      "history_list": "(L'elenco cronologia verrà visualizzato qui)",
+      "preview": "(L'anteprima verrà visualizzata qui)",
+      "select_file_to_preview": "Seleziona un file per vedere l'anteprima",
+      "binary_file_preview_not_supported": "L'anteprima dei file binari non è supportata",
+      "unknown_file_type": "Formato file sconosciuto",
+      "no_history": "Nessuna cronologia disponibile"
+    },
+    "error": {
+      "failed_to_fetch_logs": "Impossibile recuperare la cronologia"
+    },
+    "aria": {
+      "git_graph_description": "Grafico di visualizzazione della cronologia dei commit Git",
+      "file_preview": "Anteprima di {{path}}",
+      "preview_of": "Contenuto di {{path}}"
+    }
+  },
+  "setup": {
+    "title": "Configurazione guidata diagnostica",
+    "description": "Diagnostica lo stato di installazione degli strumenti necessari per utilizzare la Macchina del Tempo dei File.",
+    "checking": "Diagnosi in corso...",
+    "results": "Risultati della diagnosi",
+    "git": "Git",
+    "brew": "Homebrew",
+    "gh": "GitHub CLI (gh)",
+    "status_installed": "Installato",
+    "status_missing": "Non installato",
+    "guide_missing": "Mancano i seguenti strumenti. Consultare la guida all'installazione.",
+    "next": "Avanti",
+    "finish": "Concludi e avvia l'app",
+    "retry": "Riprova"
+  },
+  "safety": {
+    "title": "Protezione di sicurezza",
+    "description": "Sono stati rilevati rischi per la sicurezza o file di grandi dimensioni nei file che si sta tentando di salvare.",
+    "issue_list_title": "Problemi rilevati:",
+    "reason": {
+      "security_risk_extension": "Potrebbe essere una chiave privata o un file di configurazione",
+      "inappropriate_directory": "Include directory che dovrebbero essere escluse dalla gestione",
+      "large_file": "Il file è di grandi dimensioni e potrebbe rallentare le prestazioni (oltre 100 MB)"
+    },
+    "action": {
+      "exclude_and_save": "Escludi e salva",
+      "save_anyway": "Salva comunque",
+      "cancel": "Annulla"
+    }
+  }
+}

@@ -1,0 +1,63 @@
+{
+  "common": {
+    "app_title": "Mesin Waktu File",
+    "file_tree": "Pohon File",
+    "root_management": "Manajemen Root",
+    "history_list": "Daftar Riwayat",
+    "preview": "Pratinjau",
+    "sidebar": {
+      "files": "File",
+      "history": "Riwayat",
+      "settings": "Pengaturan",
+      "help": "Bantuan"
+    },
+    "placeholder": {
+      "file_tree": "(Pohon file akan ditampilkan di sini)",
+      "root_management": "(Manajemen root akan ditampilkan di sini)",
+      "history_list": "(Daftar riwayat akan ditampilkan di sini)",
+      "preview": "(Pratinjau akan ditampilkan di sini)",
+      "select_file_to_preview": "Pilih file untuk melihat pratinjau",
+      "binary_file_preview_not_supported": "Pratinjau file biner tidak didukung",
+      "unknown_file_type": "Format file tidak dikenal",
+      "no_history": "Belum ada riwayat"
+    },
+    "error": {
+      "failed_to_fetch_logs": "Gagal mengambil riwayat"
+    },
+    "aria": {
+      "git_graph_description": "Grafik visualisasi riwayat commit Git",
+      "file_preview": "Pratinjau dari {{path}}",
+      "preview_of": "Konten dari {{path}}"
+    }
+  },
+  "setup": {
+    "title": "Wizard Diagnosis Lingkungan",
+    "description": "Mendiagnosis status instalasi alat yang diperlukan untuk menggunakan Mesin Waktu File.",
+    "checking": "Mendiagnosis...",
+    "results": "Hasil Diagnosis",
+    "git": "Git",
+    "brew": "Homebrew",
+    "gh": "GitHub CLI (gh)",
+    "status_installed": "Terinstal",
+    "status_missing": "Tidak Terinstal",
+    "guide_missing": "Alat berikut kurang. Silakan periksa panduan instalasi.",
+    "next": "Berikutnya",
+    "finish": "Selesai dan Mulai Aplikasi",
+    "retry": "Coba Lagi"
+  },
+  "safety": {
+    "title": "Penjaga Keamanan",
+    "description": "Risiko keamanan atau file besar terdeteksi dalam file yang Anda coba simpan.",
+    "issue_list_title": "Masalah yang terdeteksi:",
+    "reason": {
+      "security_risk_extension": "Mungkin kunci rahasia atau file konfigurasi",
+      "inappropriate_directory": "Termasuk direktori yang harus dikeluarkan dari manajemen",
+      "large_file": "Ukuran file besar dan mungkin memperlambat operasi (lebih dari 100MB)"
+    },
+    "action": {
+      "exclude_and_save": "Keluarkan dan Simpan",
+      "save_anyway": "Tetap Simpan",
+      "cancel": "Batal"
+    }
+  }
+}

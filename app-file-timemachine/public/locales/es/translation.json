@@ -1,0 +1,63 @@
+{
+  "common": {
+    "app_title": "Máquina del Tiempo de Archivos",
+    "file_tree": "Árbol de archivos",
+    "root_management": "Gestión de raíz",
+    "history_list": "Lista de historial",
+    "preview": "Vista previa",
+    "sidebar": {
+      "files": "Archivos",
+      "history": "Historial",
+      "settings": "Ajustes",
+      "help": "Ayuda"
+    },
+    "placeholder": {
+      "file_tree": "(El árbol de archivos se mostrará aquí)",
+      "root_management": "(La gestión de raíz se mostrará aquí)",
+      "history_list": "(La lista de historial se mostrará aquí)",
+      "preview": "(La vista previa se mostrará aquí)",
+      "select_file_to_preview": "Seleccione un archivo para ver la vista previa",
+      "binary_file_preview_not_supported": "La vista previa de archivos binarios no es compatible",
+      "unknown_file_type": "Formato de archivo desconocido",
+      "no_history": "Aún no hay historial"
+    },
+    "error": {
+      "failed_to_fetch_logs": "Error al obtener el historial"
+    },
+    "aria": {
+      "git_graph_description": "Gráfico de visualización del historial de commits de Git",
+      "file_preview": "Vista previa de {{path}}",
+      "preview_of": "Contenido de {{path}}"
+    }
+  },
+  "setup": {
+    "title": "Asistente de diagnóstico del entorno",
+    "description": "Diagnostica el estado de instalación de las herramientas necesarias para usar la Máquina del Tiempo de Archivos.",
+    "checking": "Diagnosticando...",
+    "results": "Resultados del diagnóstico",
+    "git": "Git",
+    "brew": "Homebrew",
+    "gh": "GitHub CLI (gh)",
+    "status_installed": "Instalado",
+    "status_missing": "No instalado",
+    "guide_missing": "Faltan las siguientes herramientas. Por favor, consulte la guía de instalación.",
+    "next": "Siguiente",
+    "finish": "Finalizar e iniciar la aplicación",
+    "retry": "Reintentar"
+  },
+  "safety": {
+    "title": "Protector de seguridad",
+    "description": "Se han detectado riesgos de seguridad o archivos grandes en los archivos que intenta guardar.",
+    "issue_list_title": "Problemas detectados:",
+    "reason": {
+      "security_risk_extension": "Puede ser una clave privada o un archivo de configuración",
+      "inappropriate_directory": "Incluye directorios que deberían ser excluidos de la gestión",
+      "large_file": "El tamaño del archivo es grande y puede ralentizar el funcionamiento (más de 100MB)"
+    },
+    "action": {
+      "exclude_and_save": "Excluir y guardar",
+      "save_anyway": "Guardar de todos modos",
+      "cancel": "Cancelar"
+    }
+  }
+}
