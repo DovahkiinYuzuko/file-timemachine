@@ -6,6 +6,7 @@
     "history_list": "履歴リスト",
     "preview": "プレビュー",
     "sidebar": {
+      "main_nav": "メインナビゲーション",
       "files": "ファイル",
       "history": "履歴",
       "settings": "設定",

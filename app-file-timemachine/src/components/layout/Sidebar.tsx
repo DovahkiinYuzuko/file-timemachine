@@ -48,7 +48,7 @@ const Sidebar: FC<SidebarProps> = ({ activeTab, onTabChange, onOpenFolder }) => 
   ];
 
   return (
-    <nav className="sidebar-container" aria-label={t("common.sidebar.files")}>
+    <nav className="sidebar-container" aria-label={t("common.sidebar.main_nav")}>
       <div className="sidebar-top">
         <button
           className="sidebar-item folder-open-btn"

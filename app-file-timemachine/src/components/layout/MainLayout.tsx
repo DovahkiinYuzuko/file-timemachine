@@ -2,8 +2,6 @@ import { type FC, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Panel, Group as PanelGroup, Separator as PanelResizeHandle } from "react-resizable-panels";
 import Sidebar, { type SidebarTab } from "./Sidebar";
-import GitGraph from "../graph/GitGraph";
-import FilePreview from "../preview/FilePreview";
 import SafetyDialog from "../guard/SafetyDialog";
 import SettingsModal from "../settings/SettingsModal";
 import HelpModal from "../help/HelpModal";
@@ -36,7 +34,6 @@ const MainLayout: FC = () => {
   // フォルダ選択時の処理
   const handleOpenFolder = (path: string) => {
     setProjectPath(path);
-    console.log("Selected project path:", path);
   };
 
   // 保存ボタンが押された時のシミュレーション
@@ -104,7 +101,7 @@ const MainLayout: FC = () => {
                     </header>
                     <div className="panel-body">
                       {projectPath && (
-                        <div style={{ padding: '4px 8px', fontSize: '11px', color: '#888', borderBottom: '1px solid #333', marginBottom: '8px', wordBreak: 'break-all' }}>
+                        <div className="project-path-display">
                           {projectPath}
                         </div>
                       )}
@@ -131,9 +128,9 @@ const MainLayout: FC = () => {
                           </h2>
                         </header>
                         <div className="panel-body">
-                          <GitGraph />
-                        </div>
-                      </section>
+                          {/* <GitGraph /> */}
+                          <div>(Git Graph Placeholder)</div>
+                        </div>                      </section>
                     </Panel>
 
                     <PanelResizeHandle className="resize-handle-vertical" />
@@ -163,7 +160,8 @@ const MainLayout: FC = () => {
                   <h2>{t("common.preview")}</h2>
                 </header>
                 <div className="panel-body">
-                  <FilePreview />
+                  {/* <FilePreview /> */}
+                  <div>(File Preview Placeholder)</div>
                 </div>
               </section>
             </Panel>
