@@ -15,6 +15,12 @@ export interface FileEntry {
   children?: FileEntry[];
 }
 
+export type GitMode = "whitelist" | "blacklist";
+
+export interface ProjectConfig {
+  git_mode: GitMode;
+}
+
 interface FileTreeProps {
   rootPath: string | null;
   onFileSelect?: (path: string) => void;
@@ -101,6 +107,7 @@ const FileTree: FC<FileTreeProps> = ({ rootPath, onFileSelect }) => {
   const [treeData, setTreeData] = useState<FileEntry[]>([]);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [gitMode, setGitMode] = useState<GitMode>("blacklist");
 
   useEffect(() => {
     const fetchTree = async () => {
@@ -126,8 +133,34 @@ const FileTree: FC<FileTreeProps> = ({ rootPath, onFileSelect }) => {
       }
     };
 
+    const fetchConfig = async () => {
+      if (!rootPath) return;
+      try {
+        const config = await invoke<ProjectConfig>("get_project_config", { rootPath });
+        setGitMode(config.git_mode);
+      } catch (err) {
+        logger.error(`Failed to fetch project config: ${err}`);
+      }
+    };
+
     fetchTree();
+    fetchConfig();
   }, [rootPath]);
+
+  const handleToggleMode = async () => {
+    if (!rootPath) return;
+    const newMode = gitMode === "whitelist" ? "blacklist" : "whitelist";
+    try {
+      await invoke("set_project_config", { 
+        rootPath, 
+        config: { git_mode: newMode } 
+      });
+      setGitMode(newMode);
+      logger.info(`Git mode changed to ${newMode}`);
+    } catch (err) {
+      logger.error(`Failed to update git mode: ${err}`);
+    }
+  };
 
   if (!rootPath) {
     return (
@@ -156,20 +189,42 @@ const FileTree: FC<FileTreeProps> = ({ rootPath, onFileSelect }) => {
 
   return (
     <div className="file-tree-container" role="tree" aria-label={t("common.file_tree")}>
-      {treeData.length > 0 ? (
-        treeData.map((entry) => (
-          <FileTreeItem 
-            key={entry.path} 
-            entry={entry} 
-            depth={0} 
-            onFileSelect={onFileSelect}
-          />
-        ))
-      ) : (
-        <div className="file-tree-empty">
-          <p>{t("common.empty_directory", "ファイルが見つからないよ")}</p>
+      <div className="file-tree-header">
+        <span className="header-title">{t("common.file_tree")}</span>
+        <div 
+          className={`git-mode-badge ${gitMode}`}
+          onClick={handleToggleMode}
+          title={t("common.git_mode.tooltip")}
+          role="button"
+          tabIndex={0}
+          onKeyDown={(e) => {
+            if (e.key === "Enter" || e.key === " ") {
+              e.preventDefault();
+              handleToggleMode();
+            }
+          }}
+        >
+          <span className="mode-label">{t("common.git_mode.label")}:</span>
+          <span className="mode-value">{t(`common.git_mode.${gitMode}`)}</span>
         </div>
-      )}
+      </div>
+      
+      <div className="file-tree-scroll-area">
+        {treeData.length > 0 ? (
+          treeData.map((entry) => (
+            <FileTreeItem 
+              key={entry.path} 
+              entry={entry} 
+              depth={0} 
+              onFileSelect={onFileSelect}
+            />
+          ))
+        ) : (
+          <div className="file-tree-empty">
+            <p>{t("common.empty_directory", "ファイルが見つからないよ")}</p>
+          </div>
+        )}
+      </div>
     </div>
   );
 };

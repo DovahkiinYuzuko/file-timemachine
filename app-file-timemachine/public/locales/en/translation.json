@@ -32,6 +32,12 @@
       "git_graph_description": "Visual graph of Git commit history",
       "file_preview": "Preview of {{path}}",
       "preview_of": "Content of {{path}}"
+    },
+    "git_mode": {
+      "label": "Git Mode",
+      "whitelist": "Whitelist",
+      "blacklist": "Blacklist",
+      "tooltip": "Click to toggle Git mode!"
     }
   },
   "settings": {

@@ -32,6 +32,12 @@
       "git_graph_description": "Gitのコミット履歴を可視化したグラフです",
       "file_preview": "{{path}} のプレビュー",
       "preview_of": "{{path}} の内容"
+    },
+    "git_mode": {
+      "label": "管理モード",
+      "whitelist": "厳選",
+      "blacklist": "おまかせ",
+      "tooltip": "クリックでモードを切り替えるよ！"
     }
   },
   "settings": {

@@ -3,6 +3,7 @@ mod commands;
 use commands::setup::check_dependencies;
 use commands::git::{git_init, git_commit, git_log};
 use commands::files::get_file_tree;
+use commands::config::{get_project_config, set_project_config};
 
 // Learn more about Tauri commands at https://tauri.app/develop/calling-rust/
 #[tauri::command]
@@ -29,7 +30,9 @@ pub fn run() {
             git_init,
             git_commit,
             git_log,
-            get_file_tree
+            get_file_tree,
+            get_project_config,
+            set_project_config
         ])
         .run(tauri::generate_context!())
         .expect("error while running tauri application");
