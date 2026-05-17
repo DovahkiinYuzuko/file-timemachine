@@ -2,7 +2,7 @@ use serde::Serialize;
 use walkdir::WalkDir;
 use std::collections::HashMap;
 use std::process::{Command, Stdio};
-use std::io::Write;
+use std::io::{Write, Read};
 use std::path::PathBuf;
 
 #[derive(Debug, Serialize)]
@@ -129,12 +129,17 @@ pub struct FileInfo {
     pub name: String,
     pub size: u64,
     pub modified: String,
+    pub file_type: String, // "text", "image", "video", "audio", or "unknown"
+    pub mime_type: String,
 }
 
 #[tauri::command]
 pub fn get_file_info(path: String) -> Result<FileInfo, String> {
     let raw_path = std::path::Path::new(&path);
     let path_buf = dunce::canonicalize(raw_path).map_err(|e| format!("パスが正しくないよ: {}", e))?;
+    
+    log::info!("ファイル情報の取得を開始するよ。対象: {:?}", path_buf);
+
     let metadata = std::fs::metadata(&path_buf).map_err(|e| format!("メタデータが取れないよ: {}", e))?;
 
     let modified = metadata.modified()
@@ -144,9 +149,46 @@ pub fn get_file_info(path: String) -> Result<FileInfo, String> {
         })
         .unwrap_or_else(|_| "不明".to_string());
 
+    let mut file_type = "unknown".to_string();
+    let mut mime_type = "application/octet-stream".to_string();
+
+    if metadata.is_file() {
+        let mut file = std::fs::File::open(&path_buf).map_err(|e| format!("ファイルが開けないよ: {}", e))?;
+        let mut buffer = [0; 8192];
+        let n = file.read(&mut buffer).unwrap_or(0);
+        let buffer = &buffer[..n];
+
+        if let Some(kind) = infer::get(buffer) {
+            mime_type = kind.mime_type().to_string();
+            file_type = match kind.matcher_type() {
+                infer::MatcherType::Image => "image".to_string(),
+                infer::MatcherType::Video => "video".to_string(),
+                infer::MatcherType::Audio => "audio".to_string(),
+                _ => {
+                    if mime_type.starts_with("text/") {
+                        "text".to_string()
+                    } else {
+                        "unknown".to_string()
+                    }
+                }
+            };
+        } else {
+            // inferで分からない場合は content_inspector でテキストか判定
+            if content_inspector::inspect(buffer).is_text() {
+                file_type = "text".to_string();
+                mime_type = "text/plain".to_string();
+            }
+        }
+    } else if metadata.is_dir() {
+        file_type = "directory".to_string();
+        mime_type = "inode/directory".to_string();
+    }
+
     Ok(FileInfo {
         name: path_buf.file_name().map(|n| n.to_string_lossy().into_owned()).unwrap_or_default(),
         size: metadata.len(),
         modified,
+        file_type,
+        mime_type,
     })
 }
