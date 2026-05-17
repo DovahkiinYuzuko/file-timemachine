@@ -3,10 +3,12 @@ import { useTranslation } from "react-i18next";
 import { Panel, Group as PanelGroup, Separator as PanelResizeHandle } from "react-resizable-panels";
 import { Save } from "lucide-react";
 import Sidebar, { type SidebarTab } from "./Sidebar";
+import FileTree from "../tree/FileTree";
 import SafetyDialog from "../guard/SafetyDialog";
 import SettingsModal from "../settings/SettingsModal";
 import HelpModal from "../help/HelpModal";
 import Tooltip from "../common/Tooltip";
+import logger from "../../utils/logger";
 import { analyzeFilesForSafety, type SafetyIssue } from "../../utils/safety";
 import "./MainLayout.css";
 
@@ -92,7 +94,7 @@ const MainLayout: FC = () => {
       <div className="layout-main-content">
         <main className="main-layout-container" aria-label={t("common.app_title")}>
           <PanelGroup orientation="horizontal">
-            {/* 1. ファイルツリーパネル（左）：Filesタブの時のみ表示 */}
+            {/* 1. ファイルツリーパネル（左）：Filesタブ의 時のみ表示 */}
             {activeTab === "files" && (
               <>
                 <Panel defaultSize={25} minSize={20}>
@@ -101,12 +103,10 @@ const MainLayout: FC = () => {
                       <h2>{t("common.file_tree")}</h2>
                     </header>
                     <div className="panel-body">
-                      {projectPath && (
-                        <div className="project-path-display">
-                          {projectPath}
-                        </div>
-                      )}
-                      {t("common.placeholder.file_tree")}
+                      <FileTree 
+                        rootPath={projectPath} 
+                        onFileSelect={(path) => logger.debug(`ファイルが選択されたよ: ${path}`)}
+                      />
                     </div>
                   </section>
                 </Panel>

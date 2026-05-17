@@ -1,0 +1,101 @@
+.file-tree-container {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  overflow-y: auto;
+  user-select: none;
+  font-size: 13px;
+  color: var(--fg-default, #1f2328);
+}
+
+.file-tree-item-wrapper {
+  display: flex;
+  flex-direction: column;
+}
+
+.file-tree-item {
+  display: flex;
+  align-items: center;
+  height: 28px;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: background-color 0.1s;
+}
+
+.file-tree-item:hover {
+  background-color: var(--bg-hover, #f6f8fa);
+}
+
+.file-tree-item:focus-visible {
+  outline: 2px solid var(--accent, #0969da);
+  outline-offset: -2px;
+}
+
+.item-icon-wrapper {
+  display: flex;
+  align-items: center;
+  margin-right: 6px;
+  color: var(--fg-muted, #636c76);
+}
+
+.chevron {
+  margin-right: 2px;
+  opacity: 0.7;
+}
+
+.chevron-spacer {
+  width: 16px; /* Chevronの幅と同じ */
+}
+
+.folder-icon {
+  color: var(--folder-icon, #54aeff);
+}
+
+.file-icon {
+  color: var(--fg-muted, #636c76);
+}
+
+.item-name {
+  flex: 1;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.file-tree-placeholder,
+.file-tree-status,
+.file-tree-error,
+.file-tree-empty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  padding: 20px;
+  text-align: center;
+  color: var(--fg-muted, #636c76);
+  font-size: 14px;
+}
+
+.file-tree-error {
+  color: var(--danger, #cf222e);
+}
+
+.animate-spin {
+  animation: spin 1s linear infinite;
+  margin-bottom: 8px;
+}
+
+@keyframes spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+/* GitHub風ライトテーマを想定した変数（Task 4で全体適用されるけど、ここで予習） */
+:root {
+  --bg-hover: #f6f8fa;
+  --fg-default: #1f2328;
+  --fg-muted: #636c76;
+  --accent: #0969da;
+  --folder-icon: #54aeff;
+  --danger: #cf222e;
+}
