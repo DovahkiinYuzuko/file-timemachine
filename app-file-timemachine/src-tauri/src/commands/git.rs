@@ -31,7 +31,8 @@ pub async fn git_init(path: String) -> Result<String, String> {
     // .gitignoreの生成 (存在しない場合のみ)
     let gitignore_path = repo_path.join(".gitignore");
     if !gitignore_path.exists() {
-        fs::write(&gitignore_path, "*\n!.gitignore\n")
+        let default_gitignore = "*\n!.gitignore\n!*.docx\n!*.xlsx\n!*.pptx\n!*.pdf\n!*.psd\n!*.ai\n!*.png\n!*.jpg\n!*.txt\n!*.md";
+        fs::write(&gitignore_path, default_gitignore)
             .map_err(|e| format!(".gitignoreの生成に失敗しました: {}", e))?;
     }
 
@@ -82,10 +83,10 @@ pub async fn git_log(path: String) -> Result<Vec<CommitLog>, String> {
         return Err("無効なディレクトリパスです。".to_string());
     }
 
-    // git log --pretty=format:"%H|%at|%s"
+    // git log --pretty=format:"%H_#_%at_#_%s"
     let output = Command::new("git")
         .arg("log")
-        .arg("--pretty=format:%H|%at|%s")
+        .arg("--pretty=format:%H_#_%at_#_%s")
         .current_dir(repo_path)
         .output()
         .map_err(|e| format!("git logの実行に失敗しました: {}", e))?;
@@ -98,7 +99,7 @@ pub async fn git_log(path: String) -> Result<Vec<CommitLog>, String> {
     let logs = stdout
         .lines()
         .filter_map(|line| {
-            let parts: Vec<&str> = line.split('|').collect();
+            let parts: Vec<&str> = line.split("_#_").collect();
             if parts.len() >= 3 {
                 Some(CommitLog {
                     hash: parts[0].to_string(),

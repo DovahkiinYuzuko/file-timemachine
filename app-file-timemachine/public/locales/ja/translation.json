@@ -6,20 +6,20 @@
     "history_list": "履歴リスト",
     "preview": "プレビュー",
     "placeholder": {
-      "file_tree": "（ここにファイルツリーが表示されるよ）",
-      "root_management": "（ここにルート管理が表示されるよ）",
-      "history_list": "（ここに履歴リストが表示されるよ）",
-      "preview": "（ここにプレビューが表示されるよ）",
-      "select_file_to_preview": "ファイルを選択するとプレビューが表示されるよ",
-      "binary_file_preview_not_supported": "バイナリファイルのプレビューには対応していないよ",
-      "unknown_file_type": "不明なファイル形式だよ",
-      "no_history": "履歴がまだないみたい"
+      "file_tree": "（ここにファイルツリーが表示されます）",
+      "root_management": "（ここにルート管理が表示されます）",
+      "history_list": "（ここに履歴リストが表示されます）",
+      "preview": "（ここにプレビューが表示されます）",
+      "select_file_to_preview": "ファイルを選択するとプレビューが表示されます",
+      "binary_file_preview_not_supported": "バイナリファイルのプレビューには対応していません",
+      "unknown_file_type": "不明なファイル形式です",
+      "no_history": "履歴がまだありません"
     },
     "error": {
-      "failed_to_fetch_logs": "履歴の取得に失敗しちゃった"
+      "failed_to_fetch_logs": "履歴の取得に失敗しました"
     },
     "aria": {
-      "git_graph_description": "Gitのコミット履歴を可視化したグラフだよ",
+      "git_graph_description": "Gitのコミット履歴を可視化したグラフです",
       "file_preview": "{{path}} のプレビュー",
       "preview_of": "{{path}} の内容"
     }
@@ -41,12 +41,12 @@
   },
   "safety": {
     "title": "安全ガード",
-    "description": "保存しようとしているファイルの中に、セキュリティリスクや巨大なファイルが見つかったよ！",
-    "issue_list_title": "見つかった問題:",
+    "description": "保存しようとしているファイルの中に、セキュリティリスクや巨大なファイルが検出されました。",
+    "issue_list_title": "検出された問題:",
     "reason": {
-      "security_risk_extension": "秘密鍵や設定ファイルの可能性があるよ",
-      "inappropriate_directory": "管理対象外にするべきディレクトリが含まれているよ",
-      "large_file": "ファイルがデカすぎてリポジトリが重くなっちゃうかも (100MB超え)"
+      "security_risk_extension": "秘密鍵や設定ファイルの可能性があります",
+      "inappropriate_directory": "管理対象外にすべきディレクトリが含まれています",
+      "large_file": "ファイルサイズが大きく、動作が重くなる可能性があります (100MB超)"
     },
     "action": {
       "exclude_and_save": "これらを除外して保存",
