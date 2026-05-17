@@ -1,4 +1,4 @@
-import { type FC, useState } from "react";
+import { type FC, useState, useEffect } from "react";
 import { useTranslation } from "react-i18next";
 import { X, GitBranch, Languages, Settings2, ShieldCheck, Cpu } from "lucide-react";
 import { open } from "@tauri-apps/plugin-shell";
@@ -22,6 +22,17 @@ const SettingsModal: FC<SettingsModalProps> = ({ isOpen, onClose }) => {
   const { t, i18n } = useTranslation();
   const [saveBehavior, setSaveBehavior] = useState<SaveBehavior>("confirm");
   const [autoScan, setAutoScan] = useState(true);
+
+  // Accessibility: Handle Escape key
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === "Escape" && isOpen) {
+        onClose();
+      }
+    };
+    window.addEventListener("keydown", handleKeyDown);
+    return () => window.removeEventListener("keydown", handleKeyDown);
+  }, [isOpen, onClose]);
 
   if (!isOpen) return null;
 
