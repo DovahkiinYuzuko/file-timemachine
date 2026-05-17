@@ -12,6 +12,7 @@ export interface FileEntry {
   name: string;
   path: string;
   is_dir: boolean;
+  is_ignored: boolean;
   children?: FileEntry[];
 }
 
@@ -28,19 +29,21 @@ interface FileTreeProps {
 
 /**
  * 再帰的に描画される各エントリのコンポーネント
- * 
- * Accessibility:
- * - role="treeitem" を使用
- * - aria-expanded でフォルダの開閉状態を通知
  */
 const FileTreeItem: FC<{ 
   entry: FileEntry; 
   depth: number;
   onFileSelect?: (path: string) => void;
-}> = memo(({ entry, depth, onFileSelect }) => {
+  onToggleIgnore: (path: string, currentIgnored: boolean) => void;
+}> = memo(({ entry, depth, onFileSelect, onToggleIgnore }) => {
   const [isOpen, setIsOpen] = useState(false);
 
-  const handleToggle = () => {
+  const handleToggle = (e: React.MouseEvent | React.KeyboardEvent) => {
+    // チェックボックスをクリックした時は無視
+    if ((e.target as HTMLElement).classList.contains("item-checkbox")) {
+      return;
+    }
+
     if (entry.is_dir) {
       setIsOpen(!isOpen);
     } else if (onFileSelect) {
@@ -48,10 +51,15 @@ const FileTreeItem: FC<{
     }
   };
 
+  const handleCheckboxClick = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    onToggleIgnore(entry.path, entry.is_ignored);
+  };
+
   return (
     <div className="file-tree-item-wrapper" role="none">
       <div 
-        className={`file-tree-item ${entry.is_dir ? "is-directory" : "is-file"}`}
+        className={`file-tree-item ${entry.is_dir ? "is-directory" : "is-file"} ${entry.is_ignored ? "is-ignored" : ""}`}
         style={{ paddingLeft: `${depth * 12 + 8}px` }}
         onClick={handleToggle}
         role="treeitem"
@@ -60,7 +68,7 @@ const FileTreeItem: FC<{
         onKeyDown={(e) => {
           if (e.key === "Enter" || e.key === " ") {
             e.preventDefault();
-            handleToggle();
+            handleToggle(e);
           }
         }}
       >
@@ -77,6 +85,14 @@ const FileTreeItem: FC<{
             </>
           )}
         </span>
+        <input 
+          type="checkbox" 
+          className="item-checkbox" 
+          checked={!entry.is_ignored} 
+          onChange={() => {}} // onClickで制御
+          onClick={handleCheckboxClick}
+          aria-label={entry.is_ignored ? "無視を解除" : "無視する"}
+        />
         <span className="item-name">{entry.name}</span>
       </div>
 
@@ -88,6 +104,7 @@ const FileTreeItem: FC<{
               entry={child} 
               depth={depth + 1} 
               onFileSelect={onFileSelect}
+              onToggleIgnore={onToggleIgnore}
             />
           ))}
         </div>
@@ -98,9 +115,6 @@ const FileTreeItem: FC<{
 
 /**
  * ファイルツリー全体を管理するメインコンポーネント
- * 
- * Accessibility:
- * - role="tree" を使用
  */
 const FileTree: FC<FileTreeProps> = ({ rootPath, onFileSelect }) => {
   const { t } = useTranslation();
@@ -109,40 +123,35 @@ const FileTree: FC<FileTreeProps> = ({ rootPath, onFileSelect }) => {
   const [error, setError] = useState<string | null>(null);
   const [gitMode, setGitMode] = useState<GitMode>("blacklist");
 
+  const fetchTree = async () => {
+    if (!rootPath) {
+      setTreeData([]);
+      return;
+    }
+
+    setIsLoading(true);
+    setError(null);
+    try {
+      const data = await invoke<FileEntry[]>("get_file_tree", { rootPath });
+      setTreeData(data);
+    } catch (err) {
+      setError(String(err));
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  const fetchConfig = async () => {
+    if (!rootPath) return;
+    try {
+      const config = await invoke<ProjectConfig>("get_project_config", { rootPath });
+      setGitMode(config.git_mode);
+    } catch (err) {
+      logger.error(`Failed to fetch project config: ${err}`);
+    }
+  };
+
   useEffect(() => {
-    const fetchTree = async () => {
-      if (!rootPath) {
-        setTreeData([]);
-        return;
-      }
-
-      setIsLoading(true);
-      setError(null);
-      logger.debug(`ファイルツリーの取得を開始: ${rootPath}`);
-
-      try {
-        const data = await invoke<FileEntry[]>("get_file_tree", { rootPath });
-        setTreeData(data);
-        logger.debug(`${data.length} 件のルートエントリを取得したよ！`);
-      } catch (err) {
-        const errMsg = String(err);
-        setError(errMsg);
-        logger.error(`ファイルツリーの取得に失敗: ${errMsg}`);
-      } finally {
-        setIsLoading(false);
-      }
-    };
-
-    const fetchConfig = async () => {
-      if (!rootPath) return;
-      try {
-        const config = await invoke<ProjectConfig>("get_project_config", { rootPath });
-        setGitMode(config.git_mode);
-      } catch (err) {
-        logger.error(`Failed to fetch project config: ${err}`);
-      }
-    };
-
     fetchTree();
     fetchConfig();
   }, [rootPath]);
@@ -157,8 +166,27 @@ const FileTree: FC<FileTreeProps> = ({ rootPath, onFileSelect }) => {
       });
       setGitMode(newMode);
       logger.info(`Git mode changed to ${newMode}`);
+      fetchTree(); // モード変更後にツリーを再取得
     } catch (err) {
       logger.error(`Failed to update git mode: ${err}`);
+    }
+  };
+
+  const handleToggleIgnore = async (targetPath: string, currentIgnored: boolean) => {
+    if (!rootPath) return;
+    try {
+      // 逆の状態にする
+      await invoke("update_gitignore", { 
+        rootPath, 
+        targetPath, 
+        isIgnored: !currentIgnored,
+        mode: gitMode
+      });
+      logger.info(`Updated ignore state for ${targetPath}`);
+      // 再取得して反映
+      fetchTree();
+    } catch (err) {
+      logger.error(`Failed to update gitignore: ${err}`);
     }
   };
 
@@ -217,6 +245,7 @@ const FileTree: FC<FileTreeProps> = ({ rootPath, onFileSelect }) => {
               entry={entry} 
               depth={0} 
               onFileSelect={onFileSelect}
+              onToggleIgnore={handleToggleIgnore}
             />
           ))
         ) : (

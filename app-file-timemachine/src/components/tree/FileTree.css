@@ -121,6 +121,19 @@
   text-overflow: ellipsis;
 }
 
+.file-tree-item.is-ignored {
+  opacity: 0.5;
+  color: var(--text-muted);
+}
+
+.item-checkbox {
+  margin: 0 8px;
+  cursor: pointer;
+  width: 14px;
+  height: 14px;
+  accent-color: var(--accent-color);
+}
+
 .file-tree-placeholder,
 .file-tree-status,
 .file-tree-error,

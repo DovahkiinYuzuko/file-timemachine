@@ -3,12 +3,73 @@ use std::process::Command;
 use std::path::Path;
 use std::fs;
 use log::{info, debug};
+use super::config::GitMode;
 
 #[derive(Debug, Serialize, Deserialize)]
 pub struct CommitLog {
     pub hash: String,
     pub timestamp: i64,
     pub message: String,
+}
+
+#[tauri::command]
+pub async fn update_gitignore(
+    root_path: String,
+    target_path: String,
+    is_ignored: bool,
+    mode: GitMode,
+) -> Result<(), String> {
+    let repo_path = dunce::canonicalize(Path::new(&root_path))
+        .map_err(|e| format!("ルートパスの正規化に失敗したよ: {}", e))?;
+    let target_abs_path = Path::new(&target_path);
+    
+    // 相対パスを取得（gitで使う形式に合わせる）
+    let rel_path = target_abs_path.strip_prefix(&repo_path)
+        .map_err(|_| "ターゲットパスがルートの下にないよ".to_string())?
+        .to_string_lossy()
+        .replace('\\', "/");
+    
+    let gitignore_path = repo_path.join(".gitignore");
+    let content = if gitignore_path.exists() {
+        fs::read_to_string(&gitignore_path).map_err(|e| format!(".gitignoreの読み込みに失敗したよ: {}", e))?
+    } else {
+        String::new()
+    };
+
+    let mut lines: Vec<String> = content.lines().map(|s| s.to_string()).collect();
+    
+    match mode {
+        GitMode::Blacklist => {
+            if is_ignored {
+                // 無視したい場合：エントリがなければ追加
+                if !lines.iter().any(|l| l.trim() == rel_path) {
+                    lines.push(rel_path.clone());
+                }
+            } else {
+                // 無視を解除したい場合：エントリを削除
+                lines.retain(|l| l.trim() != rel_path);
+            }
+        }
+        GitMode::Whitelist => {
+            let entry = format!("!{}", rel_path);
+            if !is_ignored {
+                // 無視を解除したい（ホワイトリストに入れる）場合：!エントリがなければ追加
+                if !lines.iter().any(|l| l.trim() == entry) {
+                    lines.push(entry);
+                }
+            } else {
+                // 無視したい場合：!エントリを削除
+                lines.retain(|l| l.trim() != entry);
+            }
+        }
+    }
+
+    let new_content = lines.join("\n") + "\n";
+    fs::write(&gitignore_path, new_content)
+        .map_err(|e| format!(".gitignoreの保存に失敗したよ: {}", e))?;
+
+    info!(".gitignoreを更新したよ: mode={:?}, path={}, is_ignored={}", mode, rel_path, is_ignored);
+    Ok(())
 }
 
 #[tauri::command]
