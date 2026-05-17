@@ -1,29 +1,78 @@
-import { type FC } from "react";
+import { type FC, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
+import { invoke } from "@tauri-apps/api/core";
+import logger from "../../utils/logger";
 import "./FilePreview.css";
 
 interface FilePreviewProps {
-  filePath?: string;
-  fileType?: "text" | "image" | "binary";
-  content?: string;
-  imageUrl?: string;
+  filePath: string | null;
+}
+
+interface PreviewContent {
+  content: string;
+  is_image: boolean;
+  mime_type: string;
 }
 
 /**
  * Accessibility Strategy:
  * - Use <article> to encapsulate the preview content.
  * - Text previews use <pre> with aria-readonly="true" for clear structure.
- * - Image previews have descriptive alt text (or filename if unavailable).
+ * - Image previews have descriptive alt text with data URI.
+ * - Loading and error states are clearly communicated.
  * - Empty states are clearly labeled for screen readers.
  */
 
-const FilePreview: FC<FilePreviewProps> = ({ filePath, fileType, content, imageUrl }) => {
+const FilePreview: FC<FilePreviewProps> = ({ filePath }) => {
   const { t } = useTranslation();
+  const [preview, setPreview] = useState<PreviewContent | null>(null);
+  const [error, setError] = useState<string | null>(null);
+  const [loading, setLoading] = useState(false);
+
+  useEffect(() => {
+    if (!filePath) {
+      setPreview(null);
+      setError(null);
+      return;
+    }
+
+    const fetchContent = async () => {
+      setLoading(true);
+      setError(null);
+      try {
+        const result = await invoke<PreviewContent>("read_file_content", { path: filePath });
+        setPreview(result);
+      } catch (err) {
+        logger.error(`Failed to read file: ${err}`);
+        setError(String(err));
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchContent();
+  }, [filePath]);
 
   if (!filePath) {
     return (
       <div className="preview-empty" role="status">
         <p>{t("common.placeholder.select_file_to_preview")}</p>
+      </div>
+    );
+  }
+
+  if (loading) {
+    return (
+      <div className="preview-loading" role="status">
+        <p>Loading...</p>
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div className="preview-error" role="alert">
+        <p>Error: {error}</p>
       </div>
     );
   }
@@ -35,28 +84,17 @@ const FilePreview: FC<FilePreviewProps> = ({ filePath, fileType, content, imageU
       </header>
       
       <div className="preview-body">
-        {fileType === "text" && (
-          <pre className="text-preview" aria-readonly="true">
-            <code>{content}</code>
-          </pre>
-        )}
-
-        {fileType === "image" && imageUrl && (
+        {preview?.is_image ? (
           <div className="image-preview">
-            <img src={imageUrl} alt={t("common.aria.preview_of", { path: filePath })} />
+            <img 
+              src={`data:${preview.mime_type};base64,${preview.content}`} 
+              alt={t("common.aria.preview_of", { path: filePath })} 
+            />
           </div>
-        )}
-
-        {fileType === "binary" && (
-          <div className="binary-preview">
-            <p>{t("common.placeholder.binary_file_preview_not_supported")}</p>
-          </div>
-        )}
-
-        {!fileType && (
-          <div className="unknown-preview">
-            <p>{t("common.placeholder.unknown_file_type")}</p>
-          </div>
+        ) : (
+          <pre className="text-preview" aria-readonly="true">
+            <code>{preview?.content}</code>
+          </pre>
         )}
       </div>
     </article>

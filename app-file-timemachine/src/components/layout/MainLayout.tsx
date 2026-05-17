@@ -4,6 +4,7 @@ import { Panel, Group as PanelGroup, Separator as PanelResizeHandle } from "reac
 import { Save } from "lucide-react";
 import Sidebar, { type SidebarTab } from "./Sidebar";
 import FileTree from "../tree/FileTree";
+import FilePreview from "../preview/FilePreview";
 import SafetyDialog from "../guard/SafetyDialog";
 import SettingsModal from "../settings/SettingsModal";
 import HelpModal from "../help/HelpModal";
@@ -33,6 +34,7 @@ const MainLayout: FC = () => {
   const [isSettingsModalOpen, setIsSettingsModalOpen] = useState(false);
   const [isHelpModalOpen, setIsHelpModalOpen] = useState(false);
   const [safetyIssues, setSafetyIssues] = useState<SafetyIssue[]>([]);
+  const [selectedFilePath, setSelectedFilePath] = useState<string | null>(null);
 
   // フォルダ選択時の処理
   const handleOpenFolder = (path: string) => {
@@ -114,7 +116,10 @@ const MainLayout: FC = () => {
                     <div className="panel-body">
                       <FileTree 
                         rootPath={projectPath} 
-                        onFileSelect={(path) => logger.debug(`ファイルが選択されたよ: ${path}`)}
+                        onFileSelect={(path) => {
+                          logger.debug(`ファイルが選択されたよ: ${path}`);
+                          setSelectedFilePath(path);
+                        }}
                       />
                     </div>
                   </section>
@@ -171,8 +176,7 @@ const MainLayout: FC = () => {
                   <h2>{t("common.preview")}</h2>
                 </header>
                 <div className="panel-body">
-                  {/* <FilePreview /> */}
-                  <div>(File Preview Placeholder)</div>
+                  <FilePreview filePath={selectedFilePath} />
                 </div>
               </section>
             </Panel>

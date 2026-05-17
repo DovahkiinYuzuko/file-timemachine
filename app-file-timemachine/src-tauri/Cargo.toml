@@ -28,4 +28,5 @@ tauri-plugin-shell = "2"
 dunce = "1.0"
 log = "0.4"
 walkdir = "2"
+base64 = "0.22.1"
 
