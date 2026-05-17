@@ -1,5 +1,4 @@
 use std::fs;
-use std::path::Path;
 use base64::{Engine as _, engine::general_purpose};
 use serde::Serialize;
 use tauri::command;
@@ -50,9 +49,17 @@ pub async fn read_file_content(path: String) -> Result<FilePreviewContent, Strin
             mime_type: mime_type.to_string(),
         })
     } else {
-        let content = fs::read_to_string(&path_buf).map_err(|e| format!("Failed to read text file: {}", e))?;
+        let bytes = fs::read(&path_buf).map_err(|e| format!("Failed to read text file: {}", e))?;
+        
+        // Encode detection and decoding
+        let mut detector = chardetng::EncodingDetector::new();
+        detector.feed(&bytes, true);
+        let encoding = detector.guess(None, true);
+        
+        let (content, _, _) = encoding.decode(&bytes);
+        
         Ok(FilePreviewContent {
-            content,
+            content: content.into_owned(),
             is_image: false,
             mime_type: "text/plain".to_string(),
         })
