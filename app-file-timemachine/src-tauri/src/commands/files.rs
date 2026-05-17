@@ -179,9 +179,6 @@ pub fn get_file_info(path: String) -> Result<FileInfo, String> {
                 mime_type = "text/plain".to_string();
             }
         }
-    } else if metadata.is_dir() {
-        file_type = "directory".to_string();
-        mime_type = "inode/directory".to_string();
     }
 
     Ok(FileInfo {
