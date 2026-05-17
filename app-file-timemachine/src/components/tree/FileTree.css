@@ -90,12 +90,3 @@
   to { transform: rotate(360deg); }
 }
 
-/* GitHub風ライトテーマを想定した変数（Task 4で全体適用されるけど、ここで予習） */
-:root {
-  --bg-hover: #f6f8fa;
-  --fg-default: #1f2328;
-  --fg-muted: #636c76;
-  --accent: #0969da;
-  --folder-icon: #54aeff;
-  --danger: #cf222e;
-}

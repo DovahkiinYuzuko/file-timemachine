@@ -1,4 +1,4 @@
-import { type FC, useState, useEffect } from "react";
+import { type FC, useState, useEffect, memo } from "react";
 import { invoke } from "@tauri-apps/api/core";
 import { Folder, FileText, ChevronRight, ChevronDown, Loader2 } from "lucide-react";
 import { useTranslation } from "react-i18next";
@@ -31,7 +31,7 @@ const FileTreeItem: FC<{
   entry: FileEntry; 
   depth: number;
   onFileSelect?: (path: string) => void;
-}> = ({ entry, depth, onFileSelect }) => {
+}> = memo(({ entry, depth, onFileSelect }) => {
   const [isOpen, setIsOpen] = useState(false);
 
   const handleToggle = () => {
@@ -88,7 +88,7 @@ const FileTreeItem: FC<{
       )}
     </div>
   );
-};
+});
 
 /**
  * ファイルツリー全体を管理するメインコンポーネント

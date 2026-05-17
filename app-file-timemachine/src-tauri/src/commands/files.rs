@@ -25,7 +25,7 @@ pub fn get_file_tree(root_path: String) -> Result<Vec<FileEntry>, String> {
         .into_iter()
         .filter_entry(|e| {
             let file_name = e.file_name().to_string_lossy();
-            file_name != ".git"
+            file_name != ".git" && file_name != "node_modules" && file_name != "target"
         });
 
     for entry in walker {
