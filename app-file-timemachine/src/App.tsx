@@ -15,7 +15,7 @@ function App() {
 
   useEffect(() => {
     // 言語設定に応じてHTMLのdirとlang属性を更新
-    document.documentElement.dir = i18n.language === 'ar' ? 'rtl' : 'ltr';
+    document.documentElement.dir = i18n.dir();
     document.documentElement.lang = i18n.language;
   }, [i18n.language]);
 

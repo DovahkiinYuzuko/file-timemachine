@@ -23,7 +23,7 @@ i18n
 
 // 言語切り替え時にRTL（右から左）設定とlang属性を更新
 i18n.on('languageChanged', (lng) => {
-  document.documentElement.dir = lng === 'ar' ? 'rtl' : 'ltr';
+  document.documentElement.dir = i18n.dir(lng);
   document.documentElement.lang = lng;
 });
 
