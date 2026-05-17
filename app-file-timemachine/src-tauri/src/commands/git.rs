@@ -2,6 +2,7 @@ use serde::{Deserialize, Serialize};
 use std::process::Command;
 use std::path::Path;
 use std::fs;
+use log::{info, debug};
 
 #[derive(Debug, Serialize, Deserialize)]
 pub struct CommitLog {
@@ -12,36 +13,52 @@ pub struct CommitLog {
 
 #[tauri::command]
 pub async fn git_init(path: String) -> Result<String, String> {
-    let repo_path = Path::new(&path);
+    let raw_path = Path::new(&path);
+    let repo_path = dunce::canonicalize(raw_path)
+        .map_err(|e| format!("パスの正規化に失敗しました: {}", e))?;
+    
+    info!("Gitリポジトリを初期化します: {:?}", repo_path);
+
     if !repo_path.exists() || !repo_path.is_dir() {
         return Err("無効なディレクトリパスです。".to_string());
     }
 
-    // git init
-    let status = Command::new("git")
-        .arg("init")
-        .current_dir(repo_path)
-        .status()
-        .map_err(|e| format!("git initに失敗しました: {}", e))?;
+    // すでに .git がある場合はスキップ
+    if repo_path.join(".git").exists() {
+        debug!(".git ディレクトリが既に存在するため、初期化をスキップします。");
+    } else {
+        // git init
+        let status = Command::new("git")
+            .arg("init")
+            .current_dir(&repo_path)
+            .status()
+            .map_err(|e| format!("git initに失敗しました: {}", e))?;
 
-    if !status.success() {
-        return Err("git initコマンドが失敗しました。".to_string());
+        if !status.success() {
+            return Err("git initコマンドが失敗しました。".to_string());
+        }
     }
 
     // .gitignoreの生成 (存在しない場合のみ)
     let gitignore_path = repo_path.join(".gitignore");
     if !gitignore_path.exists() {
+        debug!(".gitignore を作成します (ホワイトリスト方式)");
         let default_gitignore = "*\n!.gitignore\n!*.docx\n!*.xlsx\n!*.pptx\n!*.pdf\n!*.psd\n!*.ai\n!*.png\n!*.jpg\n!*.txt\n!*.md";
         fs::write(&gitignore_path, default_gitignore)
             .map_err(|e| format!(".gitignoreの生成に失敗しました: {}", e))?;
     }
 
-    Ok("Gitリポジトリを初期化しました。".to_string())
+    Ok("Gitリポジトリの準備が完了しました。".to_string())
 }
 
 #[tauri::command]
 pub async fn git_commit(path: String, message: String) -> Result<String, String> {
-    let repo_path = Path::new(&path);
+    let raw_path = Path::new(&path);
+    let repo_path = dunce::canonicalize(raw_path)
+        .map_err(|e| format!("パスの正規化に失敗しました: {}", e))?;
+
+    info!("コミットを実行します: {:?}, メッセージ: {}", repo_path, message);
+
     if !repo_path.exists() || !repo_path.is_dir() {
         return Err("無効なディレクトリパスです。".to_string());
     }
@@ -50,7 +67,7 @@ pub async fn git_commit(path: String, message: String) -> Result<String, String>
     let add_status = Command::new("git")
         .arg("add")
         .arg(".")
-        .current_dir(repo_path)
+        .current_dir(&repo_path)
         .status()
         .map_err(|e| format!("git addに失敗しました: {}", e))?;
 
@@ -63,13 +80,11 @@ pub async fn git_commit(path: String, message: String) -> Result<String, String>
         .arg("commit")
         .arg("-m")
         .arg(&message)
-        .current_dir(repo_path)
+        .current_dir(&repo_path)
         .status()
         .map_err(|e| format!("git commitに失敗しました: {}", e))?;
 
     if !commit_status.success() {
-        // コミットするものがない場合は成功とみなすかエラーにするか検討が必要だが、
-        // 今回はシンプルにエラーとして返す
         return Err("git commitに失敗しました。変更がない可能性があります。".to_string());
     }
 
@@ -78,7 +93,16 @@ pub async fn git_commit(path: String, message: String) -> Result<String, String>
 
 #[tauri::command]
 pub async fn git_log(path: String) -> Result<Vec<CommitLog>, String> {
-    let repo_path = Path::new(&path);
+    let raw_path = Path::new(&path);
+    // canonicalize は存在しないパスで失敗するので、とりあえずパスがあればOK
+    let repo_path = if raw_path.exists() {
+        dunce::canonicalize(raw_path).unwrap_or_else(|_| raw_path.to_path_buf())
+    } else {
+        raw_path.to_path_buf()
+    };
+
+    debug!("Gitログを取得します: {:?}", repo_path);
+
     if !repo_path.exists() || !repo_path.is_dir() {
         return Err("無効なディレクトリパスです。".to_string());
     }
@@ -87,12 +111,13 @@ pub async fn git_log(path: String) -> Result<Vec<CommitLog>, String> {
     let output = Command::new("git")
         .arg("log")
         .arg("--pretty=format:%H_#_%at_#_%s")
-        .current_dir(repo_path)
+        .current_dir(&repo_path)
         .output()
         .map_err(|e| format!("git logの実行に失敗しました: {}", e))?;
 
     if !output.status.success() {
-        return Ok(Vec::new()); // コミットがない場合は空配列を返す
+        debug!("コミット履歴が見つかりませんでした。");
+        return Ok(Vec::new());
     }
 
     let stdout = String::from_utf8_lossy(&output.stdout);
