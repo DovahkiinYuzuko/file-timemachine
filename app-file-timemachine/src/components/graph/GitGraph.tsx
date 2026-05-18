@@ -10,28 +10,41 @@ interface CommitLog {
   message: string;
 }
 
+type GraphStyle = "tree" | "metro";
+
 /**
  * Accessibility Strategy:
  * - The SVG graph is given role="img" and an aria-label describing the commit history.
  * - For screen readers, we provide a hidden textual list of commits as an alternative representation.
- * - Interactive elements (if any) will have proper focus management and keyboard support.
+ * - Interactive elements (toggle buttons) use semantic <button> tags with visual 'active' states.
  */
 
 const GitGraph: FC = () => {
   const { t } = useTranslation();
   const [commits, setCommits] = useState<CommitLog[]>([]);
   const [error, setError] = useState<string | null>(null);
+  const [graphStyle, setGraphStyle] = useState<GraphStyle>("metro");
 
   // カスタムテンプレート：日本語が綺麗に見えるようにフォントなどを微調整
-  const customTemplate = templateExtend(TemplateName.Metro, {
-    colors: ["#3b82f6", "#10b981", "#f59e0b", "#ef4444"],
-    commit: {
-      message: {
-        displayHash: true,
-        font: "normal 12pt 'Segoe UI', 'Meiryo', sans-serif",
+  const getTemplate = (style: GraphStyle) => {
+    const baseOptions: any = {
+      colors: ["#3b82f6", "#10b981", "#f59e0b", "#ef4444"],
+      commit: {
+        message: {
+          displayHash: true,
+          font: "normal 12pt 'Segoe UI', 'Meiryo', sans-serif",
+        },
       },
-    },
-  });
+    };
+
+    if (style === "tree") {
+      // ツリー形式（標準的な丸みのあるデザイン）
+      return templateExtend(TemplateName.BlackArrow, baseOptions);
+    } else {
+      // 路線図形式（直線的なデザイン）
+      return templateExtend(TemplateName.Metro, baseOptions);
+    }
+  };
 
   useEffect(() => {
     const fetchLogs = async () => {
@@ -59,12 +72,31 @@ const GitGraph: FC = () => {
 
   return (
     <div className="git-graph-wrapper">
+      <div className="git-graph-header">
+        <div className="graph-style-toggle" role="group" aria-label="Graph display style">
+          <button 
+            className={`toggle-btn ${graphStyle === "tree" ? "active" : ""}`}
+            onClick={() => setGraphStyle("tree")}
+            aria-pressed={graphStyle === "tree"}
+          >
+            🌳 ツリー
+          </button>
+          <button 
+            className={`toggle-btn ${graphStyle === "metro" ? "active" : ""}`}
+            onClick={() => setGraphStyle("metro")}
+            aria-pressed={graphStyle === "metro"}
+          >
+            🚇 路線図
+          </button>
+        </div>
+      </div>
+
       <div
         className="git-graph-svg-container"
         role="img"
         aria-label={t("common.aria.git_graph_description")}
       >
-        <Gitgraph template={customTemplate}>
+        <Gitgraph template={getTemplate(graphStyle)}>
           {(gitgraph: any) => {
             const master = gitgraph.branch("main");
             commits.forEach((commit) => {
