@@ -34,8 +34,8 @@
       "preview_of": "Content of {{path}}"
     },
     "graph_style": {
-      "tree": "🌳 Tree",
-      "metro": "🚇 Metro"
+      "tree": "Tree",
+      "metro": "Metro"
     },
     "git_mode": {
       "label": "Git Mode",

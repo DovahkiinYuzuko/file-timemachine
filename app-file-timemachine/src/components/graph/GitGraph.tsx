@@ -2,6 +2,7 @@ import { type FC, useEffect, useState } from "react";
 import { Gitgraph, TemplateName, templateExtend, type TemplateOptions } from "@gitgraph/react";
 import { invoke } from "@tauri-apps/api/core";
 import { useTranslation } from "react-i18next";
+import { GitBranch, Route } from "lucide-react";
 import "./GitGraph.css";
 
 interface CommitLog {
@@ -116,6 +117,14 @@ const GitGraph: FC = () => {
         {commits.map((commit) => (
           <li key={commit.hash.toString()}>
             {new Date(commit.timestamp * 1000).toLocaleString()}: {commit.message} ({commit.hash.substring(0, 7)})
+          </li>
+        ))}
+      </ul>
+    </div>
+  );
+};
+
+export default GitGraph;mmit.hash.substring(0, 7)})
           </li>
         ))}
       </ul>

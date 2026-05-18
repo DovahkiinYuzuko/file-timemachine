@@ -34,8 +34,8 @@
       "preview_of": "{{path}} の内容"
     },
     "graph_style": {
-      "tree": "🌳 ツリー",
-      "metro": "🚇 路線図"
+      "tree": "ツリー",
+      "metro": "路線図"
     },
     "git_mode": {
       "label": "管理モード",
