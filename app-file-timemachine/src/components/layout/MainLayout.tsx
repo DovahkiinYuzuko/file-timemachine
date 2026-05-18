@@ -5,6 +5,7 @@ import { Save } from "lucide-react";
 import Sidebar, { type SidebarTab } from "./Sidebar";
 import FileTree from "../tree/FileTree";
 import FilePreview from "../preview/FilePreview";
+import HistoryList from "../history/HistoryList";
 import SafetyDialog from "../guard/SafetyDialog";
 import SettingsModal from "../settings/SettingsModal";
 import HelpModal from "../help/HelpModal";
@@ -35,6 +36,7 @@ const MainLayout: FC = () => {
   const [isHelpModalOpen, setIsHelpModalOpen] = useState(false);
   const [safetyIssues, setSafetyIssues] = useState<SafetyIssue[]>([]);
   const [selectedFilePath, setSelectedFilePath] = useState<string | null>(null);
+  const [historyRefreshKey, setHistoryRefreshKey] = useState(0);
 
   // フォルダ選択時の処理
   const handleOpenFolder = (path: string) => {
@@ -71,6 +73,9 @@ const MainLayout: FC = () => {
 
     alert("保存したよ！（自動スキャン: " + (isAutoScanEnabled ? "ON" : "OFF") + "）");
     logger.info("保存が完了したよ");
+    
+    // 保存後に履歴を再取得させる
+    setHistoryRefreshKey(prev => prev + 1);
   };
 
   const handleTabChange = (tab: SidebarTab) => {
@@ -160,7 +165,9 @@ const MainLayout: FC = () => {
                             <Tooltip content={t("tooltip.history_list")} />
                           </h2>
                         </header>
-                        <div className="panel-body">{t("common.placeholder.history_list")}</div>
+                        <div className="panel-body">
+                          <HistoryList projectPath={projectPath} refreshKey={historyRefreshKey} />
+                        </div>
                       </section>
                     </Panel>
                   </PanelGroup>
