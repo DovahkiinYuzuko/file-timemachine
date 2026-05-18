@@ -73,7 +73,9 @@ const HistoryList: FC<HistoryListProps> = ({ projectPath, refreshKey = 0 }) => {
   }
 
   return (
+    // [Accessibility Strategy] スクリーンリーダーにこのコンテナの役割を正しく伝えるため、aria-label を設定しています。
     <div className="history-list-container" aria-label={t("common.history_list")}>
+      {/* [Accessibility Strategy] テーブルのデータ構造をセマンティックに伝え、スクリーンリーダーでのナビゲーションを可能にするため、ネイティブの table 要素を使用しています。 */}
       <table className="history-table">
         <thead>
           <tr>
