@@ -29,9 +29,13 @@
       "failed_to_fetch_logs": "Failed to fetch commit history"
     },
     "aria": {
-      "git_graph_description": "Visual graph of Git commit history",
+      "git_graph_description": "A visual representation of the Git commit history",
       "file_preview": "Preview of {{path}}",
       "preview_of": "Content of {{path}}"
+    },
+    "graph_style": {
+      "tree": "🌳 Tree",
+      "metro": "🚇 Metro"
     },
     "git_mode": {
       "label": "Git Mode",

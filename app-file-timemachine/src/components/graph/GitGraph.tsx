@@ -1,5 +1,5 @@
 import { type FC, useEffect, useState } from "react";
-import { Gitgraph, TemplateName, templateExtend } from "@gitgraph/react";
+import { Gitgraph, TemplateName, templateExtend, type TemplateOptions } from "@gitgraph/react";
 import { invoke } from "@tauri-apps/api/core";
 import { useTranslation } from "react-i18next";
 import "./GitGraph.css";
@@ -27,7 +27,7 @@ const GitGraph: FC = () => {
 
   // カスタムテンプレート：日本語が綺麗に見えるようにフォントなどを微調整
   const getTemplate = (style: GraphStyle) => {
-    const baseOptions: any = {
+    const baseOptions: TemplateOptions = {
       colors: ["#3b82f6", "#10b981", "#f59e0b", "#ef4444"],
       commit: {
         message: {
@@ -74,19 +74,19 @@ const GitGraph: FC = () => {
     <div className="git-graph-wrapper">
       <div className="git-graph-header">
         <div className="graph-style-toggle" role="group" aria-label="Graph display style">
-          <button 
+          <button
             className={`toggle-btn ${graphStyle === "tree" ? "active" : ""}`}
             onClick={() => setGraphStyle("tree")}
             aria-pressed={graphStyle === "tree"}
           >
-            🌳 ツリー
+            {t("common.graph_style.tree")}
           </button>
-          <button 
+          <button
             className={`toggle-btn ${graphStyle === "metro" ? "active" : ""}`}
             onClick={() => setGraphStyle("metro")}
             aria-pressed={graphStyle === "metro"}
           >
-            🚇 路線図
+            {t("common.graph_style.metro")}
           </button>
         </div>
       </div>
