@@ -1,0 +1,57 @@
+/* app-file-timemachine/src/components/history/HistoryList.css */
+.history-list-container {
+  width: 100%;
+  height: 100%;
+  overflow-y: auto;
+}
+
+.history-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.9rem;
+}
+
+.history-table th,
+.history-table td {
+  padding: 8px 12px;
+  text-align: left;
+  border-bottom: 1px solid var(--border-color, #e1e4e8);
+}
+
+.history-table th {
+  background-color: var(--bg-tertiary, #f6f8fa);
+  font-weight: 600;
+  position: sticky;
+  top: 0;
+  z-index: 1;
+}
+
+.history-table tr:hover {
+  background-color: var(--bg-hover, #f1f8ff);
+}
+
+.history-hash {
+  font-family: monospace;
+  color: var(--text-secondary, #586069);
+}
+
+.history-message {
+  font-weight: 500;
+  color: var(--text-primary, #24292e);
+}
+
+.history-date {
+  color: var(--text-secondary, #586069);
+  white-space: nowrap;
+}
+
+.history-empty,
+.history-error {
+  padding: 20px;
+  text-align: center;
+  color: var(--text-secondary, #586069);
+}
+
+.history-error {
+  color: var(--error-color, #cb2431);
+}
