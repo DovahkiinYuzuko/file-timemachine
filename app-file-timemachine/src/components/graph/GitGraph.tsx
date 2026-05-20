@@ -32,27 +32,59 @@ const GitGraph: FC<GitGraphProps> = ({ projectPath, refreshKey, onInitSuccess })
   const [error, setError] = useState<string | null>(null);
   const [graphStyle, setGraphStyle] = useState<GraphStyle>("metro");
   const [isInitializing, setIsInitializing] = useState<boolean>(false);
+  const [scale, setScale] = useState<number>(0.8); // デフォルトを0.8にしてコンパクトに表示
   const containerRef = useRef<HTMLDivElement>(null);
 
+  const handleZoom = (amount: number) => {
+    setScale((prev) => {
+      const next = parseFloat((prev + amount).toFixed(1));
+      return Math.min(2.0, Math.max(0.4, next));
+    });
+  };
+
   // カスタムテンプレート：日本語が綺麗に見えるようにフォントなどを微調整
-  const getTemplate = (style: GraphStyle) => {
+  // CUD（色覚バリアフリー）カラーパレットを適用し、ズームレベル(scale)に連動させます
+  const getTemplate = (style: GraphStyle, currentScale: number) => {
+    // 基準値にスケールを適用
+    const fontSize = Math.max(9, Math.round(13 * currentScale)); // 最小9px
+    const dotSize = Math.max(4, Math.round(5 * currentScale));   // 最小4px
+    const strokeWidth = Math.max(1, Math.round(2 * currentScale));
+    const lineWidth = Math.max(2, Math.round(3 * currentScale));
+    const spacing = Math.max(15, Math.round(26 * currentScale));  // コミット間隔
+    const branchSpacing = Math.max(15, Math.round(22 * currentScale)); // ブランチ間隔
+
+    // CUD（岡部・柴田パレット）準拠のバリアフリー配色（ダークモード用）
+    const cudColors = [
+      "#56b4e9", // スカイブルー（P型・D型でも視認可能）
+      "#e69f00", // オレンジ（高いコントラスト）
+      "#009e73", // 青緑（赤緑色盲でも区別しやすい）
+      "#cc79a7"  // マゼンタピンク（青・緑と交差してもはっきり区別可能）
+    ];
+
     const baseOptions: any = {
-      colors: ["#3b82f6", "#10b981", "#f59e0b", "#ef4444"],
+      // ツリー時はシックなモノトーン、路線図時はCUDのカラフル配色で統一
+      colors: style === "tree" 
+        ? ["#888888", "#aaaaaa", "#cccccc", "#eeeeee"] 
+        : cudColors,
+      branch: {
+        lineWidth: lineWidth,
+        spacing: branchSpacing,
+      },
       commit: {
+        spacing: spacing,
+        dot: {
+          size: dotSize,
+          strokeWidth: strokeWidth,
+        },
         message: {
           displayHash: true,
-          font: "normal 12pt 'Segoe UI', 'Meiryo', sans-serif",
+          font: `normal ${fontSize}px 'Segoe UI', 'Yu Gothic UI', 'Hiragino Kaku Gothic ProN', 'Meiryo', sans-serif`,
         },
       },
     };
 
-    if (style === "tree") {
-      // ツリー形式（標準的な丸みのあるデザイン）
-      return templateExtend(TemplateName.BlackArrow, baseOptions);
-    } else {
-      // 路線図形式（直線的なデザイン）
-      return templateExtend(TemplateName.Metro, baseOptions);
-    }
+    // ツリーと路線図の両方で TemplateName.Metro ベースに統一して野暮ったい黒矢印を廃止！
+    return templateExtend(TemplateName.Metro, baseOptions);
   };
 
   // 履歴データの取得
@@ -87,7 +119,7 @@ const GitGraph: FC<GitGraphProps> = ({ projectPath, refreshKey, onInitSuccess })
 
     try {
       const gitgraph = createGitgraph(containerRef.current, {
-        template: getTemplate(graphStyle),
+        template: getTemplate(graphStyle, scale),
       });
 
       const master = gitgraph.branch("main");
@@ -102,7 +134,7 @@ const GitGraph: FC<GitGraphProps> = ({ projectPath, refreshKey, onInitSuccess })
     } catch (e) {
       console.error("Failed to render Git graph:", e);
     }
-  }, [commits, graphStyle]);
+  }, [commits, graphStyle, scale]);
 
   const handleInit = async () => {
     if (!projectPath) return;
@@ -215,6 +247,33 @@ const GitGraph: FC<GitGraphProps> = ({ projectPath, refreshKey, onInitSuccess })
             aria-pressed={graphStyle === "metro"}
           >
             {t("common.graph_style.metro")}
+          </button>
+        </div>
+
+        <div className="graph-zoom-controls" role="group" aria-label="Zoom controls">
+          <button
+            className="zoom-btn"
+            onClick={() => handleZoom(-0.1)}
+            disabled={scale <= 0.4}
+            title="ズームアウト"
+          >
+            -
+          </button>
+          <span className="zoom-level">{Math.round(scale * 100)}%</span>
+          <button
+            className="zoom-btn"
+            onClick={() => handleZoom(0.1)}
+            disabled={scale >= 2.0}
+            title="ズームイン"
+          >
+            +
+          </button>
+          <button
+            className="zoom-btn reset-btn"
+            onClick={() => setScale(0.8)}
+            title="ズームリセット"
+          >
+            ↺
           </button>
         </div>
       </div>

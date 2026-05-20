@@ -40,7 +40,8 @@
 
 .git-graph-header {
   display: flex;
-  justify-content: flex-end;
+  justify-content: space-between;
+  align-items: center;
   margin-bottom: 10px;
 }
 
@@ -170,5 +171,61 @@
   to {
     transform: rotate(360deg);
   }
+}
+
+/* ズームコントロールUIのスタイリング（ダークモード仕様） */
+.graph-zoom-controls {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  background-color: var(--bg-tertiary, #1a1a1a);
+  border: 1px solid var(--border-color, #2a2a2a);
+  border-radius: 4px;
+  padding: 2px 4px;
+}
+
+.zoom-btn {
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-family: -apple-system, "BlinkMacSystemFont", "Hiragino Sans", "Hiragino Kaku Gothic ProN", "Yu Gothic", "Meiryo", sans-serif;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text-secondary, #b5b5b5);
+  width: 22px;
+  height: 22px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 4px;
+  transition: background-color 0.15s ease, color 0.15s ease;
+}
+
+.zoom-btn:hover:not(:disabled) {
+  background-color: var(--bg-hover, #2a2a2a);
+  color: var(--accent, #0ea5e9);
+}
+
+.zoom-btn:active:not(:disabled) {
+  opacity: 0.7;
+}
+
+.zoom-btn:disabled {
+  color: var(--text-disabled, #555555);
+  cursor: not-allowed;
+}
+
+.zoom-btn.reset-btn {
+  font-size: 11px;
+  margin-left: 2px;
+}
+
+.zoom-level {
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+  font-size: 11px;
+  color: var(--text-secondary, #b5b5b5);
+  min-width: 36px;
+  text-align: center;
+  user-select: none;
 }
 
