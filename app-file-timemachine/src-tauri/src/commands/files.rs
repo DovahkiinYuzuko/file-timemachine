@@ -70,16 +70,24 @@ pub fn get_file_tree(root_path: String) -> Result<Vec<FileEntry>, String> {
                 let rel_path = path.strip_prefix(&root_str).unwrap_or(path).trim_start_matches(|c| c == '\\' || c == '/');
                 // Windowsのバックスラッシュをスラッシュに正規化してから渡す
                 let rel_path_normalized = rel_path.replace('\\', "/");
+                log::debug!("[check-ignore stdin] 送信パス: {:?}", rel_path_normalized);
                 writeln!(stdin, "{}", rel_path_normalized).map_err(|e| format!("stdinへの書き込みに失敗したよ: {}", e))?;
             }
         }
 
         let output = child.wait_with_output().map_err(|e| format!("git check-ignoreの待機に失敗したよ: {}", e))?;   
         let stdout = String::from_utf8_lossy(&output.stdout);
+        log::debug!("[check-ignore stdout] 生の出力:\n{}", stdout);
+        log::debug!("[check-ignore] exit status: {:?}", output.status);
         stdout.lines().map(|s| s.to_string()).collect::<Vec<String>>()
     } else {
         Vec::new()
     };
+
+    log::debug!("[check-ignore] ignored_paths 件数: {}", ignored_paths.len());
+    for p in &ignored_paths {
+        log::debug!("[check-ignore] ignored: {:?}", p);
+    }
 
     let ignored_set: std::collections::HashSet<String> = ignored_paths.into_iter().collect();
 
@@ -88,7 +96,12 @@ pub fn get_file_tree(root_path: String) -> Result<Vec<FileEntry>, String> {
     let mut entry_map: HashMap<PathBuf, FileEntry> = entries.into_iter().map(|(p, mut e)| {
         let rel_path = e.path.strip_prefix(&root_str).unwrap_or(&e.path).trim_start_matches(|c| c == '\\' || c == '/');    
         let normalized_rel_path = rel_path.replace('\\', "/");
-        if ignored_set.contains(&normalized_rel_path) {
+        let matched = ignored_set.contains(&normalized_rel_path);
+        log::debug!(
+            "[is_ignored] {:?} → normalized: {:?} → matched: {}",
+            e.path, normalized_rel_path, matched
+        );
+        if matched {
             e.is_ignored = true;
         }
         (p, e)
