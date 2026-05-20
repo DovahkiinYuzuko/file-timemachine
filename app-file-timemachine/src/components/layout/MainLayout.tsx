@@ -1,4 +1,4 @@
-import { type FC, useState } from "react";
+import { type FC, useState, useEffect } from "react";
 import { useTranslation } from "react-i18next";
 import { Panel, Group as PanelGroup, Separator as PanelResizeHandle } from "react-resizable-panels";
 import { Save, Loader2 } from "lucide-react";
@@ -15,6 +15,7 @@ import Tooltip from "../common/Tooltip";
 import logger from "../../utils/logger";
 import { type SafetyIssue } from "../../utils/safety";
 import { invoke } from "@tauri-apps/api/core";
+import { getAppConfig, updateAppConfig } from "../../api/config";
 import "./MainLayout.css";
 
 /**
@@ -44,10 +45,31 @@ const MainLayout: FC = () => {
   const [isCommitting, setIsCommitting] = useState(false);
   const [defaultCommitMessage, setDefaultCommitMessage] = useState("");
 
+  // 初期ロード時に前回開いていたフォルダを復元
+  useEffect(() => {
+    const restoreFolder = async () => {
+      try {
+        const config = await getAppConfig();
+        if (config.last_opened_folder) {
+          logger.info(`前回開いていたフォルダを復元したよ: ${config.last_opened_folder}`);
+          setProjectPath(config.last_opened_folder);
+        }
+      } catch (error) {
+        logger.error(`前回開いていたフォルダの復元に失敗したよ: ${error}`);
+      }
+    };
+    restoreFolder();
+  }, []);
+
   // フォルダ選択時の処理
-  const handleOpenFolder = (path: string) => {
+  const handleOpenFolder = async (path: string) => {
     logger.info(`フォルダを選択したよ: ${path}`);
     setProjectPath(path);
+    try {
+      await updateAppConfig({ last_opened_folder: path });
+    } catch (error) {
+      logger.error(`フォルダの保存に失敗したよ: ${error}`);
+    }
   };
 
   // Gitコミットを実際に実行する処理
@@ -81,8 +103,14 @@ const MainLayout: FC = () => {
   };
 
   // 脆弱性スキャンをパスした、または無視して進む場合のコミット・保存処理
-  const proceedToSaveOrCommit = () => {
-    const saveBehavior = localStorage.getItem("settings_save_behavior") || "confirm";
+  const proceedToSaveOrCommit = async () => {
+    let saveBehavior = "confirm";
+    try {
+      const config = await getAppConfig();
+      saveBehavior = config.settings_save_behavior || "confirm";
+    } catch (error) {
+      logger.error(`保存設定の読み込みに失敗したよ: ${error}`);
+    }
 
     const now = new Date();
     // YYYY-MM-DD HH:mm 形式でフォーマットする
@@ -108,7 +136,7 @@ const MainLayout: FC = () => {
   };
 
   // 保存ボタンが押された時の処理
-  const handleSaveClick = () => {
+  const handleSaveClick = async () => {
     if (!projectPath) {
       logger.warn("プロジェクトフォルダが選択されていない状態で保存ボタンが押されました。");
       alert("フォルダが開かれていないため保存できません。左のサイドバーからフォルダを開いてください。");
@@ -116,7 +144,14 @@ const MainLayout: FC = () => {
     }
 
     logger.info("保存プロセスを開始します。");
-    const isAutoScanEnabled = localStorage.getItem("settings_auto_scan") !== "false";
+    
+    let isAutoScanEnabled = true;
+    try {
+      const config = await getAppConfig();
+      isAutoScanEnabled = config.settings_auto_scan !== false;
+    } catch (error) {
+      logger.error(`自動スキャン設定の読み込みに失敗したよ: ${error}`);
+    }
 
     if (isAutoScanEnabled) {
       logger.debug("自動脆弱性スキャンが有効ですが、現在デモデータによる誤検知を防ぐためスキップしています。");
@@ -125,7 +160,7 @@ const MainLayout: FC = () => {
     }
 
     // スキャンクリアならコミットに進む
-    proceedToSaveOrCommit();
+    await proceedToSaveOrCommit();
   };
 
   const handleTabChange = (tab: SidebarTab) => {

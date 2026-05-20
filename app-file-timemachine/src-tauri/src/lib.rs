@@ -4,6 +4,7 @@ use commands::setup::check_dependencies;
 use commands::git::{git_init, git_commit, git_log, update_gitignore};
 use commands::files::{get_file_tree, get_file_info};
 use commands::config::{get_project_config, set_project_config};
+use commands::app_config::{get_app_config, set_app_config};
 use commands::preview::read_file_content;
 
 // Learn more about Tauri commands at https://tauri.app/develop/calling-rust/
@@ -36,6 +37,8 @@ pub fn run() {
             get_file_info,
             get_project_config,
             set_project_config,
+            get_app_config,
+            set_app_config,
             read_file_content
         ])
         .run(tauri::generate_context!())

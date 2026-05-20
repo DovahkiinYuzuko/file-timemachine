@@ -1,8 +1,8 @@
-import { type FC, useEffect, useState, useRef } from "react";
+import { type FC, useEffect, useState, useRef, MouseEvent, WheelEvent } from "react";
 import { createGitgraph, TemplateName, templateExtend } from "@gitgraph/js";
 import { invoke } from "@tauri-apps/api/core";
 import { useTranslation } from "react-i18next";
-import { FolderOpen, History, Loader2 } from "lucide-react";
+import { FolderOpen, History, Loader2, Maximize } from "lucide-react";
 import "./GitGraph.css";
 
 interface CommitLog {
@@ -32,28 +32,38 @@ const GitGraph: FC<GitGraphProps> = ({ projectPath, refreshKey, onInitSuccess })
   const [error, setError] = useState<string | null>(null);
   const [graphStyle, setGraphStyle] = useState<GraphStyle>("metro");
   const [isInitializing, setIsInitializing] = useState<boolean>(false);
-  const [scale, setScale] = useState<number>(0.8); // デフォルトを0.8にしてコンパクトに表示
+  const [scale, setScale] = useState<number>(1.0);
+  const [offset, setOffset] = useState({ x: 0, y: 0 });
+  const [isDragging, setIsDragging] = useState(false);
+  const [dragStart, setDragStart] = useState({ x: 0, y: 0 });
+  
   const containerRef = useRef<HTMLDivElement>(null);
+  const viewportRef = useRef<HTMLDivElement>(null);
 
-  const handleZoom = (amount: number) => {
+  // カメラをリセットする処理
+  const handleResetCamera = () => {
+    setScale(1.0);
+    setOffset({ x: 0, y: 0 });
+  };
+
+  const handleZoomBtnClick = (amount: number) => {
     setScale((prev) => {
-      const next = parseFloat((prev + amount).toFixed(1));
-      return Math.min(2.0, Math.max(0.4, next));
+      const next = prev + amount;
+      return Math.min(3.0, Math.max(0.2, next));
     });
   };
 
   // カスタムテンプレート：日本語が綺麗に見えるようにフォントなどを微調整
-  // CUD（色覚バリアフリー）カラーパレットを適用し、ズームレベル(scale)に連動させます
-  const getTemplate = (style: GraphStyle, currentScale: number) => {
-    // 基準値にスケールを適用
-    const spacing = Math.round(40 * currentScale);  // コミットの縦間隔をHTMLと同期するため40pxベースに固定
+  // ズームやパンはCSS transformで行うため、SVGの描画スケールは常に固定 (1.0相当) にします。
+  const getTemplate = (style: GraphStyle) => {
+    const spacing = 40;  // コミットの縦間隔
     
     // ツリーと路線図のデザイン差別化
     const isTree = style === "tree";
-    const dotSize = Math.round((isTree ? 4 : 6) * currentScale);
-    const strokeWidth = Math.round((isTree ? 1 : 2) * currentScale);
-    const lineWidth = Math.round((isTree ? 2 : 4) * currentScale);
-    const branchSpacing = Math.round(20 * currentScale); // ブランチの横間隔
+    const dotSize = isTree ? 4 : 6;
+    const strokeWidth = isTree ? 1 : 2;
+    const lineWidth = isTree ? 2 : 4;
+    const branchSpacing = 20; // ブランチの横間隔
 
     // CUD（岡部・柴田パレット）準拠 of バリアフリー配色（ダークモード用）
     const cudColors = [
@@ -123,7 +133,7 @@ const GitGraph: FC<GitGraphProps> = ({ projectPath, refreshKey, onInitSuccess })
 
     try {
       const gitgraph = createGitgraph(containerRef.current, {
-        template: getTemplate(graphStyle, scale),
+        template: getTemplate(graphStyle),
       });
 
       const master = gitgraph.branch("main");
@@ -137,7 +147,51 @@ const GitGraph: FC<GitGraphProps> = ({ projectPath, refreshKey, onInitSuccess })
     } catch (e) {
       console.error("Failed to render Git graph:", e);
     }
-  }, [commits, graphStyle, scale]);
+  }, [commits, graphStyle]);
+
+  // パン操作（ドラッグ移動）のハンドリング
+  const handleMouseDown = (e: MouseEvent<HTMLDivElement>) => {
+    setIsDragging(true);
+    setDragStart({ x: e.clientX - offset.x, y: e.clientY - offset.y });
+  };
+
+  const handleMouseMove = (e: MouseEvent<HTMLDivElement>) => {
+    if (!isDragging) return;
+    setOffset({
+      x: e.clientX - dragStart.x,
+      y: e.clientY - dragStart.y,
+    });
+  };
+
+  const handleMouseUp = () => {
+    setIsDragging(false);
+  };
+
+  const handleMouseLeave = () => {
+    if (isDragging) setIsDragging(false);
+  };
+
+  // ホイール操作（ズームとパン）のハンドリング
+  const handleWheel = (e: WheelEvent<HTMLDivElement>) => {
+    if (e.ctrlKey || e.metaKey) {
+      // ズーム
+      e.preventDefault();
+      const zoomFactor = -e.deltaY * 0.005;
+      
+      setScale((prevScale) => {
+        const newScale = Math.min(3.0, Math.max(0.2, prevScale + zoomFactor));
+        // カーソル位置を基準にズームする処理は複雑になるため、ここでは単純なスケール変更のみとする
+        // (transform-origin で中央または左上基準になる)
+        return newScale;
+      });
+    } else {
+      // 通常のスクロールはパン移動に変換
+      setOffset((prev) => ({
+        x: prev.x - e.deltaX,
+        y: prev.y - e.deltaY,
+      }));
+    }
+  };
 
   const handleInit = async () => {
     if (!projectPath) return;
@@ -256,8 +310,8 @@ const GitGraph: FC<GitGraphProps> = ({ projectPath, refreshKey, onInitSuccess })
         <div className="graph-zoom-controls" role="group" aria-label="Zoom controls">
           <button
             className="zoom-btn"
-            onClick={() => handleZoom(-0.1)}
-            disabled={scale <= 0.4}
+            onClick={() => handleZoomBtnClick(-0.2)}
+            disabled={scale <= 0.2}
             title="ズームアウト"
           >
             -
@@ -265,48 +319,64 @@ const GitGraph: FC<GitGraphProps> = ({ projectPath, refreshKey, onInitSuccess })
           <span className="zoom-level">{Math.round(scale * 100)}%</span>
           <button
             className="zoom-btn"
-            onClick={() => handleZoom(0.1)}
-            disabled={scale >= 2.0}
+            onClick={() => handleZoomBtnClick(0.2)}
+            disabled={scale >= 3.0}
             title="ズームイン"
           >
             +
           </button>
           <button
             className="zoom-btn reset-btn"
-            onClick={() => setScale(0.8)}
-            title="ズームリセット"
+            onClick={handleResetCamera}
+            title="カメラリセット"
           >
-            ↺
+            <Maximize size={14} />
           </button>
         </div>
       </div>
 
-      <div className="git-graph-body">
-        <div
-          ref={containerRef}
-          className="git-graph-svg-container"
-          role="presentation"
-        />
+      <div 
+        className={`git-graph-viewport ${isDragging ? "dragging" : ""}`}
+        ref={viewportRef}
+        onMouseDown={handleMouseDown}
+        onMouseMove={handleMouseMove}
+        onMouseUp={handleMouseUp}
+        onMouseLeave={handleMouseLeave}
+        onWheel={handleWheel}
+      >
         <div 
-          className="git-graph-commit-list"
-          role="list"
-          aria-label={t("common.aria.git_graph_description")}
+          className="git-graph-canvas"
+          style={{ 
+            transform: `translate(${offset.x}px, ${offset.y}px) scale(${scale})`,
+            transformOrigin: "0 0"
+          }}
         >
-          {commits.map((commit, index) => (
-            <div 
-              key={commit.hash.toString()} 
-              className="commit-list-row"
-              style={{ height: `${Math.round(40 * scale)}px` }} // SVG側の spacing と完璧に高さを一致させる
-              onClick={() => console.log("Commit clicked:", commit.hash)}
-            >
-              <div className="commit-info-wrapper">
-                <span className="commit-hash">{commit.hash.substring(0, 7)}</span>
-                {/* 最新のコミットのみ main バッジを表示 */}
-                {index === 0 && <span className="commit-branch-badge">main</span>}
-                <span className="commit-message" title={commit.message}>{commit.message}</span>
+          <div
+            ref={containerRef}
+            className="git-graph-svg-container"
+            role="presentation"
+          />
+          <div 
+            className="git-graph-commit-list"
+            role="list"
+            aria-label={t("common.aria.git_graph_description")}
+          >
+            {commits.map((commit, index) => (
+              <div 
+                key={commit.hash.toString()} 
+                className="commit-list-row"
+                style={{ height: "40px" }} // CSS/SVG側の spacing (40px) と完璧に一致
+                onClick={() => console.log("Commit clicked:", commit.hash)}
+              >
+                <div className="commit-info-wrapper">
+                  <span className="commit-hash">{commit.hash.substring(0, 7)}</span>
+                  {/* 最新のコミットのみ main バッジを表示 */}
+                  {index === 0 && <span className="commit-branch-badge">main</span>}
+                  <span className="commit-message" title={commit.message}>{commit.message}</span>
+                </div>
               </div>
-            </div>
-          ))}
+            ))}
+          </div>
         </div>
       </div>
     </div>

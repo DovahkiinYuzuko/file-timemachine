@@ -8,13 +8,25 @@
   overflow: hidden;
 }
 
-.git-graph-body {
+.git-graph-viewport {
+  flex: 1;
+  position: relative;
+  overflow: hidden;
+  background-color: transparent;
+  cursor: grab;
+}
+
+.git-graph-viewport.dragging {
+  cursor: grabbing;
+}
+
+.git-graph-canvas {
   display: flex;
   flex-direction: row;
-  flex: 1;
-  overflow: auto;
-  background-color: transparent;
-  position: relative;
+  position: absolute;
+  top: 0;
+  left: 0;
+  min-width: 100%;
 }
 
 .git-graph-svg-container {

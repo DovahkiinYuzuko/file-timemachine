@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import MainLayout from "./components/layout/MainLayout";
 import Wizard from "./components/setup/Wizard";
 import logger from "./utils/logger";
+import { getAppConfig, updateAppConfig } from "./api/config";
 
 import "./App.css";
 
@@ -10,20 +11,34 @@ function App() {
 
   useEffect(() => {
     logger.info("アプリが起動したよ！");
-    const completed = localStorage.getItem("setup_completed") === "true";
-    setSetupCompleted(completed);
-    logger.debug(`セットアップ状況を読み込んだよ: ${completed}`);
+    
+    const initApp = async () => {
+      try {
+        const config = await getAppConfig();
+        const completed = config.setup_completed === true;
+        setSetupCompleted(completed);
+        logger.debug(`セットアップ状況を読み込んだよ: ${completed}`);
 
-    // テーマの初期適用
-    const savedTheme = localStorage.getItem("settings_theme") || "light";
-    document.documentElement.setAttribute("data-theme", savedTheme);
-    logger.debug(`初期テーマを適用したよ: ${savedTheme}`);
+        const savedTheme = config.settings_theme || "light";
+        document.documentElement.setAttribute("data-theme", savedTheme);
+        logger.debug(`初期テーマを適用したよ: ${savedTheme}`);
+      } catch (error) {
+        logger.error(`設定の読み込みに失敗したよ: ${error}`);
+        setSetupCompleted(false);
+      }
+    };
+
+    initApp();
   }, []);
 
-  const handleSetupComplete = () => {
+  const handleSetupComplete = async () => {
     logger.info("セットアップが完了したよ！メイン画面に移動するね");
-    localStorage.setItem("setup_completed", "true");
-    setSetupCompleted(true);
+    try {
+      await updateAppConfig({ setup_completed: true });
+      setSetupCompleted(true);
+    } catch (error) {
+      logger.error(`セットアップ完了フラグの保存に失敗したよ: ${error}`);
+    }
   };
 
   if (setupCompleted === null) {

@@ -3,6 +3,7 @@ import { useTranslation } from "react-i18next";
 import { X, GitBranch, Languages, Settings2, ShieldCheck, Cpu, Palette } from "lucide-react";
 import { open } from "@tauri-apps/plugin-shell";
 import logger from "../../utils/logger";
+import { getAppConfig, updateAppConfig } from "../../api/config";
 import "./SettingsModal.css";
 
 interface SettingsModalProps {
@@ -27,42 +28,67 @@ const SettingsModal: FC<SettingsModalProps> = ({ isOpen, onClose }) => {
   const [autoScan, setAutoScan] = useState(true);
   const [theme, setTheme] = useState<Theme>("light");
 
-  // Load settings from localStorage on mount
+  // Load settings from AppConfig on mount
   useEffect(() => {
-    const savedBehavior = localStorage.getItem("settings_save_behavior") as SaveBehavior;
-    const savedAutoScan = localStorage.getItem("settings_auto_scan");
-    const savedTheme = localStorage.getItem("settings_theme") as Theme;
-
-    if (savedBehavior) {
-      setSaveBehavior(savedBehavior);
-      logger.debug(`設定を読み込んだよ: 保存挙動 = ${savedBehavior}`);
-    }
-    if (savedAutoScan !== null) {
-      const isAuto = savedAutoScan === "true";
-      setAutoScan(isAuto);
-      logger.debug(`設定を読み込んだよ: 自動スキャン = ${isAuto}`);
-    }
-    if (savedTheme) {
-      setTheme(savedTheme);
-      logger.debug(`設定を読み込んだよ: テーマ = ${savedTheme}`);
-    }
+    const loadSettings = async () => {
+      try {
+        const config = await getAppConfig();
+        
+        if (config.settings_save_behavior) {
+          setSaveBehavior(config.settings_save_behavior as SaveBehavior);
+          logger.debug(`設定を読み込んだよ: 保存挙動 = ${config.settings_save_behavior}`);
+        }
+        if (config.settings_auto_scan !== null) {
+          setAutoScan(config.settings_auto_scan);
+          logger.debug(`設定を読み込んだよ: 自動スキャン = ${config.settings_auto_scan}`);
+        }
+        if (config.settings_theme) {
+          setTheme(config.settings_theme as Theme);
+          logger.debug(`設定を読み込んだよ: テーマ = ${config.settings_theme}`);
+        }
+      } catch (error) {
+        logger.error(`設定の読み込みに失敗したよ: ${error}`);
+      }
+    };
+    loadSettings();
   }, []);
 
-  // Save settings to localStorage when they change
+  // Save settings to AppConfig when they change
   useEffect(() => {
-    localStorage.setItem("settings_save_behavior", saveBehavior);
-    logger.info(`保存挙動の設定を変更したよ: ${saveBehavior}`);
+    const save = async () => {
+      try {
+        await updateAppConfig({ settings_save_behavior: saveBehavior });
+        logger.info(`保存挙動の設定を変更したよ: ${saveBehavior}`);
+      } catch (error) {
+        logger.error(`保存挙動の保存に失敗したよ: ${error}`);
+      }
+    };
+    save();
   }, [saveBehavior]);
 
   useEffect(() => {
-    localStorage.setItem("settings_auto_scan", String(autoScan));
-    logger.info(`自動スキャンの設定を変更したよ: ${autoScan}`);
+    const save = async () => {
+      try {
+        await updateAppConfig({ settings_auto_scan: autoScan });
+        logger.info(`自動スキャンの設定を変更したよ: ${autoScan}`);
+      } catch (error) {
+        logger.error(`自動スキャンの保存に失敗したよ: ${error}`);
+      }
+    };
+    save();
   }, [autoScan]);
 
   useEffect(() => {
-    localStorage.setItem("settings_theme", theme);
-    document.documentElement.setAttribute("data-theme", theme);
-    logger.info(`テーマの設定を変更したよ: ${theme}`);
+    const save = async () => {
+      try {
+        await updateAppConfig({ settings_theme: theme });
+        document.documentElement.setAttribute("data-theme", theme);
+        logger.info(`テーマの設定を変更したよ: ${theme}`);
+      } catch (error) {
+        logger.error(`テーマの保存に失敗したよ: ${error}`);
+      }
+    };
+    save();
   }, [theme]);
 
   // Accessibility: Handle Escape key
