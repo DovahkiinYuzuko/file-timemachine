@@ -14,12 +14,20 @@ pub enum GitMode {
 #[derive(Debug, Serialize, Deserialize)]
 pub struct ProjectConfig {
     pub git_mode: GitMode,
+    /// Whitelistモードで追跡するエントリ（「!ファイル名」形式、「!.gitignore」は除く）
+    #[serde(default)]
+    pub whitelist_entries: Vec<String>,
+    /// Blacklistモードで無視するエントリ（ファイル名やパターン）
+    #[serde(default)]
+    pub blacklist_entries: Vec<String>,
 }
 
 impl Default for ProjectConfig {
     fn default() -> Self {
         Self {
             git_mode: GitMode::Blacklist,
+            whitelist_entries: Vec::new(),
+            blacklist_entries: Vec::new(),
         }
     }
 }
