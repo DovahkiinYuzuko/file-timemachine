@@ -114,6 +114,22 @@ const FileTreeItem: FC<{
 });
 
 /**
+ * treeData内の指定パスのエントリのis_ignoredを再帰的に更新するヘルパー。
+ * 楽観的更新とエラー時のロールバックに使用する。
+ */
+function updateIgnoreState(entries: FileEntry[], targetPath: string, newIsIgnored: boolean): FileEntry[] {
+  return entries.map(entry => {
+    if (entry.path === targetPath) {
+      return { ...entry, is_ignored: newIsIgnored };
+    }
+    if (entry.children) {
+      return { ...entry, children: updateIgnoreState(entry.children, targetPath, newIsIgnored) };
+    }
+    return entry;
+  });
+}
+
+/**
  * ファイルツリー全体を管理するメインコンポーネント
  */
 const FileTree: FC<FileTreeProps> = ({ rootPath, onFileSelect }) => {
@@ -123,13 +139,13 @@ const FileTree: FC<FileTreeProps> = ({ rootPath, onFileSelect }) => {
   const [error, setError] = useState<string | null>(null);
   const [gitMode, setGitMode] = useState<GitMode>("blacklist");
 
-  const fetchTree = async () => {
+  // silent=true の場合はローディング表示をスキップする（トグル後の再同期用）
+  const fetchTree = async (silent = false) => {
     if (!rootPath) {
       setTreeData([]);
       return;
     }
-
-    setIsLoading(true);
+    if (!silent) setIsLoading(true);
     setError(null);
     logger.debug(`Starting to fetch file tree for: ${rootPath}`);
     try {
@@ -139,7 +155,7 @@ const FileTree: FC<FileTreeProps> = ({ rootPath, onFileSelect }) => {
     } catch (err) {
       setError(String(err));
     } finally {
-      setIsLoading(false);
+      if (!silent) setIsLoading(false);
     }
   };
 
@@ -174,17 +190,25 @@ const FileTree: FC<FileTreeProps> = ({ rootPath, onFileSelect }) => {
 
   const handleToggleIgnore = async (targetPath: string, currentIgnored: boolean, isDir: boolean) => {
     if (!rootPath) return;
+
+    // 楽観的更新: Rustの応答を待たずに即座にUIを更新する
+    const newIsIgnored = !currentIgnored;
+    setTreeData(prev => updateIgnoreState(prev, targetPath, newIsIgnored));
+
     try {
-      await invoke("update_gitignore", { 
-        rootPath, 
-        targetPath, 
-        isIgnored: !currentIgnored,
+      await invoke("update_gitignore", {
+        rootPath,
+        targetPath,
+        isIgnored: newIsIgnored,
         isDir,
         mode: gitMode
       });
       logger.info(`Updated ignore state for ${targetPath} (isDir=${isDir})`);
-      fetchTree();
+      // ローディングなしでバックグラウンド再取得してRustと同期
+      fetchTree(true);
     } catch (err) {
+      // エラー時は元の状態に戻す（ロールバック）
+      setTreeData(prev => updateIgnoreState(prev, targetPath, currentIgnored));
       logger.error(`Failed to update gitignore: ${err}`);
     }
   };
