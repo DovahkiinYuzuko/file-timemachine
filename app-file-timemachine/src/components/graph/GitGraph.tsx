@@ -46,13 +46,14 @@ const GitGraph: FC<GitGraphProps> = ({ projectPath, refreshKey, onInitSuccess })
   // CUD（色覚バリアフリー）カラーパレットを適用し、ズームレベル(scale)に連動させます
   const getTemplate = (style: GraphStyle, currentScale: number) => {
     // 基準値にスケールを適用
-    const fontSize = Math.max(9, Math.round(13 * currentScale)); // 最小9px
-    const labelFontSize = Math.max(8, Math.round(10 * currentScale)); // ブランチラベル用最小8px
-    const dotSize = Math.max(4, Math.round(5 * currentScale));   // 最小4px
-    const strokeWidth = Math.max(1, Math.round(2 * currentScale));
-    const lineWidth = Math.max(2, Math.round(3 * currentScale));
-    const spacing = Math.max(15, Math.round(26 * currentScale));  // コミット間隔
-    const branchSpacing = Math.max(15, Math.round(22 * currentScale)); // ブランチ間隔
+    const spacing = Math.round(40 * currentScale);  // コミットの縦間隔をHTMLと同期するため40pxベースに固定
+    
+    // ツリーと路線図のデザイン差別化
+    const isTree = style === "tree";
+    const dotSize = Math.round((isTree ? 4 : 6) * currentScale);
+    const strokeWidth = Math.round((isTree ? 1 : 2) * currentScale);
+    const lineWidth = Math.round((isTree ? 2 : 4) * currentScale);
+    const branchSpacing = Math.round(20 * currentScale); // ブランチの横間隔
 
     // CUD（岡部・柴田パレット）準拠 of バリアフリー配色（ダークモード用）
     const cudColors = [
@@ -64,19 +65,14 @@ const GitGraph: FC<GitGraphProps> = ({ projectPath, refreshKey, onInitSuccess })
 
     const baseOptions: any = {
       // ツリー時はシックなモノトーン、路線図時はCUDのカラフル配色で統一
-      colors: style === "tree" 
+      colors: isTree 
         ? ["#888888", "#aaaaaa", "#cccccc", "#eeeeee"] 
         : cudColors,
       branch: {
         lineWidth: lineWidth,
         spacing: branchSpacing,
         label: {
-          display: true,
-          font: `normal ${labelFontSize}px 'Segoe UI', 'Yu Gothic UI', 'Hiragino Sans', sans-serif`,
-          bgColor: "#ddf4ff",
-          color: "#0969da",
-          strokeColor: "transparent",
-          borderRadius: 10,
+          display: false, // HTML側で描画するため完全に非表示
         },
       },
       commit: {
@@ -86,8 +82,7 @@ const GitGraph: FC<GitGraphProps> = ({ projectPath, refreshKey, onInitSuccess })
           strokeWidth: strokeWidth,
         },
         message: {
-          displayHash: true,
-          font: `normal ${fontSize}px 'Segoe UI', 'Yu Gothic UI', 'Hiragino Kaku Gothic ProN', 'Meiryo', sans-serif`,
+          display: false, // HTML側で描画するため完全に非表示
         },
       },
     };
@@ -135,9 +130,8 @@ const GitGraph: FC<GitGraphProps> = ({ projectPath, refreshKey, onInitSuccess })
       commits.forEach((commit) => {
         master.commit({
           hash: commit.hash.substring(0, 7),
-          subject: commit.message,
+          subject: "", // SVG側のテキスト描画はオフなので空にする
           author: "User", // 将来的に取得
-          onMessageClick: () => console.log("Commit clicked:", commit.hash),
         });
       });
     } catch (e) {
@@ -287,21 +281,34 @@ const GitGraph: FC<GitGraphProps> = ({ projectPath, refreshKey, onInitSuccess })
         </div>
       </div>
 
-      <div
-        ref={containerRef}
-        className="git-graph-svg-container"
-        role="img"
-        aria-label={t("common.aria.git_graph_description")}
-      />
-
-      {/* スクリーンリーダー向けの代替表示 */}
-      <ul className="sr-only">
-        {commits.map((commit) => (
-          <li key={commit.hash.toString()}>
-            {new Date(commit.timestamp * 1000).toLocaleString()}: {commit.message} ({commit.hash.substring(0, 7)})
-          </li>
-        ))}
-      </ul>
+      <div className="git-graph-body">
+        <div
+          ref={containerRef}
+          className="git-graph-svg-container"
+          role="presentation"
+        />
+        <div 
+          className="git-graph-commit-list"
+          role="list"
+          aria-label={t("common.aria.git_graph_description")}
+        >
+          {commits.map((commit, index) => (
+            <div 
+              key={commit.hash.toString()} 
+              className="commit-list-row"
+              style={{ height: `${Math.round(40 * scale)}px` }} // SVG側の spacing と完璧に高さを一致させる
+              onClick={() => console.log("Commit clicked:", commit.hash)}
+            >
+              <div className="commit-info-wrapper">
+                <span className="commit-hash">{commit.hash.substring(0, 7)}</span>
+                {/* 最新のコミットのみ main バッジを表示 */}
+                {index === 0 && <span className="commit-branch-badge">main</span>}
+                <span className="commit-message" title={commit.message}>{commit.message}</span>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
     </div>
   );
 };

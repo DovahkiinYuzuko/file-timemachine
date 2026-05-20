@@ -8,12 +8,75 @@
   overflow: hidden;
 }
 
-.git-graph-svg-container {
+.git-graph-body {
+  display: flex;
+  flex-direction: row;
   flex: 1;
   overflow: auto;
-  padding: 1rem;
-  min-width: 600px;
+  background-color: transparent;
+  position: relative;
+}
+
+.git-graph-svg-container {
+  flex: 0 0 auto;
+  width: 120px;
   min-height: 250px;
+  padding-top: 20px;
+}
+
+.git-graph-commit-list {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  padding-top: 20px;
+  min-width: 400px;
+}
+
+.commit-list-row {
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+  transition: background-color 0.15s ease;
+  border-radius: 6px;
+  padding: 0 8px;
+  margin-left: 8px;
+}
+
+.commit-list-row:hover {
+  background-color: var(--hover-bg, #f1f8ff);
+}
+
+.commit-info-wrapper {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  width: 100%;
+  overflow: hidden;
+}
+
+.commit-hash {
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+  font-size: 12px;
+  color: var(--text-muted, #8b949e);
+}
+
+.commit-branch-badge {
+  font-size: 10px;
+  font-weight: 600;
+  padding: 2px 8px;
+  border-radius: 12px;
+  background-color: #ddf4ff;
+  color: #0969da;
+  white-space: nowrap;
+}
+
+.commit-message {
+  font-family: -apple-system, "BlinkMacSystemFont", "Hiragino Sans", "Hiragino Kaku Gothic ProN", "Yu Gothic", "Meiryo", sans-serif;
+  font-size: 13px;
+  color: var(--text-color, #24292e);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .graph-error {
@@ -53,7 +116,7 @@
 
 .graph-style-toggle {
   display: flex;
-  background-color: var(--bg-tertiary, #f6f8fa);
+  background-color: var(--hover-bg, #f6f8fa);
   border: 1px solid var(--border-color, #e1e4e8);
   border-radius: 6px;
   overflow: hidden;
@@ -67,6 +130,11 @@
   cursor: pointer;
   color: var(--text-secondary, #586069);
   transition: all 0.2s ease;
+}
+
+.toggle-btn:focus,
+.zoom-btn:focus {
+  outline: none;
 }
 
 .toggle-btn:hover {
@@ -184,7 +252,7 @@
   display: flex;
   align-items: center;
   gap: 4px;
-  background-color: var(--bg-tertiary, #1a1a1a);
+  background-color: var(--hover-bg, #1a1a1a);
   border: 1px solid var(--border-color, #2a2a2a);
   border-radius: 4px;
   padding: 2px 4px;
