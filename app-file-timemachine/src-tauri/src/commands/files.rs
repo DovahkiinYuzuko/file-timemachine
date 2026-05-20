@@ -5,6 +5,43 @@ use std::process::{Command, Stdio};
 use std::io::{Write, Read};
 use std::path::PathBuf;
 
+/// git check-ignore の出力行をパースして実際のパス文字列に変換する。
+/// git は非ASCII文字を含むパスをダブルクォートで囲んでオクタルエスケープ形式で出力する。
+/// 例: "\343\203\217\343\203\252\343\203\234\343\203\206\343\203\252\343\202\271\343\203\210.md"
+///     → "ハリボテリスト.md"
+fn parse_git_ignore_output_line(line: &str) -> String {
+    let trimmed = line.trim();
+    if trimmed.starts_with('"') && trimmed.ends_with('"') && trimmed.len() >= 2 {
+        let inner = &trimmed[1..trimmed.len() - 1];
+        unescape_git_path(inner)
+    } else {
+        trimmed.to_string()
+    }
+}
+
+/// git のオクタルエスケープシーケンス（\NNN形式）をUTF-8文字列に変換するヘルパー。
+fn unescape_git_path(s: &str) -> String {
+    let mut bytes: Vec<u8> = Vec::new();
+    let chars: Vec<char> = s.chars().collect();
+    let mut i = 0;
+    while i < chars.len() {
+        if chars[i] == '\\' && i + 3 < chars.len() {
+            let octal: String = chars[i + 1..=i + 3].iter().collect();
+            if let Ok(byte_val) = u8::from_str_radix(&octal, 8) {
+                bytes.push(byte_val);
+                i += 4;
+                continue;
+            }
+        }
+        // 通常の文字はそのままバイト列に変換
+        let mut buf = [0u8; 4];
+        let encoded = chars[i].encode_utf8(&mut buf);
+        bytes.extend_from_slice(encoded.as_bytes());
+        i += 1;
+    }
+    String::from_utf8(bytes).unwrap_or_else(|_| s.to_string())
+}
+
 #[derive(Debug, Serialize)]
 pub struct FileEntry {
     pub name: String,
@@ -79,7 +116,8 @@ pub fn get_file_tree(root_path: String) -> Result<Vec<FileEntry>, String> {
         let stdout = String::from_utf8_lossy(&output.stdout);
         log::debug!("[check-ignore stdout] 生の出力:\n{}", stdout);
         log::debug!("[check-ignore] exit status: {:?}", output.status);
-        stdout.lines().map(|s| s.to_string()).collect::<Vec<String>>()
+        // オクタルエスケープ・クォートを解除して通常のUnicode文字列に変換する
+        stdout.lines().map(parse_git_ignore_output_line).collect::<Vec<String>>()
     } else {
         Vec::new()
     };
