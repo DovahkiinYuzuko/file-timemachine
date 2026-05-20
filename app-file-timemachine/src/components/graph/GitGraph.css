@@ -9,6 +9,8 @@
 
 .git-graph-svg-container {
   min-width: 600px;
+  height: calc(100% - 40px);
+  min-height: 250px;
 }
 
 .graph-error {

@@ -1,5 +1,5 @@
-import { type FC, useEffect, useState } from "react";
-import { Gitgraph, TemplateName, templateExtend } from "@gitgraph/react";
+import { type FC, useEffect, useState, useRef } from "react";
+import { createGitgraph, TemplateName, templateExtend } from "@gitgraph/js";
 import { invoke } from "@tauri-apps/api/core";
 import { useTranslation } from "react-i18next";
 import { FolderOpen, History, Loader2 } from "lucide-react";
@@ -32,6 +32,7 @@ const GitGraph: FC<GitGraphProps> = ({ projectPath, refreshKey, onInitSuccess })
   const [error, setError] = useState<string | null>(null);
   const [graphStyle, setGraphStyle] = useState<GraphStyle>("metro");
   const [isInitializing, setIsInitializing] = useState<boolean>(false);
+  const containerRef = useRef<HTMLDivElement>(null);
 
   // カスタムテンプレート：日本語が綺麗に見えるようにフォントなどを微調整
   const getTemplate = (style: GraphStyle) => {
@@ -54,6 +55,7 @@ const GitGraph: FC<GitGraphProps> = ({ projectPath, refreshKey, onInitSuccess })
     }
   };
 
+  // 履歴データの取得
   useEffect(() => {
     const fetchLogs = async () => {
       if (!projectPath) {
@@ -63,7 +65,8 @@ const GitGraph: FC<GitGraphProps> = ({ projectPath, refreshKey, onInitSuccess })
       }
       try {
         const logs = await invoke<CommitLog[]>("git_log", { path: projectPath });
-        setCommits(logs.reverse()); // 古い順に描画するためリバース
+        // logs はイミュータブルに扱うため、シャローコピーを作成してから reverse を実行します
+        setCommits([...logs].reverse()); // 古い順に描画するためリバース
         setError(null);
       } catch (e) {
         console.error("Failed to fetch logs:", e);
@@ -73,6 +76,33 @@ const GitGraph: FC<GitGraphProps> = ({ projectPath, refreshKey, onInitSuccess })
 
     fetchLogs();
   }, [projectPath, refreshKey, t]);
+
+  // @gitgraph/js によるマニュアルDOMレンダリング
+  // StrictMode 等の二重レンダリングによる重複を防ぐため、毎回のレンダリング前に DOM をクリアします
+  useEffect(() => {
+    if (!containerRef.current || commits.length === 0) return;
+
+    // 前回の描画内容をクリア
+    containerRef.current.innerHTML = "";
+
+    try {
+      const gitgraph = createGitgraph(containerRef.current, {
+        template: getTemplate(graphStyle),
+      });
+
+      const master = gitgraph.branch("main");
+      commits.forEach((commit) => {
+        master.commit({
+          hash: commit.hash.substring(0, 7),
+          subject: commit.message,
+          author: "User", // 将来的に取得
+          onMessageClick: () => console.log("Commit clicked:", commit.hash),
+        });
+      });
+    } catch (e) {
+      console.error("Failed to render Git graph:", e);
+    }
+  }, [commits, graphStyle]);
 
   const handleInit = async () => {
     if (!projectPath) return;
@@ -190,24 +220,11 @@ const GitGraph: FC<GitGraphProps> = ({ projectPath, refreshKey, onInitSuccess })
       </div>
 
       <div
+        ref={containerRef}
         className="git-graph-svg-container"
         role="img"
         aria-label={t("common.aria.git_graph_description")}
-      >
-        <Gitgraph template={getTemplate(graphStyle)}>
-          {(gitgraph: any) => {
-            const master = gitgraph.branch("main");
-            commits.forEach((commit) => {
-              master.commit({
-                hash: commit.hash.substring(0, 7),
-                subject: commit.message,
-                author: "User", // 将来的に取得
-                onMessageClick: () => console.log("Commit clicked:", commit.hash),
-              });
-            });
-          }}
-        </Gitgraph>
-      </div>
+      />
 
       {/* スクリーンリーダー向けの代替表示 */}
       <ul className="sr-only">
