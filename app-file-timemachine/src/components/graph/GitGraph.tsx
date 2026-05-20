@@ -1,8 +1,8 @@
 import { type FC, useEffect, useState } from "react";
-import { Gitgraph, TemplateName, templateExtend, type TemplateOptions } from "@gitgraph/react";
+import { Gitgraph, TemplateName, templateExtend } from "@gitgraph/react";
 import { invoke } from "@tauri-apps/api/core";
 import { useTranslation } from "react-i18next";
-import { GitBranch, Route } from "lucide-react";
+import { FolderOpen } from "lucide-react";
 import "./GitGraph.css";
 
 interface CommitLog {
@@ -13,6 +13,12 @@ interface CommitLog {
 
 type GraphStyle = "tree" | "metro";
 
+interface GitGraphProps {
+  projectPath: string | null;
+  refreshKey?: number;
+  onInitSuccess?: () => void;
+}
+
 /**
  * Accessibility Strategy:
  * - The SVG graph is given role="img" and an aria-label describing the commit history.
@@ -20,7 +26,7 @@ type GraphStyle = "tree" | "metro";
  * - Interactive elements (toggle buttons) use semantic <button> tags with visual 'active' states.
  */
 
-const GitGraph: FC = () => {
+const GitGraph: FC<GitGraphProps> = ({ projectPath, refreshKey, onInitSuccess }) => {
   const { t } = useTranslation();
   const [commits, setCommits] = useState<CommitLog[]>([]);
   const [error, setError] = useState<string | null>(null);
@@ -28,7 +34,7 @@ const GitGraph: FC = () => {
 
   // カスタムテンプレート：日本語が綺麗に見えるようにフォントなどを微調整
   const getTemplate = (style: GraphStyle) => {
-    const baseOptions: TemplateOptions = {
+    const baseOptions: any = {
       colors: ["#3b82f6", "#10b981", "#f59e0b", "#ef4444"],
       commit: {
         message: {
@@ -49,11 +55,18 @@ const GitGraph: FC = () => {
 
   useEffect(() => {
     const fetchLogs = async () => {
+      if (!projectPath) {
+        setCommits([]);
+        setError(null);
+        return;
+      }
       try {
-        // 現在はデモ用にカレントディレクトリのログを取得（パス管理は将来的な課題）
-        // TODO: App state からリポジトリパスを取得するように変更
-        const logs = await invoke<CommitLog[]>("git_log", { path: "./" });
+        const logs = await invoke<CommitLog[]>("git_log", { path: projectPath });
         setCommits(logs.reverse()); // 古い順に描画するためリバース
+        setError(null);
+        if (onInitSuccess) {
+          onInitSuccess();
+        }
       } catch (e) {
         console.error("Failed to fetch logs:", e);
         setError(t("common.error.failed_to_fetch_logs"));
@@ -61,7 +74,23 @@ const GitGraph: FC = () => {
     };
 
     fetchLogs();
-  }, [t]);
+  }, [projectPath, refreshKey, t, onInitSuccess]);
+
+  if (!projectPath) {
+    return (
+      <div className="git-graph-wrapper empty-state">
+        <div className="empty-message-container">
+          <div className="empty-icon-wrapper">
+            <FolderOpen className="empty-icon" size={48} />
+          </div>
+          <p className="empty-title">フォルダが選択されていません</p>
+          <p className="empty-subtitle">
+            サイドバーの「フォルダを開く」からプロジェクトフォルダを選択して、タイムマシンを開始しよう！
+          </p>
+        </div>
+      </div>
+    );
+  }
 
   if (error) {
     return <div className="graph-error" role="alert">{error}</div>;
@@ -117,14 +146,6 @@ const GitGraph: FC = () => {
         {commits.map((commit) => (
           <li key={commit.hash.toString()}>
             {new Date(commit.timestamp * 1000).toLocaleString()}: {commit.message} ({commit.hash.substring(0, 7)})
-          </li>
-        ))}
-      </ul>
-    </div>
-  );
-};
-
-export default GitGraph;mmit.hash.substring(0, 7)})
           </li>
         ))}
       </ul>
