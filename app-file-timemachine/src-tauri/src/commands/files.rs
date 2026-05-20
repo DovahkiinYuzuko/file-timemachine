@@ -67,8 +67,10 @@ pub fn get_file_tree(root_path: String) -> Result<Vec<FileEntry>, String> {
 
         if let Some(mut stdin) = child.stdin.take() {
             for path in &paths_to_check {
-                let rel_path = path.strip_prefix(&root_str).unwrap_or(path).trim_start_matches(|c| c == '\\' || c == '/'); 
-                writeln!(stdin, "{}", rel_path).map_err(|e| format!("stdinへの書き込みに失敗したよ: {}", e))?;  
+                let rel_path = path.strip_prefix(&root_str).unwrap_or(path).trim_start_matches(|c| c == '\\' || c == '/');
+                // Windowsのバックスラッシュをスラッシュに正規化してから渡す
+                let rel_path_normalized = rel_path.replace('\\', "/");
+                writeln!(stdin, "{}", rel_path_normalized).map_err(|e| format!("stdinへの書き込みに失敗したよ: {}", e))?;
             }
         }
 

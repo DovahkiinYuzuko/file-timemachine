@@ -34,7 +34,7 @@ const FileTreeItem: FC<{
   entry: FileEntry; 
   depth: number;
   onFileSelect?: (path: string) => void;
-  onToggleIgnore: (path: string, currentIgnored: boolean) => void;
+  onToggleIgnore: (path: string, currentIgnored: boolean, isDir: boolean) => void;
 }> = memo(({ entry, depth, onFileSelect, onToggleIgnore }) => {
   const [isOpen, setIsOpen] = useState(false);
 
@@ -53,7 +53,7 @@ const FileTreeItem: FC<{
 
   const handleCheckboxClick = (e: React.MouseEvent) => {
     e.stopPropagation();
-    onToggleIgnore(entry.path, entry.is_ignored);
+    onToggleIgnore(entry.path, entry.is_ignored, entry.is_dir);
   };
 
   return (
@@ -162,36 +162,27 @@ const FileTree: FC<FileTreeProps> = ({ rootPath, onFileSelect }) => {
     if (!rootPath) return;
     const newMode = gitMode === "whitelist" ? "blacklist" : "whitelist";
     try {
-      // まず .gitignore を新モード用にリセット（旧モードの残留エントリを除去）
-      await invoke("reset_gitignore", {
-        rootPath,
-        newMode,
-      });
-      // 次に設定を保存してローカル状態を更新
-      await invoke("set_project_config", { 
-        rootPath, 
-        config: { git_mode: newMode } 
-      });
+      // switch_git_mode が .gitignore のキャッシュ保存・再構築・config保存を一括で行う
+      await invoke("switch_git_mode", { rootPath, newMode });
       setGitMode(newMode);
-      logger.info(`Git mode changed to ${newMode}, .gitignore reset`);
-      fetchTree(); // モード変更後にツリーを再取得
+      logger.info(`Git mode switched to ${newMode}`);
+      fetchTree();
     } catch (err) {
-      logger.error(`Failed to update git mode: ${err}`);
+      logger.error(`Failed to switch git mode: ${err}`);
     }
   };
 
-  const handleToggleIgnore = async (targetPath: string, currentIgnored: boolean) => {
+  const handleToggleIgnore = async (targetPath: string, currentIgnored: boolean, isDir: boolean) => {
     if (!rootPath) return;
     try {
-      // 逆の状態にする
       await invoke("update_gitignore", { 
         rootPath, 
         targetPath, 
         isIgnored: !currentIgnored,
+        isDir,
         mode: gitMode
       });
-      logger.info(`Updated ignore state for ${targetPath}`);
-      // 再取得して反映
+      logger.info(`Updated ignore state for ${targetPath} (isDir=${isDir})`);
       fetchTree();
     } catch (err) {
       logger.error(`Failed to update gitignore: ${err}`);

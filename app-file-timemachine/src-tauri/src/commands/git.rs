@@ -3,7 +3,7 @@ use std::process::Command;
 use std::path::Path;
 use std::fs;
 use log::{info, debug};
-use super::config::GitMode;
+use super::config::{GitMode, ProjectConfig, get_project_config, set_project_config};
 
 #[derive(Debug, Serialize, Deserialize)]
 pub struct CommitLog {
@@ -17,6 +17,7 @@ pub async fn update_gitignore(
     root_path: String,
     target_path: String,
     is_ignored: bool,
+    is_dir: bool,
     mode: GitMode,
 ) -> Result<(), String> {
     let repo_path = dunce::canonicalize(Path::new(&root_path))
@@ -30,6 +31,14 @@ pub async fn update_gitignore(
         .to_string_lossy()
         .replace('\\', "/");
     
+    // ディレクトリの場合は「dir/」と「dir/**」を管理するパターンを生成する。
+    // 「dir/」だけでは中のファイルはホワイトリストに入らないため両方必要。
+    let patterns: Vec<String> = if is_dir {
+        vec![format!("{}/", rel_path), format!("{}/**", rel_path)]
+    } else {
+        vec![rel_path.clone()]
+    };
+    
     let gitignore_path = repo_path.join(".gitignore");
     let content = if gitignore_path.exists() {
         fs::read_to_string(&gitignore_path).map_err(|e| format!(".gitignoreの読み込みに失敗したよ: {}", e))?
@@ -42,22 +51,22 @@ pub async fn update_gitignore(
     match mode {
         GitMode::Blacklist => {
             if is_ignored {
-                // 無視したい場合：エントリがなければ追加
-                if !lines.iter().any(|l| l.trim() == rel_path) {
-                    lines.push(rel_path.clone());
+                // 無視したい場合：パターンがなければ追加
+                for pat in &patterns {
+                    if !lines.iter().any(|l| l.trim() == pat.as_str()) {
+                        lines.push(pat.clone());
+                    }
                 }
             } else {
-                // 無視を解除したい場合：エントリを削除
-                lines.retain(|l| l.trim() != rel_path);
+                // 無視を解除したい場合：パターンを全て削除
+                lines.retain(|l| !patterns.iter().any(|p| l.trim() == p.as_str()));
             }
         }
         GitMode::Whitelist => {
-            // linesの中に "*" が含まれているかチェック
+            // 「*」がなければ先頭に挿入し、「!.gitignore」も保証する
             let has_all_ignore = lines.iter().any(|l| l.trim() == "*");
             if !has_all_ignore {
-                // "*" が無ければ、先頭に挿入する
                 lines.insert(0, "*".to_string());
-                // さらに、.gitignore 自体は無視しないように設定しておく
                 if !lines.iter().any(|l| l.trim() == "!.gitignore") {
                     if lines.len() > 1 {
                         lines.insert(1, "!.gitignore".to_string());
@@ -67,15 +76,19 @@ pub async fn update_gitignore(
                 }
             }
 
-            let entry = format!("!{}", rel_path);
+            // ホワイトリストエントリは「!パターン」形式
+            let wl_patterns: Vec<String> = patterns.iter().map(|p| format!("!{}", p)).collect();
+
             if !is_ignored {
-                // 無視を解除したい（ホワイトリストに入れる）場合：!エントリがなければ追加
-                if !lines.iter().any(|l| l.trim() == entry) {
-                    lines.push(entry);
+                // ホワイトリストに入れる（無視を解除）：!パターンを追加
+                for wp in &wl_patterns {
+                    if !lines.iter().any(|l| l.trim() == wp.as_str()) {
+                        lines.push(wp.clone());
+                    }
                 }
             } else {
-                // 無視したい場合：!エントリを削除
-                lines.retain(|l| l.trim() != entry);
+                // ホワイトリストから外す（無視に戻す）：!パターンを全て削除
+                lines.retain(|l| !wl_patterns.iter().any(|wp| l.trim() == wp.as_str()));
             }
         }
     }
@@ -88,37 +101,105 @@ pub async fn update_gitignore(
     Ok(())
 }
 
-/// モード切り替え時に .gitignore をリセットするコマンド。
-/// 新しいモード（new_mode）に合わせて .gitignore の内容を初期化する。
-/// - Blacklist モード：全エントリを削除して空にする
-/// - Whitelist モード：「*」と「!.gitignore」だけの初期状態にする
+/// モード切り替え時に .gitignore をキャッシュと同期しながら安全に切り替えるコマンド。
+///
+/// 処理フロー:
+///  1. 既存の .gitignore を読み込む
+///  2. 「*」の有無で現在の実効モードを判定し、ユーザー定義エントリを抽出
+///  3. 現在モードのエントリを config にキャッシュとして保存
+///  4. 新モードのキャッシュ済みエントリを config から取り出す
+///  5. 新モード用の .gitignore を再構築して書き出す
+///  6. git_mode を更新して config を保存
 #[tauri::command]
-pub async fn reset_gitignore(
+pub async fn switch_git_mode(
     root_path: String,
     new_mode: GitMode,
 ) -> Result<(), String> {
     let repo_path = dunce::canonicalize(Path::new(&root_path))
         .map_err(|e| format!("ルートパスの正規化に失敗したよ: {}", e))?;
-
     let gitignore_path = repo_path.join(".gitignore");
 
-    let new_content = match new_mode {
-        GitMode::Blacklist => {
-            // Blacklistモードでは .gitignore を空にする（全ファイルを追跡対象にする）
-            info!("Blacklistモードにリセット: .gitignoreを空にします");
-            String::new()
+    // ── Step 1: 既存 .gitignore を読み込む ──────────────────────────────
+    let content = if gitignore_path.exists() {
+        fs::read_to_string(&gitignore_path)
+            .map_err(|e| format!(".gitignoreの読み込みに失敗したよ: {}", e))?
+    } else {
+        String::new()
+    };
+    let lines: Vec<&str> = content.lines().collect();
+
+    // ── Step 2: 現在の実効モードを判定 & ユーザーエントリを抽出 ────────
+    // 「*」が含まれていれば Whitelist モード、なければ Blacklist モード
+    let is_currently_whitelist = lines.iter().any(|l| l.trim() == "*");
+    let current_user_entries: Vec<String> = if is_currently_whitelist {
+        // Whitelistのユーザーエントリ: 「!」で始まり「!.gitignore」ではないもの
+        lines
+            .iter()
+            .filter(|l| {
+                let t = l.trim();
+                t.starts_with('!') && t != "!.gitignore"
+            })
+            .map(|l| l.to_string())
+            .collect()
+    } else {
+        // Blacklistのユーザーエントリ: 空行・コメント・「*」・「!」で始まるもの を除いた行
+        lines
+            .iter()
+            .filter(|l| {
+                let t = l.trim();
+                !t.is_empty() && !t.starts_with('#') && t != "*" && !t.starts_with('!')
+            })
+            .map(|l| l.to_string())
+            .collect()
+    };
+    info!(
+        "現在モード判定: {}, 抽出エントリ数: {}",
+        if is_currently_whitelist { "whitelist" } else { "blacklist" },
+        current_user_entries.len()
+    );
+
+    // ── Step 3: 現在モードのエントリを config にキャッシュ ───────────────
+    let mut config: ProjectConfig = get_project_config(root_path.clone()).await?;
+    if is_currently_whitelist {
+        // 既存キャッシュが空の場合のみ上書き（意図しない消去防止）
+        if config.whitelist_entries.is_empty() || !current_user_entries.is_empty() {
+            config.whitelist_entries = current_user_entries;
         }
-        GitMode::Whitelist => {
-            // Whitelistモードでは「*」と「!.gitignore」のみの初期状態にする
-            info!("Whitelistモードにリセット: .gitignoreを初期ホワイトリスト状態にします");
-            "*\n!.gitignore\n".to_string()
+    } else {
+        if config.blacklist_entries.is_empty() || !current_user_entries.is_empty() {
+            config.blacklist_entries = current_user_entries;
         }
+    }
+
+    // ── Step 4: 新モードのキャッシュ済みエントリを取得 ──────────────────
+    let new_entries = match new_mode {
+        GitMode::Whitelist => config.whitelist_entries.clone(),
+        GitMode::Blacklist => config.blacklist_entries.clone(),
     };
 
+    // ── Step 5: 新モード用 .gitignore を再構築 ──────────────────────────
+    let new_content = match new_mode {
+        GitMode::Whitelist => {
+            let mut result = vec!["*".to_string(), "!.gitignore".to_string()];
+            result.extend(new_entries);
+            result.join("\n") + "\n"
+        }
+        GitMode::Blacklist => {
+            if new_entries.is_empty() {
+                String::new()
+            } else {
+                new_entries.join("\n") + "\n"
+            }
+        }
+    };
     fs::write(&gitignore_path, new_content)
-        .map_err(|e| format!(".gitignoreのリセットに失敗したよ: {}", e))?;
+        .map_err(|e| format!(".gitignoreの書き出しに失敗したよ: {}", e))?;
 
-    info!(".gitignoreをリセットしたよ: new_mode={:?}", new_mode);
+    // ── Step 6: git_mode を更新して config 保存 ─────────────────────────
+    config.git_mode = new_mode.clone();
+    set_project_config(root_path, config).await?;
+
+    info!("switch_git_mode 完了: new_mode={:?}", new_mode);
     Ok(())
 }
 
