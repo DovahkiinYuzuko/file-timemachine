@@ -52,6 +52,21 @@ pub async fn update_gitignore(
             }
         }
         GitMode::Whitelist => {
+            // linesの中に "*" が含まれているかチェック
+            let has_all_ignore = lines.iter().any(|l| l.trim() == "*");
+            if !has_all_ignore {
+                // "*" が無ければ、先頭に挿入する
+                lines.insert(0, "*".to_string());
+                // さらに、.gitignore 自体は無視しないように設定しておく
+                if !lines.iter().any(|l| l.trim() == "!.gitignore") {
+                    if lines.len() > 1 {
+                        lines.insert(1, "!.gitignore".to_string());
+                    } else {
+                        lines.push("!.gitignore".to_string());
+                    }
+                }
+            }
+
             let entry = format!("!{}", rel_path);
             if !is_ignored {
                 // 無視を解除したい（ホワイトリストに入れる）場合：!エントリがなければ追加
