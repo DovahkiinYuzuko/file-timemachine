@@ -6,6 +6,7 @@ import Sidebar, { type SidebarTab } from "./Sidebar";
 import FileTree from "../tree/FileTree";
 import FilePreview from "../preview/FilePreview";
 import HistoryList from "../history/HistoryList";
+import GitGraph from "../graph/GitGraph";
 import SafetyDialog from "../guard/SafetyDialog";
 import SettingsModal from "../settings/SettingsModal";
 import HelpModal from "../help/HelpModal";
@@ -99,6 +100,7 @@ const MainLayout: FC = () => {
     logger.debug("ヘルプモーダルを閉じるよ");
     setIsHelpModalOpen(false);
   };
+
   return (
     <div className="layout-wrapper">
       <Sidebar 
@@ -110,7 +112,7 @@ const MainLayout: FC = () => {
       <div className="layout-main-content">
         <main className="main-layout-container" aria-label={t("common.app_title")}>
           <PanelGroup orientation="horizontal">
-            {/* 1. ファイルツリーパネル（左）：Filesタブ의 時のみ表示 */}
+            {/* 1. ファイルツリーパネル（左）：Filesタブの時のみ表示 */}
             {activeTab === "files" && (
               <>
                 <Panel defaultSize={25} minSize={20}>
@@ -148,8 +150,11 @@ const MainLayout: FC = () => {
                           </h2>
                         </header>
                         <div className="panel-body">
-                          {/* <GitGraph /> */}
-                          <div>(Git Graph Placeholder)</div>
+                          <GitGraph 
+                            projectPath={projectPath} 
+                            refreshKey={historyRefreshKey}
+                            onInitSuccess={() => setHistoryRefreshKey(prev => prev + 1)}
+                          />
                         </div>
                       </section>
                     </Panel>
