@@ -88,6 +88,40 @@ pub async fn update_gitignore(
     Ok(())
 }
 
+/// モード切り替え時に .gitignore をリセットするコマンド。
+/// 新しいモード（new_mode）に合わせて .gitignore の内容を初期化する。
+/// - Blacklist モード：全エントリを削除して空にする
+/// - Whitelist モード：「*」と「!.gitignore」だけの初期状態にする
+#[tauri::command]
+pub async fn reset_gitignore(
+    root_path: String,
+    new_mode: GitMode,
+) -> Result<(), String> {
+    let repo_path = dunce::canonicalize(Path::new(&root_path))
+        .map_err(|e| format!("ルートパスの正規化に失敗したよ: {}", e))?;
+
+    let gitignore_path = repo_path.join(".gitignore");
+
+    let new_content = match new_mode {
+        GitMode::Blacklist => {
+            // Blacklistモードでは .gitignore を空にする（全ファイルを追跡対象にする）
+            info!("Blacklistモードにリセット: .gitignoreを空にします");
+            String::new()
+        }
+        GitMode::Whitelist => {
+            // Whitelistモードでは「*」と「!.gitignore」のみの初期状態にする
+            info!("Whitelistモードにリセット: .gitignoreを初期ホワイトリスト状態にします");
+            "*\n!.gitignore\n".to_string()
+        }
+    };
+
+    fs::write(&gitignore_path, new_content)
+        .map_err(|e| format!(".gitignoreのリセットに失敗したよ: {}", e))?;
+
+    info!(".gitignoreをリセットしたよ: new_mode={:?}", new_mode);
+    Ok(())
+}
+
 #[tauri::command]
 pub async fn git_init(path: String) -> Result<String, String> {
     let raw_path = Path::new(&path);

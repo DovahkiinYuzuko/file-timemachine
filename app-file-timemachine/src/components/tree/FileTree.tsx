@@ -162,12 +162,18 @@ const FileTree: FC<FileTreeProps> = ({ rootPath, onFileSelect }) => {
     if (!rootPath) return;
     const newMode = gitMode === "whitelist" ? "blacklist" : "whitelist";
     try {
+      // まず .gitignore を新モード用にリセット（旧モードの残留エントリを除去）
+      await invoke("reset_gitignore", {
+        rootPath,
+        newMode,
+      });
+      // 次に設定を保存してローカル状態を更新
       await invoke("set_project_config", { 
         rootPath, 
         config: { git_mode: newMode } 
       });
       setGitMode(newMode);
-      logger.info(`Git mode changed to ${newMode}`);
+      logger.info(`Git mode changed to ${newMode}, .gitignore reset`);
       fetchTree(); // モード変更後にツリーを再取得
     } catch (err) {
       logger.error(`Failed to update git mode: ${err}`);
