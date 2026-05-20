@@ -104,12 +104,10 @@ const GitGraph: FC<GitGraphProps> = ({ projectPath, refreshKey, onInitSuccess })
     return (
       <div className="git-graph-wrapper empty-state">
         <div className="empty-message-container">
-          <div className="empty-icon-wrapper">
-            <FolderOpen className="empty-icon" size={48} />
-          </div>
+          <FolderOpen className="empty-icon" size={24} />
           <p className="empty-title">フォルダが選択されていません</p>
           <p className="empty-subtitle">
-            サイドバーの「フォルダを開く」からプロジェクトフォルダを選択して、タイムマシンを開始しよう！
+            サイドバーの「フォルダを開く」からプロジェクトを選択すると、ここに履歴の路線図が表示されます。
           </p>
         </div>
       </div>
@@ -129,7 +127,7 @@ const GitGraph: FC<GitGraphProps> = ({ projectPath, refreshKey, onInitSuccess })
             >
               {isInitializing ? (
                 <>
-                  <Loader2 className="spinner" size={16} />
+                  <Loader2 className="spinner" size={14} />
                   <span>初期化中...</span>
                 </>
               ) : (
@@ -146,12 +144,10 @@ const GitGraph: FC<GitGraphProps> = ({ projectPath, refreshKey, onInitSuccess })
     return (
       <div className="git-graph-wrapper empty-state">
         <div className="empty-message-container">
-          <div className="empty-icon-wrapper history-empty">
-            <History className="empty-icon" size={48} />
-          </div>
+          <History className="empty-icon" size={24} />
           <p className="empty-title">履歴が見つかりませんでした</p>
           <p className="empty-subtitle">
-            タイムマシンを開始するには、このプロジェクトフォルダで最初の保存を実行しよう！
+            タイムマシンの履歴（コミット）を記録するために、リポジトリの初期化を実行してください。
           </p>
           <button 
             className="init-button"
@@ -160,7 +156,7 @@ const GitGraph: FC<GitGraphProps> = ({ projectPath, refreshKey, onInitSuccess })
           >
             {isInitializing ? (
               <>
-                <Loader2 className="spinner" size={16} />
+                <Loader2 className="spinner" size={14} />
                 <span>初期化中...</span>
               </>
             ) : (
