@@ -21,7 +21,8 @@ pub async fn update_gitignore(
 ) -> Result<(), String> {
     let repo_path = dunce::canonicalize(Path::new(&root_path))
         .map_err(|e| format!("ルートパスの正規化に失敗したよ: {}", e))?;
-    let target_abs_path = Path::new(&target_path);
+    let target_abs_path = dunce::canonicalize(Path::new(&target_path))
+        .map_err(|e| format!("ターゲットパスの正規化に失敗したよ: {}", e))?;
     
     // 相対パスを取得（gitで使う形式に合わせる）
     let rel_path = target_abs_path.strip_prefix(&repo_path)

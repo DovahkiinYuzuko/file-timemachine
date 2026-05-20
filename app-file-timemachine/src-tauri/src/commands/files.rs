@@ -18,6 +18,7 @@ pub struct FileEntry {
 pub fn get_file_tree(root_path: String) -> Result<Vec<FileEntry>, String> {
     let root = dunce::canonicalize(&root_path)
         .map_err(|e| format!("パスが正しくないよ: {}", e))?;
+    let root_str = root.to_string_lossy().into_owned();
 
     log::info!("ファイルツリーの探索を開始するよ。対象: {:?}", root);
 
@@ -66,7 +67,7 @@ pub fn get_file_tree(root_path: String) -> Result<Vec<FileEntry>, String> {
 
         if let Some(mut stdin) = child.stdin.take() {
             for path in &paths_to_check {
-                let rel_path = path.strip_prefix(&root_path).unwrap_or(path).trim_start_matches(|c| c == '\\' || c == '/'); 
+                let rel_path = path.strip_prefix(&root_str).unwrap_or(path).trim_start_matches(|c| c == '\\' || c == '/'); 
                 writeln!(stdin, "{}", rel_path).map_err(|e| format!("stdinへの書き込みに失敗したよ: {}", e))?;  
             }
         }
@@ -83,7 +84,7 @@ pub fn get_file_tree(root_path: String) -> Result<Vec<FileEntry>, String> {
     log::info!("全部で {} 件のアイテムを見つけたよ！ツリー形式に組み立てるね。", entries.len());      
 
     let mut entry_map: HashMap<PathBuf, FileEntry> = entries.into_iter().map(|(p, mut e)| {
-        let rel_path = e.path.strip_prefix(&root_path).unwrap_or(&e.path).trim_start_matches(|c| c == '\\' || c == '/');    
+        let rel_path = e.path.strip_prefix(&root_str).unwrap_or(&e.path).trim_start_matches(|c| c == '\\' || c == '/');    
         let normalized_rel_path = rel_path.replace('\\', "/");
         if ignored_set.contains(&normalized_rel_path) {
             e.is_ignored = true;

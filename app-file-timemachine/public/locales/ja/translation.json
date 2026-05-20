@@ -39,8 +39,8 @@
     },
     "git_mode": {
       "label": "管理モード",
-      "whitelist": "厳選",
-      "blacklist": "おまかせ",
+      "whitelist": "チェックしたファイルだけ保存",
+      "blacklist": "チェックしたファイル以外を全部保存",
       "tooltip": "クリックでモードを切り替えるよ！"
     },
     "file_name": "ファイル名",
