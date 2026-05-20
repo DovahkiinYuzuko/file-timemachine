@@ -47,13 +47,14 @@ const GitGraph: FC<GitGraphProps> = ({ projectPath, refreshKey, onInitSuccess })
   const getTemplate = (style: GraphStyle, currentScale: number) => {
     // 基準値にスケールを適用
     const fontSize = Math.max(9, Math.round(13 * currentScale)); // 最小9px
+    const labelFontSize = Math.max(8, Math.round(10 * currentScale)); // ブランチラベル用最小8px
     const dotSize = Math.max(4, Math.round(5 * currentScale));   // 最小4px
     const strokeWidth = Math.max(1, Math.round(2 * currentScale));
     const lineWidth = Math.max(2, Math.round(3 * currentScale));
     const spacing = Math.max(15, Math.round(26 * currentScale));  // コミット間隔
     const branchSpacing = Math.max(15, Math.round(22 * currentScale)); // ブランチ間隔
 
-    // CUD（岡部・柴田パレット）準拠のバリアフリー配色（ダークモード用）
+    // CUD（岡部・柴田パレット）準拠 of バリアフリー配色（ダークモード用）
     const cudColors = [
       "#56b4e9", // スカイブルー（P型・D型でも視認可能）
       "#e69f00", // オレンジ（高いコントラスト）
@@ -69,6 +70,14 @@ const GitGraph: FC<GitGraphProps> = ({ projectPath, refreshKey, onInitSuccess })
       branch: {
         lineWidth: lineWidth,
         spacing: branchSpacing,
+        label: {
+          display: true,
+          font: `normal ${labelFontSize}px 'Segoe UI', 'Yu Gothic UI', 'Hiragino Sans', sans-serif`,
+          bgColor: "#ddf4ff",
+          color: "#0969da",
+          strokeColor: "transparent",
+          borderRadius: 10,
+        },
       },
       commit: {
         spacing: spacing,

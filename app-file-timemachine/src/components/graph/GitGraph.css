@@ -1,15 +1,18 @@
 .git-graph-wrapper {
-  padding: 1rem;
-  overflow: auto;
+  display: flex;
+  flex-direction: column;
   height: 100%;
   width: 100%;
   box-sizing: border-box;
   background-color: var(--bg-color, transparent);
+  overflow: hidden;
 }
 
 .git-graph-svg-container {
+  flex: 1;
+  overflow: auto;
+  padding: 1rem;
   min-width: 600px;
-  height: calc(100% - 40px);
   min-height: 250px;
 }
 
@@ -42,7 +45,10 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 10px;
+  padding: 8px 16px;
+  background-color: var(--bg-surface, #ffffff);
+  border-bottom: 1px solid var(--border-color, #e1e4e8);
+  flex-shrink: 0;
 }
 
 .graph-style-toggle {
