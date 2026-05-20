@@ -1,0 +1,208 @@
+/* CommitMessageModal.css */
+/* アニメーションキーフレーム */
+@keyframes commitFadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes commitScaleUp {
+  from {
+    transform: scale(0.95);
+    opacity: 0;
+  }
+  to {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+/* オーバーレイ: 透過ぼかし背景のガラスモーフィズム */
+.commit-modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(17, 17, 17, 0.6); /* --bg = #111111 に合わせた透過 */
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+  animation: commitFadeIn 0.2s ease-out;
+}
+
+/* モーダルコンテンツ */
+.commit-modal-content {
+  background-color: #1a1a1a; /* --panel */
+  border: 1px solid #2a2a2a; /* --border */
+  border-radius: 12px; /* Border-Radius-Panel */
+  width: 100%;
+  max-width: 500px;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5); /* Depth level 3 */
+  animation: commitScaleUp 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+  overflow: hidden;
+  font-family: -apple-system, "BlinkMacSystemFont", "Hiragino Sans", "Hiragino Kaku Gothic ProN", "Yu Gothic", "Meiryo", sans-serif;
+  letter-spacing: 0.05em;
+  color: #eeeeee; /* --text */
+}
+
+/* ヘッダー */
+.commit-modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 16px 20px;
+  border-bottom: 1px solid #2a2a2a; /* --border */
+  background-color: rgba(26, 26, 26, 0.8);
+}
+
+.commit-modal-header h2 {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin: 0;
+  font-size: 18px;
+  font-weight: 700;
+  color: #eeeeee;
+  line-height: 1.4;
+}
+
+.header-icon {
+  color: #0ea5e9; /* --accent */
+}
+
+.close-btn {
+  background: transparent;
+  border: none;
+  color: #b5b5b5; /* --muted */
+  cursor: pointer;
+  padding: 6px;
+  border-radius: 6px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background-color 0.2s, color 0.2s;
+}
+
+.close-btn:hover {
+  background-color: rgba(255, 255, 255, 0.08);
+  color: #eeeeee;
+}
+
+/* フォーム */
+.commit-modal-form {
+  display: flex;
+  flex-direction: column;
+}
+
+/* ボディ */
+.commit-modal-body {
+  padding: 24px 20px;
+}
+
+.commit-modal-desc {
+  margin: 0 0 20px 0;
+  font-size: 14px;
+  line-height: 1.7;
+  color: #b5b5b5; /* --muted */
+}
+
+.input-group {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.input-group label {
+  font-size: 14px;
+  font-weight: 700;
+  color: #eeeeee;
+}
+
+/* コミット入力欄 */
+.commit-input {
+  background-color: #111111; /* --bg */
+  border: 1px solid #2a2a2a; /* --border */
+  border-radius: 10px; /* Border-Radius-Input */
+  color: #eeeeee;
+  padding: 12px 14px;
+  font-size: 15px;
+  line-height: 1.6;
+  outline: none;
+  transition: border-color 0.2s, box-shadow 0.2s;
+  letter-spacing: 0.04em;
+}
+
+/* グラデーションのアクティブ枠線 */
+.commit-input:focus {
+  border-color: #0ea5e9; /* --accent */
+  box-shadow: 0 0 0 3px rgba(14, 165, 233, 0.25);
+}
+
+.input-tip {
+  font-size: 12px;
+  color: #b5b5b5; /* --muted */
+  line-height: 1.5;
+  margin-top: 4px;
+}
+
+/* フッター */
+.commit-modal-footer {
+  display: flex;
+  justify-content: flex-end;
+  gap: 12px;
+  padding: 16px 20px;
+  background-color: rgba(26, 26, 26, 0.5);
+  border-top: 1px solid #2a2a2a; /* --border */
+}
+
+/* ボタンの共通スタイル */
+.btn-cancel,
+.btn-submit {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 10px 20px;
+  font-size: 14px;
+  font-weight: 600;
+  border-radius: 10px; /* Border-Radius-Input */
+  cursor: pointer;
+  transition: all 0.2s ease;
+  min-height: 40px;
+}
+
+.btn-cancel {
+  background-color: transparent;
+  border: 1px solid #2a2a2a;
+  color: #eeeeee;
+}
+
+.btn-cancel:hover {
+  background-color: rgba(255, 255, 255, 0.05);
+  border-color: #b5b5b5;
+}
+
+.btn-submit {
+  background: linear-gradient(135deg, #0ea5e9 0%, #0284c7 100%);
+  border: none;
+  color: #ffffff;
+  box-shadow: 0 2px 8px rgba(14, 165, 233, 0.3);
+}
+
+.btn-submit:hover {
+  filter: brightness(1.1);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(14, 165, 233, 0.4);
+}
+
+.btn-submit:active {
+  transform: translateY(0);
+  filter: brightness(0.95);
+}
