@@ -94,7 +94,7 @@ const CommitMessageModal: FC<CommitMessageModalProps> = ({
     e.preventDefault();
     // 入力が空の場合はデフォルトメッセージを使用
     const finalMessage = message.trim() || defaultMessage;
-    logger.info(`コミットメッセージを決定したよ: ${finalMessage}`);
+    logger.info(`コミットメッセージを決定しました: ${finalMessage}`);
     onSave(finalMessage);
   };
 
@@ -135,7 +135,7 @@ const CommitMessageModal: FC<CommitMessageModalProps> = ({
         <form onSubmit={handleSubmit} className="commit-modal-form">
           <div className="commit-modal-body">
             <p className="commit-modal-desc">
-              {t("commit.modal.desc", { defaultValue: "今のファイルの状態に名前をつけて、タイムマシンに記録するよ！" })}
+              {t("commit.modal.desc", { defaultValue: "現在の状態に名前をつけて、タイムマシンに記録します。" })}
             </p>
             
             <div className="input-group">
@@ -153,7 +153,7 @@ const CommitMessageModal: FC<CommitMessageModalProps> = ({
                 className="commit-input"
               />
               <span className="input-tip">
-                {t("commit.modal.input_tip", { defaultValue: "※空欄のまま保存すると、日付が自動で名前になるよ" })}
+                {t("commit.modal.input_tip", { defaultValue: "※空欄の場合は、日付が自動で適用されます。" })}
               </span>
             </div>
           </div>

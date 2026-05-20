@@ -206,3 +206,82 @@
   transform: translateY(0);
   filter: brightness(0.95);
 }
+
+/* --- Light Theme (GitHub Style) --- */
+[data-theme="light"] .commit-modal-overlay {
+  background-color: rgba(255, 255, 255, 0.4);
+}
+
+[data-theme="light"] .commit-modal-content {
+  background-color: #ffffff;
+  border-color: #e2e8f0;
+  color: #0f172a;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+}
+
+[data-theme="light"] .commit-modal-header {
+  background-color: #f8fafc;
+  border-bottom-color: #e2e8f0;
+}
+
+[data-theme="light"] .commit-modal-header h2 {
+  color: #0f172a;
+}
+
+[data-theme="light"] .header-icon {
+  color: #3b82f6;
+}
+
+[data-theme="light"] .close-btn {
+  color: #94a3b8;
+}
+
+[data-theme="light"] .close-btn:hover {
+  background-color: #e2e8f0;
+  color: #0f172a;
+}
+
+[data-theme="light"] .commit-modal-desc,
+[data-theme="light"] .input-tip {
+  color: #64748b;
+}
+
+[data-theme="light"] .input-group label {
+  color: #0f172a;
+}
+
+[data-theme="light"] .commit-input {
+  background-color: #ffffff;
+  border-color: #e2e8f0;
+  color: #0f172a;
+}
+
+[data-theme="light"] .commit-input:focus {
+  border-color: #3b82f6;
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.25);
+}
+
+[data-theme="light"] .commit-modal-footer {
+  background-color: #f8fafc;
+  border-top-color: #e2e8f0;
+}
+
+[data-theme="light"] .btn-cancel {
+  border-color: #e2e8f0;
+  color: #64748b;
+}
+
+[data-theme="light"] .btn-cancel:hover {
+  background-color: #e2e8f0;
+  color: #0f172a;
+}
+
+[data-theme="light"] .btn-submit {
+  background: #3b82f6;
+  box-shadow: 0 2px 4px rgba(59, 130, 246, 0.2);
+}
+
+[data-theme="light"] .btn-submit:hover {
+  background: #2563eb;
+  box-shadow: 0 4px 8px rgba(59, 130, 246, 0.3);
+}

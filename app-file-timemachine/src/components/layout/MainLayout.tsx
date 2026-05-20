@@ -13,7 +13,7 @@ import HelpModal from "../help/HelpModal";
 import CommitMessageModal from "../common/CommitMessageModal";
 import Tooltip from "../common/Tooltip";
 import logger from "../../utils/logger";
-import { analyzeFilesForSafety, type SafetyIssue } from "../../utils/safety";
+import { type SafetyIssue } from "../../utils/safety";
 import { invoke } from "@tauri-apps/api/core";
 import "./MainLayout.css";
 
@@ -37,7 +37,7 @@ const MainLayout: FC = () => {
   const [isSafetyDialogOpen, setIsSafetyDialogOpen] = useState(false);
   const [isSettingsModalOpen, setIsSettingsModalOpen] = useState(false);
   const [isHelpModalOpen, setIsHelpModalOpen] = useState(false);
-  const [safetyIssues, setSafetyIssues] = useState<SafetyIssue[]>([]);
+  const [safetyIssues] = useState<SafetyIssue[]>([]); // TODO: バックエンド実装後に setSafetyIssues を復活させる
   const [selectedFilePath, setSelectedFilePath] = useState<string | null>(null);
   const [historyRefreshKey, setHistoryRefreshKey] = useState(0);
   const [isCommitModalOpen, setIsCommitModalOpen] = useState(false);
@@ -53,7 +53,7 @@ const MainLayout: FC = () => {
   // Gitコミットを実際に実行する処理
   const executeCommit = async (message: string) => {
     if (!projectPath) {
-      logger.error("プロジェクトパスが設定されていないよ");
+      logger.error("プロジェクトパスが設定されていません。");
       alert("フォルダが開かれていないため、保存できません。");
       return;
     }
@@ -65,16 +65,16 @@ const MainLayout: FC = () => {
         path: projectPath,
         message: message,
       });
-      logger.info(`コミット完了！結果: ${result}`);
+      logger.info(`コミット完了: ${result}`);
       
       // コミットが完了したら、GitGraphとHistoryListを最新化させるためにリフレッシュキーを更新
       setHistoryRefreshKey((prev) => prev + 1);
       
       // 成功通知アラート
-      alert(`タイムマシンに新しく記録したよ！\nメッセージ: "${message}"`);
+      alert(`状態を記録しました。\nメッセージ: "${message}"`);
     } catch (error) {
-      logger.error(`Gitコミットに失敗したよ: ${error}`);
-      alert(`保存に失敗しちゃった： ${error}`);
+      logger.error(`Gitコミットに失敗しました: ${error}`);
+      alert(`保存に失敗しました： ${error}`);
     } finally {
       setIsCommitting(false);
     }
@@ -91,17 +91,17 @@ const MainLayout: FC = () => {
     const defaultMsg = `${formattedDate} の保存`;
 
     if (saveBehavior === "none") {
-      logger.info("保存設定が 'none' のため、Gitコミットはスキップするよ");
-      alert("ローカルに保存したよ！（タイムマシンへの記録はスキップしたよ）");
+      logger.info("保存設定が 'none' のため、Gitコミットをスキップします。");
+      alert("ローカルに保存しました（Gitへの記録はスキップされました）。");
       setHistoryRefreshKey(prev => prev + 1);
       return;
     }
 
     if (saveBehavior === "auto") {
-      logger.info("保存設定が 'auto' なので自動コミットを実行するよ");
+      logger.info("保存設定が 'auto' なので自動コミットを実行します。");
       executeCommit(defaultMsg);
     } else {
-      logger.debug("保存設定が 'confirm' なのでコミットメッセージ入力モーダルを開くよ");
+      logger.debug("保存設定が 'confirm' なのでコミットメッセージ入力モーダルを開きます。");
       setDefaultCommitMessage(defaultMsg);
       setIsCommitModalOpen(true);
     }
@@ -110,34 +110,18 @@ const MainLayout: FC = () => {
   // 保存ボタンが押された時の処理
   const handleSaveClick = () => {
     if (!projectPath) {
-      logger.warn("プロジェクトフォルダが選択されていない状態で保存ボタンが押されたよ");
-      alert("フォルダが開かれていないよ！タイムマシンに保存するには、まず左のサイドバーからフォルダを開いてね");
+      logger.warn("プロジェクトフォルダが選択されていない状態で保存ボタンが押されました。");
+      alert("フォルダが開かれていないため保存できません。左のサイドバーからフォルダを開いてください。");
       return;
     }
 
-    logger.info("保存ボタンが押されたよ。安全スキャンを開始するね");
+    logger.info("保存プロセスを開始します。");
     const isAutoScanEnabled = localStorage.getItem("settings_auto_scan") !== "false";
 
     if (isAutoScanEnabled) {
-      logger.debug("自動脆弱性スキャンが有効だよ");
-      // デモ用のモックファイルデータ
-      const mockFiles = [
-        { path: "src/App.tsx", size: 1024 },
-        { path: ".env", size: 100 },
-        { path: "node_modules/react/index.js", size: 5000 },
-        { path: "assets/large_video.mp4", size: 150 * 1024 * 1024 },
-        { path: "secrets.pem", size: 2048 },
-      ];
-
-      const issues = analyzeFilesForSafety(mockFiles);
-
-      if (issues.length > 0) {
-        logger.warn(`${issues.length} 件のセキュリティリスクが見つかったよ！`);
-        setSafetyIssues(issues);
-        setIsSafetyDialogOpen(true);
-        return;
-      }
-      logger.debug("リスクは見つからなかったよ。クリーンだね！");
+      logger.debug("自動脆弱性スキャンが有効ですが、現在デモデータによる誤検知を防ぐためスキップしています。");
+      // TODO: Rustバックエンドに `get_uncommitted_files` コマンドを追加し、本物の変更ファイルリストを取得して検証する処理を実装予定。
+      // 現状は進行を妨げないように常にパスさせます。
     }
 
     // スキャンクリアならコミットに進む
@@ -145,24 +129,24 @@ const MainLayout: FC = () => {
   };
 
   const handleTabChange = (tab: SidebarTab) => {
-    logger.debug(`サイドバーのアクションを受け取ったよ: ${tab}`);
+    logger.debug(`サイドバーのアクションを受信: ${tab}`);
     if (tab === "settings") {
       setIsSettingsModalOpen(true);
     } else if (tab === "help") {
       setIsHelpModalOpen(true);
     } else {
-      logger.info(`アクティブなタブを切り替えるよ: ${tab}`);
+      logger.info(`アクティブなタブを切り替え: ${tab}`);
       setActiveTab(tab);
     }
   };
 
   const handleSettingsClose = () => {
-    logger.debug("設定モーダルを閉じるよ");
+    logger.debug("設定モーダルを閉じました。");
     setIsSettingsModalOpen(false);
   };
 
   const handleHelpClose = () => {
-    logger.debug("ヘルプモーダルを閉じるよ");
+    logger.debug("ヘルプモーダルを閉じました。");
     setIsHelpModalOpen(false);
   };
 
@@ -204,7 +188,7 @@ const MainLayout: FC = () => {
             {activeTab === "history" && (
               <>
                 <Panel defaultSize={40} minSize={30}>
-                  <PanelGroup orientation="vertical">
+                  <PanelGroup orientation="vertical" style={{ height: "100%", overflow: "hidden" }}>
                     {/* 上段：GitGraph */}
                     <Panel defaultSize={50} minSize={20}>
                       <section className="panel-content" aria-label={t("common.root_management")}>
@@ -292,12 +276,12 @@ const MainLayout: FC = () => {
         onClose={() => setIsSafetyDialogOpen(false)}
         onConfirmAnyway={() => {
           setIsSafetyDialogOpen(false);
-          logger.info("脆弱性スキャンを無視して強引に保存するよ");
+          logger.info("脆弱性スキャンの警告を無視して保存を継続します。");
           proceedToSaveOrCommit();
         }}
         onConfirmExclude={() => {
           setIsSafetyDialogOpen(false);
-          logger.info("ヤバいファイルを除いて保存するよ");
+          logger.info("該当ファイルを除外して保存を継続します。");
           proceedToSaveOrCommit();
         }}
       />
