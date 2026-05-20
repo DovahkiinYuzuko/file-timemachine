@@ -2,7 +2,7 @@ import { type FC, useEffect, useState } from "react";
 import { Gitgraph, TemplateName, templateExtend } from "@gitgraph/react";
 import { invoke } from "@tauri-apps/api/core";
 import { useTranslation } from "react-i18next";
-import { FolderOpen } from "lucide-react";
+import { FolderOpen, History, Loader2 } from "lucide-react";
 import "./GitGraph.css";
 
 interface CommitLog {
@@ -31,6 +31,7 @@ const GitGraph: FC<GitGraphProps> = ({ projectPath, refreshKey, onInitSuccess })
   const [commits, setCommits] = useState<CommitLog[]>([]);
   const [error, setError] = useState<string | null>(null);
   const [graphStyle, setGraphStyle] = useState<GraphStyle>("metro");
+  const [isInitializing, setIsInitializing] = useState<boolean>(false);
 
   // カスタムテンプレート：日本語が綺麗に見えるようにフォントなどを微調整
   const getTemplate = (style: GraphStyle) => {
@@ -64,9 +65,6 @@ const GitGraph: FC<GitGraphProps> = ({ projectPath, refreshKey, onInitSuccess })
         const logs = await invoke<CommitLog[]>("git_log", { path: projectPath });
         setCommits(logs.reverse()); // 古い順に描画するためリバース
         setError(null);
-        if (onInitSuccess) {
-          onInitSuccess();
-        }
       } catch (e) {
         console.error("Failed to fetch logs:", e);
         setError(t("common.error.failed_to_fetch_logs"));
@@ -74,7 +72,33 @@ const GitGraph: FC<GitGraphProps> = ({ projectPath, refreshKey, onInitSuccess })
     };
 
     fetchLogs();
-  }, [projectPath, refreshKey, t, onInitSuccess]);
+  }, [projectPath, refreshKey, t]);
+
+  const handleInit = async () => {
+    if (!projectPath) return;
+
+    setIsInitializing(true);
+    setError(null);
+
+    try {
+      // 1. git init を実行
+      await invoke("git_init", { path: projectPath });
+      
+      // 2. 初回コミットを実行
+      const commitMsg = t("common.placeholder.initial_commit_msg", { defaultValue: "最初の保存" }) || "最初の保存";
+      await invoke("git_commit", { path: projectPath, message: commitMsg });
+
+      // 3. 成功時のコールバック呼び出し
+      if (onInitSuccess) {
+        onInitSuccess();
+      }
+    } catch (e) {
+      console.error("Failed to initialize repository:", e);
+      setError(t("common.error.failed_to_initialize") || "初期化に失敗しました");
+    } finally {
+      setIsInitializing(false);
+    }
+  };
 
   if (!projectPath) {
     return (
@@ -93,11 +117,59 @@ const GitGraph: FC<GitGraphProps> = ({ projectPath, refreshKey, onInitSuccess })
   }
 
   if (error) {
-    return <div className="graph-error" role="alert">{error}</div>;
+    return (
+      <div className="git-graph-wrapper">
+        <div className="graph-error" role="alert">
+          <p>{error}</p>
+          {error.includes("failed_to_initialize") || error.includes("失敗") ? (
+            <button 
+              className="init-button"
+              onClick={handleInit}
+              disabled={isInitializing}
+            >
+              {isInitializing ? (
+                <>
+                  <Loader2 className="spinner" size={16} />
+                  <span>初期化中...</span>
+                </>
+              ) : (
+                <span>再試行する</span>
+              )}
+            </button>
+          ) : null}
+        </div>
+      </div>
+    );
   }
 
   if (commits.length === 0) {
-    return <div className="graph-empty">{t("common.placeholder.no_history")}</div>;
+    return (
+      <div className="git-graph-wrapper empty-state">
+        <div className="empty-message-container">
+          <div className="empty-icon-wrapper history-empty">
+            <History className="empty-icon" size={48} />
+          </div>
+          <p className="empty-title">履歴が見つかりませんでした</p>
+          <p className="empty-subtitle">
+            タイムマシンを開始するには、このプロジェクトフォルダで最初の保存を実行しよう！
+          </p>
+          <button 
+            className="init-button"
+            onClick={handleInit}
+            disabled={isInitializing}
+          >
+            {isInitializing ? (
+              <>
+                <Loader2 className="spinner" size={16} />
+                <span>初期化中...</span>
+              </>
+            ) : (
+              <span>履歴の保存を開始する</span>
+            )}
+          </button>
+        </div>
+      </div>
+    );
   }
 
   return (
