@@ -159,5 +159,15 @@
     "root_management": "Gitでは「ブランチ」と呼びます。作業の分かれ道を管理します。",
     "history_list": "Gitでは「ログ」と呼びます。これまでの保存記録を確認できます。",
     "save_button": "Gitでは「コミット」と呼びます。今の状態に名前をつけて保存します。"
+  },
+  "conflict": {
+    "title": "本番との競合を解決",
+    "description": "以下のファイルで本番（main）との内容がぶつかっています。どちらの内容を採用するか選んでください。",
+    "current_branch": "お試し側を採用",
+    "main_branch": "本番（main）を採用",
+    "resolve_and_merge": "解決を完了して本番に反映",
+    "abort": "中止して戻る",
+    "error_loading": "競合リストの取得に失敗しました。",
+    "error_resolving": "解決処理中にエラーが発生しました。"
   }
 }

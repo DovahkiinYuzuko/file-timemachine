@@ -490,4 +490,120 @@ pub async fn git_diff_file(path: String) -> Result<String, String> {
     Ok(diff)
 }
 
+#[tauri::command]
+pub async fn git_merge_to_main(path: String, branch: String) -> Result<String, String> {
+    let raw_path = Path::new(&path);
+    let repo_path = dunce::canonicalize(raw_path)
+        .map_err(|e| format!("パスの正規化に失敗しました: {}", e))?;
+
+    info!("本番（main）への採用を開始します: {} -> main", branch);
+
+    // 1. mainブランチに切り替え
+    let checkout_output = Command::new("git")
+        .arg("checkout")
+        .arg("main")
+        .current_dir(&repo_path)
+        .output()
+        .map_err(|e| format!("mainブランチへの切り替えに失敗しました: {}", e))?;
+
+    if !checkout_output.status.success() {
+        let stderr = String::from_utf8_lossy(&checkout_output.stderr);
+        return Err(format!("mainブランチへの切り替えに失敗しました。未保存の変更がないか確認してください。\n詳細: {}", stderr));
+    }
+
+    // 2. マージを実行
+    let merge_output = Command::new("git")
+        .arg("merge")
+        .arg(&branch)
+        .current_dir(&repo_path)
+        .output()
+        .map_err(|e| format!("マージの実行に失敗しました: {}", e))?;
+
+    if merge_output.status.success() {
+        Ok("本番への採用が完了しました。".to_string())
+    } else {
+        let stdout = String::from_utf8_lossy(&merge_output.stdout);
+        let stderr = String::from_utf8_lossy(&merge_output.stderr);
+        
+        if stdout.contains("CONFLICT") || stderr.contains("CONFLICT") {
+            // 競合が発生した場合はそのままの状態を維持し、フロントエンドに通知
+            debug!("マージ競合を検知しました。解決が必要です。");
+            Err("CONFLICT".to_string())
+        } else {
+            // その他のエラー時は安全のため元のブランチに戻すことを試みる
+            let _ = Command::new("git")
+                .arg("checkout")
+                .arg(&branch)
+                .current_dir(&repo_path)
+                .status();
+            Err(format!("マージ中に予期しないエラーが発生しました:\n{}", stderr))
+        }
+    }
+}
+
+#[tauri::command]
+pub async fn git_get_conflicts(path: String) -> Result<Vec<String>, String> {
+    let raw_path = Path::new(&path);
+    let repo_path = dunce::canonicalize(raw_path)
+        .map_err(|e| format!("パスの正規化に失敗しました: {}", e))?;
+
+    // 競合しているファイルの一覧を取得
+    let output = Command::new("git")
+        .arg("diff")
+        .arg("--name-only")
+        .arg("--diff-filter=U")
+        .current_dir(&repo_path)
+        .output()
+        .map_err(|e| format!("競合リストの取得に失敗しました: {}", e))?;
+
+    if !output.status.success() {
+        return Err("競合ファイルの取得に失敗しました。".to_string());
+    }
+
+    let stdout = String::from_utf8_lossy(&output.stdout);
+    let files = stdout.lines().map(|s| s.to_string()).collect();
+    Ok(files)
+}
+
+#[tauri::command]
+pub async fn git_resolve_conflict(path: String, file: String, resolution: String) -> Result<String, String> {
+    let raw_path = Path::new(&path);
+    let repo_path = dunce::canonicalize(raw_path)
+        .map_err(|e| format!("パスの正規化に失敗しました: {}", e))?;
+
+    // mainブランチにいる状態で:
+    // --ours   => mainの内容を採用
+    // --theirs => マージしようとしているブランチ（お試しルート）の内容を採用
+    let strategy = if resolution == "current" { "--theirs" } else { "--ours" };
+
+    info!("競合を解決します: ファイル={}, 戦略={}", file, strategy);
+
+    // 1. 指定した内容でファイルを復元
+    let checkout_status = Command::new("git")
+        .arg("checkout")
+        .arg(strategy)
+        .arg(&file)
+        .current_dir(&repo_path)
+        .status()
+        .map_err(|e| format!("ファイルの復元に失敗しました: {}", e))?;
+
+    if !checkout_status.success() {
+        return Err(format!("ファイル '{}' の解決（checkout）に失敗しました。", file));
+    }
+
+    // 2. 解決したファイルをインデックスに追加（競合解消の確定）
+    let add_status = Command::new("git")
+        .arg("add")
+        .arg(&file)
+        .current_dir(&repo_path)
+        .status()
+        .map_err(|e| format!("解決内容の確定（add）に失敗しました: {}", e))?;
+
+    if !add_status.success() {
+        return Err(format!("ファイル '{}' の解決内容の確定に失敗しました。", file));
+    }
+
+    Ok("解決しました。".to_string())
+}
+
 

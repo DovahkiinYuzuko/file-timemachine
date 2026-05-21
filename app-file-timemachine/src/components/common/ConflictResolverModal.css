@@ -1,0 +1,135 @@
+.conflict-modal {
+  max-width: 600px !important;
+  width: 90% !important;
+}
+
+.conflict-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-top: 1.5rem;
+  max-height: 40vh;
+  overflow-y: auto;
+  padding-right: 8px;
+}
+
+.conflict-item {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 12px;
+  background-color: var(--panel-bg);
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
+  transition: border-color 0.2s;
+}
+
+.conflict-item:hover {
+  border-color: var(--accent-color);
+}
+
+.conflict-file-info {
+  display: flex;
+  align-items: center;
+}
+
+.conflict-file-info .file-name {
+  font-family: var(--font-mono);
+  font-size: 0.9rem;
+  color: var(--text-color);
+  word-break: break-all;
+  font-weight: 500;
+}
+
+.resolve-options {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+}
+
+.btn-res {
+  padding: 8px 12px;
+  font-size: 0.85rem;
+  border: 1px solid var(--border-color);
+  border-radius: 6px;
+  background-color: white;
+  color: var(--text-muted);
+  cursor: pointer;
+  transition: all 0.2s;
+  font-weight: 500;
+}
+
+.btn-res:hover {
+  background-color: var(--item-hover);
+  border-color: var(--text-muted);
+}
+
+.btn-res.active {
+  color: white;
+  border-color: transparent;
+}
+
+.btn-res.active.current {
+  background-color: var(--accent-color); /* お試し側 */
+  box-shadow: 0 2px 4px rgba(0, 122, 255, 0.2);
+}
+
+.btn-res.active.main {
+  background-color: #28a745; /* 本番側（緑） */
+  box-shadow: 0 2px 4px rgba(40, 167, 69, 0.2);
+}
+
+.btn-resolve-complete {
+  gap: 8px;
+}
+
+.loading-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 3rem;
+  color: var(--accent-color);
+}
+
+.error-message {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 12px;
+  background-color: #fff5f5;
+  border: 1px solid #feb2b2;
+  border-radius: 6px;
+  color: #c53030;
+  font-size: 0.9rem;
+  margin-top: 1rem;
+  white-space: pre-wrap;
+}
+
+.header-icon.warning {
+  color: #f59e0b;
+}
+
+.no-conflicts {
+  text-align: center;
+  padding: 2rem;
+  color: var(--text-muted);
+  font-style: italic;
+}
+
+/* スクロールバーのカスタマイズ */
+.conflict-list::-webkit-scrollbar {
+  width: 6px;
+}
+
+.conflict-list::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.conflict-list::-webkit-scrollbar-thumb {
+  background: var(--border-color);
+  border-radius: 10px;
+}
+
+.conflict-list::-webkit-scrollbar-thumb:hover {
+  background: var(--text-muted);
+}

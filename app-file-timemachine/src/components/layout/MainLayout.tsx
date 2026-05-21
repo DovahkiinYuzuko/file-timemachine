@@ -1,7 +1,7 @@
 import { type FC, useState, useEffect } from "react";
 import { useTranslation } from "react-i18next";
 import { Panel, Group as PanelGroup, Separator as PanelResizeHandle } from "react-resizable-panels";
-import { Save, Loader2, GitBranch, GitBranchPlus } from "lucide-react";
+import { Save, Loader2, GitBranch, GitBranchPlus, Check } from "lucide-react";
 import Sidebar, { type SidebarTab } from "./Sidebar";
 import FileTree from "../tree/FileTree";
 import FilePreview from "../preview/FilePreview";
@@ -13,6 +13,7 @@ import HelpModal from "../help/HelpModal";
 import CommitMessageModal from "../common/CommitMessageModal";
 import CreateBranchModal from "../common/CreateBranchModal";
 import SwitchBranchModal from "../common/SwitchBranchModal";
+import ConflictResolverModal from "../common/ConflictResolverModal";
 import Tooltip from "../common/Tooltip";
 import logger from "../../utils/logger";
 import { type SafetyIssue } from "../../utils/safety";
@@ -49,6 +50,7 @@ const MainLayout: FC = () => {
   const [currentBranch, setCurrentBranch] = useState<string>("main");
   const [isCreateBranchModalOpen, setIsCreateBranchModalOpen] = useState(false);
   const [isSwitchBranchModalOpen, setIsSwitchBranchModalOpen] = useState(false);
+  const [isConflictModalOpen, setIsConflictModalOpen] = useState(false);
 
   // 現在のブランチ名を取得
   useEffect(() => {
@@ -150,8 +152,39 @@ const MainLayout: FC = () => {
       setHistoryRefreshKey(prev => prev + 1);
       alert(`ルート「${branchName}」に切り替えました。`);
     } catch (error) {
-      logger.error(`ルート切り替えエラー: ${error}`);
+      logger.error(`切り替えに失敗しました: ${error}`);
       alert(`切り替えに失敗しました: ${error}`);
+    }
+  };
+
+  // 本番（main）にマージする処理
+  const executeMergeToMain = async () => {
+    if (!projectPath) return;
+
+    // 確認ダイアログ
+    if (!confirm("現在の変更を本番（main）に合流させますか？")) {
+      return;
+    }
+
+    try {
+      logger.info(`本番への採用を開始します: ${currentBranch} -> main`);
+      const result = await invoke<string>("git_merge_to_main", {
+        path: projectPath,
+        branch: currentBranch,
+      });
+      logger.info(result);
+
+      alert("本番（main）に採用し、ルートを切り替えました。");
+      setCurrentBranch("main");
+      setHistoryRefreshKey((prev) => prev + 1);
+    } catch (error) {
+      if (error === "CONFLICT") {
+        logger.warn("マージ競合が発生しました。解決モーダルを表示します。");
+        setIsConflictModalOpen(true);
+      } else {
+        logger.error(`マージエラー: ${error}`);
+        alert(`本番への採用に失敗しました:\n${error}`);
+      }
     }
   };
 
@@ -346,6 +379,16 @@ const MainLayout: FC = () => {
             )}
           </div>
           <div className="footer-actions">
+            {projectPath && currentBranch !== "main" && (
+              <button
+                className="merge-to-main-btn"
+                onClick={executeMergeToMain}
+                title="このルートの変更を本番に反映する"
+              >
+                <Check size={16} />
+                <span>本番に採用</span>
+              </button>
+            )}
             {projectPath && (
               <button
                 className="create-branch-btn"
@@ -434,6 +477,21 @@ const MainLayout: FC = () => {
         }}
         projectPath={projectPath}
         currentBranch={currentBranch}
+      />
+
+      <ConflictResolverModal
+        isOpen={isConflictModalOpen}
+        projectPath={projectPath}
+        onResolved={() => {
+          setIsConflictModalOpen(false);
+          alert("すべての競合を解決し、本番に採用しました。");
+          setCurrentBranch("main");
+          setHistoryRefreshKey((prev) => prev + 1);
+        }}
+        onCancel={() => {
+          setIsConflictModalOpen(false);
+          logger.info("競合解決がキャンセルされました。");
+        }}
       />
     </div>
   );
