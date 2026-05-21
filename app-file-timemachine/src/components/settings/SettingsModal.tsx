@@ -27,6 +27,7 @@ const SettingsModal: FC<SettingsModalProps> = ({ isOpen, onClose }) => {
   const [saveBehavior, setSaveBehavior] = useState<SaveBehavior>("confirm");
   const [autoScan, setAutoScan] = useState(true);
   const [theme, setTheme] = useState<Theme>("light");
+  const [isLoaded, setIsLoaded] = useState(false);
 
   // Load settings from AppConfig on mount
   useEffect(() => {
@@ -45,9 +46,12 @@ const SettingsModal: FC<SettingsModalProps> = ({ isOpen, onClose }) => {
         if (config.settings_theme) {
           setTheme(config.settings_theme as Theme);
           logger.debug(`設定を読み込んだよ: テーマ = ${config.settings_theme}`);
+          document.documentElement.setAttribute("data-theme", config.settings_theme);
         }
       } catch (error) {
         logger.error(`設定の読み込みに失敗したよ: ${error}`);
+      } finally {
+        setIsLoaded(true);
       }
     };
     loadSettings();
@@ -55,6 +59,7 @@ const SettingsModal: FC<SettingsModalProps> = ({ isOpen, onClose }) => {
 
   // Save settings to AppConfig when they change
   useEffect(() => {
+    if (!isLoaded) return;
     const save = async () => {
       try {
         await updateAppConfig({ settings_save_behavior: saveBehavior });
@@ -64,9 +69,10 @@ const SettingsModal: FC<SettingsModalProps> = ({ isOpen, onClose }) => {
       }
     };
     save();
-  }, [saveBehavior]);
+  }, [saveBehavior, isLoaded]);
 
   useEffect(() => {
+    if (!isLoaded) return;
     const save = async () => {
       try {
         await updateAppConfig({ settings_auto_scan: autoScan });
@@ -76,9 +82,10 @@ const SettingsModal: FC<SettingsModalProps> = ({ isOpen, onClose }) => {
       }
     };
     save();
-  }, [autoScan]);
+  }, [autoScan, isLoaded]);
 
   useEffect(() => {
+    if (!isLoaded) return;
     const save = async () => {
       try {
         await updateAppConfig({ settings_theme: theme });
@@ -89,7 +96,7 @@ const SettingsModal: FC<SettingsModalProps> = ({ isOpen, onClose }) => {
       }
     };
     save();
-  }, [theme]);
+  }, [theme, isLoaded]);
 
   // Accessibility: Handle Escape key
   useEffect(() => {
