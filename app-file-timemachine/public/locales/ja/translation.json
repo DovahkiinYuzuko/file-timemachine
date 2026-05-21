@@ -81,7 +81,7 @@
     "theme": {
       "title": "テーマ設定",
       "select": "アプリのテーマを選択してください",
-      "light": "ライト (GitHubオススメ)",
+      "light": "ライト",
       "dark": "ダーク"
     },
     "behavior": {

@@ -38,6 +38,7 @@ const GitGraph: FC<GitGraphProps> = ({ projectPath, refreshKey, onInitSuccess, s
   const [isDragging, setIsDragging] = useState(false);
   const [dragStart, setDragStart] = useState({ x: 0, y: 0 });
   const [searchQuery, setSearchQuery] = useState("");
+  const [commitBranchMap, setCommitBranchMap] = useState<Map<string, { name: string; color: string }>>(new Map());
   
   const containerRef = useRef<HTMLDivElement>(null);
   const viewportRef = useRef<HTMLDivElement>(null);
@@ -138,6 +139,17 @@ const GitGraph: FC<GitGraphProps> = ({ projectPath, refreshKey, onInitSuccess, s
       
       const branches = new Map<string, any>();
       const commitBranchNameMap = new Map<string, string>();
+      const branchColors = new Map<string, string>();
+      const commitBranchInfoMap = new Map<string, { name: string; color: string }>();
+      let nextColorIndex = 0;
+
+      // CUD（岡部・柴田パレット）準拠の配色配列
+      const cudColors = [
+        "#56b4e9", // スカイブルー
+        "#e69f00", // オレンジ
+        "#009e73", // 青緑
+        "#cc79a7"  // マゼンタピンク
+      ];
       
       // 子コミットリストを事前計算
       const childrenMap = new Map<string, string[]>();
@@ -153,6 +165,7 @@ const GitGraph: FC<GitGraphProps> = ({ projectPath, refreshKey, onInitSuccess, s
       // 初期ベースブランチ
       const mainBranch = gitgraph.branch("main");
       branches.set("main", mainBranch);
+      branchColors.set("main", cudColors[nextColorIndex++ % cudColors.length]);
 
       chronologicalCommits.forEach((commit) => {
         const shortHash = commit.hash.substring(0, 7);
@@ -183,6 +196,9 @@ const GitGraph: FC<GitGraphProps> = ({ projectPath, refreshKey, onInitSuccess, s
           if (!branch) {
             branch = gitgraph.branch("main");
             branches.set("main", branch);
+            if (!branchColors.has("main")) {
+              branchColors.set("main", cudColors[nextColorIndex++ % cudColors.length]);
+            }
           }
           branch.commit({
             hash: shortHash,
@@ -192,6 +208,7 @@ const GitGraph: FC<GitGraphProps> = ({ projectPath, refreshKey, onInitSuccess, s
             onMessageClick: handleCommitClick,
           });
           commitBranchNameMap.set(commit.hash, "main");
+          commitBranchInfoMap.set(commit.hash, { name: "main", color: branchColors.get("main")! });
 
         } else if (commit.parents.length === 1) {
           // 親が1つ
@@ -209,6 +226,10 @@ const GitGraph: FC<GitGraphProps> = ({ projectPath, refreshKey, onInitSuccess, s
             if (!newBranch) {
               newBranch = parentBranch.branch(newBranchName);
               branches.set(newBranchName, newBranch);
+              // 色を安全に割り当て（循環モジュロ）
+              if (!branchColors.has(newBranchName)) {
+                branchColors.set(newBranchName, cudColors[nextColorIndex++ % cudColors.length]);
+              }
             }
             newBranch.commit({
               hash: shortHash,
@@ -218,6 +239,7 @@ const GitGraph: FC<GitGraphProps> = ({ projectPath, refreshKey, onInitSuccess, s
               onMessageClick: handleCommitClick,
             });
             commitBranchNameMap.set(commit.hash, newBranchName);
+            commitBranchInfoMap.set(commit.hash, { name: newBranchName, color: branchColors.get(newBranchName)! });
           } else {
             // 1番目の子 ＝ 親と同じブランチを継続
             parentBranch.commit({
@@ -228,10 +250,14 @@ const GitGraph: FC<GitGraphProps> = ({ projectPath, refreshKey, onInitSuccess, s
               onMessageClick: handleCommitClick,
             });
             commitBranchNameMap.set(commit.hash, parentBranchName);
+            commitBranchInfoMap.set(commit.hash, { name: parentBranchName, color: branchColors.get(parentBranchName) || cudColors[0] });
 
             // このコミットに新しいブランチ名が紐付いていれば、その名前でもブランチオブジェクトを登録
             if (cleanBranchName && cleanBranchName !== parentBranchName) {
               branches.set(cleanBranchName, parentBranch);
+              if (!branchColors.has(cleanBranchName)) {
+                branchColors.set(cleanBranchName, branchColors.get(parentBranchName) || cudColors[0]);
+              }
             }
           }
 
@@ -255,6 +281,7 @@ const GitGraph: FC<GitGraphProps> = ({ projectPath, refreshKey, onInitSuccess, s
               onMessageClick: handleCommitClick,
             });
             commitBranchNameMap.set(commit.hash, branchName1);
+            commitBranchInfoMap.set(commit.hash, { name: branchName1, color: branchColors.get(branchName1) || cudColors[0] });
           } else {
             const activeBranch = branch1 || branches.get("main");
             activeBranch.commit({
@@ -265,13 +292,33 @@ const GitGraph: FC<GitGraphProps> = ({ projectPath, refreshKey, onInitSuccess, s
               onMessageClick: handleCommitClick,
             });
             commitBranchNameMap.set(commit.hash, branchName1);
+            commitBranchInfoMap.set(commit.hash, { name: branchName1, color: branchColors.get(branchName1) || cudColors[0] });
           }
         }
       });
+
+      // 安全なState更新（前回の値と比較して変更があった場合のみset）
+      let hasChanged = false;
+      if (commitBranchInfoMap.size !== commitBranchMap.size) {
+        hasChanged = true;
+      } else {
+        for (const [key, value] of commitBranchInfoMap.entries()) {
+          const prev = commitBranchMap.get(key);
+          if (!prev || prev.name !== value.name || prev.color !== value.color) {
+            hasChanged = true;
+            break;
+          }
+        }
+      }
+
+      if (hasChanged) {
+        setCommitBranchMap(commitBranchInfoMap);
+      }
+
     } catch (e) {
       console.error("Failed to render Git graph:", e);
     }
-  }, [commits, selectedCommitHash, onCommitSelect]);
+  }, [commits, selectedCommitHash, onCommitSelect, commitBranchMap]);
 
   // パン操作（ドラッグ移動）のハンドリング
   const handleMouseDown = (e: MouseEvent<HTMLDivElement>) => {
@@ -491,6 +538,10 @@ const GitGraph: FC<GitGraphProps> = ({ projectPath, refreshKey, onInitSuccess, s
                 commit.hash.toLowerCase().includes(searchQuery.toLowerCase());
               
               const isSelected = selectedCommitHash === commit.hash;
+              
+              // 所属ブランチ情報の取得
+              const branchInfo = commitBranchMap.get(commit.hash);
+              const dotColor = branchInfo ? branchInfo.color : "transparent";
 
               return (
                 <div 
@@ -510,12 +561,29 @@ const GitGraph: FC<GitGraphProps> = ({ projectPath, refreshKey, onInitSuccess, s
                   }}
                 >
                   <div className="commit-info-wrapper">
+                    {/* 所属路線のドットインジケーター */}
+                    <span 
+                      className="commit-branch-dot" 
+                      style={{ backgroundColor: dotColor }}
+                      title={branchInfo ? `Route: ${branchInfo.name}` : undefined}
+                    />
                     <span className="commit-hash">{commit.hash.substring(0, 7)}</span>
                     {commit.refs && commit.refs.map((ref) => {
                       const clean = ref.replace("refs/heads/", "").replace("tag: ", "").replace("HEAD -> ", "").trim();
                       if (clean && !clean.includes("origin/")) {
+                        // バッジ用の動的スタイルを設定（透過度調整によるプレミアム感）
+                        const badgeColor = branchInfo ? branchInfo.color : "#0969da";
+                        const badgeStyle = {
+                          backgroundColor: `${badgeColor}20`,
+                          color: badgeColor,
+                          border: `1px solid ${badgeColor}40`
+                        };
                         return (
-                          <span key={ref} className="commit-branch-badge">
+                          <span 
+                            key={ref} 
+                            className="commit-branch-badge"
+                            style={badgeStyle}
+                          >
                             {clean}
                           </span>
                         );

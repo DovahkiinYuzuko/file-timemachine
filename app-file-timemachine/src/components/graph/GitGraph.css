@@ -72,13 +72,19 @@
   color: var(--text-muted, #8b949e);
 }
 
+.commit-branch-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  flex-shrink: 0;
+  margin-right: 4px;
+}
+
 .commit-branch-badge {
   font-size: 10px;
   font-weight: 600;
-  padding: 2px 8px;
+  padding: 1px 6px;
   border-radius: 12px;
-  background-color: #ddf4ff;
-  color: #0969da;
   white-space: nowrap;
 }
 
