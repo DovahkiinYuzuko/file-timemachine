@@ -131,7 +131,7 @@ const MainLayout: FC = () => {
       
       // ツリーや履歴を更新
       setHistoryRefreshKey(prev => prev + 1);
-      alert(`新しいルート「${branchName}」を作成して切り替えたよ！`);
+      alert(`新しいルート「${branchName}」を作成し、切り替えました。`);
     } catch (error) {
       logger.error(`ブランチ作成エラー: ${error}`);
       alert(`ルート作成に失敗しました: ${error}`);
@@ -148,7 +148,7 @@ const MainLayout: FC = () => {
       
       // ツリーや履歴を更新
       setHistoryRefreshKey(prev => prev + 1);
-      alert(`ルート「${branchName}」に切り替えたよ！`);
+      alert(`ルート「${branchName}」に切り替えました。`);
     } catch (error) {
       logger.error(`ルート切り替えエラー: ${error}`);
       alert(`切り替えに失敗しました: ${error}`);

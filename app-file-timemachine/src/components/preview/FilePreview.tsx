@@ -40,7 +40,30 @@ const FilePreview: FC<FilePreviewProps> = ({ filePath }) => {
   const [metadata, setMetadata] = useState<FileMetadata | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
+  const [showDiff, setShowDiff] = useState(false);
+  const [diffContent, setDiffContent] = useState<string | null>(null);
   const lastModifiedRef = useRef<string | null>(null);
+
+  // ファイルが切り替わったらDiffをリセット
+  useEffect(() => {
+    setShowDiff(false);
+    setDiffContent(null);
+  }, [filePath]);
+
+  // Diffトグル時に差分を取得
+  useEffect(() => {
+    if (showDiff && filePath) {
+      const fetchDiff = async () => {
+        try {
+          const diff = await invoke<string>("git_diff_file", { path: filePath });
+          setDiffContent(diff);
+        } catch (err) {
+          logger.error(`Failed to load diff: ${err}`);
+        }
+      };
+      fetchDiff();
+    }
+  }, [showDiff, filePath]);
 
   useEffect(() => {
     if (!filePath) {
@@ -94,6 +117,10 @@ const FilePreview: FC<FilePreviewProps> = ({ filePath }) => {
           if (newMeta.file_type === "text") {
             const result = await invoke<PreviewContent>("read_file_content", { path: filePath });
             setTextContent(result.content);
+            if (showDiff) {
+              const diff = await invoke<string>("git_diff_file", { path: filePath });
+              setDiffContent(diff);
+            }
           }
         }
       } catch (err) {
@@ -143,9 +170,28 @@ const FilePreview: FC<FilePreviewProps> = ({ filePath }) => {
 
   return (
     <article className="file-preview-container" aria-label={t("common.aria.file_preview", { path: metadata?.name || filePath })}>
-      <header className="preview-info">
-        <FileText size={16} />
-        <h3>{metadata?.name || filePath}</h3>
+      <header className="preview-info" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+          <FileText size={16} />
+          <h3 style={{ margin: 0 }}>{metadata?.name || filePath}</h3>
+        </div>
+        {metadata?.file_type === "text" && (
+          <button 
+            onClick={() => setShowDiff(!showDiff)}
+            style={{ 
+              background: showDiff ? "var(--accent-color)" : "transparent",
+              color: showDiff ? "white" : "var(--text-color)",
+              border: `1px solid ${showDiff ? "var(--accent-color)" : "var(--border-color)"}`,
+              padding: "4px 8px",
+              borderRadius: "4px",
+              fontSize: "0.8rem",
+              cursor: "pointer",
+              transition: "all 0.2s"
+            }}
+          >
+            {showDiff ? "プレビューに戻る" : "差分(Diff)を表示"}
+          </button>
+        )}
       </header>
       
       <div className="preview-body">
@@ -182,7 +228,33 @@ const FilePreview: FC<FilePreviewProps> = ({ filePath }) => {
           </div>
         )}
 
-        {metadata?.file_type === "text" && textContent !== null && (
+        {metadata?.file_type === "text" && showDiff && diffContent !== null && (
+          <pre className="text-preview diff-view" aria-readonly="true">
+            <code>
+              {diffContent ? diffContent.split('\n').map((line, i) => {
+                let color = "inherit";
+                let bg = "transparent";
+                if (line.startsWith('+')) {
+                  color = "#10b981"; // Emerald-500
+                  bg = "rgba(16, 185, 129, 0.1)";
+                } else if (line.startsWith('-')) {
+                  color = "#ef4444"; // Red-500
+                  bg = "rgba(239, 68, 68, 0.1)";
+                } else if (line.startsWith('@@')) {
+                  color = "#3b82f6"; // Blue-500
+                  bg = "rgba(59, 130, 246, 0.1)";
+                }
+                return (
+                  <div key={i} style={{ color, backgroundColor: bg, padding: "0 4px", minHeight: "1.2em", whiteSpace: "pre-wrap", wordBreak: "break-all" }}>
+                    {line}
+                  </div>
+                );
+              }) : <div style={{ color: "var(--text-muted)", fontStyle: "italic", padding: "16px" }}>変更点はありません。</div>}
+            </code>
+          </pre>
+        )}
+
+        {metadata?.file_type === "text" && !showDiff && textContent !== null && (
           <pre className="text-preview" aria-readonly="true">
             <code>{textContent}</code>
           </pre>

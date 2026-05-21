@@ -1,6 +1,6 @@
 import { type FC, useState, useEffect, memo } from "react";
 import { invoke } from "@tauri-apps/api/core";
-import { Folder, FileText, ChevronRight, ChevronDown, Loader2 } from "lucide-react";
+import { Folder, FileText, ChevronRight, ChevronDown, Loader2, Search, X } from "lucide-react";
 import { useTranslation } from "react-i18next";
 import logger from "../../utils/logger";
 import "./FileTree.css";
@@ -35,8 +35,15 @@ const FileTreeItem: FC<{
   depth: number;
   onFileSelect?: (path: string) => void;
   onToggleIgnore: (path: string, currentIgnored: boolean, isDir: boolean) => void;
-}> = memo(({ entry, depth, onFileSelect, onToggleIgnore }) => {
+  forceExpand?: boolean;
+}> = memo(({ entry, depth, onFileSelect, onToggleIgnore, forceExpand }) => {
   const [isOpen, setIsOpen] = useState(false);
+
+  useEffect(() => {
+    if (forceExpand && entry.is_dir) {
+      setIsOpen(true);
+    }
+  }, [forceExpand, entry.is_dir]);
 
   const handleToggle = (e: React.MouseEvent | React.KeyboardEvent) => {
     // チェックボックスをクリックした時は無視
@@ -105,6 +112,7 @@ const FileTreeItem: FC<{
               depth={depth + 1} 
               onFileSelect={onFileSelect}
               onToggleIgnore={onToggleIgnore}
+              forceExpand={forceExpand}
             />
           ))}
         </div>
@@ -138,6 +146,26 @@ const FileTree: FC<FileTreeProps> = ({ rootPath, onFileSelect }) => {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [gitMode, setGitMode] = useState<GitMode>("blacklist");
+  const [searchQuery, setSearchQuery] = useState("");
+
+  const filterTree = (nodes: FileEntry[], query: string): FileEntry[] => {
+    if (!query) return nodes;
+    const lowerQuery = query.toLowerCase();
+    
+    return nodes.map(node => {
+      const isMatch = node.name.toLowerCase().includes(lowerQuery);
+      if (node.is_dir && node.children) {
+        const filteredChildren = filterTree(node.children, query);
+        if (isMatch || filteredChildren.length > 0) {
+          return { ...node, children: filteredChildren };
+        }
+        return null;
+      }
+      return isMatch ? node : null;
+    }).filter(Boolean) as FileEntry[];
+  };
+
+  const filteredTreeData = filterTree(treeData, searchQuery);
 
   // silent=true の場合はローディング表示をスキップする（トグル後の再同期用）
   const fetchTree = async (silent = false) => {
@@ -260,15 +288,32 @@ const FileTree: FC<FileTreeProps> = ({ rootPath, onFileSelect }) => {
         </div>
       </div>
       
+      <div className="file-tree-search-bar" style={{ padding: "8px 12px", borderBottom: "1px solid var(--border-color)", display: "flex", gap: "8px", alignItems: "center" }}>
+        <Search size={16} color="var(--text-muted)" />
+        <input 
+          type="text" 
+          value={searchQuery}
+          onChange={(e) => setSearchQuery(e.target.value)}
+          placeholder={t("common.search", "ファイル名を検索...")}
+          style={{ flex: 1, backgroundColor: "transparent", border: "none", color: "var(--text-color)", outline: "none", fontSize: "0.85rem" }}
+        />
+        {searchQuery && (
+          <button onClick={() => setSearchQuery("")} style={{ background: "none", border: "none", cursor: "pointer", color: "var(--text-muted)", display: "flex" }}>
+            <X size={14} />
+          </button>
+        )}
+      </div>
+
       <div className="file-tree-scroll-area">
-        {treeData.length > 0 ? (
-          treeData.map((entry) => (
+        {filteredTreeData.length > 0 ? (
+          filteredTreeData.map((entry) => (
             <FileTreeItem 
               key={entry.path} 
               entry={entry} 
               depth={0} 
               onFileSelect={onFileSelect}
               onToggleIgnore={handleToggleIgnore}
+              forceExpand={searchQuery.length > 0}
             />
           ))
         ) : (

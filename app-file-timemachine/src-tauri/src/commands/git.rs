@@ -452,3 +452,42 @@ pub async fn git_checkout(path: String, branch: String) -> Result<String, String
     Ok(format!("ブランチ '{}' に切り替えました。", branch))
 }
 
+#[tauri::command]
+pub async fn git_diff_file(path: String) -> Result<String, String> {
+    let raw_path = Path::new(&path);
+    let repo_path = dunce::canonicalize(raw_path)
+        .map_err(|e| format!("パスの正規化に失敗しました: {}", e))?;
+
+    if !repo_path.exists() {
+        return Err("無効なファイルパスです。".to_string());
+    }
+
+    // ディレクトリの場合は diff を取らない
+    if repo_path.is_dir() {
+        return Ok("".to_string());
+    }
+
+    // git diff HEAD -- <file>
+    let output = Command::new("git")
+        .arg("diff")
+        .arg("HEAD")
+        .arg("--")
+        .arg(&repo_path)
+        .current_dir(repo_path.parent().unwrap_or(Path::new(".")))
+        .output()
+        .map_err(|e| format!("git diff の実行に失敗しました: {}", e))?;
+
+    if !output.status.success() {
+        let stderr = String::from_utf8_lossy(&output.stderr);
+        // Sometimes it fails if the repo has no commits, let's just return empty diff
+        if stderr.contains("bad revision") || stderr.contains("ambiguous argument") {
+            return Ok("".to_string());
+        }
+        return Err(format!("差分の取得に失敗しました。\n詳細: {}", stderr));
+    }
+
+    let diff = String::from_utf8_lossy(&output.stdout).to_string();
+    Ok(diff)
+}
+
+

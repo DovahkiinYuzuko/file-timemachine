@@ -30,7 +30,7 @@ const SwitchBranchModal: FC<SwitchBranchModalProps> = ({
     if (isOpen && projectPath) {
       setErrorMsg("");
       setLoading(true);
-      logger.debug("ルート切り替えモーダルが開いたよ");
+      logger.debug("ルート切り替えモーダルが開きました");
       
       const fetchBranches = async () => {
         try {
@@ -38,7 +38,7 @@ const SwitchBranchModal: FC<SwitchBranchModalProps> = ({
           setBranches(list);
         } catch (error) {
           logger.error(`ブランチ一覧取得エラー: ${error}`);
-          setErrorMsg("ルートの一覧を取得できなかったよ...");
+          setErrorMsg("ルートの一覧の取得に失敗しました。");
         } finally {
           setLoading(false);
         }

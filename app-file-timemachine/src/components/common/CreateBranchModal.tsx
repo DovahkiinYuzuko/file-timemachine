@@ -25,7 +25,7 @@ const CreateBranchModal: FC<CreateBranchModalProps> = ({
     if (isOpen) {
       setBranchName("");
       setErrorMsg("");
-      logger.debug("新しいルート作成モーダルが開いたよ");
+      logger.debug("新しいルート作成モーダルが開きました");
       
       const timer = setTimeout(() => {
         if (inputRef.current) {
@@ -85,12 +85,12 @@ const CreateBranchModal: FC<CreateBranchModalProps> = ({
     const isValid = /^[a-zA-Z0-9\-_]+$/.test(finalName);
     
     if (!finalName) {
-      setErrorMsg("ルート名を入力してね！");
+      setErrorMsg("ルート名を入力してください。");
       return;
     }
     
     if (!isValid) {
-      setErrorMsg("ルート名には英数字とハイフン(-)、アンダースコア(_)しか使えないよ！");
+      setErrorMsg("ルート名には半角英数字、ハイフン(-)、アンダースコア(_)のみ使用可能です。");
       return;
     }
     

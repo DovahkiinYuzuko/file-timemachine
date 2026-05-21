@@ -1,8 +1,8 @@
-import { type FC, useEffect, useState, useRef, MouseEvent, WheelEvent } from "react";
+import { type FC, useEffect, useState, useRef, MouseEvent, WheelEvent, ChangeEvent } from "react";
 import { createGitgraph, TemplateName, templateExtend } from "@gitgraph/js";
 import { invoke } from "@tauri-apps/api/core";
 import { useTranslation } from "react-i18next";
-import { FolderOpen, History, Loader2, Maximize } from "lucide-react";
+import { FolderOpen, History, Loader2, Maximize, Search, X } from "lucide-react";
 import "./GitGraph.css";
 
 interface CommitLog {
@@ -36,6 +36,7 @@ const GitGraph: FC<GitGraphProps> = ({ projectPath, refreshKey, onInitSuccess })
   const [offset, setOffset] = useState({ x: 0, y: 0 });
   const [isDragging, setIsDragging] = useState(false);
   const [dragStart, setDragStart] = useState({ x: 0, y: 0 });
+  const [searchQuery, setSearchQuery] = useState("");
   
   const containerRef = useRef<HTMLDivElement>(null);
   const viewportRef = useRef<HTMLDivElement>(null);
@@ -307,6 +308,22 @@ const GitGraph: FC<GitGraphProps> = ({ projectPath, refreshKey, onInitSuccess })
           </button>
         </div>
 
+        <div className="graph-search-bar" style={{ display: "flex", alignItems: "center", gap: "8px", flex: 1, margin: "0 16px", backgroundColor: "var(--bg-color)", padding: "4px 8px", borderRadius: "6px", border: "1px solid var(--border-color)" }}>
+          <Search size={16} color="var(--text-muted)" />
+          <input 
+            type="text" 
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
+            placeholder="コミットを検索..."
+            style={{ flex: 1, backgroundColor: "transparent", border: "none", color: "var(--text-color)", outline: "none", fontSize: "0.85rem" }}
+          />
+          {searchQuery && (
+            <button onClick={() => setSearchQuery("")} style={{ background: "none", border: "none", cursor: "pointer", color: "var(--text-muted)", display: "flex" }}>
+              <X size={14} />
+            </button>
+          )}
+        </div>
+
         <div className="graph-zoom-controls" role="group" aria-label="Zoom controls">
           <button
             className="zoom-btn"
@@ -361,21 +378,31 @@ const GitGraph: FC<GitGraphProps> = ({ projectPath, refreshKey, onInitSuccess })
             role="list"
             aria-label={t("common.aria.git_graph_description")}
           >
-            {commits.map((commit, index) => (
-              <div 
-                key={commit.hash.toString()} 
-                className="commit-list-row"
-                style={{ height: "40px" }} // CSS/SVG側の spacing (40px) と完璧に一致
-                onClick={() => console.log("Commit clicked:", commit.hash)}
-              >
-                <div className="commit-info-wrapper">
-                  <span className="commit-hash">{commit.hash.substring(0, 7)}</span>
-                  {/* 最新のコミットのみ main バッジを表示 */}
-                  {index === 0 && <span className="commit-branch-badge">main</span>}
-                  <span className="commit-message" title={commit.message}>{commit.message}</span>
+            {commits.map((commit, index) => {
+              const isMatch = !searchQuery || 
+                commit.message.toLowerCase().includes(searchQuery.toLowerCase()) || 
+                commit.hash.toLowerCase().includes(searchQuery.toLowerCase());
+
+              return (
+                <div 
+                  key={commit.hash.toString()} 
+                  className={`commit-list-row ${!isMatch ? 'faded' : ''}`}
+                  style={{ 
+                    height: "40px", 
+                    opacity: isMatch ? 1 : 0.15,
+                    transition: "opacity 0.2s"
+                  }}
+                  onClick={() => console.log("Commit clicked:", commit.hash)}
+                >
+                  <div className="commit-info-wrapper">
+                    <span className="commit-hash">{commit.hash.substring(0, 7)}</span>
+                    {/* 最新のコミットのみ main バッジを表示 */}
+                    {index === 0 && <span className="commit-branch-badge">main</span>}
+                    <span className="commit-message" title={commit.message}>{commit.message}</span>
+                  </div>
                 </div>
-              </div>
-            ))}
+              );
+            })}
           </div>
         </div>
       </div>
