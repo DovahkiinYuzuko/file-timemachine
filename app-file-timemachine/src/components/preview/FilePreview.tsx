@@ -189,7 +189,7 @@ const FilePreview: FC<FilePreviewProps> = ({ filePath }) => {
               transition: "all 0.2s"
             }}
           >
-            {showDiff ? "プレビューに戻る" : "差分(Diff)を表示"}
+            {showDiff ? t("preview.action.back_to_preview") : t("preview.action.show_diff")}
           </button>
         )}
       </header>
@@ -211,7 +211,7 @@ const FilePreview: FC<FilePreviewProps> = ({ filePath }) => {
               src={assetUrl} 
               aria-label={t("common.aria.preview_of", { path: metadata?.name || filePath })}
             >
-              Your browser does not support the video tag.
+              {t("preview.video_not_supported")}
             </video>
           </div>
         )}
@@ -223,7 +223,7 @@ const FilePreview: FC<FilePreviewProps> = ({ filePath }) => {
               src={assetUrl} 
               aria-label={t("common.aria.preview_of", { path: metadata?.name || filePath })}
             >
-              Your browser does not support the audio element.
+              {t("preview.audio_not_supported")}
             </audio>
           </div>
         )}
@@ -249,7 +249,7 @@ const FilePreview: FC<FilePreviewProps> = ({ filePath }) => {
                     {line}
                   </div>
                 );
-              }) : <div style={{ color: "var(--text-muted)", fontStyle: "italic", padding: "16px" }}>変更点はありません。</div>}
+              }) : <div style={{ color: "var(--text-muted)", fontStyle: "italic", padding: "16px" }}>{t("preview.no_changes")}</div>}
             </code>
           </pre>
         )}

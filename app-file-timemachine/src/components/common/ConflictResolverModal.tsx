@@ -91,7 +91,7 @@ const ConflictResolverModal: FC<ConflictResolverModalProps> = ({
             setPreviewContent(res.content);
           }
         } catch (e) {
-          logger.error("Preview load error:", e);
+          logger.error(`Preview load error: ${e}`);
           setPreviewContent(`ERROR:${e}`);
         } finally {
           setPreviewLoading(false);
@@ -132,7 +132,7 @@ const ConflictResolverModal: FC<ConflictResolverModalProps> = ({
       logger.info("すべての競合を解決しました。マージコミットを作成します。");
       await invoke("git_commit", {
         path: projectPath,
-        message: "本番への採用に伴う競合の解決",
+        message: t("conflict.commit_message"),
       });
 
       onResolved();
@@ -273,7 +273,7 @@ const ConflictResolverModal: FC<ConflictResolverModalProps> = ({
                     </div>
                   ))}
                   {files.length === 0 && !loading && (
-                    <p className="no-conflicts">競合しているファイルはありません。</p>
+                    <p className="no-conflicts">{t("conflict.no_conflicts")}</p>
                   )}
                 </div>
               )}

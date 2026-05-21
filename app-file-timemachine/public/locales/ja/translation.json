@@ -13,11 +13,7 @@
       "help": "ヘルプ"
     },
     "error": {
-      "failed_to_fetch_logs": "履歴の取得に失敗しました",
-      "failed_to_canonicalize_path": "パスの正規化に失敗しました",
-      "failed_to_get_metadata": "ファイルの情報を取得できませんでした",
-      "failed_to_read_image": "画像ファイルの読み込みに失敗しました",
-      "failed_to_read_file": "ファイルの読み込みに失敗しました"
+      "failed_to_fetch_logs": "履歴の取得に失敗しました"
     },
     "placeholder": {
       "file_tree": "（ここにファイルツリーが表示されます）",
@@ -30,13 +26,11 @@
       "no_history": "履歴がまだありません",
       "file_too_large": "ファイルが大きすぎます (最大 5MB)"
     },
-    "error": {
-      "failed_to_fetch_logs": "履歴の取得に失敗しました"
-    },
     "aria": {
       "git_graph_description": "Gitのコミット履歴を可視化したグラフです",
       "file_preview": "{{path}} のプレビュー",
-      "preview_of": "{{path}} の内容"
+      "preview_of": "{{path}} の内容",
+      "show_help": "ヘルプを表示"
     },
     "graph_style": {
       "tree": "ツリー",
@@ -51,13 +45,26 @@
     "file_name": "ファイル名",
     "file_size": "サイズ",
     "last_modified": "最終更新",
-    "loading": "読み込み中..."
+    "loading": "読み込み中...",
+    "action": {
+      "retry": "再試行",
+      "close": "閉じる",
+      "cancel": "キャンセル"
+    },
+    "empty_directory": "ファイルが見つかりません"
   },
   "preview": {
     "unknown_type": {
       "title": "バイナリファイル",
       "message": "このファイル形式のプレビューはサポートされていませんが、大切なデータとして管理されています。"
-    }
+    },
+    "action": {
+      "back_to_preview": "プレビューに戻る",
+      "show_diff": "差分(Diff)を表示"
+    },
+    "no_changes": "変更点はありません。",
+    "video_not_supported": "お使いのブラウザはビデオタグをサポートしていません。",
+    "audio_not_supported": "お使いのブラウザはオーディオ要素をサポートしていません。"
   },
   "settings": {
     "github": {
@@ -176,6 +183,86 @@
     "error_resolving": "解決処理中にエラーが発生しました。",
     "preview_title": "競合箇所を確認",
     "select_to_preview": "ファイルを選択して中身を確認できます",
-    "loading_content": "ファイルを読み込み中..."
+    "loading_content": "ファイルを読み込み中...",
+    "no_conflicts": "競合しているファイルはありません。",
+    "commit_message": "本番への採用に伴う競合の解決"
+  },
+  "branch": {
+    "modal": {
+      "title": "新しいルートを作る",
+      "desc": "今の状態を維持したまま、別ルートとして新しい変更を試すことができます。",
+      "input_label": "ルートの名前",
+      "placeholder": "例: test-design",
+      "input_tip": "※英数字とハイフンが使えます。",
+      "submit": "作成する",
+      "error_empty": "ルート名を入力してください。",
+      "error_invalid": "ルート名には半角英数字、ハイフン(-)、アンダースコア(_)のみ使用可能です。"
+    },
+    "switch": {
+      "title": "ルートの切り替え",
+      "desc": "別のルートに切り替えると、ファイルの状態がそのルートのものに変化します。",
+      "error_fetch": "ルート一覧の取得に失敗しました。"
+    }
+  },
+  "graph": {
+    "empty": {
+      "no_folder_title": "フォルダが選択されていません",
+      "no_folder_desc": "サイドバーの「フォルダを開く」からプロジェクトを選択すると、ここに履歴の路線図が表示されます。",
+      "no_history_title": "履歴が見つかりませんでした",
+      "no_history_desc": "タイムマシンの履歴（コミット）を記録するために、リポジトリの初期化を実行してください。"
+    },
+    "init": {
+      "loading": "初期化中...",
+      "start": "履歴の保存を開始する"
+    },
+    "search": {
+      "placeholder": "コミットを検索..."
+    },
+    "action": {
+      "zoom_out": "ズームアウト",
+      "zoom_in": "ズームイン",
+      "reset_camera": "カメラリセット"
+    }
+  },
+  "history": {
+    "table": {
+      "message": "メッセージ",
+      "hash": "ハッシュ"
+    }
+  },
+  "layout": {
+    "alert": {
+      "no_folder_save": "フォルダが開かれていないため、保存できません。",
+      "save_success": "状態を記録しました。\nメッセージ: \"{{message}}\"",
+      "save_failed": "保存に失敗しました： {{error}}",
+      "create_branch_success": "新しいルート「{{branchName}}」を作成し、切り替えました。",
+      "create_branch_failed": "ルート作成に失敗しました: {{error}}",
+      "switch_branch_success": "ルート「{{branchName}}」に切り替えました。",
+      "switch_branch_failed": "切り替えに失敗しました: {{error}}",
+      "merge_success": "本番（main）に採用し、ルートを切り替えました。",
+      "merge_failed": "本番への採用に失敗しました：\n{{error}}",
+      "save_local_only": "ローカルに保存しました（Gitへの記録はスキップされました）。",
+      "no_folder_to_save": "フォルダが開かれていないため保存できません。左のサイドバーからフォルダを開いてください。",
+      "resolve_conflict_success": "すべての競合を解決し、本番に採用しました。",
+      "abort_merge_failed": "元の状態に戻すのに失敗しました：\n{{error}}"
+    },
+    "confirm": {
+      "merge": "現在の変更を本番（main）に合流させますか？"
+    },
+    "tooltip": {
+      "switch_route": "ルートを切り替える",
+      "merge_to_main": "このルートの変更を本番に反映する",
+      "create_route": "新しいルートを作る"
+    },
+    "action": {
+      "new_route": "新しいルート",
+      "saving": "保存中..."
+    }
+  },
+  "tree": {
+    "action": {
+      "unignore": "無視を解除",
+      "ignore": "無視する"
+    }
   }
 }

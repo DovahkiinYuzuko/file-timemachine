@@ -27,8 +27,15 @@
     "aria": {
       "git_graph_description": "Visualisierungsgrafik des Git-Commit-Verlaufs",
       "file_preview": "Vorschau von {{path}}",
-      "preview_of": "Inhalt von {{path}}"
-    }
+      "preview_of": "Inhalt von {{path}}",
+      "show_help": "Show Help"
+    },
+    "action": {
+      "retry": "Retry",
+      "close": "Close",
+      "cancel": "Cancel"
+    },
+    "empty_directory": "No files found"
   },
   "setup": {
     "title": "Umgebungsdiagnose-Assistent",
@@ -58,6 +65,97 @@
       "exclude_and_save": "Ausschließen und speichern",
       "save_anyway": "Trotzdem speichern",
       "cancel": "Abbrechen"
+    }
+  },
+  "conflict": {
+    "no_conflicts": "No conflicts found.",
+    "commit_message": "Resolved conflicts during merge to main"
+  },
+  "branch": {
+    "modal": {
+      "title": "Create New Route",
+      "desc": "Keep your current state and try new changes in a separate route.",
+      "input_label": "Route Name",
+      "placeholder": "e.g., test-design",
+      "input_tip": "* Alphanumeric characters and hyphens allowed.",
+      "submit": "Create",
+      "error_empty": "Please enter a route name.",
+      "error_invalid": "Route name can only contain alphanumeric characters, hyphens (-), and underscores (_)."
+    },
+    "switch": {
+      "title": "Switch Route",
+      "desc": "Switching to another route will change the files to that route's state.",
+      "error_fetch": "Failed to get the list of routes."
+    }
+  },
+  "graph": {
+    "empty": {
+      "no_folder_title": "No folder selected",
+      "no_folder_desc": "Select a project from \"Open Folder\" in the sidebar to see the history map here.",
+      "no_history_title": "No history found",
+      "no_history_desc": "Please initialize the repository to start saving history (commits) in the Time Machine."
+    },
+    "init": {
+      "loading": "Initializing...",
+      "start": "Start Saving History"
+    },
+    "search": {
+      "placeholder": "Search commits..."
+    },
+    "action": {
+      "zoom_out": "Zoom Out",
+      "zoom_in": "Zoom In",
+      "reset_camera": "Reset View"
+    }
+  },
+  "history": {
+    "table": {
+      "message": "Message",
+      "hash": "Hash"
+    }
+  },
+  "layout": {
+    "alert": {
+      "no_folder_save": "Cannot save because no folder is open.",
+      "save_success": "State saved successfully.\nMessage: \"{{message}}\"",
+      "save_failed": "Failed to save: {{error}}",
+      "create_branch_success": "Created and switched to new route \"{{branchName}}\".",
+      "create_branch_failed": "Failed to create route: {{error}}",
+      "switch_branch_success": "Switched to route \"{{branchName}}\".",
+      "switch_branch_failed": "Failed to switch route: {{error}}",
+      "merge_success": "Adopted to main and switched route.",
+      "merge_failed": "Failed to adopt to main:\n{{error}}",
+      "save_local_only": "Saved locally (saving to Time Machine was skipped).",
+      "no_folder_to_save": "Cannot save because no folder is open. Please open a folder from the left sidebar.",
+      "resolve_conflict_success": "All conflicts resolved and adopted to main.",
+      "abort_merge_failed": "Failed to restore to original state:\n{{error}}"
+    },
+    "confirm": {
+      "merge": "Do you want to merge current changes into main?"
+    },
+    "tooltip": {
+      "switch_route": "Switch Route",
+      "merge_to_main": "Adopt changes from this route to main",
+      "create_route": "Create New Route"
+    },
+    "action": {
+      "new_route": "New Route",
+      "saving": "Saving..."
+    }
+  },
+  "preview": {
+    "action": {
+      "back_to_preview": "Back to Preview",
+      "show_diff": "Show Diff"
+    },
+    "no_changes": "No changes found.",
+    "video_not_supported": "Your browser does not support the video tag.",
+    "audio_not_supported": "Your browser does not support the audio element."
+  },
+  "tree": {
+    "action": {
+      "unignore": "Keep in save",
+      "ignore": "Exclude from save"
     }
   }
 }

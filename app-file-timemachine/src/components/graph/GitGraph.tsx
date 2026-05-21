@@ -1,4 +1,4 @@
-import { type FC, useEffect, useState, useRef, MouseEvent, WheelEvent, ChangeEvent } from "react";
+import { type FC, useEffect, useState, useRef, MouseEvent, WheelEvent } from "react";
 import { createGitgraph, TemplateName, templateExtend } from "@gitgraph/js";
 import { invoke } from "@tauri-apps/api/core";
 import { useTranslation } from "react-i18next";
@@ -225,9 +225,9 @@ const GitGraph: FC<GitGraphProps> = ({ projectPath, refreshKey, onInitSuccess })
       <div className="git-graph-wrapper empty-state">
         <div className="empty-message-container">
           <FolderOpen className="empty-icon" size={24} />
-          <p className="empty-title">フォルダが選択されていません</p>
+          <p className="empty-title">{t("graph.empty.no_folder_title")}</p>
           <p className="empty-subtitle">
-            サイドバーの「フォルダを開く」からプロジェクトを選択すると、ここに履歴の路線図が表示されます。
+            {t("graph.empty.no_folder_desc")}
           </p>
         </div>
       </div>
@@ -248,10 +248,10 @@ const GitGraph: FC<GitGraphProps> = ({ projectPath, refreshKey, onInitSuccess })
               {isInitializing ? (
                 <>
                   <Loader2 className="spinner" size={14} />
-                  <span>初期化中...</span>
+                  <span>{t("graph.init.loading")}</span>
                 </>
               ) : (
-                <span>再試行する</span>
+                <span>{t("common.action.retry")}</span>
               )}
             </button>
           ) : null}
@@ -265,9 +265,9 @@ const GitGraph: FC<GitGraphProps> = ({ projectPath, refreshKey, onInitSuccess })
       <div className="git-graph-wrapper empty-state">
         <div className="empty-message-container">
           <History className="empty-icon" size={24} />
-          <p className="empty-title">履歴が見つかりませんでした</p>
+          <p className="empty-title">{t("graph.empty.no_history_title")}</p>
           <p className="empty-subtitle">
-            タイムマシンの履歴（コミット）を記録するために、リポジトリの初期化を実行してください。
+            {t("graph.empty.no_history_desc")}
           </p>
           <button 
             className="init-button"
@@ -277,10 +277,10 @@ const GitGraph: FC<GitGraphProps> = ({ projectPath, refreshKey, onInitSuccess })
             {isInitializing ? (
               <>
                 <Loader2 className="spinner" size={14} />
-                <span>初期化中...</span>
+                <span>{t("graph.init.loading")}</span>
               </>
             ) : (
-              <span>履歴の保存を開始する</span>
+              <span>{t("graph.init.start")}</span>
             )}
           </button>
         </div>
@@ -314,7 +314,7 @@ const GitGraph: FC<GitGraphProps> = ({ projectPath, refreshKey, onInitSuccess })
             type="text" 
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
-            placeholder="コミットを検索..."
+            placeholder={t("graph.search.placeholder")}
             style={{ flex: 1, backgroundColor: "transparent", border: "none", color: "var(--text-color)", outline: "none", fontSize: "0.85rem" }}
           />
           {searchQuery && (
@@ -329,7 +329,7 @@ const GitGraph: FC<GitGraphProps> = ({ projectPath, refreshKey, onInitSuccess })
             className="zoom-btn"
             onClick={() => handleZoomBtnClick(-0.2)}
             disabled={scale <= 0.2}
-            title="ズームアウト"
+            title={t("graph.action.zoom_out")}
           >
             -
           </button>
@@ -338,14 +338,14 @@ const GitGraph: FC<GitGraphProps> = ({ projectPath, refreshKey, onInitSuccess })
             className="zoom-btn"
             onClick={() => handleZoomBtnClick(0.2)}
             disabled={scale >= 3.0}
-            title="ズームイン"
+            title={t("graph.action.zoom_in")}
           >
             +
           </button>
           <button
             className="zoom-btn reset-btn"
             onClick={handleResetCamera}
-            title="カメラリセット"
+            title={t("graph.action.reset_camera")}
           >
             <Maximize size={14} />
           </button>

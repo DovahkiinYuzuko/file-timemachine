@@ -79,9 +79,9 @@ const HistoryList: FC<HistoryListProps> = ({ projectPath, refreshKey = 0 }) => {
       <table className="history-table">
         <thead>
           <tr>
-            <th>Date</th>
-            <th>Message</th>
-            <th>Hash</th>
+            <th>{t("common.last_modified")}</th>
+            <th>{t("history.table.message")}</th>
+            <th>{t("history.table.hash")}</th>
           </tr>
         </thead>
         <tbody>

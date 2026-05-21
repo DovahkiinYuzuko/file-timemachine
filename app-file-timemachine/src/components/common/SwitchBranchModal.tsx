@@ -38,7 +38,7 @@ const SwitchBranchModal: FC<SwitchBranchModalProps> = ({
           setBranches(list);
         } catch (error) {
           logger.error(`ブランチ一覧取得エラー: ${error}`);
-          setErrorMsg("ルートの一覧の取得に失敗しました。");
+          setErrorMsg(t("branch.switch.error_fetch"));
         } finally {
           setLoading(false);
         }
@@ -108,12 +108,12 @@ const SwitchBranchModal: FC<SwitchBranchModalProps> = ({
         <header className="commit-modal-header">
           <h2 id="switch-modal-title">
             <GitBranch size={18} className="header-icon" />
-            ルートの切り替え
+            {t("branch.switch.title")}
           </h2>
           <button
             className="close-btn"
             onClick={onClose}
-            aria-label="閉じる"
+            aria-label={t("common.action.close")}
           >
             <X size={18} />
           </button>
@@ -121,7 +121,7 @@ const SwitchBranchModal: FC<SwitchBranchModalProps> = ({
 
         <div className="commit-modal-body" style={{ maxHeight: "60vh", overflowY: "auto" }}>
           <p className="commit-modal-desc">
-            別のルートに切り替えると、ファイルの状態がそのルートのものに変化します。
+            {t("branch.switch.desc")}
           </p>
           
           {loading ? (
@@ -185,7 +185,7 @@ const SwitchBranchModal: FC<SwitchBranchModalProps> = ({
             className="btn-cancel"
             onClick={onClose}
           >
-            キャンセル
+            {t("common.action.cancel")}
           </button>
         </footer>
       </div>

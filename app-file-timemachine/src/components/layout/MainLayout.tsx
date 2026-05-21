@@ -97,7 +97,7 @@ const MainLayout: FC = () => {
   const executeCommit = async (message: string) => {
     if (!projectPath) {
       logger.error("プロジェクトパスが設定されていません。");
-      alert("フォルダが開かれていないため、保存できません。");
+      alert(t("layout.alert.no_folder_save"));
       return;
     }
 
@@ -114,10 +114,10 @@ const MainLayout: FC = () => {
       setHistoryRefreshKey((prev) => prev + 1);
       
       // 成功通知アラート
-      alert(`状態を記録しました。\nメッセージ: "${message}"`);
+      alert(t("layout.alert.save_success", { message }));
     } catch (error) {
       logger.error(`Gitコミットに失敗しました: ${error}`);
-      alert(`保存に失敗しました： ${error}`);
+      alert(t("layout.alert.save_failed", { error }));
     } finally {
       setIsCommitting(false);
     }
@@ -133,10 +133,10 @@ const MainLayout: FC = () => {
       
       // ツリーや履歴を更新
       setHistoryRefreshKey(prev => prev + 1);
-      alert(`新しいルート「${branchName}」を作成し、切り替えました。`);
+      alert(t("layout.alert.create_branch_success", { branchName }));
     } catch (error) {
       logger.error(`ブランチ作成エラー: ${error}`);
-      alert(`ルート作成に失敗しました: ${error}`);
+      alert(t("layout.alert.create_branch_failed", { error }));
     }
   };
 
@@ -150,10 +150,10 @@ const MainLayout: FC = () => {
       
       // ツリーや履歴を更新
       setHistoryRefreshKey(prev => prev + 1);
-      alert(`ルート「${branchName}」に切り替えました。`);
+      alert(t("layout.alert.switch_branch_success", { branchName }));
     } catch (error) {
       logger.error(`切り替えに失敗しました: ${error}`);
-      alert(`切り替えに失敗しました: ${error}`);
+      alert(t("layout.alert.switch_branch_failed", { error }));
     }
   };
 
@@ -162,7 +162,7 @@ const MainLayout: FC = () => {
     if (!projectPath) return;
 
     // 確認ダイアログ
-    if (!confirm("現在の変更を本番（main）に合流させますか？")) {
+    if (!confirm(t("layout.confirm.merge"))) {
       return;
     }
 
@@ -174,7 +174,7 @@ const MainLayout: FC = () => {
       });
       logger.info(result);
 
-      alert("本番（main）に採用し、ルートを切り替えました。");
+      alert(t("layout.alert.merge_success"));
       setCurrentBranch("main");
       setHistoryRefreshKey((prev) => prev + 1);
     } catch (error) {
@@ -183,7 +183,7 @@ const MainLayout: FC = () => {
         setIsConflictModalOpen(true);
       } else {
         logger.error(`マージエラー: ${error}`);
-        alert(`本番への採用に失敗しました:\n${error}`);
+        alert(t("layout.alert.merge_failed", { error }));
       }
     }
   };
@@ -206,7 +206,7 @@ const MainLayout: FC = () => {
 
     if (saveBehavior === "none") {
       logger.info("保存設定が 'none' のため、Gitコミットをスキップします。");
-      alert("ローカルに保存しました（Gitへの記録はスキップされました）。");
+      alert(t("layout.alert.save_local_only"));
       setHistoryRefreshKey(prev => prev + 1);
       return;
     }
@@ -225,7 +225,7 @@ const MainLayout: FC = () => {
   const handleSaveClick = async () => {
     if (!projectPath) {
       logger.warn("プロジェクトフォルダが選択されていない状態で保存ボタンが押されました。");
-      alert("フォルダが開かれていないため保存できません。左のサイドバーからフォルダを開いてください。");
+      alert(t("layout.alert.no_folder_to_save"));
       return;
     }
 
@@ -370,7 +370,7 @@ const MainLayout: FC = () => {
             {projectPath && (
               <button 
                 className="branch-info-btn" 
-                title="ルートを切り替える"
+                title={t("layout.tooltip.switch_route")}
                 onClick={() => setIsSwitchBranchModalOpen(true)}
               >
                 <GitBranch size={16} />
@@ -383,20 +383,20 @@ const MainLayout: FC = () => {
               <button
                 className="merge-to-main-btn"
                 onClick={executeMergeToMain}
-                title="このルートの変更を本番に反映する"
+                title={t("layout.tooltip.merge_to_main")}
               >
                 <Check size={16} />
-                <span>本番に採用</span>
+                <span>{t("help.commands.merge.op")}</span>
               </button>
             )}
             {projectPath && (
               <button
                 className="create-branch-btn"
                 onClick={() => setIsCreateBranchModalOpen(true)}
-                title="新しいルートを作る"
+                title={t("layout.tooltip.create_route")}
               >
                 <GitBranchPlus size={16} />
-                <span>新しいルート</span>
+                <span>{t("layout.action.new_route")}</span>
               </button>
             )}
             <button 
@@ -408,7 +408,7 @@ const MainLayout: FC = () => {
               {isCommitting ? (
                 <>
                   <Loader2 size={18} className="animate-spin" aria-hidden="true" />
-                  <span>保存中...</span>
+                  <span>{t("layout.action.saving")}</span>
                 </>
               ) : (
                 <>
@@ -484,7 +484,7 @@ const MainLayout: FC = () => {
         projectPath={projectPath}
         onResolved={() => {
           setIsConflictModalOpen(false);
-          alert("すべての競合を解決し、本番に採用しました。");
+          alert(t("layout.alert.resolve_conflict_success"));
           setCurrentBranch("main");
           setHistoryRefreshKey((prev) => prev + 1);
         }}
@@ -500,7 +500,7 @@ const MainLayout: FC = () => {
               setHistoryRefreshKey(prev => prev + 1);
             } catch (e) {
               logger.error(`アボート処理に失敗しました: ${e}`);
-              alert(`元の状態に戻すのに失敗しました:\n${e}`);
+              alert(t("layout.alert.abort_merge_failed", { error: e }));
             }
           }
         }}

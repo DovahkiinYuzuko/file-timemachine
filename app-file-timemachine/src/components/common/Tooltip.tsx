@@ -1,4 +1,5 @@
 import { type FC, useState, useId } from "react";
+import { useTranslation } from "react-i18next";
 import { HelpCircle } from "lucide-react";
 import "./Tooltip.css";
 
@@ -14,6 +15,7 @@ interface TooltipProps {
  * - Keyboard focus and mouse hover both trigger the tooltip.
  */
 const Tooltip: FC<TooltipProps> = ({ content }) => {
+  const { t } = useTranslation();
   const [isVisible, setIsVisible] = useState(false);
   const tooltipId = useId();
 
@@ -29,7 +31,7 @@ const Tooltip: FC<TooltipProps> = ({ content }) => {
         type="button"
       >
         <HelpCircle size={14} className="tooltip-icon" />
-        <span className="sr-only">ヘルプを表示</span>
+        <span className="sr-only">{t("common.aria.show_help")}</span>
       </button>
       
       {isVisible && (

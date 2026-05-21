@@ -85,12 +85,12 @@ const CreateBranchModal: FC<CreateBranchModalProps> = ({
     const isValid = /^[a-zA-Z0-9\-_]+$/.test(finalName);
     
     if (!finalName) {
-      setErrorMsg("ルート名を入力してください。");
+      setErrorMsg(t("branch.modal.error_empty"));
       return;
     }
     
     if (!isValid) {
-      setErrorMsg("ルート名には半角英数字、ハイフン(-)、アンダースコア(_)のみ使用可能です。");
+      setErrorMsg(t("branch.modal.error_invalid"));
       return;
     }
     
@@ -115,12 +115,12 @@ const CreateBranchModal: FC<CreateBranchModalProps> = ({
         <header className="commit-modal-header">
           <h2 id="branch-modal-title">
             <GitBranchPlus size={18} className="header-icon" />
-            新しいルートを作る
+            {t("branch.modal.title")}
           </h2>
           <button
             className="close-btn"
             onClick={onClose}
-            aria-label="閉じる"
+            aria-label={t("common.action.close")}
           >
             <X size={18} />
           </button>
@@ -129,12 +129,12 @@ const CreateBranchModal: FC<CreateBranchModalProps> = ({
         <form onSubmit={handleSubmit} className="commit-modal-form">
           <div className="commit-modal-body">
             <p className="commit-modal-desc">
-              今の状態を維持したまま、別ルートとして新しい変更を試すことができます。
+              {t("branch.modal.desc")}
             </p>
             
             <div className="input-group">
               <label htmlFor="branch-name-input">
-                ルートの名前
+                {t("branch.modal.input_label")}
               </label>
               <input
                 id="branch-name-input"
@@ -145,7 +145,7 @@ const CreateBranchModal: FC<CreateBranchModalProps> = ({
                   setBranchName(e.target.value);
                   setErrorMsg("");
                 }}
-                placeholder="例: test-design"
+                placeholder={t("branch.modal.placeholder")}
                 maxLength={50}
                 className={`commit-input ${errorMsg ? 'error' : ''}`}
               />
@@ -155,7 +155,7 @@ const CreateBranchModal: FC<CreateBranchModalProps> = ({
                 </span>
               ) : (
                 <span className="input-tip">
-                  ※英数字とハイフンが使えます。
+                  {t("branch.modal.input_tip")}
                 </span>
               )}
             </div>
@@ -167,14 +167,14 @@ const CreateBranchModal: FC<CreateBranchModalProps> = ({
               className="btn-cancel"
               onClick={onClose}
             >
-              キャンセル
+              {t("common.action.cancel")}
             </button>
             <button
               type="submit"
               className="btn-submit"
             >
               <GitBranchPlus size={14} />
-              <span>作成する</span>
+              <span>{t("branch.modal.submit")}</span>
             </button>
           </footer>
         </form>

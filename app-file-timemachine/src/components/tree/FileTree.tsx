@@ -37,6 +37,7 @@ const FileTreeItem: FC<{
   onToggleIgnore: (path: string, currentIgnored: boolean, isDir: boolean) => void;
   forceExpand?: boolean;
 }> = memo(({ entry, depth, onFileSelect, onToggleIgnore, forceExpand }) => {
+  const { t } = useTranslation();
   const [isOpen, setIsOpen] = useState(false);
 
   useEffect(() => {
@@ -98,7 +99,7 @@ const FileTreeItem: FC<{
           checked={!entry.is_ignored} 
           onChange={() => {}} // onClickで制御
           onClick={handleCheckboxClick}
-          aria-label={entry.is_ignored ? "無視を解除" : "無視する"}
+          aria-label={entry.is_ignored ? t("tree.action.unignore") : t("tree.action.ignore")}
         />
         <span className="item-name">{entry.name}</span>
       </div>
@@ -318,7 +319,7 @@ const FileTree: FC<FileTreeProps> = ({ rootPath, onFileSelect }) => {
           ))
         ) : (
           <div className="file-tree-empty">
-            <p>{t("common.empty_directory", "ファイルが見つからないよ")}</p>
+            <p>{t("common.empty_directory")}</p>
           </div>
         )}
       </div>
