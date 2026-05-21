@@ -106,7 +106,7 @@
   align-items: center;
 }
 
-.branch-info {
+.branch-info-btn {
   display: flex;
   align-items: center;
   gap: 6px;
@@ -116,6 +116,14 @@
   border-radius: 12px;
   font-size: 0.85rem;
   font-weight: 600;
+  border: none;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.branch-info-btn:hover {
+  background-color: var(--item-hover);
+  filter: brightness(1.1);
 }
 
 .create-branch-btn {

@@ -1,4 +1,4 @@
-import { type FC, useEffect, useState } from "react";
+import { type FC, useEffect, useState, useRef } from "react";
 import { useTranslation } from "react-i18next";
 import { invoke, convertFileSrc } from "@tauri-apps/api/core";
 import { Info, Loader2, FileText, AlertCircle, FileQuestion } from "lucide-react";
@@ -40,6 +40,7 @@ const FilePreview: FC<FilePreviewProps> = ({ filePath }) => {
   const [metadata, setMetadata] = useState<FileMetadata | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
+  const lastModifiedRef = useRef<string | null>(null);
 
   useEffect(() => {
     if (!filePath) {
@@ -57,6 +58,7 @@ const FilePreview: FC<FilePreviewProps> = ({ filePath }) => {
         // Always fetch metadata for headers and fallback info
         const meta = await invoke<FileMetadata>("get_file_info", { path: filePath });
         setMetadata(meta);
+        lastModifiedRef.current = meta.modified;
 
         if (meta.file_type === "text") {
           logger.info(`Fetching text content for: ${filePath}`);
@@ -74,6 +76,32 @@ const FilePreview: FC<FilePreviewProps> = ({ filePath }) => {
     };
 
     fetchData();
+  }, [filePath]);
+
+  // リアルタイム更新（ポーリング）
+  useEffect(() => {
+    if (!filePath) return;
+
+    const intervalId = setInterval(async () => {
+      try {
+        const newMeta = await invoke<FileMetadata>("get_file_info", { path: filePath });
+        if (lastModifiedRef.current !== null && newMeta.modified !== lastModifiedRef.current) {
+          logger.info(`ファイルの変更を検知しました: ${filePath}`);
+          setMetadata(newMeta);
+          lastModifiedRef.current = newMeta.modified;
+          
+          // テキストファイルなら中身もサイレント更新
+          if (newMeta.file_type === "text") {
+            const result = await invoke<PreviewContent>("read_file_content", { path: filePath });
+            setTextContent(result.content);
+          }
+        }
+      } catch (err) {
+        // ポーリング中のエラー（ファイル削除中など）は無視する
+      }
+    }, 1000); // 1秒間隔でチェック
+
+    return () => clearInterval(intervalId);
   }, [filePath]);
 
   const formatSize = (bytes: number) => {

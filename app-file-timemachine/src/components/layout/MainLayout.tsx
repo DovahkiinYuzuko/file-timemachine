@@ -12,6 +12,7 @@ import SettingsModal from "../settings/SettingsModal";
 import HelpModal from "../help/HelpModal";
 import CommitMessageModal from "../common/CommitMessageModal";
 import CreateBranchModal from "../common/CreateBranchModal";
+import SwitchBranchModal from "../common/SwitchBranchModal";
 import Tooltip from "../common/Tooltip";
 import logger from "../../utils/logger";
 import { type SafetyIssue } from "../../utils/safety";
@@ -47,6 +48,7 @@ const MainLayout: FC = () => {
   const [defaultCommitMessage, setDefaultCommitMessage] = useState("");
   const [currentBranch, setCurrentBranch] = useState<string>("main");
   const [isCreateBranchModalOpen, setIsCreateBranchModalOpen] = useState(false);
+  const [isSwitchBranchModalOpen, setIsSwitchBranchModalOpen] = useState(false);
 
   // 現在のブランチ名を取得
   useEffect(() => {
@@ -133,6 +135,23 @@ const MainLayout: FC = () => {
     } catch (error) {
       logger.error(`ブランチ作成エラー: ${error}`);
       alert(`ルート作成に失敗しました: ${error}`);
+    }
+  };
+
+  // ルートを切り替える処理
+  const executeSwitchBranch = async (branchName: string) => {
+    if (!projectPath) return;
+    try {
+      logger.info(`ルートを切り替えます: ${branchName}`);
+      const result = await invoke<string>("git_checkout", { path: projectPath, branch: branchName });
+      logger.info(result);
+      
+      // ツリーや履歴を更新
+      setHistoryRefreshKey(prev => prev + 1);
+      alert(`ルート「${branchName}」に切り替えたよ！`);
+    } catch (error) {
+      logger.error(`ルート切り替えエラー: ${error}`);
+      alert(`切り替えに失敗しました: ${error}`);
     }
   };
 
@@ -316,10 +335,14 @@ const MainLayout: FC = () => {
         <footer className="main-footer" role="contentinfo">
           <div className="footer-left">
             {projectPath && (
-              <div className="branch-info" title="現在のルート">
+              <button 
+                className="branch-info-btn" 
+                title="ルートを切り替える"
+                onClick={() => setIsSwitchBranchModalOpen(true)}
+              >
                 <GitBranch size={16} />
                 <span className="branch-name">{currentBranch}</span>
-              </div>
+              </button>
             )}
           </div>
           <div className="footer-actions">
@@ -400,6 +423,17 @@ const MainLayout: FC = () => {
           setIsCreateBranchModalOpen(false);
           executeCreateBranch(branchName);
         }}
+      />
+
+      <SwitchBranchModal
+        isOpen={isSwitchBranchModalOpen}
+        onClose={() => setIsSwitchBranchModalOpen(false)}
+        onSwitch={(branchName) => {
+          setIsSwitchBranchModalOpen(false);
+          executeSwitchBranch(branchName);
+        }}
+        projectPath={projectPath}
+        currentBranch={currentBranch}
       />
     </div>
   );

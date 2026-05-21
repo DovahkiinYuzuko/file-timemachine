@@ -391,3 +391,64 @@ pub async fn git_create_branch(path: String, branch_name: String) -> Result<Stri
 
     Ok(format!("ブランチ '{}' を作成し、切り替えました。", branch_name))
 }
+
+#[tauri::command]
+pub async fn git_get_branches(path: String) -> Result<Vec<String>, String> {
+    let raw_path = Path::new(&path);
+    let repo_path = dunce::canonicalize(raw_path)
+        .map_err(|e| format!("パスの正規化に失敗しました: {}", e))?;
+
+    if !repo_path.exists() || !repo_path.is_dir() {
+        return Err("無効なディレクトリパスです。".to_string());
+    }
+
+    // git branch --format="%(refname:short)"
+    let output = Command::new("git")
+        .arg("branch")
+        .arg("--format=%(refname:short)")
+        .current_dir(&repo_path)
+        .output()
+        .map_err(|e| format!("git branchの実行に失敗しました: {}", e))?;
+
+    if !output.status.success() {
+        return Err("ブランチ一覧の取得に失敗しました。".to_string());
+    }
+
+    let stdout = String::from_utf8_lossy(&output.stdout);
+    let branches: Vec<String> = stdout
+        .lines()
+        .map(|s| s.trim().to_string())
+        .filter(|s| !s.is_empty())
+        .collect();
+
+    Ok(branches)
+}
+
+#[tauri::command]
+pub async fn git_checkout(path: String, branch: String) -> Result<String, String> {
+    let raw_path = Path::new(&path);
+    let repo_path = dunce::canonicalize(raw_path)
+        .map_err(|e| format!("パスの正規化に失敗しました: {}", e))?;
+
+    info!("ブランチ '{}' に切り替えます: {:?}", branch, repo_path);
+
+    if !repo_path.exists() || !repo_path.is_dir() {
+        return Err("無効なディレクトリパスです。".to_string());
+    }
+
+    // git checkout <branch>
+    let output = Command::new("git")
+        .arg("checkout")
+        .arg(&branch)
+        .current_dir(&repo_path)
+        .output()
+        .map_err(|e| format!("git checkout の実行に失敗しました: {}", e))?;
+
+    if !output.status.success() {
+        let stderr = String::from_utf8_lossy(&output.stderr);
+        return Err(format!("ブランチ '{}' への切り替えに失敗しました。\n詳細: {}", branch, stderr));
+    }
+
+    Ok(format!("ブランチ '{}' に切り替えました。", branch))
+}
+
