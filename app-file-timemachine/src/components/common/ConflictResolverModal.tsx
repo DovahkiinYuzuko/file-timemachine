@@ -71,14 +71,18 @@ const ConflictResolverModal: FC<ConflictResolverModalProps> = ({
       const loadContent = async () => {
         setPreviewLoading(true);
         try {
+          // パス結合の正規化（スラッシュの重複を避ける）
+          const separator = projectPath.endsWith("/") || projectPath.endsWith("\\") ? "" : "/";
+          const fullPath = `${projectPath}${separator}${selectedFile}`;
+          
           // Rust側の read_file_content コマンドを使用
           const res = await invoke<{content: string}>("read_file_content", { 
-            path: `${projectPath}/${selectedFile}` 
+            path: fullPath
           });
           setPreviewContent(res.content);
         } catch (e) {
           logger.error("Preview load error:", e);
-          setPreviewContent("ファイルの読み込みに失敗しました。");
+          setPreviewContent("ファイルの読み込みに失敗しました。パスが正しいか確認してください。");
         } finally {
           setPreviewLoading(false);
         }

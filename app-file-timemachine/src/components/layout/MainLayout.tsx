@@ -488,9 +488,21 @@ const MainLayout: FC = () => {
           setCurrentBranch("main");
           setHistoryRefreshKey((prev) => prev + 1);
         }}
-        onCancel={() => {
+        onCancel={async () => {
           setIsConflictModalOpen(false);
-          logger.info("競合解決がキャンセルされました。");
+          if (projectPath) {
+            try {
+              logger.info(`マージを中止して元のブランチ '${currentBranch}' に戻ります...`);
+              await invoke("git_merge_abort", { 
+                path: projectPath, 
+                originalBranch: currentBranch 
+              });
+              setHistoryRefreshKey(prev => prev + 1);
+            } catch (e) {
+              logger.error(`アボート処理に失敗しました: ${e}`);
+              alert(`元の状態に戻すのに失敗しました:\n${e}`);
+            }
+          }
         }}
       />
     </div>

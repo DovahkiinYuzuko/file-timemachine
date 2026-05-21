@@ -606,4 +606,36 @@ pub async fn git_resolve_conflict(path: String, file: String, resolution: String
     Ok("解決しました。".to_string())
 }
 
+#[tauri::command]
+pub async fn git_merge_abort(path: String, original_branch: String) -> Result<String, String> {
+    let raw_path = Path::new(&path);
+    let repo_path = dunce::canonicalize(raw_path)
+        .map_err(|e| format!("パスの正規化に失敗しました: {}", e))?;
+
+    info!("マージをアボートし、ブランチ '{}' に戻ります: {:?}", original_branch, repo_path);
+
+    // 1. git merge --abort
+    // マージ中でない場合でもエラーにならないよう、ステータスはチェックするが無視しても良い
+    let _ = Command::new("git")
+        .arg("merge")
+        .arg("--abort")
+        .current_dir(&repo_path)
+        .status();
+
+    // 2. 元のブランチにチェックアウト
+    let checkout_output = Command::new("git")
+        .arg("checkout")
+        .arg(&original_branch)
+        .current_dir(&repo_path)
+        .output()
+        .map_err(|e| format!("元のブランチへの復帰に失敗しました: {}", e))?;
+
+    if !checkout_output.status.success() {
+        let stderr = String::from_utf8_lossy(&checkout_output.stderr);
+        return Err(format!("ブランチ '{}' への復帰に失敗しました。\n詳細: {}", original_branch, stderr));
+    }
+
+    Ok(format!("マージを中止し、'{}' に戻りました。", original_branch))
+}
+
 
