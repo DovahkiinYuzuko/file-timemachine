@@ -231,6 +231,14 @@ pub async fn git_init(path: String) -> Result<String, String> {
         }
     }
 
+    // 日本語や多言語のファイル名エスケープを防止する設定
+    let _ = Command::new("git")
+        .arg("config")
+        .arg("core.quotepath")
+        .arg("false")
+        .current_dir(&repo_path)
+        .status();
+
     // .gitignoreの生成 (存在しない場合のみ)
     let gitignore_path = repo_path.join(".gitignore");
     if !gitignore_path.exists() {
@@ -545,7 +553,7 @@ pub async fn git_merge_to_main(path: String, branch: String) -> Result<String, S
 pub async fn git_get_conflicts(path: String) -> Result<Vec<String>, String> {
     let raw_path = Path::new(&path);
     let repo_path = dunce::canonicalize(raw_path)
-        .map_err(|e| format!("パスの正規化に失敗しました: {}", e))?;
+        .map_err(|_| "error.failed_to_canonicalize_path".to_string())?;
 
     // 競合しているファイルの一覧を取得
     let output = Command::new("git")
@@ -554,10 +562,10 @@ pub async fn git_get_conflicts(path: String) -> Result<Vec<String>, String> {
         .arg("--diff-filter=U")
         .current_dir(&repo_path)
         .output()
-        .map_err(|e| format!("競合リストの取得に失敗しました: {}", e))?;
+        .map_err(|_| "conflict.error_loading".to_string())?;
 
     if !output.status.success() {
-        return Err("競合ファイルの取得に失敗しました。".to_string());
+        return Err("conflict.error_loading".to_string());
     }
 
     let stdout = String::from_utf8_lossy(&output.stdout);
@@ -569,41 +577,44 @@ pub async fn git_get_conflicts(path: String) -> Result<Vec<String>, String> {
 pub async fn git_resolve_conflict(path: String, file: String, resolution: String) -> Result<String, String> {
     let raw_path = Path::new(&path);
     let repo_path = dunce::canonicalize(raw_path)
-        .map_err(|e| format!("パスの正規化に失敗しました: {}", e))?;
+        .map_err(|_| "error.failed_to_canonicalize_path".to_string())?;
+
+    // Gitから引用符付きで返ってきた場合を考慮してトリム
+    let safe_file = file.trim_matches('"');
 
     // mainブランチにいる状態で:
     // --ours   => mainの内容を採用
     // --theirs => マージしようとしているブランチ（お試しルート）の内容を採用
     let strategy = if resolution == "current" { "--theirs" } else { "--ours" };
 
-    info!("競合を解決します: ファイル={}, 戦略={}", file, strategy);
+    info!("競合を解決します: ファイル={}, 戦略={}", safe_file, strategy);
 
     // 1. 指定した内容でファイルを復元
     let checkout_status = Command::new("git")
         .arg("checkout")
         .arg(strategy)
-        .arg(&file)
+        .arg(safe_file)
         .current_dir(&repo_path)
         .status()
-        .map_err(|e| format!("ファイルの復元に失敗しました: {}", e))?;
+        .map_err(|_| "conflict.error_resolving".to_string())?;
 
     if !checkout_status.success() {
-        return Err(format!("ファイル '{}' の解決（checkout）に失敗しました。", file));
+        return Err("conflict.error_resolving".to_string());
     }
 
     // 2. 解決したファイルをインデックスに追加（競合解消の確定）
     let add_status = Command::new("git")
         .arg("add")
-        .arg(&file)
+        .arg(safe_file)
         .current_dir(&repo_path)
         .status()
-        .map_err(|e| format!("解決内容の確定（add）に失敗しました: {}", e))?;
+        .map_err(|_| "conflict.error_resolving".to_string())?;
 
     if !add_status.success() {
-        return Err(format!("ファイル '{}' の解決内容の確定に失敗しました。", file));
+        return Err("conflict.error_resolving".to_string());
     }
 
-    Ok("解決しました。".to_string())
+    Ok("OK".to_string())
 }
 
 #[tauri::command]

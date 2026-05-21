@@ -12,8 +12,12 @@
       "settings": "設定",
       "help": "ヘルプ"
     },
-    "action": {
-      "close": "閉じる"
+    "error": {
+      "failed_to_fetch_logs": "履歴の取得に失敗しました",
+      "failed_to_canonicalize_path": "パスの正規化に失敗しました",
+      "failed_to_get_metadata": "ファイルの情報を取得できませんでした",
+      "failed_to_read_image": "画像ファイルの読み込みに失敗しました",
+      "failed_to_read_file": "ファイルの読み込みに失敗しました"
     },
     "placeholder": {
       "file_tree": "（ここにファイルツリーが表示されます）",
@@ -23,7 +27,8 @@
       "select_file_to_preview": "ファイルを選択するとプレビューが表示されます",
       "binary_file_preview_not_supported": "バイナリファイルのプレビューには対応していません",
       "unknown_file_type": "不明なファイル形式です",
-      "no_history": "履歴がまだありません"
+      "no_history": "履歴がまだありません",
+      "file_too_large": "ファイルが大きすぎます (最大 5MB)"
     },
     "error": {
       "failed_to_fetch_logs": "履歴の取得に失敗しました"

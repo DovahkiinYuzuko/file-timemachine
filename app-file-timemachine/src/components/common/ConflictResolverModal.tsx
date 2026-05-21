@@ -52,7 +52,7 @@ const ConflictResolverModal: FC<ConflictResolverModalProps> = ({
           }
         } catch (e) {
           logger.error(`競合取得エラー: ${e}`);
-          setErrorMsg(t("conflict.error_loading"));
+          setErrorMsg(t(e as string));
         } finally {
           setLoading(false);
         }
@@ -76,13 +76,23 @@ const ConflictResolverModal: FC<ConflictResolverModalProps> = ({
           const fullPath = `${projectPath}${separator}${selectedFile}`;
           
           // Rust側の read_file_content コマンドを使用
-          const res = await invoke<{content: string}>("read_file_content", { 
+          const res = await invoke<{
+            content: string, 
+            is_image: boolean, 
+            is_binary: boolean,
+            mime_type: string 
+          }>("read_file_content", { 
             path: fullPath
           });
-          setPreviewContent(res.content);
+
+          if (res.is_binary && !res.is_image) {
+            setPreviewContent("BINARY_FILE_PLACEHOLDER");
+          } else {
+            setPreviewContent(res.content);
+          }
         } catch (e) {
           logger.error("Preview load error:", e);
-          setPreviewContent("ファイルの読み込みに失敗しました。パスが正しいか確認してください。");
+          setPreviewContent(`ERROR:${e}`);
         } finally {
           setPreviewLoading(false);
         }
@@ -128,7 +138,7 @@ const ConflictResolverModal: FC<ConflictResolverModalProps> = ({
       onResolved();
     } catch (e) {
       logger.error(`解決処理エラー: ${e}`);
-      setErrorMsg(t("conflict.error_resolving") + `\n${e}`);
+      setErrorMsg(t(e as string));
     } finally {
       setCompleting(false);
     }
@@ -139,8 +149,53 @@ const ConflictResolverModal: FC<ConflictResolverModalProps> = ({
     if (line.startsWith("<<<<<<<") || line.startsWith("=======") || line.startsWith(">>>>>>>") || line.startsWith("+++++++")) {
       return "line-conflict-marker";
     }
-    // Gitの競合箇所の簡易的な判別ロジック（実際にはステート管理が必要だが、見た目重視でプレビュー用）
     return "";
+  };
+
+  const renderPreviewContent = () => {
+    if (previewLoading) {
+      return (
+        <div className="preview-placeholder">
+          <Loader2 className="animate-spin" size={24} />
+          <span>{t("conflict.loading_content")}</span>
+        </div>
+      );
+    }
+
+    if (!previewContent) {
+      return (
+        <div className="preview-placeholder">
+          <span>{t("conflict.select_to_preview")}</span>
+        </div>
+      );
+    }
+
+    if (previewContent === "BINARY_FILE_PLACEHOLDER") {
+      return (
+        <div className="preview-placeholder">
+          <AlertTriangle size={32} />
+          <span>{t("common.placeholder.binary_file_preview_not_supported")}</span>
+        </div>
+      );
+    }
+
+    if (previewContent.startsWith("ERROR:")) {
+      const errorCode = previewContent.replace("ERROR:", "");
+      return (
+        <div className="preview-placeholder error">
+          <AlertTriangle size={32} />
+          <span>{t(errorCode)}</span>
+        </div>
+      );
+    }
+
+    return (
+      <pre className="preview-code">
+        {previewContent.split('\n').map((line, i) => (
+          <div key={i} className={getLineClass(line)}>{line}</div>
+        ))}
+      </pre>
+    );
   };
 
   if (!isOpen) return null;
@@ -231,22 +286,7 @@ const ConflictResolverModal: FC<ConflictResolverModalProps> = ({
                 <h3>{t("conflict.preview_title")}</h3>
               </header>
               <div className="preview-body">
-                {previewLoading ? (
-                  <div className="preview-placeholder">
-                    <Loader2 className="animate-spin" size={24} />
-                    <span>{t("conflict.loading_content")}</span>
-                  </div>
-                ) : previewContent ? (
-                  <pre className="preview-code">
-                    {previewContent.split('\n').map((line, i) => (
-                      <div key={i} className={getLineClass(line)}>{line}</div>
-                    ))}
-                  </pre>
-                ) : (
-                  <div className="preview-placeholder">
-                    <span>{t("conflict.select_to_preview")}</span>
-                  </div>
-                )}
+                {renderPreviewContent()}
               </div>
             </main>
           </div>

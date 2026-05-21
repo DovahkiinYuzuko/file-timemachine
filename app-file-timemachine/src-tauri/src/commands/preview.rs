@@ -7,21 +7,25 @@ use tauri::command;
 pub struct FilePreviewContent {
     pub content: String,
     pub is_image: bool,
+    pub is_binary: bool,
     pub mime_type: String,
 }
 
 #[command]
 pub async fn read_file_content(path: String) -> Result<FilePreviewContent, String> {
     log::info!("Reading file content for preview: {}", path);
-    
-    let path_buf = dunce::canonicalize(&path).map_err(|e| format!("Failed to canonicalize path: {}", e))?;
-    
-    let metadata = fs::metadata(&path_buf).map_err(|e| format!("Failed to get metadata: {}", e))?;
+
+    // パスの正規化
+    let path_buf = dunce::canonicalize(&path)
+        .map_err(|_| "error.failed_to_canonicalize_path".to_string())?;
+
+    let metadata = fs::metadata(&path_buf)
+        .map_err(|_| "error.failed_to_get_metadata".to_string())?;
     let file_size = metadata.len();
-    
+
     // 5MB limit
     if file_size > 5 * 1024 * 1024 {
-        return Err("File is too large (max 5MB)".to_string());
+        return Err("common.placeholder.file_too_large".to_string());
     }
 
     let extension = path_buf.extension()
@@ -30,9 +34,10 @@ pub async fn read_file_content(path: String) -> Result<FilePreviewContent, Strin
         .to_lowercase();
 
     let is_image = matches!(extension.as_str(), "png" | "jpg" | "jpeg" | "gif" | "webp" | "bmp");
-    
+
     if is_image {
-        let bytes = fs::read(&path_buf).map_err(|e| format!("Failed to read image file: {}", e))?;
+        let bytes = fs::read(&path_buf)
+            .map_err(|_| "error.failed_to_read_image".to_string())?;
         let b64 = general_purpose::STANDARD.encode(bytes);
         let mime_type = match extension.as_str() {
             "jpg" | "jpeg" => "image/jpeg",
@@ -42,26 +47,41 @@ pub async fn read_file_content(path: String) -> Result<FilePreviewContent, Strin
             "bmp" => "image/bmp",
             _ => "image/png",
         };
-        
+
         Ok(FilePreviewContent {
             content: b64,
             is_image: true,
+            is_binary: true,
             mime_type: mime_type.to_string(),
         })
     } else {
-        let bytes = fs::read(&path_buf).map_err(|e| format!("Failed to read text file: {}", e))?;
-        
-        // Encode detection and decoding
-        let mut detector = chardetng::EncodingDetector::new();
-        detector.feed(&bytes, true);
-        let encoding = detector.guess(None, true);
-        
-        let (content, _, _) = encoding.decode(&bytes);
-        
-        Ok(FilePreviewContent {
-            content: content.into_owned(),
-            is_image: false,
-            mime_type: "text/plain".to_string(),
-        })
+        let bytes = fs::read(&path_buf)
+            .map_err(|_| "error.failed_to_read_file".to_string())?;
+
+        // バイナリ検出（nullバイトチェック）
+        let is_binary = bytes.iter().take(1024).any(|&b| b == 0);
+
+        if is_binary {
+            Ok(FilePreviewContent {
+                content: String::new(),
+                is_image: false,
+                is_binary: true,
+                mime_type: "application/octet-stream".to_string(),
+            })
+        } else {
+            // テキストファイルとしてデコード
+            let mut detector = chardetng::EncodingDetector::new();
+            detector.feed(&bytes, true);
+            let encoding = detector.guess(None, true);
+            let (content, _, _) = encoding.decode(&bytes);
+
+            Ok(FilePreviewContent {
+                content: content.into_owned(),
+                is_image: false,
+                is_binary: false,
+                mime_type: "text/plain".to_string(),
+            })
+        }
     }
 }
+
