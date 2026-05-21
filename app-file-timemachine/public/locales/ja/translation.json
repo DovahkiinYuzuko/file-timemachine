@@ -168,6 +168,9 @@
     "resolve_and_merge": "解決を完了して本番に反映",
     "abort": "中止して戻る",
     "error_loading": "競合リストの取得に失敗しました。",
-    "error_resolving": "解決処理中にエラーが発生しました。"
+    "error_resolving": "解決処理中にエラーが発生しました。",
+    "preview_title": "競合箇所を確認",
+    "select_to_preview": "ファイルを選択して中身を確認できます",
+    "loading_content": "ファイルを読み込み中..."
   }
 }

@@ -1,6 +1,6 @@
 import { type FC, useState, useEffect, useRef } from "react";
 import { useTranslation } from "react-i18next";
-import { AlertTriangle, Check, Loader2, X } from "lucide-react";
+import { AlertTriangle, Check, Loader2, X, Eye } from "lucide-react";
 import { invoke } from "@tauri-apps/api/core";
 import logger from "../../utils/logger";
 import "./ConflictResolverModal.css";
@@ -15,6 +15,7 @@ interface ConflictResolverModalProps {
 /**
  * ConflictResolverModal
  * マージ競合が発生した際に、ユーザーがファイルごとにどちらの内容を採用するか選択するためのモーダル。
+ * 左右2ペイン構造で、ファイルリストと内容プレビューを表示する。
  */
 const ConflictResolverModal: FC<ConflictResolverModalProps> = ({
   isOpen,
@@ -30,6 +31,11 @@ const ConflictResolverModal: FC<ConflictResolverModalProps> = ({
   const [errorMsg, setErrorMsg] = useState("");
   const modalRef = useRef<HTMLDivElement>(null);
 
+  // プレビュー用のステート
+  const [selectedFile, setSelectedFile] = useState<string | null>(null);
+  const [previewContent, setPreviewContent] = useState<string | null>(null);
+  const [previewLoading, setPreviewLoading] = useState(false);
+
   // 競合ファイルの一覧を取得
   useEffect(() => {
     if (isOpen && projectPath) {
@@ -39,8 +45,11 @@ const ConflictResolverModal: FC<ConflictResolverModalProps> = ({
         try {
           const list = await invoke<string[]>("git_get_conflicts", { path: projectPath });
           setFiles(list);
-          // 初期状態では未選択
           setResolutions({});
+          // 最初のファイルがあれば選択
+          if (list.length > 0) {
+            setSelectedFile(list[0]);
+          }
         } catch (e) {
           logger.error(`競合取得エラー: ${e}`);
           setErrorMsg(t("conflict.error_loading"));
@@ -49,17 +58,41 @@ const ConflictResolverModal: FC<ConflictResolverModalProps> = ({
         }
       };
       fetchConflicts();
+    } else {
+      // 閉じた時はリセット
+      setSelectedFile(null);
+      setPreviewContent(null);
     }
   }, [isOpen, projectPath, t]);
+
+  // ファイル選択時の読み込み
+  useEffect(() => {
+    if (selectedFile && projectPath) {
+      const loadContent = async () => {
+        setPreviewLoading(true);
+        try {
+          // Rust側の read_file_content コマンドを使用
+          const res = await invoke<{content: string}>("read_file_content", { 
+            path: `${projectPath}/${selectedFile}` 
+          });
+          setPreviewContent(res.content);
+        } catch (e) {
+          logger.error("Preview load error:", e);
+          setPreviewContent("ファイルの読み込みに失敗しました。");
+        } finally {
+          setPreviewLoading(false);
+        }
+      };
+      loadContent();
+    }
+  }, [selectedFile, projectPath]);
 
   // Focus trap and Escape key
   useEffect(() => {
     if (!isOpen) return;
-
     const handleKeyDown = (e: KeyboardEvent) => {
       if (e.key === "Escape") onCancel();
     };
-
     window.addEventListener("keydown", handleKeyDown);
     return () => window.removeEventListener("keydown", handleKeyDown);
   }, [isOpen, onCancel]);
@@ -81,8 +114,7 @@ const ConflictResolverModal: FC<ConflictResolverModalProps> = ({
           resolution: resolutions[file],
         });
       }
-      
-      // すべて解決したら、マージを完結させるためのコミットを実行
+
       logger.info("すべての競合を解決しました。マージコミットを作成します。");
       await invoke("git_commit", {
         path: projectPath,
@@ -96,6 +128,15 @@ const ConflictResolverModal: FC<ConflictResolverModalProps> = ({
     } finally {
       setCompleting(false);
     }
+  };
+
+  // 競合マーカーに基づいた行のクラス分け
+  const getLineClass = (line: string): string => {
+    if (line.startsWith("<<<<<<<") || line.startsWith("=======") || line.startsWith(">>>>>>>") || line.startsWith("+++++++")) {
+      return "line-conflict-marker";
+    }
+    // Gitの競合箇所の簡易的な判別ロジック（実際にはステート管理が必要だが、見た目重視でプレビュー用）
+    return "";
   };
 
   if (!isOpen) return null;
@@ -125,45 +166,86 @@ const ConflictResolverModal: FC<ConflictResolverModalProps> = ({
         <div className="commit-modal-body">
           <p className="commit-modal-desc">{t("conflict.description")}</p>
 
-          {loading ? (
-            <div className="loading-container">
-              <Loader2 className="animate-spin" size={32} />
-            </div>
-          ) : errorMsg ? (
-            <div className="error-message">
-              <AlertTriangle size={16} />
-              <span>{errorMsg}</span>
-            </div>
-          ) : (
-            <div className="conflict-list">
-              {files.map((file) => (
-                <div key={file} className="conflict-item">
-                  <div className="conflict-file-info">
-                    <span className="file-name" title={file}>{file}</span>
-                  </div>
-                  <div className="resolve-options">
-                    <button
-                      className={`btn-res ${resolutions[file] === "current" ? "active current" : ""}`}
-                      onClick={() => handleResolve(file, "current")}
-                      title={t("conflict.current_branch")}
-                    >
-                      {t("conflict.current_branch")}
-                    </button>
-                    <button
-                      className={`btn-res ${resolutions[file] === "main" ? "active main" : ""}`}
-                      onClick={() => handleResolve(file, "main")}
-                      title={t("conflict.main_branch")}
-                    >
-                      {t("conflict.main_branch")}
-                    </button>
-                  </div>
+          <div className="conflict-layout-container">
+            {/* 左側：ファイルリスト */}
+            <aside className="conflict-sidebar">
+              {loading ? (
+                <div className="loading-container">
+                  <Loader2 className="animate-spin" size={32} />
                 </div>
-              ))}
-              {files.length === 0 && !loading && (
-                <p className="no-conflicts">競合しているファイルはありません。</p>
+              ) : errorMsg ? (
+                <div className="error-message">
+                  <AlertTriangle size={16} />
+                  <span>{errorMsg}</span>
+                </div>
+              ) : (
+                <div className="conflict-list">
+                  {files.map((file) => (
+                    <div 
+                      key={file} 
+                      className={`conflict-item ${selectedFile === file ? "selected" : ""}`}
+                      onClick={() => setSelectedFile(file)}
+                    >
+                      <div className="conflict-file-info">
+                        <span className="file-name" title={file}>{file}</span>
+                      </div>
+                      <div className="resolve-options">
+                        <button
+                          className={`btn-res ${resolutions[file] === "current" ? "active current" : ""}`}
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            handleResolve(file, "current");
+                          }}
+                          title={t("conflict.current_branch")}
+                        >
+                          {t("conflict.current_branch")}
+                        </button>
+                        <button
+                          className={`btn-res ${resolutions[file] === "main" ? "active main" : ""}`}
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            handleResolve(file, "main");
+                          }}
+                          title={t("conflict.main_branch")}
+                        >
+                          {t("conflict.main_branch")}
+                        </button>
+                      </div>
+                    </div>
+                  ))}
+                  {files.length === 0 && !loading && (
+                    <p className="no-conflicts">競合しているファイルはありません。</p>
+                  )}
+                </div>
               )}
-            </div>
-          )}
+            </aside>
+
+            {/* 右側：プレビュー領域 */}
+            <main className="conflict-preview-area">
+              <header className="preview-header">
+                <Eye size={16} />
+                <h3>{t("conflict.preview_title")}</h3>
+              </header>
+              <div className="preview-body">
+                {previewLoading ? (
+                  <div className="preview-placeholder">
+                    <Loader2 className="animate-spin" size={24} />
+                    <span>{t("conflict.loading_content")}</span>
+                  </div>
+                ) : previewContent ? (
+                  <pre className="preview-code">
+                    {previewContent.split('\n').map((line, i) => (
+                      <div key={i} className={getLineClass(line)}>{line}</div>
+                    ))}
+                  </pre>
+                ) : (
+                  <div className="preview-placeholder">
+                    <span>{t("conflict.select_to_preview")}</span>
+                  </div>
+                )}
+              </div>
+            </main>
+          </div>
         </div>
 
         <footer className="commit-modal-footer">
