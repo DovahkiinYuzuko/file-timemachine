@@ -62,41 +62,19 @@ const SettingsModal: FC<SettingsModalProps> = ({ isOpen, onClose }) => {
     if (!isLoaded) return;
     const save = async () => {
       try {
-        await updateAppConfig({ settings_save_behavior: saveBehavior });
-        logger.info(`保存挙動の設定を変更したよ: ${saveBehavior}`);
-      } catch (error) {
-        logger.error(`保存挙動の保存に失敗したよ: ${error}`);
-      }
-    };
-    save();
-  }, [saveBehavior, isLoaded]);
-
-  useEffect(() => {
-    if (!isLoaded) return;
-    const save = async () => {
-      try {
-        await updateAppConfig({ settings_auto_scan: autoScan });
-        logger.info(`自動スキャンの設定を変更したよ: ${autoScan}`);
-      } catch (error) {
-        logger.error(`自動スキャンの保存に失敗したよ: ${error}`);
-      }
-    };
-    save();
-  }, [autoScan, isLoaded]);
-
-  useEffect(() => {
-    if (!isLoaded) return;
-    const save = async () => {
-      try {
-        await updateAppConfig({ settings_theme: theme });
+        await updateAppConfig({
+          settings_save_behavior: saveBehavior,
+          settings_auto_scan: autoScan,
+          settings_theme: theme,
+        });
         document.documentElement.setAttribute("data-theme", theme);
-        logger.info(`テーマの設定を変更したよ: ${theme}`);
+        logger.info(`設定を一括保存したよ: theme=${theme}, behavior=${saveBehavior}, autoScan=${autoScan}`);
       } catch (error) {
-        logger.error(`テーマの保存に失敗したよ: ${error}`);
+        logger.error(`設定の一括保存に失敗したよ: ${error}`);
       }
     };
     save();
-  }, [theme, isLoaded]);
+  }, [saveBehavior, autoScan, theme, isLoaded]);
 
   // Accessibility: Handle Escape key
   useEffect(() => {

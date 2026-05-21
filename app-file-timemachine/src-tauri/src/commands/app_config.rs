@@ -33,10 +33,20 @@ pub async fn get_app_config(app: tauri::AppHandle) -> Result<AppConfig, String> 
         format!("Failed to read app config file: {}", e)
     })?;
 
-    let config: AppConfig = serde_json::from_str(&content).map_err(|e| {
-        error!("Failed to parse app config file: {}", e);
-        format!("Failed to parse app config file: {}", e)
-    })?;
+    let config: AppConfig = match serde_json::from_str(&content) {
+        Ok(c) => c,
+        Err(e) => {
+            error!("Failed to parse app config file: {}. Backing up corrupted file and returning default.", e);
+            // 壊れた設定ファイルを .bak にリネームして退避（自己修復機能）
+            let backup_path = config_dir.join(format!("{}.bak", APP_CONFIG_FILE_NAME));
+            if let Err(err) = fs::rename(&config_path, &backup_path) {
+                error!("Failed to backup corrupted config file: {}", err);
+            } else {
+                info!("Corrupted config backed up to {:?}", backup_path);
+            }
+            AppConfig::default()
+        }
+    };
 
     info!("Loaded app config from {:?}", config_path);
     Ok(config)

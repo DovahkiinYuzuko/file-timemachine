@@ -16,8 +16,19 @@ export const setAppConfig = async (config: AppConfig): Promise<void> => {
   await invoke("set_app_config", { config });
 };
 
+// 設定更新を直列化するためのキュー
+let updateQueue: Promise<void> = Promise.resolve();
+
 export const updateAppConfig = async (partialConfig: Partial<AppConfig>): Promise<void> => {
-  const current = await getAppConfig();
-  const updated = { ...current, ...partialConfig };
-  await setAppConfig(updated);
+  // 並行書き込みによる設定ファイルの破損を防ぐため、Promiseキューで直列化する
+  updateQueue = updateQueue.then(async () => {
+    const current = await getAppConfig();
+    const updated = { ...current, ...partialConfig };
+    await setAppConfig(updated);
+  }).catch((error) => {
+    console.error("設定の保存キューでエラーが発生したよ:", error);
+    throw error;
+  });
+  
+  return updateQueue;
 };
