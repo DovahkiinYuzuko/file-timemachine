@@ -60,8 +60,10 @@
     },
     "action": {
       "back_to_preview": "プレビューに戻る",
-      "show_diff": "差分(Diff)を表示"
+      "show_diff": "差分(Diff)を表示",
+      "back_to_latest": "最新に戻る"
     },
+    "time_traveling": "過去の保存地点 [{{hash}}] を閲覧中",
     "no_changes": "変更点はありません。",
     "video_not_supported": "お使いのブラウザはビデオタグをサポートしていません。",
     "audio_not_supported": "お使いのブラウザはオーディオ要素をサポートしていません。"
@@ -202,6 +204,11 @@
       "title": "ルートの切り替え",
       "desc": "別のルートに切り替えると、ファイルの状態がそのルートのものに変化します。",
       "error_fetch": "ルート一覧の取得に失敗しました。"
+    },
+    "delete": {
+      "confirm": "ルート「{{name}}」を本当に削除しますか？\n（このルートに保存されているお試し内容はすべて破棄されます）",
+      "success": "ルート「{{name}}」を削除しました。",
+      "tooltip": "このルートを削除"
     }
   },
   "graph": {

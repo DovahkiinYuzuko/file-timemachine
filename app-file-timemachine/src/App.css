@@ -14,18 +14,18 @@
 }
 
 [data-theme="dark"] {
-  /* Dark Theme */
-  --bg-color: #1e1e1e;
-  --panel-bg: #252526;
-  --border-color: #333333;
-  --text-color: #cccccc;
-  --text-muted: #858585;
-  --hover-bg: #2a2d2e;
-  --accent-color: #007acc;
+  /* Dark Theme (Yuzuko Special Custom) */
+  --bg-color: #111111;
+  --panel-bg: #1a1a1a;
+  --border-color: #2a2a2a;
+  --text-color: #eeeeee;
+  --text-muted: #b5b5b5;
+  --hover-bg: #222222;
+  --accent-color: #0ea5e9;
   --danger-color: #f87171;
   --success-color: #4ade80;
   --warning-color: #fbbf24;
-  --input-bg: #3c3c3c;
+  --input-bg: #1a1a1a;
 }
 
 /* Reset and Base Styles */

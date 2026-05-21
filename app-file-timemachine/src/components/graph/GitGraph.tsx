@@ -7,6 +7,8 @@ import "./GitGraph.css";
 
 interface CommitLog {
   hash: string;
+  parents: string[];
+  refs: string[];
   timestamp: number;
   message: string;
 }
@@ -17,6 +19,8 @@ interface GitGraphProps {
   projectPath: string | null;
   refreshKey?: number;
   onInitSuccess?: () => void;
+  selectedCommitHash: string | null;
+  onCommitSelect: (hash: string | null) => void;
 }
 
 /**
@@ -26,7 +30,7 @@ interface GitGraphProps {
  * - Interactive elements (toggle buttons) use semantic <button> tags with visual 'active' states.
  */
 
-const GitGraph: FC<GitGraphProps> = ({ projectPath, refreshKey, onInitSuccess }) => {
+const GitGraph: FC<GitGraphProps> = ({ projectPath, refreshKey, onInitSuccess, selectedCommitHash, onCommitSelect }) => {
   const { t } = useTranslation();
   const [commits, setCommits] = useState<CommitLog[]>([]);
   const [error, setError] = useState<string | null>(null);
@@ -112,8 +116,8 @@ const GitGraph: FC<GitGraphProps> = ({ projectPath, refreshKey, onInitSuccess })
       }
       try {
         const logs = await invoke<CommitLog[]>("git_log", { path: projectPath });
-        // logs はイミュータブルに扱うため、シャローコピーを作成してから reverse を実行します
-        setCommits([...logs].reverse()); // 古い順に描画するためリバース
+        // 最新順（降順）のまま保存して、リストは最新が上に来るようにする
+        setCommits(logs);
         setError(null);
       } catch (e) {
         console.error("Failed to fetch logs:", e);
@@ -137,18 +141,145 @@ const GitGraph: FC<GitGraphProps> = ({ projectPath, refreshKey, onInitSuccess })
         template: getTemplate(graphStyle),
       });
 
-      const master = gitgraph.branch("main");
-      commits.forEach((commit) => {
-        master.commit({
-          hash: commit.hash.substring(0, 7),
-          subject: "", // SVG側のテキスト描画はオフなので空にする
-          author: "User", // 将来的に取得
+      // 古い順（昇順）にしてループ描画する
+      const chronologicalCommits = [...commits].reverse();
+      
+      const branches = new Map<string, any>();
+      const commitBranchNameMap = new Map<string, string>();
+      
+      // 子コミットリストを事前計算
+      const childrenMap = new Map<string, string[]>();
+      chronologicalCommits.forEach((c) => {
+        c.parents.forEach((p) => {
+          if (!childrenMap.has(p)) {
+            childrenMap.set(p, []);
+          }
+          childrenMap.get(p)!.push(c.hash);
         });
+      });
+
+      // 初期ベースブランチ
+      const mainBranch = gitgraph.branch("main");
+      branches.set("main", mainBranch);
+
+      chronologicalCommits.forEach((commit) => {
+        const shortHash = commit.hash.substring(0, 7);
+        
+        // refsからローカルブランチ名を綺麗に抽出
+        let cleanBranchName = "";
+        if (commit.refs && commit.refs.length > 0) {
+          for (const ref of commit.refs) {
+            const clean = ref.replace("refs/heads/", "").replace("tag: ", "").replace("HEAD -> ", "").trim();
+            if (clean && !clean.includes("HEAD") && !clean.includes("origin/")) {
+              cleanBranchName = clean;
+              break;
+            }
+          }
+        }
+
+        const handleCommitClick = () => {
+          if (selectedCommitHash === commit.hash) {
+            onCommitSelect(null);
+          } else {
+            onCommitSelect(commit.hash);
+          }
+        };
+
+        if (commit.parents.length === 0) {
+          // 親なし（初期コミットなど）
+          let branch = branches.get("main");
+          if (!branch) {
+            branch = gitgraph.branch("main");
+            branches.set("main", branch);
+          }
+          branch.commit({
+            hash: shortHash,
+            subject: "",
+            author: "User",
+            onClick: handleCommitClick,
+            onMessageClick: handleCommitClick,
+          });
+          commitBranchNameMap.set(commit.hash, "main");
+
+        } else if (commit.parents.length === 1) {
+          // 親が1つ
+          const parentHash = commit.parents[0];
+          const parentBranchName = commitBranchNameMap.get(parentHash) || "main";
+          const parentBranch = branches.get(parentBranchName);
+
+          const siblings = childrenMap.get(parentHash) || [];
+          const myIndex = siblings.indexOf(commit.hash);
+
+          if (myIndex > 0) {
+            // 2番目以降の子 ＝ 分岐発生
+            const newBranchName = cleanBranchName || `route-${shortHash}`;
+            let newBranch = branches.get(newBranchName);
+            if (!newBranch) {
+              newBranch = parentBranch.branch(newBranchName);
+              branches.set(newBranchName, newBranch);
+            }
+            newBranch.commit({
+              hash: shortHash,
+              subject: "",
+              author: "User",
+              onClick: handleCommitClick,
+              onMessageClick: handleCommitClick,
+            });
+            commitBranchNameMap.set(commit.hash, newBranchName);
+          } else {
+            // 1番目の子 ＝ 親と同じブランチを継続
+            parentBranch.commit({
+              hash: shortHash,
+              subject: "",
+              author: "User",
+              onClick: handleCommitClick,
+              onMessageClick: handleCommitClick,
+            });
+            commitBranchNameMap.set(commit.hash, parentBranchName);
+
+            // このコミットに新しいブランチ名が紐付いていれば、その名前でもブランチオブジェクトを登録
+            if (cleanBranchName && cleanBranchName !== parentBranchName) {
+              branches.set(cleanBranchName, parentBranch);
+            }
+          }
+
+        } else {
+          // マージコミット（親が2つ以上）
+          const parentHash1 = commit.parents[0];
+          const parentHash2 = commit.parents[1];
+
+          const branchName1 = commitBranchNameMap.get(parentHash1) || "main";
+          const branchName2 = commitBranchNameMap.get(parentHash2) || "main";
+
+          const branch1 = branches.get(branchName1);
+          const branch2 = branches.get(branchName2);
+
+          if (branch1 && branch2 && branchName1 !== branchName2) {
+            branch1.merge(branch2, {
+              hash: shortHash,
+              subject: "",
+              author: "User",
+              onClick: handleCommitClick,
+              onMessageClick: handleCommitClick,
+            });
+            commitBranchNameMap.set(commit.hash, branchName1);
+          } else {
+            const activeBranch = branch1 || branches.get("main");
+            activeBranch.commit({
+              hash: shortHash,
+              subject: "",
+              author: "User",
+              onClick: handleCommitClick,
+              onMessageClick: handleCommitClick,
+            });
+            commitBranchNameMap.set(commit.hash, branchName1);
+          }
+        }
       });
     } catch (e) {
       console.error("Failed to render Git graph:", e);
     }
-  }, [commits, graphStyle]);
+  }, [commits, graphStyle, selectedCommitHash, onCommitSelect]);
 
   // パン操作（ドラッグ移動）のハンドリング
   const handleMouseDown = (e: MouseEvent<HTMLDivElement>) => {
@@ -378,26 +509,43 @@ const GitGraph: FC<GitGraphProps> = ({ projectPath, refreshKey, onInitSuccess })
             role="list"
             aria-label={t("common.aria.git_graph_description")}
           >
-            {commits.map((commit, index) => {
+            {commits.map((commit) => {
               const isMatch = !searchQuery || 
                 commit.message.toLowerCase().includes(searchQuery.toLowerCase()) || 
                 commit.hash.toLowerCase().includes(searchQuery.toLowerCase());
+              
+              const isSelected = selectedCommitHash === commit.hash;
 
               return (
                 <div 
                   key={commit.hash.toString()} 
-                  className={`commit-list-row ${!isMatch ? 'faded' : ''}`}
+                  className={`commit-list-row ${!isMatch ? 'faded' : ''} ${isSelected ? 'selected' : ''}`}
                   style={{ 
                     height: "40px", 
                     opacity: isMatch ? 1 : 0.15,
                     transition: "opacity 0.2s"
                   }}
-                  onClick={() => console.log("Commit clicked:", commit.hash)}
+                  onClick={() => {
+                    if (isSelected) {
+                      onCommitSelect(null);
+                    } else {
+                      onCommitSelect(commit.hash);
+                    }
+                  }}
                 >
                   <div className="commit-info-wrapper">
                     <span className="commit-hash">{commit.hash.substring(0, 7)}</span>
-                    {/* 最新のコミットのみ main バッジを表示 */}
-                    {index === 0 && <span className="commit-branch-badge">main</span>}
+                    {commit.refs && commit.refs.map((ref) => {
+                      const clean = ref.replace("refs/heads/", "").replace("tag: ", "").replace("HEAD -> ", "").trim();
+                      if (clean && !clean.includes("origin/")) {
+                        return (
+                          <span key={ref} className="commit-branch-badge">
+                            {clean}
+                          </span>
+                        );
+                      }
+                      return null;
+                    })}
                     <span className="commit-message" title={commit.message}>{commit.message}</span>
                   </div>
                 </div>

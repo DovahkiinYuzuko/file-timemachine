@@ -51,6 +51,7 @@ const MainLayout: FC = () => {
   const [isCreateBranchModalOpen, setIsCreateBranchModalOpen] = useState(false);
   const [isSwitchBranchModalOpen, setIsSwitchBranchModalOpen] = useState(false);
   const [isConflictModalOpen, setIsConflictModalOpen] = useState(false);
+  const [selectedCommitHash, setSelectedCommitHash] = useState<string | null>(null);
 
   // 現在のブランチ名を取得
   useEffect(() => {
@@ -258,6 +259,9 @@ const MainLayout: FC = () => {
     } else {
       logger.info(`アクティブなタブを切り替え: ${tab}`);
       setActiveTab(tab);
+      if (tab === "files") {
+        setSelectedCommitHash(null);
+      }
     }
   };
 
@@ -324,6 +328,8 @@ const MainLayout: FC = () => {
                             projectPath={projectPath} 
                             refreshKey={historyRefreshKey}
                             onInitSuccess={() => setHistoryRefreshKey(prev => prev + 1)}
+                            selectedCommitHash={selectedCommitHash}
+                            onCommitSelect={setSelectedCommitHash}
                           />
                         </div>
                       </section>
@@ -341,7 +347,12 @@ const MainLayout: FC = () => {
                           </h2>
                         </header>
                         <div className="panel-body">
-                          <HistoryList projectPath={projectPath} refreshKey={historyRefreshKey} />
+                          <HistoryList 
+                            projectPath={projectPath} 
+                            refreshKey={historyRefreshKey} 
+                            selectedCommitHash={selectedCommitHash}
+                            onCommitSelect={setSelectedCommitHash}
+                          />
                         </div>
                       </section>
                     </Panel>
@@ -358,7 +369,12 @@ const MainLayout: FC = () => {
                   <h2>{t("common.preview")}</h2>
                 </header>
                 <div className="panel-body">
-                  <FilePreview filePath={selectedFilePath} />
+                  <FilePreview 
+                    filePath={selectedFilePath} 
+                    projectPath={projectPath}
+                    selectedCommitHash={selectedCommitHash}
+                    onClearCommitSelect={() => setSelectedCommitHash(null)}
+                  />
                 </div>
               </section>
             </Panel>
@@ -477,6 +493,7 @@ const MainLayout: FC = () => {
         }}
         projectPath={projectPath}
         currentBranch={currentBranch}
+        onDeleted={() => setHistoryRefreshKey(prev => prev + 1)}
       />
 
       <ConflictResolverModal

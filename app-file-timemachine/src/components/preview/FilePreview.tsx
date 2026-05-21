@@ -7,6 +7,9 @@ import "./FilePreview.css";
 
 interface FilePreviewProps {
   filePath: string | null;
+  projectPath: string | null;
+  selectedCommitHash: string | null;
+  onClearCommitSelect: () => void;
 }
 
 interface PreviewContent {
@@ -34,7 +37,7 @@ interface FileMetadata {
  * - Contrast ratios adhere to WCAG 2.2 AA (Design System compliant).
  */
 
-const FilePreview: FC<FilePreviewProps> = ({ filePath }) => {
+const FilePreview: FC<FilePreviewProps> = ({ filePath, projectPath, selectedCommitHash, onClearCommitSelect }) => {
   const { t } = useTranslation();
   const [textContent, setTextContent] = useState<string | null>(null);
   const [metadata, setMetadata] = useState<FileMetadata | null>(null);
@@ -44,26 +47,36 @@ const FilePreview: FC<FilePreviewProps> = ({ filePath }) => {
   const [diffContent, setDiffContent] = useState<string | null>(null);
   const lastModifiedRef = useRef<string | null>(null);
 
-  // ファイルが切り替わったらDiffをリセット
+  // ファイルまたはコミットが切り替わったらDiffをリセット
   useEffect(() => {
     setShowDiff(false);
     setDiffContent(null);
-  }, [filePath]);
+  }, [filePath, selectedCommitHash]);
 
   // Diffトグル時に差分を取得
   useEffect(() => {
     if (showDiff && filePath) {
       const fetchDiff = async () => {
         try {
-          const diff = await invoke<string>("git_diff_file", { path: filePath });
-          setDiffContent(diff);
+          if (selectedCommitHash && projectPath) {
+            logger.info(`過去コミット[${selectedCommitHash}]の差分を取得します: ${filePath}`);
+            const diff = await invoke<string>("git_diff_file_commit", {
+              path: projectPath,
+              commitHash: selectedCommitHash,
+              filePath: filePath,
+            });
+            setDiffContent(diff);
+          } else {
+            const diff = await invoke<string>("git_diff_file", { path: filePath });
+            setDiffContent(diff);
+          }
         } catch (err) {
           logger.error(`Failed to load diff: ${err}`);
         }
       };
       fetchDiff();
     }
-  }, [showDiff, filePath]);
+  }, [showDiff, filePath, selectedCommitHash, projectPath]);
 
   useEffect(() => {
     if (!filePath) {
@@ -78,17 +91,42 @@ const FilePreview: FC<FilePreviewProps> = ({ filePath }) => {
       setError(null);
       
       try {
-        // Always fetch metadata for headers and fallback info
-        const meta = await invoke<FileMetadata>("get_file_info", { path: filePath });
-        setMetadata(meta);
-        lastModifiedRef.current = meta.modified;
+        if (selectedCommitHash && projectPath) {
+          logger.info(`過去コミット[${selectedCommitHash}]のファイル内容を取得します: ${filePath}`);
+          
+          // 1. まず現在の情報ベースでメタデータを取得
+          const meta = await invoke<FileMetadata>("get_file_info", { path: filePath });
+          
+          // 2. 過去コミット時点のファイル内容・バイナリ判定を取得
+          const result = await invoke<PreviewContent>("git_show_file_content", {
+            path: projectPath,
+            commitHash: selectedCommitHash,
+            filePath: filePath,
+          });
 
-        if (meta.file_type === "text") {
-          logger.info(`Fetching text content for: ${filePath}`);
-          const result = await invoke<PreviewContent>("read_file_content", { path: filePath });
+          // 3. メタデータを過去時点の情報で上書き・再構築
+          setMetadata({
+            ...meta,
+            file_type: result.is_image ? "image" : meta.file_type,
+            mime_type: result.mime_type,
+          });
+
+          // 4. 内容をセット
           setTextContent(result.content);
+          lastModifiedRef.current = null; // 過去コミットプレビュー中は変更監視しない
         } else {
-          setTextContent(null);
+          // 通常の最新ファイルロード
+          const meta = await invoke<FileMetadata>("get_file_info", { path: filePath });
+          setMetadata(meta);
+          lastModifiedRef.current = meta.modified;
+
+          if (meta.file_type === "text") {
+            logger.info(`Fetching text content for: ${filePath}`);
+            const result = await invoke<PreviewContent>("read_file_content", { path: filePath });
+            setTextContent(result.content);
+          } else {
+            setTextContent(null);
+          }
         }
       } catch (err) {
         logger.error(`Failed to load file data: ${err}`);
@@ -99,11 +137,11 @@ const FilePreview: FC<FilePreviewProps> = ({ filePath }) => {
     };
 
     fetchData();
-  }, [filePath]);
+  }, [filePath, selectedCommitHash, projectPath]);
 
-  // リアルタイム更新（ポーリング）
+  // リアルタイム更新（ポーリング）- 過去コミットプレビュー中は停止
   useEffect(() => {
-    if (!filePath) return;
+    if (!filePath || selectedCommitHash) return;
 
     const intervalId = setInterval(async () => {
       try {
@@ -124,12 +162,12 @@ const FilePreview: FC<FilePreviewProps> = ({ filePath }) => {
           }
         }
       } catch (err) {
-        // ポーリング中のエラー（ファイル削除中など）は無視する
+        // ポーリング中のエラーは無視する
       }
     }, 1000); // 1秒間隔でチェック
 
     return () => clearInterval(intervalId);
-  }, [filePath]);
+  }, [filePath, selectedCommitHash, showDiff]);
 
   const formatSize = (bytes: number) => {
     if (bytes === 0) return "0 B";
@@ -152,7 +190,7 @@ const FilePreview: FC<FilePreviewProps> = ({ filePath }) => {
     return (
       <div className="preview-loading" role="status" aria-busy="true">
         <Loader2 className="loader-spinner" size={48} />
-        <p>{t("common.loading") || "Loading..."}</p>
+        <p>{t("common.loading")}</p>
       </div>
     );
   }
@@ -166,10 +204,29 @@ const FilePreview: FC<FilePreviewProps> = ({ filePath }) => {
     );
   }
 
-  const assetUrl = filePath ? convertFileSrc(filePath) : "";
+  const assetUrl = selectedCommitHash && metadata?.file_type === "image" && textContent
+    ? `data:${metadata.mime_type};base64,${textContent}`
+    : (filePath ? convertFileSrc(filePath) : "");
 
   return (
     <article className="file-preview-container" aria-label={t("common.aria.file_preview", { path: metadata?.name || filePath })}>
+      {selectedCommitHash && (
+        <div className="time-travel-bar">
+          <div className="time-travel-status">
+            <span className="time-travel-indicator" />
+            <span className="time-travel-badge">
+              {t("preview.time_traveling", { hash: selectedCommitHash.substring(0, 7) })}
+            </span>
+          </div>
+          <button 
+            className="time-travel-reset-btn"
+            onClick={onClearCommitSelect}
+          >
+            {t("preview.action.back_to_latest")}
+          </button>
+        </div>
+      )}
+
       <header className="preview-info" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
         <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
           <FileText size={16} />
@@ -266,19 +323,19 @@ const FilePreview: FC<FilePreviewProps> = ({ filePath }) => {
               <Info size={40} />
             </div>
             <div className="info-content">
-              <h2>{t("preview.unknown_type.title") || "バイナリファイル"}</h2>
+              <h2>{t("preview.unknown_type.title")}</h2>
               <p className="info-message">
-                {t("preview.unknown_type.message") || "このファイル形式のプレビューはサポートされていませんが、大切なデータとして管理されています。"}
+                {t("preview.unknown_type.message")}
               </p>
               
               <div className="info-details">
-                <span className="detail-label">{t("common.file_name") || "ファイル名"}:</span>
+                <span className="detail-label">{t("common.file_name")}:</span>
                 <span className="detail-value">{metadata.name}</span>
                 
-                <span className="detail-label">{t("common.file_size") || "サイズ"}:</span>
+                <span className="detail-label">{t("common.file_size")}:</span>
                 <span className="detail-value">{formatSize(metadata.size)}</span>
                 
-                <span className="detail-label">{t("common.last_modified") || "最終更新"}:</span>
+                <span className="detail-label">{t("common.last_modified")}:</span>
                 <span className="detail-value">{metadata.modified}</span>
               </div>
             </div>

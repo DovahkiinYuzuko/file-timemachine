@@ -19,7 +19,7 @@
 }
 
 .history-table th {
-  background-color: var(--bg-tertiary, #f6f8fa);
+  background-color: var(--panel-bg, #f6f8fa);
   font-weight: 600;
   position: sticky;
   top: 0;
@@ -27,21 +27,21 @@
 }
 
 .history-table tr:hover {
-  background-color: var(--bg-hover, #f1f8ff);
+  background-color: var(--hover-bg, #f1f8ff);
 }
 
 .history-hash {
   font-family: monospace;
-  color: var(--text-secondary, #586069);
+  color: var(--text-muted, #586069);
 }
 
 .history-message {
   font-weight: 500;
-  color: var(--text-primary, #24292e);
+  color: var(--text-color, #24292e);
 }
 
 .history-date {
-  color: var(--text-secondary, #586069);
+  color: var(--text-muted, #586069);
   white-space: nowrap;
 }
 
@@ -49,9 +49,9 @@
 .history-error {
   padding: 20px;
   text-align: center;
-  color: var(--text-secondary, #586069);
+  color: var(--text-muted, #586069);
 }
 
 .history-error {
-  color: var(--error-color, #cb2431);
+  color: var(--danger-color, #cb2431);
 }

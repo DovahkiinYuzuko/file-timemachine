@@ -11,35 +11,17 @@ pub struct FilePreviewContent {
     pub mime_type: String,
 }
 
-#[command]
-pub async fn read_file_content(path: String) -> Result<FilePreviewContent, String> {
-    log::info!("Reading file content for preview: {}", path);
-
-    // パスの正規化
-    let path_buf = dunce::canonicalize(&path)
-        .map_err(|_| "error.failed_to_canonicalize_path".to_string())?;
-
-    let metadata = fs::metadata(&path_buf)
-        .map_err(|_| "error.failed_to_get_metadata".to_string())?;
-    let file_size = metadata.len();
-
+pub fn parse_file_content_bytes(bytes: &[u8], extension: &str) -> Result<FilePreviewContent, String> {
     // 5MB limit
-    if file_size > 5 * 1024 * 1024 {
+    if bytes.len() > 5 * 1024 * 1024 {
         return Err("common.placeholder.file_too_large".to_string());
     }
 
-    let extension = path_buf.extension()
-        .and_then(|ext| ext.to_str())
-        .unwrap_or("")
-        .to_lowercase();
-
-    let is_image = matches!(extension.as_str(), "png" | "jpg" | "jpeg" | "gif" | "webp" | "bmp");
+    let is_image = matches!(extension, "png" | "jpg" | "jpeg" | "gif" | "webp" | "bmp");
 
     if is_image {
-        let bytes = fs::read(&path_buf)
-            .map_err(|_| "error.failed_to_read_image".to_string())?;
         let b64 = general_purpose::STANDARD.encode(bytes);
-        let mime_type = match extension.as_str() {
+        let mime_type = match extension {
             "jpg" | "jpeg" => "image/jpeg",
             "png" => "image/png",
             "gif" => "image/gif",
@@ -55,9 +37,6 @@ pub async fn read_file_content(path: String) -> Result<FilePreviewContent, Strin
             mime_type: mime_type.to_string(),
         })
     } else {
-        let bytes = fs::read(&path_buf)
-            .map_err(|_| "error.failed_to_read_file".to_string())?;
-
         // バイナリ検出（nullバイトチェック）
         let is_binary = bytes.iter().take(1024).any(|&b| b == 0);
 
@@ -83,5 +62,24 @@ pub async fn read_file_content(path: String) -> Result<FilePreviewContent, Strin
             })
         }
     }
+}
+
+#[command]
+pub async fn read_file_content(path: String) -> Result<FilePreviewContent, String> {
+    log::info!("Reading file content for preview: {}", path);
+
+    // パスの正規化
+    let path_buf = dunce::canonicalize(&path)
+        .map_err(|_| "error.failed_to_canonicalize_path".to_string())?;
+
+    let bytes = fs::read(&path_buf)
+        .map_err(|_| "error.failed_to_read_file".to_string())?;
+
+    let extension = path_buf.extension()
+        .and_then(|ext| ext.to_str())
+        .unwrap_or("")
+        .to_lowercase();
+
+    parse_file_content_bytes(&bytes, &extension)
 }
 

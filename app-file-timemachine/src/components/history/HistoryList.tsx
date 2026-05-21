@@ -9,9 +9,11 @@ import "./HistoryList.css";
 interface HistoryListProps {
   projectPath: string | null;
   refreshKey?: number;
+  selectedCommitHash: string | null;
+  onCommitSelect: (hash: string | null) => void;
 }
 
-const HistoryList: FC<HistoryListProps> = ({ projectPath, refreshKey = 0 }) => {
+const HistoryList: FC<HistoryListProps> = ({ projectPath, refreshKey = 0, selectedCommitHash, onCommitSelect }) => {
   const { t } = useTranslation();
   const [logs, setLogs] = useState<CommitLog[]>([]);
   const [isLoading, setIsLoading] = useState<boolean>(false);
@@ -85,13 +87,27 @@ const HistoryList: FC<HistoryListProps> = ({ projectPath, refreshKey = 0 }) => {
           </tr>
         </thead>
         <tbody>
-          {logs.map((log) => (
-            <tr key={log.hash}>
-              <td className="history-date">{formatDate(log.timestamp)}</td>
-              <td className="history-message">{log.message}</td>
-              <td className="history-hash">{log.hash.substring(0, 7)}</td>
-            </tr>
-          ))}
+          {logs.map((log) => {
+            const isSelected = selectedCommitHash === log.hash;
+            return (
+              <tr 
+                key={log.hash}
+                className={isSelected ? "selected" : ""}
+                onClick={() => {
+                  if (isSelected) {
+                    onCommitSelect(null);
+                  } else {
+                    onCommitSelect(log.hash);
+                  }
+                }}
+                style={{ cursor: "pointer" }}
+              >
+                <td className="history-date">{formatDate(log.timestamp)}</td>
+                <td className="history-message">{log.message}</td>
+                <td className="history-hash">{log.hash.substring(0, 7)}</td>
+              </tr>
+            );
+          })}
         </tbody>
       </table>
     </div>

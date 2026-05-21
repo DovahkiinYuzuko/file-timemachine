@@ -4,10 +4,13 @@ use std::path::Path;
 use std::fs;
 use log::{info, debug};
 use super::config::{GitMode, ProjectConfig, get_project_config, set_project_config};
+use super::preview::{FilePreviewContent, parse_file_content_bytes};
 
 #[derive(Debug, Serialize, Deserialize)]
 pub struct CommitLog {
     pub hash: String,
+    pub parents: Vec<String>,
+    pub refs: Vec<String>,
     pub timestamp: i64,
     pub message: String,
 }
@@ -307,10 +310,10 @@ pub async fn git_log(path: String) -> Result<Vec<CommitLog>, String> {
         return Err("無効なディレクトリパスです。".to_string());
     }
 
-    // git log --pretty=format:"%H_#_%at_#_%s"
+    // git log --pretty=format:"%H_#_%P_#_%d_#_%at_#_%s"
     let output = Command::new("git")
         .arg("log")
-        .arg("--pretty=format:%H_#_%at_#_%s")
+        .arg("--pretty=format:%H_#_%P_#_%d_#_%at_#_%s")
         .current_dir(&repo_path)
         .output()
         .map_err(|e| format!("git logの実行に失敗しました: {}", e))?;
@@ -325,11 +328,43 @@ pub async fn git_log(path: String) -> Result<Vec<CommitLog>, String> {
         .lines()
         .filter_map(|line| {
             let parts: Vec<&str> = line.split("_#_").collect();
-            if parts.len() >= 3 {
+            if parts.len() >= 5 {
+                let hash = parts[0].to_string();
+                
+                // 親コミットハッシュのパース
+                let parents = parts[1]
+                    .split_whitespace()
+                    .map(|s| s.to_string())
+                    .collect::<Vec<String>>();
+
+                // refsのパース
+                let refs_str = parts[2].trim();
+                let mut refs = Vec::new();
+                if !refs_str.is_empty() {
+                    let cleaned = refs_str
+                        .trim_start_matches('(')
+                        .trim_end_matches(')');
+                    for item in cleaned.split(',') {
+                        let item_trimmed = item.trim();
+                        if !item_trimmed.is_empty() {
+                            let ref_name = if item_trimmed.starts_with("HEAD -> ") {
+                                item_trimmed.trim_start_matches("HEAD -> ").to_string()
+                            } else if item_trimmed.starts_with("tag: ") {
+                                item_trimmed.trim_start_matches("tag: ").to_string()
+                            } else {
+                                item_trimmed.to_string()
+                            };
+                            refs.push(ref_name);
+                        }
+                    }
+                }
+
                 Some(CommitLog {
-                    hash: parts[0].to_string(),
-                    timestamp: parts[1].parse::<i64>().unwrap_or(0),
-                    message: parts[2].to_string(),
+                    hash,
+                    parents,
+                    refs,
+                    timestamp: parts[3].parse::<i64>().unwrap_or(0),
+                    message: parts[4].to_string(),
                 })
             } else {
                 None
@@ -647,6 +682,147 @@ pub async fn git_merge_abort(path: String, original_branch: String) -> Result<St
     }
 
     Ok(format!("マージを中止し、'{}' に戻りました。", original_branch))
+}
+
+#[tauri::command]
+pub async fn git_show_file_content(
+    path: String,
+    commit_hash: String,
+    file_path: String,
+) -> Result<FilePreviewContent, String> {
+    let repo_path = dunce::canonicalize(Path::new(&path))
+        .map_err(|e| format!("ルートパスの正規化に失敗したよ: {}", e))?;
+    let file_abs_path = dunce::canonicalize(Path::new(&file_path))
+        .map_err(|e| format!("ファイルパスの正規化に失敗したよ: {}", e))?;
+
+    // 相対パスを取得（git showで使用する形式）
+    let rel_path = file_abs_path
+        .strip_prefix(&repo_path)
+        .map_err(|_| "ファイルがプロジェクトルートの下にありません。".to_string())?
+        .to_string_lossy()
+        .replace('\\', "/");
+
+    let show_arg = format!("{}:{}", commit_hash, rel_path);
+    debug!("git show を実行します: {}", show_arg);
+
+    // git show <commit_hash>:<relative_path>
+    let output = Command::new("git")
+        .arg("show")
+        .arg(&show_arg)
+        .current_dir(&repo_path)
+        .output()
+        .map_err(|e| format!("git show の実行に失敗しました: {}", e))?;
+
+    if !output.status.success() {
+        let stderr = String::from_utf8_lossy(&output.stderr);
+        return Err(format!("ファイルの取得に失敗しました。\n詳細: {}", stderr));
+    }
+
+    let extension = file_abs_path
+        .extension()
+        .and_then(|ext| ext.to_str())
+        .unwrap_or("")
+        .to_lowercase();
+
+    parse_file_content_bytes(&output.stdout, &extension)
+}
+
+#[tauri::command]
+pub async fn git_diff_file_commit(
+    path: String,
+    commit_hash: String,
+    file_path: String,
+) -> Result<String, String> {
+    let repo_path = dunce::canonicalize(Path::new(&path))
+        .map_err(|e| format!("ルートパスの正規化に失敗したよ: {}", e))?;
+    let file_abs_path = dunce::canonicalize(Path::new(&file_path))
+        .map_err(|e| format!("ファイルパスの正規化に失敗したよ: {}", e))?;
+
+    // 相対パスを取得
+    let rel_path = file_abs_path
+        .strip_prefix(&repo_path)
+        .map_err(|_| "ファイルがプロジェクトルートの下にありません。".to_string())?
+        .to_string_lossy()
+        .replace('\\', "/");
+
+    // 親コミットとの差分：git diff <commit>^ <commit> -- <file>
+    let parent_diff_arg = format!("{}^", commit_hash);
+    debug!("git diff を実行します: {} {} -- {}", parent_diff_arg, commit_hash, rel_path);
+
+    let output = Command::new("git")
+        .arg("diff")
+        .arg(&parent_diff_arg)
+        .arg(&commit_hash)
+        .arg("--")
+        .arg(&rel_path)
+        .current_dir(&repo_path)
+        .output()
+        .map_err(|e| format!("git diff の実行に失敗しました: {}", e))?;
+
+    if !output.status.success() {
+        let stderr = String::from_utf8_lossy(&output.stderr);
+        // 最初（親がない）のコミットの場合は、空のツリーとの比較：git diff 4b825dc642cb6eb9a030e54d6911027b28c16a86 <commit> -- <file>
+        // または `git show <commit> -- <file>` から差分を抽出する
+        // ここではフォールバックとして、親がない場合は `git show` のパッチ形式で取得してみる
+        let fallback_output = Command::new("git")
+            .arg("show")
+            .arg(&commit_hash)
+            .arg("--")
+            .arg(&rel_path)
+            .current_dir(&repo_path)
+            .output();
+
+        if let Ok(fo) = fallback_output {
+            if fo.status.success() {
+                let stdout = String::from_utf8_lossy(&fo.stdout).to_string();
+                return Ok(stdout);
+            }
+        }
+
+        return Err(format!("差分の取得に失敗しました。\n詳細: {}", stderr));
+    }
+
+    let diff = String::from_utf8_lossy(&output.stdout).to_string();
+    Ok(diff)
+}
+
+#[tauri::command]
+pub async fn git_delete_branch(path: String, branch_name: String) -> Result<String, String> {
+    let raw_path = Path::new(&path);
+    let repo_path = dunce::canonicalize(raw_path)
+        .map_err(|e| format!("パスの正規化に失敗しました: {}", e))?;
+
+    info!("ブランチ '{}' を削除します: {:?}", branch_name, repo_path);
+
+    if !repo_path.exists() || !repo_path.is_dir() {
+        return Err("無効なディレクトリパスです。".to_string());
+    }
+
+    // カレントブランチを取得してチェック
+    let current_branch = git_get_current_branch(path.clone()).await?;
+    if current_branch == branch_name {
+        return Err("現在使用中のルート（ブランチ）は削除できません。他のルートに切り替えてから削除してください。".to_string());
+    }
+
+    if branch_name == "main" {
+        return Err("本番（main）ルートは削除できません。".to_string());
+    }
+
+    // git branch -D <branch_name>
+    let output = Command::new("git")
+        .arg("branch")
+        .arg("-D")
+        .arg(&branch_name)
+        .current_dir(&repo_path)
+        .output()
+        .map_err(|e| format!("git branch -D の実行に失敗しました: {}", e))?;
+
+    if !output.status.success() {
+        let stderr = String::from_utf8_lossy(&output.stderr);
+        return Err(format!("ルート '{}' の削除に失敗しました。\n詳細: {}", branch_name, stderr));
+    }
+
+    Ok(format!("ルート '{}' を削除しました。", branch_name))
 }
 
 

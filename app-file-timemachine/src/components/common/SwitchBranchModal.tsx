@@ -1,6 +1,6 @@
 import { type FC, useState, useEffect, useRef } from "react";
 import { useTranslation } from "react-i18next";
-import { X, GitBranch, Loader2, Check } from "lucide-react";
+import { X, GitBranch, Loader2, Check, Trash2 } from "lucide-react";
 import { invoke } from "@tauri-apps/api/core";
 import logger from "../../utils/logger";
 import "./CommitMessageModal.css"; // Reuse the same CSS for modal structure
@@ -11,6 +11,7 @@ interface SwitchBranchModalProps {
   onSwitch: (branchName: string) => void;
   projectPath: string | null;
   currentBranch: string;
+  onDeleted?: () => void;
 }
 
 const SwitchBranchModal: FC<SwitchBranchModalProps> = ({
@@ -19,12 +20,50 @@ const SwitchBranchModal: FC<SwitchBranchModalProps> = ({
   onSwitch,
   projectPath,
   currentBranch,
+  onDeleted,
 }) => {
   const { t } = useTranslation();
   const [branches, setBranches] = useState<string[]>([]);
   const [loading, setLoading] = useState(false);
   const [errorMsg, setErrorMsg] = useState("");
   const modalRef = useRef<HTMLDivElement>(null);
+
+  // ブランチ削除処理
+  const handleDeleteBranch = async (branchName: string) => {
+    if (!projectPath) return;
+
+    const confirmDelete = window.confirm(
+      t("branch.delete.confirm", { name: branchName })
+    );
+    if (!confirmDelete) return;
+
+    try {
+      setLoading(true);
+      setErrorMsg("");
+      logger.info(`ブランチを削除するよ: ${branchName}`);
+      const result = await invoke<string>("git_delete_branch", { 
+        path: projectPath, 
+        branchName 
+      });
+      logger.info(result);
+
+      // ブランチ一覧を再取得
+      const list = await invoke<string[]>("git_get_branches", { path: projectPath });
+      setBranches(list);
+
+      // 履歴一覧リフレッシュ用のコールバックを起動
+      if (onDeleted) {
+        onDeleted();
+      }
+
+      alert(t("branch.delete.success", { name: branchName }));
+    } catch (error) {
+      logger.error(`ブランチ削除エラー: ${error}`);
+      setErrorMsg(String(error));
+    } finally {
+      setLoading(false);
+    }
+  };
 
   useEffect(() => {
     if (isOpen && projectPath) {
@@ -134,47 +173,82 @@ const SwitchBranchModal: FC<SwitchBranchModalProps> = ({
             </div>
           ) : (
             <div style={{ display: "flex", flexDirection: "column", gap: "8px", marginTop: "1rem" }}>
-              {branches.map(branch => (
-                <button
-                  key={branch}
-                  onClick={() => {
-                    if (branch !== currentBranch) {
-                      onSwitch(branch);
-                    }
-                  }}
-                  style={{
-                    display: "flex",
-                    alignItems: "center",
-                    justifyContent: "space-between",
-                    padding: "10px 16px",
-                    backgroundColor: branch === currentBranch ? "var(--accent-color)" : "var(--panel-bg)",
-                    color: branch === currentBranch ? "white" : "var(--text-color)",
-                    border: "1px solid var(--border-color)",
-                    borderRadius: "6px",
-                    cursor: branch === currentBranch ? "default" : "pointer",
-                    transition: "all 0.2s",
-                    opacity: branch === currentBranch ? 0.9 : 1,
-                  }}
-                  onMouseOver={(e) => {
-                    if (branch !== currentBranch) {
-                      e.currentTarget.style.backgroundColor = "var(--item-hover)";
-                    }
-                  }}
-                  onMouseOut={(e) => {
-                    if (branch !== currentBranch) {
-                      e.currentTarget.style.backgroundColor = "var(--panel-bg)";
-                    }
-                  }}
-                >
-                  <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
-                    <GitBranch size={16} />
-                    <span style={{ fontWeight: branch === currentBranch ? "bold" : "normal" }}>
-                      {branch}
-                    </span>
+              {branches.map(branch => {
+                const isCurrent = branch === currentBranch;
+                return (
+                  <div
+                    key={branch}
+                    style={{
+                      display: "flex",
+                      alignItems: "center",
+                      justifyContent: "space-between",
+                      padding: "10px 16px",
+                      backgroundColor: isCurrent ? "var(--accent-color)" : "var(--panel-bg)",
+                      color: isCurrent ? "white" : "var(--text-color)",
+                      border: "1px solid var(--border-color)",
+                      borderRadius: "6px",
+                      transition: "all 0.2s",
+                    }}
+                  >
+                    <button
+                      onClick={() => {
+                        if (!isCurrent) {
+                          onSwitch(branch);
+                        }
+                      }}
+                      style={{
+                        display: "flex",
+                        alignItems: "center",
+                        gap: "8px",
+                        background: "none",
+                        border: "none",
+                        color: "inherit",
+                        cursor: isCurrent ? "default" : "pointer",
+                        flex: 1,
+                        textAlign: "left",
+                        padding: 0,
+                        fontWeight: isCurrent ? "bold" : "normal",
+                      }}
+                    >
+                      <GitBranch size={16} />
+                      <span>{branch}</span>
+                      {isCurrent && <Check size={16} style={{ marginLeft: "8px" }} />}
+                    </button>
+                    
+                    {branch !== "main" && !isCurrent && (
+                      <button
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          handleDeleteBranch(branch);
+                        }}
+                        title={t("branch.delete.tooltip")}
+                        style={{
+                          background: "none",
+                          border: "none",
+                          color: "var(--text-muted)",
+                          cursor: "pointer",
+                          padding: "4px",
+                          display: "flex",
+                          alignItems: "center",
+                          justifyContent: "center",
+                          borderRadius: "4px",
+                          transition: "all 0.2s",
+                        }}
+                        onMouseOver={(e) => {
+                          e.currentTarget.style.color = "var(--danger-color)";
+                          e.currentTarget.style.backgroundColor = "rgba(248, 113, 113, 0.15)";
+                        }}
+                        onMouseOut={(e) => {
+                          e.currentTarget.style.color = "var(--text-muted)";
+                          e.currentTarget.style.backgroundColor = "transparent";
+                        }}
+                      >
+                        <Trash2 size={16} />
+                      </button>
+                    )}
                   </div>
-                  {branch === currentBranch && <Check size={16} />}
-                </button>
-              ))}
+                );
+              })}
             </div>
           )}
         </div>
