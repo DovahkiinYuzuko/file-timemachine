@@ -115,6 +115,17 @@ const SettingsModal: FC<SettingsModalProps> = ({ isOpen, onClose }) => {
     logger.debug(`言語の切り替えが完了したよ: ${i18n.language}`);
   };
 
+  const handleRerunWizard = async () => {
+    logger.info("環境診断ウィザードを再実行するよ");
+    try {
+      await updateAppConfig({ setup_completed: false });
+      logger.debug("セットアップ完了フラグをリセットしたよ。アプリをリロードします。");
+      window.location.reload();
+    } catch (error) {
+      logger.error(`環境診断ウィザードの再設定に失敗したよ: ${error}`);
+    }
+  };
+
   const languages = [
     { code: "ja", name: "日本語" },
     { code: "en", name: "English" },
@@ -293,6 +304,27 @@ const SettingsModal: FC<SettingsModalProps> = ({ isOpen, onClose }) => {
                 />
                 <span className="slider"></span>
               </label>
+            </div>
+          </section>
+
+          {/* 6. 環境診断 */}
+          <section className="settings-section">
+            <h3>
+              <Cpu size={16} />
+              {t("settings.setup.title")}
+            </h3>
+            <div className="settings-row" style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
+              <button
+                className="github-connect-btn"
+                style={{ backgroundColor: 'var(--accent-color)', color: 'white', border: 'none', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '0.5rem', width: 'fit-content' }}
+                onClick={handleRerunWizard}
+              >
+                <Cpu size={20} />
+                {t("settings.setup.rerun_btn")}
+              </button>
+              <p style={{ fontSize: '0.8rem', color: 'var(--text-muted)', margin: 0 }}>
+                {t("settings.setup.desc")}
+              </p>
             </div>
           </section>
         </div>

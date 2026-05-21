@@ -92,6 +92,11 @@
       "title": "Security",
       "auto_scan": "Auto Vulnerability Scan",
       "auto_scan_desc": "Checks for dependency vulnerabilities before saving."
+    },
+    "setup": {
+      "title": "Rerun Environment Wizard",
+      "desc": "Runs the setup diagnostic wizard for required tools again.",
+      "rerun_btn": "Run Diagnostic Wizard"
     }
   },
   "setup": {
