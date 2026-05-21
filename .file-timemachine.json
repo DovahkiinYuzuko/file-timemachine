@@ -1,5 +1,21 @@
 {
   "git_mode": "whitelist",
-  "whitelist_entries": [],
-  "blacklist_entries": []
+  "whitelist_entries": [
+    "!docs",
+    "!.file-timemachine.json",
+    "!app-file-timemachine/",
+    "!app-file-timemachine/**",
+    "!app-icon.png",
+    "!変数関数仕様書.md"
+  ],
+  "blacklist_entries": [
+    "app-file-timemachine/",
+    "app-file-timemachine/**",
+    ".file-timemachine.json",
+    "app-icon.png",
+    "ハリボテリスト.md",
+    "ファイルタイムマシンAAUI.md",
+    "ファイルタイムマシン仕様書.md",
+    ".gitignore"
+  ]
 }

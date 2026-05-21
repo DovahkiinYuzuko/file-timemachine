@@ -96,9 +96,46 @@
   border-top: 1px solid var(--border-color);
   display: flex;
   align-items: center;
-  justify-content: flex-end;
+  justify-content: space-between;
   padding: 0 16px;
   z-index: 20;
+}
+
+.footer-left {
+  display: flex;
+  align-items: center;
+}
+
+.branch-info {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  background-color: var(--border-color);
+  color: var(--text-color);
+  padding: 4px 12px;
+  border-radius: 12px;
+  font-size: 0.85rem;
+  font-weight: 600;
+}
+
+.create-branch-btn {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  background-color: transparent;
+  color: var(--text-color);
+  border: 1px solid var(--border-color);
+  padding: 6px 14px;
+  border-radius: 6px;
+  font-size: 0.85rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.create-branch-btn:hover {
+  background-color: var(--item-hover);
+  border-color: var(--text-muted);
 }
 
 .footer-actions {

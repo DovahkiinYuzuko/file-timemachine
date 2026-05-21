@@ -1,7 +1,7 @@
 import { type FC, useState, useEffect } from "react";
 import { useTranslation } from "react-i18next";
 import { Panel, Group as PanelGroup, Separator as PanelResizeHandle } from "react-resizable-panels";
-import { Save, Loader2 } from "lucide-react";
+import { Save, Loader2, GitBranch, GitBranchPlus } from "lucide-react";
 import Sidebar, { type SidebarTab } from "./Sidebar";
 import FileTree from "../tree/FileTree";
 import FilePreview from "../preview/FilePreview";
@@ -11,6 +11,7 @@ import SafetyDialog from "../guard/SafetyDialog";
 import SettingsModal from "../settings/SettingsModal";
 import HelpModal from "../help/HelpModal";
 import CommitMessageModal from "../common/CommitMessageModal";
+import CreateBranchModal from "../common/CreateBranchModal";
 import Tooltip from "../common/Tooltip";
 import logger from "../../utils/logger";
 import { type SafetyIssue } from "../../utils/safety";
@@ -44,6 +45,22 @@ const MainLayout: FC = () => {
   const [isCommitModalOpen, setIsCommitModalOpen] = useState(false);
   const [isCommitting, setIsCommitting] = useState(false);
   const [defaultCommitMessage, setDefaultCommitMessage] = useState("");
+  const [currentBranch, setCurrentBranch] = useState<string>("main");
+  const [isCreateBranchModalOpen, setIsCreateBranchModalOpen] = useState(false);
+
+  // 現在のブランチ名を取得
+  useEffect(() => {
+    if (!projectPath) return;
+    const fetchBranch = async () => {
+      try {
+        const branch = await invoke<string>("git_get_current_branch", { path: projectPath });
+        setCurrentBranch(branch);
+      } catch (error) {
+        logger.error(`ブランチ名の取得に失敗したよ: ${error}`);
+      }
+    };
+    fetchBranch();
+  }, [projectPath, historyRefreshKey]);
 
   // 初期ロード時に前回開いていたフォルダを復元
   useEffect(() => {
@@ -99,6 +116,23 @@ const MainLayout: FC = () => {
       alert(`保存に失敗しました： ${error}`);
     } finally {
       setIsCommitting(false);
+    }
+  };
+
+  // 新しいルートを作成する処理
+  const executeCreateBranch = async (branchName: string) => {
+    if (!projectPath) return;
+    try {
+      logger.info(`新しいルートを作成します: ${branchName}`);
+      const result = await invoke<string>("git_create_branch", { path: projectPath, branchName });
+      logger.info(result);
+      
+      // ツリーや履歴を更新
+      setHistoryRefreshKey(prev => prev + 1);
+      alert(`新しいルート「${branchName}」を作成して切り替えたよ！`);
+    } catch (error) {
+      logger.error(`ブランチ作成エラー: ${error}`);
+      alert(`ルート作成に失敗しました: ${error}`);
     }
   };
 
@@ -280,7 +314,25 @@ const MainLayout: FC = () => {
         </main>
 
         <footer className="main-footer" role="contentinfo">
+          <div className="footer-left">
+            {projectPath && (
+              <div className="branch-info" title="現在のルート">
+                <GitBranch size={16} />
+                <span className="branch-name">{currentBranch}</span>
+              </div>
+            )}
+          </div>
           <div className="footer-actions">
+            {projectPath && (
+              <button
+                className="create-branch-btn"
+                onClick={() => setIsCreateBranchModalOpen(true)}
+                title="新しいルートを作る"
+              >
+                <GitBranchPlus size={16} />
+                <span>新しいルート</span>
+              </button>
+            )}
             <button 
               className="save-state-btn" 
               onClick={handleSaveClick}
@@ -339,6 +391,15 @@ const MainLayout: FC = () => {
           executeCommit(msg);
         }}
         defaultMessage={defaultCommitMessage}
+      />
+
+      <CreateBranchModal
+        isOpen={isCreateBranchModalOpen}
+        onClose={() => setIsCreateBranchModalOpen(false)}
+        onSave={(branchName) => {
+          setIsCreateBranchModalOpen(false);
+          executeCreateBranch(branchName);
+        }}
       />
     </div>
   );

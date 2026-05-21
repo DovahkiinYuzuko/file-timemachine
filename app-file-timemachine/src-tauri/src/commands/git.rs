@@ -331,3 +331,63 @@ pub async fn git_log(path: String) -> Result<Vec<CommitLog>, String> {
 
     Ok(logs)
 }
+
+#[tauri::command]
+pub async fn git_get_current_branch(path: String) -> Result<String, String> {
+    let raw_path = Path::new(&path);
+    let repo_path = dunce::canonicalize(raw_path)
+        .map_err(|e| format!("パスの正規化に失敗しました: {}", e))?;
+
+    if !repo_path.exists() || !repo_path.is_dir() {
+        return Err("無効なディレクトリパスです。".to_string());
+    }
+
+    // git branch --show-current
+    let output = Command::new("git")
+        .arg("branch")
+        .arg("--show-current")
+        .current_dir(&repo_path)
+        .output()
+        .map_err(|e| format!("git branchの実行に失敗しました: {}", e))?;
+
+    if !output.status.success() {
+        return Err("現在のブランチの取得に失敗しました。".to_string());
+    }
+
+    let stdout = String::from_utf8_lossy(&output.stdout).trim().to_string();
+    
+    // Initial repo with no commits might not return a branch name correctly in some git versions
+    if stdout.is_empty() {
+        return Ok("main".to_string());
+    }
+
+    Ok(stdout)
+}
+
+#[tauri::command]
+pub async fn git_create_branch(path: String, branch_name: String) -> Result<String, String> {
+    let raw_path = Path::new(&path);
+    let repo_path = dunce::canonicalize(raw_path)
+        .map_err(|e| format!("パスの正規化に失敗しました: {}", e))?;
+
+    info!("新しいブランチを作成します: {} in {:?}", branch_name, repo_path);
+
+    if !repo_path.exists() || !repo_path.is_dir() {
+        return Err("無効なディレクトリパスです。".to_string());
+    }
+
+    // git checkout -b <branch_name>
+    let status = Command::new("git")
+        .arg("checkout")
+        .arg("-b")
+        .arg(&branch_name)
+        .current_dir(&repo_path)
+        .status()
+        .map_err(|e| format!("git checkout -b に失敗しました: {}", e))?;
+
+    if !status.success() {
+        return Err(format!("ブランチ '{}' の作成に失敗しました。すでに存在するか、名前が無効かもしれません。", branch_name));
+    }
+
+    Ok(format!("ブランチ '{}' を作成し、切り替えました。", branch_name))
+}
