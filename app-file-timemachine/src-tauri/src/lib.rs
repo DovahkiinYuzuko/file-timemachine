@@ -1,6 +1,6 @@
 mod commands;
 
-use commands::setup::check_dependencies;
+use commands::setup::{check_dependencies, install_dependency};
 use commands::git::{git_init, git_commit, git_log, update_gitignore, switch_git_mode, git_get_current_branch, git_create_branch, git_get_branches, git_checkout, git_diff_file, git_merge_to_main, git_get_conflicts, git_resolve_conflict, git_merge_abort, git_show_file_content, git_diff_file_commit, git_delete_branch};
 use commands::files::{get_file_tree, get_file_info};
 use commands::config::{get_project_config, set_project_config};
@@ -29,6 +29,7 @@ pub fn run() {
         .invoke_handler(tauri::generate_handler![
             greet,
             check_dependencies,
+            install_dependency,
             git_init,
             git_commit,
             git_log,

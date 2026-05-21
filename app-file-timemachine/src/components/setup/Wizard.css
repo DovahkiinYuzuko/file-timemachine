@@ -155,3 +155,170 @@
   from { transform: rotate(0deg); }
   to { transform: rotate(360deg); }
 }
+
+/* Simulation Toggle */
+.wizard-simulation-toggle {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  cursor: pointer;
+  padding: 0.5rem 1rem;
+  border-radius: 20px;
+  background: var(--panel-bg);
+  border: 1px solid var(--border-color);
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--text-muted);
+  transition: all 0.2s;
+}
+
+.wizard-simulation-toggle:hover {
+  background: var(--hover-bg);
+  color: var(--text-color);
+}
+
+.icon-on {
+  color: var(--accent-color);
+}
+
+.icon-off {
+  color: var(--text-muted);
+}
+
+/* Dependency Item Details */
+.dependency-text {
+  display: flex;
+  flex-direction: column;
+}
+
+.dependency-desc {
+  font-size: 0.75rem;
+  color: var(--text-muted);
+}
+
+.optional-item {
+  opacity: 0.9;
+}
+
+/* Status Actions */
+.status-actions {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.wizard-install-btn {
+  background: var(--accent-color);
+  color: white;
+  border: none;
+  padding: 0.35rem 0.75rem;
+  border-radius: 6px;
+  font-size: 0.8rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: filter 0.2s;
+}
+
+.wizard-install-btn:hover {
+  filter: brightness(1.1);
+}
+
+.status-missing-link {
+  font-size: 0.8rem;
+  color: var(--text-muted);
+  text-decoration: underline;
+}
+
+.status-missing-link:hover {
+  color: var(--text-color);
+}
+
+/* Installing State */
+.wizard-installing {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  padding: 1rem 0;
+}
+
+.installing-header {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  color: var(--accent-color);
+}
+
+.installing-header h2 {
+  font-size: 1.1rem;
+  margin: 0;
+}
+
+.animate-bounce {
+  animation: bounce 1s infinite;
+}
+
+@keyframes bounce {
+  0%, 100% { transform: translateY(-25%); animation-timing-function: cubic-bezier(0.8, 0, 1, 1); }
+  50% { transform: translateY(0); animation-timing-function: cubic-bezier(0, 0, 0.2, 1); }
+}
+
+.progress-bar-container {
+  width: 100%;
+  height: 8px;
+  background-color: var(--hover-bg);
+  border-radius: 4px;
+  overflow: hidden;
+}
+
+.progress-bar {
+  height: 100%;
+  background-color: var(--accent-color);
+  transition: width 0.3s ease-out;
+}
+
+/* Terminal UI */
+.wizard-terminal {
+  background-color: #1e1e1e;
+  border-radius: 8px;
+  overflow: hidden;
+  border: 1px solid #333;
+  display: flex;
+  flex-direction: column;
+}
+
+.terminal-header {
+  background-color: #2d2d2d;
+  color: #a0a0a0;
+  padding: 0.5rem 1rem;
+  font-size: 0.8rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  border-bottom: 1px solid #1e1e1e;
+}
+
+.terminal-body {
+  padding: 1rem;
+  font-family: 'Courier New', Courier, monospace;
+  font-size: 0.85rem;
+  color: #d4d4d4;
+  height: 150px;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.terminal-line {
+  line-height: 1.4;
+  word-break: break-all;
+}
+
+.wizard-button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  filter: none !important;
+}

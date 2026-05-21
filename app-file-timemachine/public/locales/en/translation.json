@@ -107,7 +107,17 @@
     "guide_missing": "The following tools are missing. Please check the installation guide.",
     "next": "Next",
     "finish": "Finish and Start App",
-    "retry": "Retry"
+    "retry": "Retry",
+    "optional": "(Optional)",
+    "git_required_desc": "Git is required for core Time Machine features.",
+    "gh_optional_desc": "Required if you use GitHub integration.",
+    "install_btn": "Auto Install",
+    "installing_status": "Installing...",
+    "install_success": "Installation Success!",
+    "install_failed": "Installation Failed: ",
+    "log_title": "Detailed Logs",
+    "simulation_mode": "Debug Simulation Mode",
+    "simulation_toggle": "Simulate Not Installed State"
   },
   "safety": {
     "title": "Safety Guard",
