@@ -110,20 +110,28 @@
   display: flex;
   align-items: center;
   gap: 6px;
-  background-color: var(--border-color);
+  background-color: var(--hover-bg);
   color: var(--text-color);
-  padding: 4px 12px;
-  border-radius: 12px;
+  height: 36px;
+  padding: 0 14px;
+  border-radius: 6px;
+  font-family: -apple-system, "BlinkMacSystemFont", "Hiragino Sans", "Hiragino Kaku Gothic ProN", "Yu Gothic", "Meiryo", sans-serif;
   font-size: 0.85rem;
   font-weight: 600;
-  border: none;
+  letter-spacing: 0.04em;
+  border: 1px solid var(--border-color);
   cursor: pointer;
-  transition: all 0.2s ease;
+  box-sizing: border-box;
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .branch-info-btn:hover {
-  background-color: var(--item-hover);
-  filter: brightness(1.1);
+  background-color: var(--border-color);
+  filter: brightness(1.05);
+}
+
+[data-theme="dark"] .branch-info-btn:hover {
+  filter: brightness(1.15);
 }
 
 .create-branch-btn {
@@ -133,16 +141,20 @@
   background-color: transparent;
   color: var(--text-color);
   border: 1px solid var(--border-color);
-  padding: 6px 14px;
+  height: 36px;
+  padding: 0 14px;
   border-radius: 6px;
+  font-family: -apple-system, "BlinkMacSystemFont", "Hiragino Sans", "Hiragino Kaku Gothic ProN", "Yu Gothic", "Meiryo", sans-serif;
   font-size: 0.85rem;
   font-weight: 500;
+  letter-spacing: 0.04em;
   cursor: pointer;
-  transition: all 0.2s ease;
+  box-sizing: border-box;
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .create-branch-btn:hover {
-  background-color: var(--item-hover);
+  background-color: var(--hover-bg);
   border-color: var(--text-muted);
 }
 
@@ -152,32 +164,83 @@
   gap: 12px;
 }
 
+/* マージボタン：職場でも使える落ち着いたプレミアムグリーン */
+.merge-to-main-btn {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  background-color: var(--success-color);
+  color: white;
+  border: none;
+  height: 36px;
+  padding: 0 16px;
+  border-radius: 6px;
+  font-family: -apple-system, "BlinkMacSystemFont", "Hiragino Sans", "Hiragino Kaku Gothic ProN", "Yu Gothic", "Meiryo", sans-serif;
+  font-size: 0.85rem;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  cursor: pointer;
+  box-sizing: border-box;
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+}
+
+.merge-to-main-btn:hover:not(:disabled) {
+  filter: brightness(1.08);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(34, 197, 94, 0.2);
+}
+
+[data-theme="dark"] .merge-to-main-btn:hover:not(:disabled) {
+  filter: brightness(1.12);
+  box-shadow: 0 4px 12px rgba(74, 222, 128, 0.15);
+}
+
+.merge-to-main-btn:active:not(:disabled) {
+  transform: translateY(0);
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+}
+
+/* 状態保存ボタン：プレミアムブルー（職場向けにギラギラ感を抑制） */
 .save-state-btn {
+  display: flex;
+  align-items: center;
+  gap: 6px;
   background-color: var(--accent-color);
   color: white;
   border: none;
-  padding: 8px 20px;
+  height: 36px;
+  padding: 0 20px;
   border-radius: 6px;
+  font-family: -apple-system, "BlinkMacSystemFont", "Hiragino Sans", "Hiragino Kaku Gothic ProN", "Yu Gothic", "Meiryo", sans-serif;
+  font-size: 0.85rem;
   font-weight: 600;
-  font-size: 0.9rem;
+  letter-spacing: 0.04em;
   cursor: pointer;
+  box-sizing: border-box;
   transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
 }
 
-.save-state-btn:hover {
-  filter: brightness(1.1);
-  transform: translateY(-2px);
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+.save-state-btn:hover:not(:disabled) {
+  filter: brightness(1.08);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(59, 130, 246, 0.2);
 }
 
-.save-state-btn:active {
+[data-theme="dark"] .save-state-btn:hover:not(:disabled) {
+  filter: brightness(1.12);
+  box-shadow: 0 4px 12px rgba(14, 165, 233, 0.15);
+}
+
+.save-state-btn:active:not(:disabled) {
   transform: translateY(0);
-  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
 }
 
-.save-state-btn:focus-visible {
-  outline: 2px solid white;
+.save-state-btn:focus-visible,
+.merge-to-main-btn:focus-visible {
+  outline: 2px solid var(--text-color);
   outline-offset: 2px;
 }
 
@@ -204,7 +267,8 @@
   }
 }
 
-.save-state-btn:disabled {
+.save-state-btn:disabled,
+.merge-to-main-btn:disabled {
   background-color: var(--border-color) !important;
   color: var(--text-muted) !important;
   cursor: not-allowed;

@@ -126,38 +126,8 @@
   flex-shrink: 0;
 }
 
-.graph-style-toggle {
-  display: flex;
-  background-color: var(--hover-bg, #f6f8fa);
-  border: 1px solid var(--border-color, #e1e4e8);
-  border-radius: 6px;
-  overflow: hidden;
-}
-
-.toggle-btn {
-  background: none;
-  border: none;
-  padding: 4px 12px;
-  font-size: 0.85rem;
-  cursor: pointer;
-  color: var(--text-secondary, #586069);
-  transition: all 0.2s ease;
-}
-
-.toggle-btn:focus,
 .zoom-btn:focus {
   outline: none;
-}
-
-.toggle-btn:hover {
-  background-color: var(--bg-hover, #f1f8ff);
-}
-
-.toggle-btn.active {
-  background-color: var(--bg-primary, #ffffff);
-  color: var(--text-primary, #24292e);
-  font-weight: 600;
-  box-shadow: 0 1px 3px rgba(0,0,0,0.1);
 }
 
 /* フォルダ未選択・履歴未存在時の開発ツール風ミニマルempty-stateデザイン */

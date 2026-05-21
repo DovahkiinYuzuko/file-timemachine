@@ -1,7 +1,7 @@
 import { type FC, useState, useEffect } from "react";
 import { useTranslation } from "react-i18next";
 import { Panel, Group as PanelGroup, Separator as PanelResizeHandle } from "react-resizable-panels";
-import { Save, Loader2, GitBranch, GitBranchPlus, Check } from "lucide-react";
+import { Save, Loader2, GitBranch, GitBranchPlus, GitMerge } from "lucide-react";
 import Sidebar, { type SidebarTab } from "./Sidebar";
 import FileTree from "../tree/FileTree";
 import FilePreview from "../preview/FilePreview";
@@ -401,7 +401,7 @@ const MainLayout: FC = () => {
                 onClick={executeMergeToMain}
                 title={t("layout.tooltip.merge_to_main")}
               >
-                <Check size={16} />
+                <GitMerge size={16} />
                 <span>{t("help.commands.merge.op")}</span>
               </button>
             )}

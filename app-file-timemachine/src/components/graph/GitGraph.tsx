@@ -13,8 +13,6 @@ interface CommitLog {
   message: string;
 }
 
-type GraphStyle = "tree" | "metro";
-
 interface GitGraphProps {
   projectPath: string | null;
   refreshKey?: number;
@@ -27,14 +25,13 @@ interface GitGraphProps {
  * Accessibility Strategy:
  * - The SVG graph is given role="img" and an aria-label describing the commit history.
  * - For screen readers, we provide a hidden textual list of commits as an alternative representation.
- * - Interactive elements (toggle buttons) use semantic <button> tags with visual 'active' states.
+ * - Interactive elements use semantic <button> tags with visual 'active' states.
  */
 
 const GitGraph: FC<GitGraphProps> = ({ projectPath, refreshKey, onInitSuccess, selectedCommitHash, onCommitSelect }) => {
   const { t } = useTranslation();
   const [commits, setCommits] = useState<CommitLog[]>([]);
   const [error, setError] = useState<string | null>(null);
-  const [graphStyle, setGraphStyle] = useState<GraphStyle>("metro");
   const [isInitializing, setIsInitializing] = useState<boolean>(false);
   const [scale, setScale] = useState<number>(1.0);
   const [offset, setOffset] = useState({ x: 0, y: 0 });
@@ -60,14 +57,12 @@ const GitGraph: FC<GitGraphProps> = ({ projectPath, refreshKey, onInitSuccess, s
 
   // カスタムテンプレート：日本語が綺麗に見えるようにフォントなどを微調整
   // ズームやパンはCSS transformで行うため、SVGの描画スケールは常に固定 (1.0相当) にします。
-  const getTemplate = (style: GraphStyle) => {
+  const getTemplate = () => {
     const spacing = 40;  // コミットの縦間隔
     
-    // ツリーと路線図のデザイン差別化
-    const isTree = style === "tree";
-    const dotSize = isTree ? 4 : 6;
-    const strokeWidth = isTree ? 1 : 2;
-    const lineWidth = isTree ? 2 : 4;
+    const dotSize = 6;
+    const strokeWidth = 2;
+    const lineWidth = 4;
     const branchSpacing = 20; // ブランチの横間隔
 
     // CUD（岡部・柴田パレット）準拠 of バリアフリー配色（ダークモード用）
@@ -79,10 +74,7 @@ const GitGraph: FC<GitGraphProps> = ({ projectPath, refreshKey, onInitSuccess, s
     ];
 
     const baseOptions: any = {
-      // ツリー時はシックなモノトーン、路線図時はCUDのカラフル配色で統一
-      colors: isTree 
-        ? ["#888888", "#aaaaaa", "#cccccc", "#eeeeee"] 
-        : cudColors,
+      colors: cudColors,
       branch: {
         lineWidth: lineWidth,
         spacing: branchSpacing,
@@ -102,7 +94,7 @@ const GitGraph: FC<GitGraphProps> = ({ projectPath, refreshKey, onInitSuccess, s
       },
     };
 
-    // ツリーと路線図の両方で TemplateName.Metro ベースに統一して野暮ったい黒矢印を廃止！
+    // TemplateName.Metro ベースに統一して野暮ったい黒矢印を廃止！
     return templateExtend(TemplateName.Metro, baseOptions);
   };
 
@@ -138,7 +130,7 @@ const GitGraph: FC<GitGraphProps> = ({ projectPath, refreshKey, onInitSuccess, s
 
     try {
       const gitgraph = createGitgraph(containerRef.current, {
-        template: getTemplate(graphStyle),
+        template: getTemplate(),
       });
 
       // 古い順（昇順）にしてループ描画する
@@ -279,7 +271,7 @@ const GitGraph: FC<GitGraphProps> = ({ projectPath, refreshKey, onInitSuccess, s
     } catch (e) {
       console.error("Failed to render Git graph:", e);
     }
-  }, [commits, graphStyle, selectedCommitHash, onCommitSelect]);
+  }, [commits, selectedCommitHash, onCommitSelect]);
 
   // パン操作（ドラッグ移動）のハンドリング
   const handleMouseDown = (e: MouseEvent<HTMLDivElement>) => {
@@ -422,22 +414,6 @@ const GitGraph: FC<GitGraphProps> = ({ projectPath, refreshKey, onInitSuccess, s
   return (
     <div className="git-graph-wrapper">
       <div className="git-graph-header">
-        <div className="graph-style-toggle" role="group" aria-label="Graph display style">
-          <button
-            className={`toggle-btn ${graphStyle === "tree" ? "active" : ""}`}
-            onClick={() => setGraphStyle("tree")}
-            aria-pressed={graphStyle === "tree"}
-          >
-            {t("common.graph_style.tree")}
-          </button>
-          <button
-            className={`toggle-btn ${graphStyle === "metro" ? "active" : ""}`}
-            onClick={() => setGraphStyle("metro")}
-            aria-pressed={graphStyle === "metro"}
-          >
-            {t("common.graph_style.metro")}
-          </button>
-        </div>
 
         <div className="graph-search-bar" style={{ display: "flex", alignItems: "center", gap: "8px", flex: 1, margin: "0 16px", backgroundColor: "var(--bg-color)", padding: "4px 8px", borderRadius: "6px", border: "1px solid var(--border-color)" }}>
           <Search size={16} color="var(--text-muted)" />
