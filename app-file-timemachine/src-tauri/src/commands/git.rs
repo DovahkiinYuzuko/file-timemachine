@@ -111,6 +111,31 @@ pub async fn update_gitignore(
     fs::write(&gitignore_path, new_content)
         .map_err(|e| format!(".gitignoreの保存に失敗したよ: {}", e))?;
 
+    if is_ignored {
+        debug!("無視登録されたため、Gitのインデックス（追跡対象）からキャッシュを解除します: {}", rel_path);
+        let rm_status = Command::new("git")
+            .arg("rm")
+            .arg("-r")
+            .arg("--cached")
+            .arg("--ignore-unmatch")
+            .arg(&rel_path)
+            .current_dir(&repo_path)
+            .status();
+
+        match rm_status {
+            Ok(status) => {
+                if status.success() {
+                    info!("Git追跡解除に成功しました: {}", rel_path);
+                } else {
+                    error!("Git追跡解除コマンドが失敗しました: {}", rel_path);
+                }
+            }
+            Err(e) => {
+                error!("Git追跡解除コマンドの実行に失敗しました: {}, エラー: {}", rel_path, e);
+            }
+        }
+    }
+
     info!(".gitignoreを更新したよ: mode={:?}, path={}, is_ignored={}", mode, rel_path, is_ignored);
     Ok(())
 }

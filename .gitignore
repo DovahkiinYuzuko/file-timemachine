@@ -3,6 +3,16 @@
 # アプリ配下に必要なソースと設定ファイルのみを例外許可（完全ホワイトリスト方式）
 !app-file-timemachine/
 !app-file-timemachine/**
+
+# ただし、app-file-timemachine内の不要なビルド成果物やキャッシュは除外
+app-file-timemachine/node_modules/
+app-file-timemachine/dist/
+app-file-timemachine/build_error.txt
+app-file-timemachine/build_output.txt
+app-file-timemachine/build.log
+app-file-timemachine/src-tauri/target/
+app-file-timemachine/src-tauri/gen/
+
 !app-icon.png
 !.github/
 !.github/**
