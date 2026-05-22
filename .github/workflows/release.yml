@@ -40,6 +40,7 @@ jobs:
 
       - name: Rust cache
         uses: swatinem/rust-cache@v2
+        continue-on-error: true
         with:
           workspaces: './app-file-timemachine/src-tauri -> target'
 
