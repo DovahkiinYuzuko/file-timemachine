@@ -59,25 +59,65 @@ pub fn get_file_tree(root_path: String) -> Result<Vec<FileEntry>, String> {
 
     log::info!("ファイルツリーの探索を開始するよ。対象: {:?}", root);
 
+    // git status --ignored --porcelain=v1 の出力を解析して、無視されているディレクトリを取得するよ
+    let status_output = Command::new("git")
+        .args(["status", "--ignored", "--porcelain=v1"])
+        .current_dir(&root)
+        .output();
+
+    let mut ignored_dirs = std::collections::HashSet::new();
+    if let Ok(out) = status_output {
+        let stdout = String::from_utf8_lossy(&out.stdout);
+        for line in stdout.lines() {
+            if line.starts_with("!! ") {
+                let rel_path = &line[3..];
+                let parsed_path = parse_git_ignore_output_line(rel_path);
+                if parsed_path.ends_with('/') {
+                    ignored_dirs.insert(parsed_path);
+                }
+            }
+        }
+    }
+
+    log::info!("無視されているディレクトリ数: {}", ignored_dirs.len());
+
     // walkdirを使ってフラットなリストを取得
-    // .git, node_modules, target フォルダはスキップするよ
+    // .git フォルダ自身は絶対に走査・追加してはいけない（メタフォルダ）
     let mut entries = Vec::new();
-    let walker = WalkDir::new(&root)
+    let mut paths_to_check = Vec::new();
+    let mut it = WalkDir::new(&root)
         .min_depth(1)
         .into_iter()
         .filter_entry(|e| {
             let file_name = e.file_name().to_string_lossy();
-            file_name != ".git" && file_name != "node_modules" && file_name != "target"
+            file_name != ".git"
         });
 
-    let mut paths_to_check = Vec::new();
+    loop {
+        let entry = match it.next() {
+            None => break,
+            Some(Err(err)) => return Err(format!("ファイルが見つからないよ: {}", err)),
+            Some(Ok(entry)) => entry,
+        };
 
-    for entry in walker {
-        let entry = entry.map_err(|e| format!("ファイルが見つからないよ: {}", e))?;
         let path = entry.path();
         let metadata = entry.metadata().map_err(|e| format!("メタデータが取れないよ: {}", e))?;
-
         let path_str = path.to_string_lossy().into_owned();
+
+        let rel_path = path.strip_prefix(&root).unwrap_or(path).to_string_lossy().into_owned();
+        let rel_path_normalized = rel_path.replace('\\', "/");
+        let rel_path_dir = if metadata.is_dir() {
+            format!("{}/", rel_path_normalized)
+        } else {
+            rel_path_normalized.clone()
+        };
+
+        // もし現在のディレクトリが無視リストに含まれているなら、配下の走査をスキップする！
+        if metadata.is_dir() && ignored_dirs.contains(&rel_path_dir) {
+            log::info!("無視されたフォルダの配下走査をスキップするよ: {:?}", rel_path_dir);
+            it.skip_current_dir();
+        }
+
         paths_to_check.push(path_str.clone());
 
         entries.push((

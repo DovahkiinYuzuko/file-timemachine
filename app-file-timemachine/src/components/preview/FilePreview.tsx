@@ -206,7 +206,7 @@ const FilePreview: FC<FilePreviewProps> = ({ filePath, projectPath, selectedComm
 
   const assetUrl = selectedCommitHash && metadata?.file_type === "image" && textContent
     ? `data:${metadata.mime_type};base64,${textContent}`
-    : (filePath ? convertFileSrc(filePath) : "");
+    : (filePath ? convertFileSrc(filePath.replace(/\\/g, "/")) : "");
 
   return (
     <article className="file-preview-container" aria-label={t("common.aria.file_preview", { path: metadata?.name || filePath })}>

@@ -18,7 +18,7 @@
       }
     ],
     "security": {
-      "csp": "default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data: asset:; media-src 'self' asset:; connect-src 'self'",
+      "csp": "default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data: asset: https://avatars.githubusercontent.com https://*; media-src 'self' asset:; connect-src 'self' https://api.github.com",
       "assetProtocol": {
         "enable": true,
         "scope": ["**"]
