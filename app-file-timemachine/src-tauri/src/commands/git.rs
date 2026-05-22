@@ -980,4 +980,79 @@ pub async fn git_pull(path: String, token: String, branch: String) -> Result<Str
     }
 }
 
+#[derive(Debug, Serialize, Deserialize)]
+pub struct UncommittedFileInfo {
+    pub path: String,
+    pub size: u64,
+}
+
+/// 未コミットの変更ファイル一覧を取得するコマンド
+#[tauri::command]
+pub async fn git_get_uncommitted_files(path: String) -> Result<Vec<UncommittedFileInfo>, String> {
+    let raw_path = Path::new(&path);
+    let repo_path = dunce::canonicalize(raw_path)
+        .map_err(|e| format!("パスの正規化に失敗しました: {}", e))?;
+
+    if !repo_path.exists() || !repo_path.is_dir() {
+        return Err("無効なディレクトリパスです。".to_string());
+    }
+
+    // git status --porcelain
+    let output = Command::new("git")
+        .arg("status")
+        .arg("--porcelain")
+        .current_dir(&repo_path)
+        .output()
+        .map_err(|e| format!("git status の実行に失敗しました: {}", e))?;
+
+    if !output.status.success() {
+        return Err("git status の取得に失敗しました。".to_string());
+    }
+
+    let stdout = String::from_utf8_lossy(&output.stdout);
+    let mut files = Vec::new();
+
+    for line in stdout.lines() {
+        if line.len() < 4 {
+            continue;
+        }
+
+        let status = &line[0..2];
+        let file_path_part = line[3..].trim();
+
+        // 削除されたファイルはサイズチェックや危険なファイルチェックの対象外とする
+        if status.contains('D') {
+            continue;
+        }
+
+        // リネームの場合 "old -> new" となる
+        let actual_path = if status.contains('R') {
+            if let Some(pos) = file_path_part.find(" -> ") {
+                file_path_part[pos + 4..].trim_matches('"').to_string()
+            } else {
+                file_path_part.trim_matches('"').to_string()
+            }
+        } else {
+            file_path_part.trim_matches('"').to_string()
+        };
+
+        // ファイルパスを結合
+        let full_path = repo_path.join(&actual_path);
+        let size = if full_path.exists() && full_path.is_file() {
+            fs::metadata(&full_path)
+                .map(|m| m.len())
+                .unwrap_or(0)
+        } else {
+            0
+        };
+
+        files.push(UncommittedFileInfo {
+            path: actual_path,
+            size,
+        });
+    }
+
+    Ok(files)
+}
+
 

@@ -17,7 +17,7 @@ import ConflictResolverModal from "../common/ConflictResolverModal";
 import { SyncSettingsModal } from "../settings/SyncSettingsModal";
 import Tooltip from "../common/Tooltip";
 import logger from "../../utils/logger";
-import { type SafetyIssue } from "../../utils/safety";
+import { type SafetyIssue, analyzeFilesForSafety } from "../../utils/safety";
 import { invoke } from "@tauri-apps/api/core";
 import { getAppConfig, updateAppConfig } from "../../api/config";
 import "./MainLayout.css";
@@ -43,7 +43,7 @@ const MainLayout: FC = () => {
   const [isSafetyDialogOpen, setIsSafetyDialogOpen] = useState(false);
   const [isSettingsModalOpen, setIsSettingsModalOpen] = useState(false);
   const [isHelpModalOpen, setIsHelpModalOpen] = useState(false);
-  const [safetyIssues] = useState<SafetyIssue[]>([]); // TODO: バックエンド実装後に setSafetyIssues を復活させる
+  const [safetyIssues, setSafetyIssues] = useState<SafetyIssue[]>([]);
   const [selectedFilePath, setSelectedFilePath] = useState<string | null>(null);
   const [historyRefreshKey, setHistoryRefreshKey] = useState(0);
   const [isCommitModalOpen, setIsCommitModalOpen] = useState(false);
@@ -230,6 +230,39 @@ const MainLayout: FC = () => {
     }
   };
 
+  // 脆弱性スキャンで検知されたファイルを除外して保存（.gitignoreに追加してコミット）
+  const handleConfirmExclude = async () => {
+    setIsSafetyDialogOpen(false);
+    if (!projectPath) return;
+
+    try {
+      logger.info("該当ファイルを除外して保存を継続します。");
+      
+      // プロジェクト設定から現在の git_mode を取得する
+      const config = await invoke<{ git_mode: "whitelist" | "blacklist" }>("get_project_config", { rootPath: projectPath });
+      const gitMode = config.git_mode;
+
+      for (const issue of safetyIssues) {
+        const fileAbsPath = `${projectPath}/${issue.path}`.replace(/\\/g, "/");
+        const isDir = issue.reason === "inappropriate_directory";
+
+        await invoke("update_gitignore", {
+          rootPath: projectPath,
+          targetPath: fileAbsPath,
+          isIgnored: true,
+          isDir,
+          mode: gitMode
+        });
+      }
+
+      logger.info("対象ファイルの除外処理が完了しました。保存（コミット）に進みます。");
+      await proceedToSaveOrCommit();
+    } catch (error) {
+      logger.error(`除外処理に失敗したよ: ${error}`);
+      alert(`除外処理に失敗したよ: ${error}`);
+    }
+  };
+
   // 保存ボタンが押された時の処理
   const handleSaveClick = async () => {
     if (!projectPath) {
@@ -249,9 +282,26 @@ const MainLayout: FC = () => {
     }
 
     if (isAutoScanEnabled) {
-      logger.debug("自動脆弱性スキャンが有効ですが、現在デモデータによる誤検知を防ぐためスキップしています。");
-      // TODO: Rustバックエンドに `get_uncommitted_files` コマンドを追加し、本物の変更ファイルリストを取得して検証する処理を実装予定。
-      // 現状は進行を妨げないように常にパスさせます。
+      try {
+        logger.info("本物の安全スキャン（Safety Scan）を実行中...");
+        // Rustバックエンドから未コミットの変更ファイル一覧を取得
+        const uncommittedFiles = await invoke<Array<{ path: string; size: number }>>("git_get_uncommitted_files", {
+          path: projectPath
+        });
+
+        // 脆弱性・巨大ファイルを解析
+        const issues = analyzeFilesForSafety(uncommittedFiles);
+
+        if (issues.length > 0) {
+          logger.warn(`安全上の懸念が ${issues.length} 件検出されました。警告ダイアログを表示します。`);
+          setSafetyIssues(issues);
+          setIsSafetyDialogOpen(true);
+          return; // 保存処理を一時停止し、ユーザーの入力を待つ
+        }
+        logger.info("安全スキャンをクリアしました。");
+      } catch (error) {
+        logger.error(`安全スキャン中にエラーが発生したため、安全を考慮しスキャンをスキップします: ${error}`);
+      }
     }
 
     // スキャンクリアならコミットに進む
@@ -545,11 +595,7 @@ const MainLayout: FC = () => {
           logger.info("脆弱性スキャンの警告を無視して保存を継続します。");
           proceedToSaveOrCommit();
         }}
-        onConfirmExclude={() => {
-          setIsSafetyDialogOpen(false);
-          logger.info("該当ファイルを除外して保存を継続します。");
-          proceedToSaveOrCommit();
-        }}
+        onConfirmExclude={handleConfirmExclude}
       />
 
       <SettingsModal 
