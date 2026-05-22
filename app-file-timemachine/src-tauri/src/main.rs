@@ -2,5 +2,5 @@
 #![cfg_attr(not(debug_assertions), windows_subsystem = "windows")]
 
 fn main() {
-    app_file_timemachine_lib::run()
+    file_timemachine_lib::run()
 }
