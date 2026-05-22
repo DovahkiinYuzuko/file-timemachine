@@ -206,7 +206,7 @@ export const SyncSettingsModal: FC<SyncSettingsModalProps> = ({
                 <input
                   id="repo-name"
                   type="text"
-                  placeholder="例: my-awesome-project"
+                  placeholder={t("settings.sync.placeholder_repo_name") || "例: my-awesome-project"}
                   className="sync-input"
                   value={repoName}
                   onChange={(e) => setRepoName(e.target.value)}

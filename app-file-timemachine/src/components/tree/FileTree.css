@@ -35,6 +35,8 @@
   cursor: pointer;
   transition: all 0.2s;
   border: 1px solid transparent;
+  white-space: nowrap;
+  flex-shrink: 0;
 }
 
 .git-mode-badge.whitelist {

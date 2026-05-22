@@ -1,7 +1,6 @@
 {
   "git_mode": "whitelist",
   "whitelist_entries": [
-    "!docs",
     "!.file-timemachine.json",
     "!app-file-timemachine/",
     "!app-file-timemachine/**",

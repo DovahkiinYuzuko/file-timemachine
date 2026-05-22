@@ -44,7 +44,11 @@
       "label": "Git Mode",
       "whitelist": "Whitelist",
       "blacklist": "Blacklist",
-      "tooltip": "Click to toggle Git mode!"
+      "whitelist_short": "Whitelist",
+      "blacklist_short": "Blacklist",
+      "tooltip": "Click to toggle Git mode.",
+      "tooltip_whitelist": "Whitelist (Saves only the checked files)",
+      "tooltip_blacklist": "Blacklist (Saves all except checked files)"
     },
     "file_name": "File Name",
     "file_size": "Size",
@@ -77,7 +81,7 @@
       "pat_placeholder": "GitHub Personal Access Token (ghp_...)",
       "connect_btn": "Connect",
       "verifying": "Verifying...",
-      "input_token_error": "Please enter a token!",
+      "input_token_error": "Please enter a token.",
       "invalid_token_error": "GitHub token seems invalid. Please reconfigure.",
       "connection_error": "Failed to communicate with GitHub. Check your internet connection."
     },
@@ -85,18 +89,19 @@
       "title": "Cloud Sync Settings",
       "tab_create": "Create New on GitHub",
       "tab_link": "Link Existing Repository",
-      "err_repo_name_required": "Please enter a repository name!",
+      "err_repo_name_required": "Please enter a repository name.",
       "err_repo_create_failed": "Failed to create repository.",
-      "err_remote_url_required": "Please enter a remote repository URL!",
+      "err_remote_url_required": "Please enter a remote repository URL.",
       "err_invalid_git_url": "Please enter a valid Git remote URL (starting with https:// or git@).",
       "err_remote_set_failed": "Failed to set remote repository.",
       "err_default": "An error occurred. Please make sure the repository name is not duplicated.",
-      "success_linked": "Successfully created and linked new repository!",
-      "success_existing_linked": "Successfully linked existing repository!",
-      "info_create_desc": "Directly create a new repository on your GitHub account and automatically link this project!",
+      "success_linked": "Successfully created and linked new repository.",
+      "success_existing_linked": "Successfully linked existing repository.",
+      "info_create_desc": "Directly create a new repository on your GitHub account and automatically link this project.",
       "info_link_desc": "Register and sync with an existing repository URL on GitHub.",
       "label_repo_name": "Repository Name",
       "label_desc": "Description (Optional)",
+      "placeholder_repo_name": "e.g., my-awesome-project",
       "placeholder_desc": "Enter a brief description of the repository",
       "label_privacy": "Privacy Settings",
       "btn_private": "Private",
@@ -117,7 +122,7 @@
     "theme": {
       "title": "Theme Settings",
       "select": "Select app theme",
-      "light": "Light (GitHub Recommended)",
+      "light": "Light",
       "dark": "Dark"
     },
     "behavior": {
@@ -157,7 +162,7 @@
     "gh_optional_desc": "Required if you use GitHub integration.",
     "install_btn": "Auto Install",
     "installing_status": "Installing...",
-    "install_success": "Installation Success!",
+    "install_success": "Installation Success.",
     "install_failed": "Installation Failed: ",
     "log_title": "Detailed Logs",
     "simulation_mode": "Debug Simulation Mode",
@@ -165,7 +170,7 @@
   },
   "safety": {
     "title": "Safety Guard",
-    "description": "We found security risks or huge files among the files you are trying to save!",
+    "description": "We found security risks or huge files among the files you are trying to save.",
     "issue_list_title": "Issues found:",
     "reason": {
       "security_risk_extension": "Potentially a private key or config file",

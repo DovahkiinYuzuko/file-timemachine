@@ -310,9 +310,10 @@ pub async fn git_log(path: String) -> Result<Vec<CommitLog>, String> {
         return Err("無効なディレクトリパスです。".to_string());
     }
 
-    // git log --pretty=format:"%H_#_%P_#_%d_#_%at_#_%s"
+    // git log --all --pretty=format:"%H_#_%P_#_%d_#_%at_#_%s"
     let output = Command::new("git")
         .arg("log")
+        .arg("--all")
         .arg("--pretty=format:%H_#_%P_#_%d_#_%at_#_%s")
         .current_dir(&repo_path)
         .output()

@@ -274,7 +274,7 @@ const FileTree: FC<FileTreeProps> = ({ rootPath, onFileSelect }) => {
         <div 
           className={`git-mode-badge ${gitMode}`}
           onClick={handleToggleMode}
-          title={t("common.git_mode.tooltip")}
+          title={t(`common.git_mode.tooltip_${gitMode}`)}
           role="button"
           tabIndex={0}
           onKeyDown={(e) => {
@@ -284,8 +284,7 @@ const FileTree: FC<FileTreeProps> = ({ rootPath, onFileSelect }) => {
             }
           }}
         >
-          <span className="mode-label">{t("common.git_mode.label")}:</span>
-          <span className="mode-value">{t(`common.git_mode.${gitMode}`)}</span>
+          <span className="mode-value">{t(`common.git_mode.${gitMode}_short`)}</span>
         </div>
       </div>
       
