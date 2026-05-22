@@ -70,7 +70,7 @@ const MainLayout: FC = () => {
         const branch = await invoke<string>("git_get_current_branch", { path: projectPath });
         setCurrentBranch(branch);
       } catch (error) {
-        logger.error(`ブランチ名の取得に失敗しました: ${error}`);
+        logger.error(`Failed to get branch name: ${error}`);
       }
     };
     fetchBranch();
@@ -82,11 +82,11 @@ const MainLayout: FC = () => {
       try {
         const config = await getAppConfig();
         if (config.last_opened_folder) {
-          logger.info(`前回開いていたフォルダを復元しました: ${config.last_opened_folder}`);
+          logger.info(`Restored last opened folder: ${config.last_opened_folder}`);
           setProjectPath(config.last_opened_folder);
         }
       } catch (error) {
-        logger.error(`前回開いていたフォルダの復元に失敗しました: ${error}`);
+        logger.error(`Failed to restore last opened folder: ${error}`);
       }
     };
     restoreFolder();
@@ -102,7 +102,7 @@ const MainLayout: FC = () => {
         try {
           await invoke("stop_watching");
         } catch (e) {
-          logger.error(`監視の停止に失敗しました: ${e}`);
+          logger.error(`Failed to stop watcher: ${e}`);
         }
         return;
       }
@@ -110,21 +110,21 @@ const MainLayout: FC = () => {
       try {
         // バックエンドでの監視を開始
         await invoke("start_watching", { path: projectPath });
-        logger.info(`フォルダ監視を開始しました: ${projectPath}`);
+        logger.info(`Started directory watcher: ${projectPath}`);
 
         // イベント購読
         unlistenFn = await listen<any>("file-system-change", (event) => {
-          logger.debug(`ファイルシステム変更を受信しました: ${JSON.stringify(event.payload)}`);
+          logger.debug(`Received file system change event: ${JSON.stringify(event.payload)}`);
           if (debounceTimer) {
             clearTimeout(debounceTimer);
           }
           debounceTimer = setTimeout(() => {
-            logger.info("ファイル変更を検知したため、ビューを自動更新します。");
+            logger.info("File changes detected. Automatically refreshing view.");
             setHistoryRefreshKey((prev) => prev + 1);
           }, 500); // 500ms デバウンスで十分な安全マージンを確保
         });
       } catch (error) {
-        logger.error(`フォルダ監視のセットアップに失敗しました: ${error}`);
+        logger.error(`Failed to set up directory watcher: ${error}`);
       }
     };
 
@@ -142,7 +142,7 @@ const MainLayout: FC = () => {
         try {
           await invoke("stop_watching");
         } catch (e) {
-      logger.error(`監視クリーンアップに失敗しました: ${e}`);
+          logger.error(`Failed to clean up watcher: ${e}`);
         }
       };
       cleanupWatcher();
@@ -151,31 +151,31 @@ const MainLayout: FC = () => {
 
   // フォルダ選択時の処理
   const handleOpenFolder = async (path: string) => {
-    logger.info(`フォルダを選択しました: ${path}`);
+    logger.info(`Folder selected: ${path}`);
     setProjectPath(path);
     try {
       await updateAppConfig({ last_opened_folder: path });
     } catch (error) {
-      logger.error(`フォルダの保存に失敗しました: ${error}`);
+      logger.error(`Failed to save folder path: ${error}`);
     }
   };
 
   // Gitコミットを実際に実行する処理
   const executeCommit = async (message: string) => {
     if (!projectPath) {
-      logger.error("プロジェクトパスが設定されていません。");
+      logger.error("Project path is not set.");
       alert(t("layout.alert.no_folder_save"));
       return;
     }
 
     setIsCommitting(true);
     try {
-      logger.info(`Gitコミットを実行中... パス: ${projectPath}, メッセージ: "${message}"`);
+      logger.info(`Executing Git commit... Path: ${projectPath}, Message: "${message}"`);
       const result = await invoke<string>("git_commit", {
         path: projectPath,
         message: message,
       });
-      logger.info(`コミット完了: ${result}`);
+      logger.info(`Commit completed: ${result}`);
       
       // コミットが完了したら、GitGraphとHistoryListを最新化させるためにリフレッシュキーを更新
       setHistoryRefreshKey((prev) => prev + 1);
@@ -183,7 +183,7 @@ const MainLayout: FC = () => {
       // 成功通知アラート
       alert(t("layout.alert.save_success", { message }));
     } catch (error) {
-      logger.error(`Gitコミットに失敗しました: ${error}`);
+      logger.error(`Failed to execute Git commit: ${error}`);
       alert(t("layout.alert.save_failed", { error }));
     } finally {
       setIsCommitting(false);
@@ -194,7 +194,7 @@ const MainLayout: FC = () => {
   const executeCreateBranch = async (branchName: string) => {
     if (!projectPath) return;
     try {
-      logger.info(`新しいルートを作成します: ${branchName}`);
+      logger.info(`Creating new route: ${branchName}`);
       const result = await invoke<string>("git_create_branch", { path: projectPath, branchName });
       logger.info(result);
       
@@ -202,7 +202,7 @@ const MainLayout: FC = () => {
       setHistoryRefreshKey(prev => prev + 1);
       alert(t("layout.alert.create_branch_success", { branchName }));
     } catch (error) {
-      logger.error(`ブランチ作成エラー: ${error}`);
+      logger.error(`Failed to create branch: ${error}`);
       alert(t("layout.alert.create_branch_failed", { error }));
     }
   };
@@ -211,7 +211,7 @@ const MainLayout: FC = () => {
   const executeSwitchBranch = async (branchName: string) => {
     if (!projectPath) return;
     try {
-      logger.info(`ルートを切り替えます: ${branchName}`);
+      logger.info(`Switching route: ${branchName}`);
       const result = await invoke<string>("git_checkout", { path: projectPath, branch: branchName });
       logger.info(result);
       
@@ -219,7 +219,7 @@ const MainLayout: FC = () => {
       setHistoryRefreshKey(prev => prev + 1);
       alert(t("layout.alert.switch_branch_success", { branchName }));
     } catch (error) {
-      logger.error(`切り替えに失敗しました: ${error}`);
+      logger.error(`Failed to switch route: ${error}`);
       alert(t("layout.alert.switch_branch_failed", { error }));
     }
   };
@@ -234,7 +234,7 @@ const MainLayout: FC = () => {
     }
 
     try {
-      logger.info(`本番への採用を開始します: ${currentBranch} -> main`);
+      logger.info(`Starting merge to main: ${currentBranch} -> main`);
       const result = await invoke<string>("git_merge_to_main", {
         path: projectPath,
         branch: currentBranch,
@@ -246,10 +246,10 @@ const MainLayout: FC = () => {
       setHistoryRefreshKey((prev) => prev + 1);
     } catch (error) {
       if (error === "CONFLICT") {
-        logger.warn("マージ競合が発生しました。解決モーダルを表示します。");
+        logger.warn("Merge conflict detected. Opening resolution modal.");
         setIsConflictModalOpen(true);
       } else {
-        logger.error(`マージエラー: ${error}`);
+        logger.error(`Merge error: ${error}`);
         alert(t("layout.alert.merge_failed", { error }));
       }
     }
@@ -262,27 +262,27 @@ const MainLayout: FC = () => {
       const config = await getAppConfig();
       saveBehavior = config.settings_save_behavior || "confirm";
     } catch (error) {
-      logger.error(`保存設定の読み込みに失敗しました: ${error}`);
+      logger.error(`Failed to load save behavior settings: ${error}`);
     }
 
     const now = new Date();
     // YYYY-MM-DD HH:mm 形式でフォーマットする
     const pad = (n: number) => String(n).padStart(2, "0");
     const formattedDate = `${now.getFullYear()}-${pad(now.getMonth() + 1)}-${pad(now.getDate())} ${pad(now.getHours())}:${pad(now.getMinutes())}`;
-    const defaultMsg = `${formattedDate} の保存`;
+    const defaultMsg = t("layout.alert.default_commit_message", { date: formattedDate });
 
     if (saveBehavior === "none") {
-      logger.info("保存設定が 'none' のため、Gitコミットをスキップします。");
+      logger.info("Save behavior is 'none'. Skipping Git commit.");
       alert(t("layout.alert.save_local_only"));
       setHistoryRefreshKey(prev => prev + 1);
       return;
     }
 
     if (saveBehavior === "auto") {
-      logger.info("保存設定が 'auto' なので自動コミットを実行します。");
+      logger.info("Save behavior is 'auto'. Executing automatic commit.");
       executeCommit(defaultMsg);
     } else {
-      logger.debug("保存設定が 'confirm' なのでコミットメッセージ入力モーダルを開きます。");
+      logger.debug("Save behavior is 'confirm'. Opening commit message modal.");
       setDefaultCommitMessage(defaultMsg);
       setIsCommitModalOpen(true);
     }
@@ -294,7 +294,7 @@ const MainLayout: FC = () => {
     if (!projectPath) return;
 
     try {
-      logger.info("該当ファイルを除外して保存を継続します。");
+      logger.info("Excluding targets and continuing save.");
       
       // プロジェクト設定から現在の git_mode を取得する
       const config = await invoke<{ git_mode: "whitelist" | "blacklist" }>("get_project_config", { rootPath: projectPath });
@@ -313,10 +313,10 @@ const MainLayout: FC = () => {
         });
       }
 
-      logger.info("対象ファイルの除外処理が完了しました。保存（コミット）に進みます。");
+      logger.info("Exclusion process completed. Proceeding to commit.");
       await proceedToSaveOrCommit();
     } catch (error) {
-      logger.error(`除外処理に失敗しました: ${error}`);
+      logger.error(`Failed to exclude files: ${error}`);
       alert(t("layout.alert.exclude_failed", { error }));
     }
   };
@@ -324,24 +324,24 @@ const MainLayout: FC = () => {
   // 保存ボタンが押された時の処理
   const handleSaveClick = async () => {
     if (!projectPath) {
-      logger.warn("プロジェクトフォルダが選択されていない状態で保存ボタンが押されました。");
+      logger.warn("Save button clicked without folder path.");
       alert(t("layout.alert.no_folder_to_save"));
       return;
     }
 
-    logger.info("保存プロセスを開始します。");
+    logger.info("Starting save process.");
     
     let isAutoScanEnabled = true;
     try {
       const config = await getAppConfig();
       isAutoScanEnabled = config.settings_auto_scan !== false;
     } catch (error) {
-      logger.error(`自動スキャン設定の読み込みに失敗しました: ${error}`);
+      logger.error(`Failed to load auto scan setting: ${error}`);
     }
 
     if (isAutoScanEnabled) {
       try {
-        logger.info("本物の安全スキャン（Safety Scan）を実行中...");
+        logger.info("Executing safety scan...");
         // Rustバックエンドから未コミットの変更ファイル一覧を取得
         const uncommittedFiles = await invoke<Array<{ path: string; size: number }>>("git_get_uncommitted_files", {
           path: projectPath
@@ -351,14 +351,14 @@ const MainLayout: FC = () => {
         const issues = analyzeFilesForSafety(uncommittedFiles);
 
         if (issues.length > 0) {
-          logger.warn(`安全上の懸念が ${issues.length} 件検出されました。警告ダイアログを表示します。`);
+          logger.warn(`Safety issues detected: ${issues.length}. Opening safety dialog.`);
           setSafetyIssues(issues);
           setIsSafetyDialogOpen(true);
           return; // 保存処理を一時停止し、ユーザーの入力を待つ
         }
-        logger.info("安全スキャンをクリアしました。");
+        logger.info("Safety scan cleared.");
       } catch (error) {
-        logger.error(`安全スキャン中にエラーが発生したため、安全を考慮しスキャンをスキップします: ${error}`);
+        logger.error(`Error during safety scan. Skipping for safety: ${error}`);
       }
     }
 
@@ -370,35 +370,35 @@ const MainLayout: FC = () => {
   const executeSync = async (remoteUrl: string, token: string) => {
     if (!projectPath) return;
     setIsSyncing(true);
-    logger.info(`クラウド同期を開始します: リモート=${remoteUrl}, ブランチ=${currentBranch}`);
+    logger.info(`Starting cloud sync: remote=${remoteUrl}, branch=${currentBranch}`);
 
     try {
       // 1. Git Pull
-      logger.info("Git Pull（クラウドから受信）を実行中...");
+      logger.info("Executing Git pull...");
       await invoke("git_pull", {
         path: projectPath,
         token: token,
         branch: currentBranch,
       });
-      logger.info("Git Pullに成功しました。続けてGit Pushを実行します。");
+      logger.info("Git pull succeeded. Executing Git push.");
 
       // 2. Git Push
-      logger.info("Git Push（クラウドへ送信）を実行中...");
+      logger.info("Executing Git push...");
       const pushRes = await invoke<string>("git_push", {
         path: projectPath,
         token: token,
         branch: currentBranch,
       });
-      logger.info(`Git Pushに成功しました: ${pushRes}`);
+      logger.info(`Git push succeeded: ${pushRes}`);
 
       setHistoryRefreshKey((prev) => prev + 1);
       alert(t("layout.alert.sync_success"));
     } catch (error) {
       if (error === "CONFLICT") {
-        logger.warn("プル中にマージ競合を検知しました。競合解決モーダルを起動します。");
+        logger.warn("Conflict detected during pull. Launching resolver.");
         setIsConflictModalOpen(true);
       } else {
-        logger.error(`クラウド同期エラー: ${error}`);
+        logger.error(`Cloud sync error: ${error}`);
         alert(t("layout.alert.sync_failed", { error }));
       }
     } finally {
@@ -417,7 +417,7 @@ const MainLayout: FC = () => {
       const token = config.github_token;
       
       if (!token) {
-        logger.warn("GitHub連携トークンが見つかりません。");
+        logger.warn("GitHub sync token not found.");
         alert(t("layout.alert.sync_link_required"));
         setIsSettingsModalOpen(true);
         return;
@@ -428,26 +428,26 @@ const MainLayout: FC = () => {
       // リモート設定をチェック
       const remoteUrl = await invoke<string | null>("git_get_remote", { path: projectPath });
       if (!remoteUrl) {
-        logger.info("リモートリポジトリが設定されていません。同期設定モーダルを開きます。");
+        logger.info("Remote repository not configured. Opening sync settings.");
         setIsSyncSettingsOpen(true);
       } else {
         // 同期を実行
         await executeSync(remoteUrl, token);
       }
     } catch (error) {
-      logger.error(`同期準備中にエラーが発生しました: ${error}`);
+      logger.error(`Error during sync preparation: ${error}`);
       alert(t("layout.alert.sync_prep_failed", { error }));
     }
   };
 
   const handleTabChange = (tab: SidebarTab) => {
-    logger.debug(`サイドバーのアクションを受信: ${tab}`);
+    logger.debug(`Received sidebar action: ${tab}`);
     if (tab === "settings") {
       setIsSettingsModalOpen(true);
     } else if (tab === "help") {
       setIsHelpModalOpen(true);
     } else {
-      logger.info(`アクティブなタブを切り替え: ${tab}`);
+      logger.info(`Switching active tab: ${tab}`);
       setActiveTab(tab);
       if (tab === "files") {
         setSelectedCommitHash(null);
@@ -456,12 +456,12 @@ const MainLayout: FC = () => {
   };
 
   const handleSettingsClose = () => {
-    logger.debug("設定モーダルを閉じました。");
+    logger.debug("Closed settings modal.");
     setIsSettingsModalOpen(false);
   };
 
   const handleHelpClose = () => {
-    logger.debug("ヘルプモーダルを閉じました。");
+    logger.debug("Closed help modal.");
     setIsHelpModalOpen(false);
   };
 
@@ -489,7 +489,7 @@ const MainLayout: FC = () => {
                         rootPath={projectPath} 
                         refreshKey={historyRefreshKey}
                         onFileSelect={(path) => {
-                          logger.debug(`ファイルが選択されたよ: ${path}`);
+                          logger.debug(`File selected: ${path}`);
                           setSelectedFilePath(path);
                         }}
                       />
@@ -651,7 +651,7 @@ const MainLayout: FC = () => {
         onClose={() => setIsSafetyDialogOpen(false)}
         onConfirmAnyway={() => {
           setIsSafetyDialogOpen(false);
-          logger.info("脆弱性スキャンの警告を無視して保存を継続します。");
+          logger.info("Ignoring safety scan warnings and continuing save.");
           proceedToSaveOrCommit();
         }}
         onConfirmExclude={handleConfirmExclude}
@@ -711,14 +711,14 @@ const MainLayout: FC = () => {
           setIsConflictModalOpen(false);
           if (projectPath) {
             try {
-              logger.info(`マージを中止して元のブランチ '${currentBranch}' に戻ります...`);
+              logger.info(`Aborting merge and returning to original branch: ${currentBranch}`);
               await invoke("git_merge_abort", { 
                 path: projectPath, 
                 originalBranch: currentBranch 
               });
               setHistoryRefreshKey(prev => prev + 1);
             } catch (e) {
-              logger.error(`アボート処理に失敗しました: ${e}`);
+              logger.error(`Failed to abort merge: ${e}`);
               alert(t("layout.alert.abort_merge_failed", { error: e }));
             }
           }

@@ -61,7 +61,7 @@ const SettingsModal: FC<SettingsModalProps> = ({ isOpen, onClose }) => {
     setIsVerifying(true);
     setGithubError(null);
     try {
-      logger.info("GitHubユーザー情報の取得を開始します");
+      logger.info("Starting to fetch GitHub user info");
       const res = await fetch("https://api.github.com/user", {
         headers: {
           Authorization: `Bearer ${token}`,
@@ -77,10 +77,10 @@ const SettingsModal: FC<SettingsModalProps> = ({ isOpen, onClose }) => {
           github_token: token,
           github_username: data.login,
         });
-        logger.info(`GitHub連携に成功しました: ${data.login}`);
+        logger.info(`Successfully linked GitHub account: ${data.login}`);
       } else {
         const errText = await res.text();
-        logger.error(`GitHubユーザー情報の取得エラー: ${res.status} ${errText}`);
+        logger.error(`Failed to fetch GitHub user info: ${res.status} ${errText}`);
         setGithubError(t("settings.github.invalid_token_error"));
         // Clear invalid token
         setGithubToken(null);
@@ -92,7 +92,7 @@ const SettingsModal: FC<SettingsModalProps> = ({ isOpen, onClose }) => {
         });
       }
     } catch (err) {
-      logger.error(`GitHubユーザー情報の取得に失敗しました: ${err}`);
+      logger.error(`Error fetching GitHub user info: ${err}`);
       setGithubError(t("settings.github.connection_error"));
     } finally {
       setIsVerifying(false);
@@ -107,15 +107,15 @@ const SettingsModal: FC<SettingsModalProps> = ({ isOpen, onClose }) => {
         
         if (config.settings_save_behavior) {
           setSaveBehavior(config.settings_save_behavior as SaveBehavior);
-          logger.debug(`設定を読み込みました: 保存挙動 = ${config.settings_save_behavior}`);
+          logger.debug(`Settings loaded: save behavior = ${config.settings_save_behavior}`);
         }
         if (config.settings_auto_scan !== null) {
           setAutoScan(config.settings_auto_scan);
-          logger.debug(`設定を読み込みました: 自動スキャン = ${config.settings_auto_scan}`);
+          logger.debug(`Settings loaded: auto scan = ${config.settings_auto_scan}`);
         }
         if (config.settings_theme) {
           setTheme(config.settings_theme as Theme);
-          logger.debug(`設定を読み込みました: テーマ = ${config.settings_theme}`);
+          logger.debug(`Settings loaded: theme = ${config.settings_theme}`);
           document.documentElement.setAttribute("data-theme", config.settings_theme);
         }
         if (config.github_token) {
@@ -125,7 +125,7 @@ const SettingsModal: FC<SettingsModalProps> = ({ isOpen, onClose }) => {
           fetchGithubUser(config.github_token);
         }
       } catch (error) {
-        logger.error(`設定の読み込みに失敗しました: ${error}`);
+        logger.error(`Failed to load settings: ${error}`);
       } finally {
         setIsLoaded(true);
       }
@@ -144,9 +144,9 @@ const SettingsModal: FC<SettingsModalProps> = ({ isOpen, onClose }) => {
           settings_theme: theme,
         });
         document.documentElement.setAttribute("data-theme", theme);
-        logger.info(`設定を一括保存しました: theme=${theme}, behavior=${saveBehavior}, autoScan=${autoScan}`);
+        logger.info(`Settings saved: theme=${theme}, behavior=${saveBehavior}, autoScan=${autoScan}`);
       } catch (error) {
-        logger.error(`設定の一括保存に失敗しました: ${error}`);
+        logger.error(`Failed to save settings: ${error}`);
       }
     };
     save();
@@ -156,7 +156,7 @@ const SettingsModal: FC<SettingsModalProps> = ({ isOpen, onClose }) => {
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
       if (e.key === "Escape" && isOpen) {
-        logger.debug("Escapeキーの押下により設定モーダルを閉じます");
+        logger.debug("Closing settings modal via Escape key press");
         onClose();
       }
     };
@@ -166,7 +166,7 @@ const SettingsModal: FC<SettingsModalProps> = ({ isOpen, onClose }) => {
 
   useEffect(() => {
     if (isOpen) {
-      logger.debug("設定モーダルを開きました");
+      logger.debug("Settings modal opened");
     }
   }, [isOpen]);
 
@@ -176,13 +176,13 @@ const SettingsModal: FC<SettingsModalProps> = ({ isOpen, onClose }) => {
     setIsVerifying(true);
     setGithubError(null);
     try {
-      logger.info("GitHub CLIからのトークン自動インポートをトリガーします");
+      logger.info("Triggering automatic token import from GitHub CLI");
       const token = await invoke<string>("github_import_cli_token");
       setGithubToken(token);
       await fetchGithubUser(token);
-      logger.info("GitHub CLIからトークンをインポートしました。");
+      logger.info("Imported token from GitHub CLI");
     } catch (err) {
-      logger.error(`GitHub CLIインポートに失敗しました: ${err}`);
+      logger.error(`GitHub CLI import failed: ${err}`);
       setGithubError(typeof err === "string" ? err : t("settings.github.invalid_token_error"));
     } finally {
       setIsVerifying(false);
@@ -210,23 +210,23 @@ const SettingsModal: FC<SettingsModalProps> = ({ isOpen, onClose }) => {
       github_token: null,
       github_username: null,
     });
-    logger.info("GitHubの連携を解除しました。");
+    logger.info("Disconnected GitHub account");
   };
 
   const handleLanguageChange = async (lng: string) => {
-    logger.info(`言語を切り替えます: ${lng}`);
+    logger.info(`Switching language to: ${lng}`);
     await i18n.changeLanguage(lng);
-    logger.debug(`言語の切り替えが完了しました: ${i18n.language}`);
+    logger.debug(`Language switch completed: ${i18n.language}`);
   };
 
   const handleRerunWizard = async () => {
-    logger.info("環境診断ウィザードを再実行します");
+    logger.info("Rerunning setup wizard");
     try {
       await updateAppConfig({ setup_completed: false });
-      logger.debug("セットアップ完了フラグをリセットしました。アプリをリロードします。");
+      logger.debug("Reset setup completed flag. Reloading application");
       window.location.reload();
     } catch (error) {
-      logger.error(`環境診断ウィザードの再設定に失敗しました: ${error}`);
+      logger.error(`Failed to reset setup wizard: ${error}`);
     }
   };
 
@@ -257,7 +257,7 @@ const SettingsModal: FC<SettingsModalProps> = ({ isOpen, onClose }) => {
     <div
       className="settings-modal-overlay"
       onClick={() => {
-        logger.debug("オーバーレイのクリックにより設定モーダルを閉じます");
+        logger.debug("Closing settings modal via overlay click");
         onClose();
       }}
       role="presentation"
@@ -277,7 +277,7 @@ const SettingsModal: FC<SettingsModalProps> = ({ isOpen, onClose }) => {
           <button
             className="close-btn"
             onClick={() => {
-              logger.debug("閉じるボタンのクリックにより設定モーダルを閉じます");
+              logger.debug("Closing settings modal via close button click");
               onClose();
             }}
             aria-label={t("common.action.close")}

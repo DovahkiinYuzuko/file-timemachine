@@ -25,7 +25,7 @@ const CreateBranchModal: FC<CreateBranchModalProps> = ({
     if (isOpen) {
       setBranchName("");
       setErrorMsg("");
-      logger.debug("新しいルート作成モーダルが開きました");
+      logger.debug("Create branch modal opened");
       
       const timer = setTimeout(() => {
         if (inputRef.current) {
@@ -94,7 +94,7 @@ const CreateBranchModal: FC<CreateBranchModalProps> = ({
       return;
     }
     
-    logger.info(`新しいルート名を決定しました: ${finalName}`);
+    logger.info(`Branch name determined: ${finalName}`);
     onSave(finalName);
   };
 

@@ -55,7 +55,8 @@
     "file_size": "サイズ",
     "last_modified": "最終更新",
     "loading": "読み込み中...",
-    "empty_directory": "ファイルが見つかりません"
+    "empty_directory": "ファイルが見つかりません",
+    "search": "ファイル名を検索..."
   },
   "preview": {
     "unknown_type": {
@@ -317,7 +318,8 @@
       "sync_link_required": "クラウドと同期するには、まず設定画面からGitHubアカウントと連携してください。",
       "sync_prep_failed": "同期の準備に失敗しました：\n{{error}}",
       "exclude_failed": "対象ファイルの除外処理に失敗しました：{{error}}",
-      "sync_failed": "クラウドとの同期に失敗しました：{{error}}"
+      "sync_failed": "クラウドとの同期に失敗しました：{{error}}",
+      "default_commit_message": "{{date}} の保存"
     },
     "confirm": {
       "merge": "現在の変更を本番（main）に合流させますか？"
@@ -336,6 +338,13 @@
     "action": {
       "unignore": "無視を解除",
       "ignore": "無視する"
+    }
+  },
+  "commit": {
+    "modal": {
+      "desc": "現在の状態に名前をつけて、タイムマシンに記録します。",
+      "input_label": "保存の名前（コミットメッセージ）",
+      "input_tip": "※空欄の場合は、日付が自動で適用されます。"
     }
   }
 }

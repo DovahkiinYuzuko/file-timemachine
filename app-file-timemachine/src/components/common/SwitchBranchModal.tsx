@@ -40,7 +40,7 @@ const SwitchBranchModal: FC<SwitchBranchModalProps> = ({
     try {
       setLoading(true);
       setErrorMsg("");
-      logger.info(`ブランチを削除します: ${branchName}`);
+      logger.info(`Deleting branch: ${branchName}`);
       const result = await invoke<string>("git_delete_branch", { 
         path: projectPath, 
         branchName 
@@ -58,7 +58,7 @@ const SwitchBranchModal: FC<SwitchBranchModalProps> = ({
 
       alert(t("branch.delete.success", { name: branchName }));
     } catch (error) {
-      logger.error(`ブランチ削除エラー: ${error}`);
+      logger.error(`Failed to delete branch: ${error}`);
       setErrorMsg(String(error));
     } finally {
       setLoading(false);
@@ -69,14 +69,14 @@ const SwitchBranchModal: FC<SwitchBranchModalProps> = ({
     if (isOpen && projectPath) {
       setErrorMsg("");
       setLoading(true);
-      logger.debug("ルート切り替えモーダルが開きました");
+      logger.debug("Switch branch modal opened");
       
       const fetchBranches = async () => {
         try {
           const list = await invoke<string[]>("git_get_branches", { path: projectPath });
           setBranches(list);
         } catch (error) {
-          logger.error(`ブランチ一覧取得エラー: ${error}`);
+          logger.error(`Failed to get branch list: ${error}`);
           setErrorMsg(t("branch.switch.error_fetch"));
         } finally {
           setLoading(false);

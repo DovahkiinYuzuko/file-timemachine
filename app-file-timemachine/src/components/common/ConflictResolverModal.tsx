@@ -51,7 +51,7 @@ const ConflictResolverModal: FC<ConflictResolverModalProps> = ({
             setSelectedFile(list[0]);
           }
         } catch (e) {
-          logger.error(`競合取得エラー: ${e}`);
+          logger.error(`Error fetching conflicts: ${e}`);
           setErrorMsg(t(e as string));
         } finally {
           setLoading(false);
@@ -120,7 +120,7 @@ const ConflictResolverModal: FC<ConflictResolverModalProps> = ({
     setCompleting(true);
     setErrorMsg("");
     try {
-      logger.info("競合の解決処理を開始します...");
+      logger.info("Starting conflict resolution...");
       for (const file of files) {
         await invoke("git_resolve_conflict", {
           path: projectPath,
@@ -129,7 +129,7 @@ const ConflictResolverModal: FC<ConflictResolverModalProps> = ({
         });
       }
 
-      logger.info("すべての競合を解決しました。マージコミットを作成します。");
+      logger.info("All conflicts resolved. Creating a merge commit.");
       await invoke("git_commit", {
         path: projectPath,
         message: t("conflict.commit_message"),
@@ -137,7 +137,7 @@ const ConflictResolverModal: FC<ConflictResolverModalProps> = ({
 
       onResolved();
     } catch (e) {
-      logger.error(`解決処理エラー: ${e}`);
+      logger.error(`Error resolving conflict: ${e}`);
       setErrorMsg(t(e as string));
     } finally {
       setCompleting(false);

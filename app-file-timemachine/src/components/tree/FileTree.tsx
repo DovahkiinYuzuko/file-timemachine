@@ -255,7 +255,7 @@ const FileTree: FC<FileTreeProps> = ({ rootPath, onFileSelect, refreshKey = 0 })
     return (
       <div className="file-tree-status">
         <Loader2 className="animate-spin" size={20} />
-        <span>{t("common.loading", "読み込み中...")}</span>
+        <span>{t("common.loading")}</span>
       </div>
     );
   }
@@ -295,7 +295,7 @@ const FileTree: FC<FileTreeProps> = ({ rootPath, onFileSelect, refreshKey = 0 })
           type="text" 
           value={searchQuery}
           onChange={(e) => setSearchQuery(e.target.value)}
-          placeholder={t("common.search", "ファイル名を検索...")}
+          placeholder={t("common.search")}
           style={{ flex: 1, backgroundColor: "transparent", border: "none", color: "var(--text-color)", outline: "none", fontSize: "0.85rem" }}
         />
         {searchQuery && (

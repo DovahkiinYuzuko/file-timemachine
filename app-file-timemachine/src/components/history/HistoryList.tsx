@@ -31,14 +31,14 @@ const HistoryList: FC<HistoryListProps> = ({ projectPath, refreshKey = 0, select
       setIsLoading(true);
       setError(null);
       try {
-        logger.debug(`履歴を取得します: ${projectPath}`);
+        logger.debug(`Fetching commit history: ${projectPath}`);
         const result = await invoke<CommitLog[]>("git_log", { path: projectPath });
         if (isMounted) {
           setLogs(result);
-          logger.info(`履歴を ${result.length} 件取得しました。`);
+          logger.info(`Retrieved ${result.length} history records.`);
         }
       } catch (e) {
-        logger.error(`履歴の取得に失敗しました: ${e}`);
+        logger.error(`Failed to fetch history: ${e}`);
         if (isMounted) {
           setError(String(e));
         }

@@ -48,7 +48,7 @@ export const SyncSettingsModal: FC<SyncSettingsModalProps> = ({
 
     setIsLoading(true);
     setErrorMsg(null);
-    logger.info(`GitHub上に新規リポジトリを作成します: ${repoName}`);
+    logger.info(`Creating a new repository on GitHub: ${repoName}`);
 
     try {
       // 1. GitHub APIでリポジトリを作成
@@ -76,7 +76,7 @@ export const SyncSettingsModal: FC<SyncSettingsModalProps> = ({
       const owner = repoData.owner.login;
       const name = repoData.name;
 
-      logger.info(`リポジトリが作成されました: ${cloneUrl}`);
+      logger.info(`Repository created successfully: ${cloneUrl}`);
 
       // 2. トピックスがあれば設定する
       if (topicsInput.trim()) {
@@ -86,7 +86,7 @@ export const SyncSettingsModal: FC<SyncSettingsModalProps> = ({
           .filter((t) => t.length > 0);
 
         if (topics.length > 0) {
-          logger.info(`トピックスを設定します: ${topics.join(", ")}`);
+          logger.info(`Setting repository topics: ${topics.join(", ")}`);
           await fetch(`https://api.github.com/repos/${owner}/${name}/topics`, {
             method: "PUT",
             headers: {
@@ -105,11 +105,11 @@ export const SyncSettingsModal: FC<SyncSettingsModalProps> = ({
         remoteUrl: cloneUrl,
       });
 
-      logger.info("新規リポジトリの紐付けが完了しました。");
+      logger.info("Successfully linked the new repository.");
       onSuccess(cloneUrl);
       onClose();
     } catch (err: any) {
-      logger.error(`新規リポジトリの作成・紐付けエラー: ${err}`);
+      logger.error(`Error creating and linking new repository: ${err}`);
       setErrorMsg(err.message || t("settings.sync.err_default"));
     } finally {
       setIsLoading(false);
@@ -131,7 +131,7 @@ export const SyncSettingsModal: FC<SyncSettingsModalProps> = ({
 
     setIsLoading(true);
     setErrorMsg(null);
-    logger.info(`既存リポジトリを紐付けます: ${existingUrl}`);
+    logger.info(`Linking an existing repository: ${existingUrl}`);
 
     try {
       await invoke("git_set_remote", {
@@ -139,11 +139,11 @@ export const SyncSettingsModal: FC<SyncSettingsModalProps> = ({
         remoteUrl: existingUrl.trim(),
       });
 
-      logger.info("既存リポジトリの紐付けが完了しました。");
+      logger.info("Successfully linked the existing repository.");
       onSuccess(existingUrl.trim());
       onClose();
     } catch (err: any) {
-      logger.error(`既存リポジトリの紐付けエラー: ${err}`);
+      logger.error(`Error linking the existing repository: ${err}`);
       setErrorMsg(err.message || t("settings.sync.err_remote_set_failed"));
     } finally {
       setIsLoading(false);

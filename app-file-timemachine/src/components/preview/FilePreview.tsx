@@ -59,7 +59,7 @@ const FilePreview: FC<FilePreviewProps> = ({ filePath, projectPath, selectedComm
       const fetchDiff = async () => {
         try {
           if (selectedCommitHash && projectPath) {
-            logger.info(`過去コミット[${selectedCommitHash}]の差分を取得します: ${filePath}`);
+            logger.info(`Fetching diff for past commit [${selectedCommitHash}]: ${filePath}`);
             const diff = await invoke<string>("git_diff_file_commit", {
               path: projectPath,
               commitHash: selectedCommitHash,
@@ -92,7 +92,7 @@ const FilePreview: FC<FilePreviewProps> = ({ filePath, projectPath, selectedComm
       
       try {
         if (selectedCommitHash && projectPath) {
-          logger.info(`過去コミット[${selectedCommitHash}]のファイル内容を取得します: ${filePath}`);
+          logger.info(`Fetching file content for past commit [${selectedCommitHash}]: ${filePath}`);
           
           // 1. まず現在の情報ベースでメタデータを取得
           const meta = await invoke<FileMetadata>("get_file_info", { path: filePath });
@@ -147,7 +147,7 @@ const FilePreview: FC<FilePreviewProps> = ({ filePath, projectPath, selectedComm
       try {
         const newMeta = await invoke<FileMetadata>("get_file_info", { path: filePath });
         if (lastModifiedRef.current !== null && newMeta.modified !== lastModifiedRef.current) {
-          logger.info(`ファイルの変更を検知しました: ${filePath}`);
+          logger.info(`Detected file modification: ${filePath}`);
           setMetadata(newMeta);
           lastModifiedRef.current = newMeta.modified;
           

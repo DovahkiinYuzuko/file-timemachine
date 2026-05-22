@@ -34,7 +34,7 @@ const CommitMessageModal: FC<CommitMessageModalProps> = ({
   useEffect(() => {
     if (isOpen) {
       setMessage(""); // 開くたびにクリア
-      logger.debug("コミットメッセージ入力モーダルが開きました。");
+      logger.debug("Commit message modal opened.");
       
       // アニメーション完了後にフォーカスするために少し遅延を入れる
       const timer = setTimeout(() => {
@@ -45,7 +45,7 @@ const CommitMessageModal: FC<CommitMessageModalProps> = ({
 
       const handleKeyDown = (e: KeyboardEvent) => {
         if (e.key === "Escape") {
-          logger.debug("Escapeキーでコミットメッセージモーダルを閉じます。");
+          logger.debug("Closing commit message modal via Escape key.");
           onClose();
         }
       };
@@ -94,7 +94,7 @@ const CommitMessageModal: FC<CommitMessageModalProps> = ({
     e.preventDefault();
     // 入力が空の場合はデフォルトメッセージを使用
     const finalMessage = message.trim() || defaultMessage;
-    logger.info(`コミットメッセージを決定しました: ${finalMessage}`);
+    logger.info(`Commit message decided: ${finalMessage}`);
     onSave(finalMessage);
   };
 
@@ -102,7 +102,7 @@ const CommitMessageModal: FC<CommitMessageModalProps> = ({
     <div
       className="commit-modal-overlay"
       onClick={() => {
-        logger.debug("オーバーレイのクリックによりコミットメッセージモーダルを閉じます。");
+        logger.debug("Closing commit message modal via overlay click.");
         onClose();
       }}
       role="presentation"
@@ -118,15 +118,15 @@ const CommitMessageModal: FC<CommitMessageModalProps> = ({
         <header className="commit-modal-header">
           <h2 id="commit-modal-title">
             <MessageSquare size={18} className="header-icon" />
-            {t("help.commands.save.name", { defaultValue: "今の状態を保存する" })}
+            {t("help.commands.save.name")}
           </h2>
           <button
             className="close-btn"
             onClick={() => {
-              logger.debug("閉じるボタンによりコミットメッセージモーダルを閉じます。");
+              logger.debug("Closing commit message modal via close button.");
               onClose();
             }}
-            aria-label={t("common.action.close", { defaultValue: "閉じる" })}
+            aria-label={t("common.action.close")}
           >
             <X size={18} />
           </button>
@@ -135,12 +135,12 @@ const CommitMessageModal: FC<CommitMessageModalProps> = ({
         <form onSubmit={handleSubmit} className="commit-modal-form">
           <div className="commit-modal-body">
             <p className="commit-modal-desc">
-              {t("commit.modal.desc", { defaultValue: "現在の状態に名前をつけて、タイムマシンに記録します。" })}
+              {t("commit.modal.desc")}
             </p>
             
             <div className="input-group">
               <label htmlFor="commit-msg-input">
-                {t("commit.modal.input_label", { defaultValue: "保存の名前（コミットメッセージ）" })}
+                {t("commit.modal.input_label")}
               </label>
               <input
                 id="commit-msg-input"
@@ -153,7 +153,7 @@ const CommitMessageModal: FC<CommitMessageModalProps> = ({
                 className="commit-input"
               />
               <span className="input-tip">
-                {t("commit.modal.input_tip", { defaultValue: "※空欄の場合は、日付が自動で適用されます。" })}
+                {t("commit.modal.input_tip")}
               </span>
             </div>
           </div>
@@ -164,14 +164,14 @@ const CommitMessageModal: FC<CommitMessageModalProps> = ({
               className="btn-cancel"
               onClick={onClose}
             >
-              {t("common.action.cancel", { defaultValue: "キャンセル" })}
+              {t("common.action.cancel")}
             </button>
             <button
               type="submit"
               className="btn-submit"
             >
               <Save size={14} />
-              <span>{t("help.commands.save.op", { defaultValue: "保存する" })}</span>
+              <span>{t("help.commands.save.op")}</span>
             </button>
           </footer>
         </form>
