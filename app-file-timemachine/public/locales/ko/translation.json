@@ -6,16 +6,16 @@
     "history_list": "기록 목록",
     "preview": "미리보기",
     "sidebar": {
-      "main_nav": "Main Navigation",
+      "main_nav": "메인 네비게이션",
       "files": "파일",
       "history": "기록",
       "settings": "설정",
       "help": "도움말"
     },
     "action": {
-      "close": "Close",
-      "retry": "Retry",
-      "cancel": "Cancel"
+      "close": "닫기",
+      "retry": "재시도",
+      "cancel": "취소"
     },
     "placeholder": {
       "file_tree": "(여기에 파일 트리가 표시됩니다)",
@@ -26,7 +26,7 @@
       "binary_file_preview_not_supported": "이진 파일 미리보기는 지원되지 않습니다",
       "unknown_file_type": "알 수 없는 파일 형식입니다",
       "no_history": "기록이 아직 없습니다",
-      "file_too_large": "ファイルが大きすぎます (最大 5MB)"
+      "file_too_large": "파일 크기가 너무 큽니다 (최대 5MB)"
     },
     "error": {
       "failed_to_fetch_logs": "기록을 가져오는데 실패했습니다"
@@ -35,27 +35,27 @@
       "git_graph_description": "Git 커밋 기록을 시각화한 그래프입니다",
       "file_preview": "{{path}} 미리보기",
       "preview_of": "{{path}} 내용",
-      "show_help": "Show Help"
+      "show_help": "도움말 보기"
     },
     "graph_style": {
-      "tree": "Tree",
-      "metro": "Metro"
+      "tree": "트리",
+      "metro": "노선도"
     },
     "git_mode": {
-      "label": "Git Mode",
-      "whitelist": "Whitelist",
-      "blacklist": "Blacklist",
-      "whitelist_short": "Whitelist",
-      "blacklist_short": "Blacklist",
-      "tooltip": "Click to toggle Git mode.",
-      "tooltip_whitelist": "Whitelist (Saves only the checked files)",
-      "tooltip_blacklist": "Blacklist (Saves all except checked files)"
+      "label": "관리 모드",
+      "whitelist": "선택한 파일만 저장",
+      "blacklist": "선택한 파일 제외하고 전부 저장",
+      "whitelist_short": "화이트리스트",
+      "blacklist_short": "블랙리스트",
+      "tooltip": "클릭하여 관리 모드를 전환합니다",
+      "tooltip_whitelist": "화이트리스트 (체크한 파일만 저장합니다)",
+      "tooltip_blacklist": "블랙리스트 (체크한 파일 외의 모든 파일을 저장합니다)"
     },
-    "file_name": "File Name",
-    "file_size": "Size",
-    "last_modified": "Last Modified",
-    "loading": "Loading...",
-    "empty_directory": "No files found"
+    "file_name": "파일명",
+    "file_size": "크기",
+    "last_modified": "최종 수정",
+    "loading": "로드 중...",
+    "empty_directory": "파일이 존재하지 않습니다"
   },
   "preview": {
     "unknown_type": {
@@ -65,12 +65,12 @@
     "action": {
       "back_to_preview": "Back to Preview",
       "show_diff": "Show Diff",
-      "back_to_latest": "最新に戻る"
+      "back_to_latest": "최신 버전으로 돌아가기"
     },
     "no_changes": "No changes found.",
     "video_not_supported": "Your browser does not support the video tag.",
     "audio_not_supported": "Your browser does not support the audio element.",
-    "time_traveling": "過去の保存地点 [{{hash}}] を閲覧中"
+    "time_traveling": "과거 저장 지점 [{{hash}}] 보기 중"
   },
   "settings": {
     "github": {
@@ -187,148 +187,148 @@
     }
   },
   "help": {
-    "title": "Help & Git Commands Cheatsheet",
-    "description": "Explanation of app operations and corresponding Git commands.",
+    "title": "도움말 및 Git 명령 빠른 참조",
+    "description": "앱 조작 및 그에 대응하는 Git 명령에 대한 설명입니다.",
     "table": {
-      "operation": "App Operation",
-      "command": "Git Command",
-      "explanation": "Explanation"
+      "operation": "앱 조작",
+      "command": "Git 명령",
+      "explanation": "설명"
     },
     "commands": {
       "save": {
-        "op": "Save",
+        "op": "저장하기",
         "cmd": "git commit",
-        "desc": "Records the current state."
+        "desc": "현재 작업 상태를 기록합니다."
       },
       "trial": {
-        "op": "Trial Route",
+        "op": "시험용 루트",
         "cmd": "git branch",
-        "desc": "Creates a new path (branch)."
+        "desc": "새로운 별도의 경로(브랜치)를 만듭니다."
       },
       "switch": {
-        "op": "Switch",
+        "op": "전환하기",
         "cmd": "git checkout",
-        "desc": "Moves to a past or different path."
+        "desc": "이전 기록이나 다른 경로로 이동합니다."
       },
       "merge": {
-        "op": "Adopt to Main",
+        "op": "본방에 반영",
         "cmd": "git merge",
-        "desc": "Merges a good idea into the main path."
+        "desc": "좋은 아이디어를 메인 경로(main)에 합칩니다."
       },
       "search": {
-        "op": "Search Content",
+        "op": "내용으로 검색",
         "cmd": "git grep",
-        "desc": "Searches through all past records."
+        "desc": "과거의 모든 기록에서 내용을 검색합니다."
       },
       "sync": {
-        "op": "Sync",
+        "op": "동기화",
         "cmd": "git push/pull",
-        "desc": "Syncs with the online vault."
+        "desc": "온라인 금고와 데이터를 주고받습니다."
       }
     },
-    "footer": "*Check the '?' next to each button for more detailed terms."
+    "footer": "※ 용어에 대한 더 자세한 설명은 각 버튼 옆의 '?' 아이콘을 참고하세요."
   },
   "tooltip": {
-    "root_management": "Called 'Branch' in Git. Manages different paths of work.",
-    "history_list": "Called 'Log' in Git. Check your save history.",
-    "save_button": "Called 'Commit' in Git. Save current state with a name."
+    "root_management": "Git에서는 '브랜치(Branch)'라고 부릅니다. 작업의 갈래길을 관리합니다.",
+    "history_list": "Git에서는 '로그(Log)'라고 부릅니다. 지금까지의 저장 기록을 확인할 수 있습니다.",
+    "save_button": "Git에서는 '커밋(Commit)'이라고 부릅니다. 현재 상태에 이름을 붙여 저장합니다."
   },
   "conflict": {
-    "no_conflicts": "No conflicts found.",
-    "commit_message": "Resolved conflicts during merge to main",
-    "title": "本番との競合を解決",
-    "description": "以下のファイルで本番（main）との内容がぶつかっています。どちらの内容を採用するか選んでください。",
-    "current_branch": "お試し側を採用",
-    "main_branch": "本番（main）を採用",
-    "resolve_and_merge": "解決を完了して本番に反映",
-    "abort": "中止して戻る",
-    "error_loading": "競合リストの取得に失敗しました。",
-    "error_resolving": "解決処理中にエラーが発生しました。",
-    "preview_title": "競合箇所を確認",
-    "select_to_preview": "ファイルを選択して中身を確認できます",
-    "loading_content": "ファイルを読み込み中..."
+    "no_conflicts": "충돌 중인 파일이 없습니다.",
+    "commit_message": "본방 반영에 따른 충돌 해결",
+    "title": "본방(main)과의 충돌 해결",
+    "description": "다음 파일들이 본방(main)의 내용과 충돌하고 있습니다. 어느 쪽의 내용을 사용할지 선택해 주세요.",
+    "current_branch": "시험용 루트 내용 적용",
+    "main_branch": "본방(main) 내용 적용",
+    "resolve_and_merge": "해결 완료 및 본방 반영",
+    "abort": "취소하고 돌아가기",
+    "error_loading": "충돌 목록을 가져오는데 실패했습니다.",
+    "error_resolving": "충돌 해결 처리 중 오류가 발생했습니다.",
+    "preview_title": "충돌 내용 확인",
+    "select_to_preview": "파일을 선택하여 구체적인 충돌 부분을 확인할 수 있습니다",
+    "loading_content": "파일 내용을 읽는 중..."
   },
   "branch": {
     "modal": {
-      "title": "Create New Route",
-      "desc": "Keep your current state and try new changes in a separate route.",
-      "input_label": "Route Name",
-      "placeholder": "e.g., test-design",
-      "input_tip": "* Alphanumeric characters and hyphens allowed.",
-      "submit": "Create",
-      "error_empty": "Please enter a route name.",
-      "error_invalid": "Route name can only contain alphanumeric characters, hyphens (-), and underscores (_)."
+      "title": "새로운 루트 만들기",
+      "desc": "현재 상태를 유지하면서 새 경로에서 새로운 변경 사항을 시도할 수 있습니다.",
+      "input_label": "루트 이름",
+      "placeholder": "예: test-design",
+      "input_tip": "※ 영문자와 숫자, 하이픈(-)만 사용할 수 있습니다.",
+      "submit": "만들기",
+      "error_empty": "루트 이름을 입력해 주세요.",
+      "error_invalid": "루트 이름에는 반각 영문자, 숫자, 하이픈(-), 언더바(_)만 사용 가능합니다."
     },
     "switch": {
-      "title": "Switch Route",
-      "desc": "Switching to another route will change the files to that route's state.",
-      "error_fetch": "Failed to get the list of routes."
+      "title": "루트 전환",
+      "desc": "다른 루트로 전환하면 파일 상태가 해당 루트의 상태로 변경됩니다.",
+      "error_fetch": "루트 목록을 가져오는데 실패했습니다."
     },
     "delete": {
-      "confirm": "ルート「{{name}}」を本当に削除しますか？\n（このルートに保存されているお試し内容はすべて破棄されます）",
-      "success": "ルート「{{name}}」を削除しました。",
-      "tooltip": "このルートを削除"
+      "confirm": "루트 '{{name}}'을(를) 정말로 삭제하시겠습니까?\n(이 루트에 저장되어 있는 모든 시험 내용이 폐기됩니다)",
+      "success": "루트 '{{name}}'이(가) 삭제되었습니다.",
+      "tooltip": "이 루트 삭제"
     }
   },
   "graph": {
     "empty": {
-      "no_folder_title": "No folder selected",
-      "no_folder_desc": "Select a project from \"Open Folder\" in the sidebar to see the history map here.",
-      "no_history_title": "No history found",
-      "no_history_desc": "Please initialize the repository to start saving history (commits) in the Time Machine."
+      "no_folder_title": "폴더가 선택되지 않았습니다",
+      "no_folder_desc": "사이드바의 '폴더 열기'를 통해 프로젝트를 로드하면 여기에 역사 노선도가 표시됩니다.",
+      "no_history_title": "기록을 찾을 수 없습니다",
+      "no_history_desc": "타임머신에 기록(커밋)을 시작하려면 먼저 저장소 초기화를 실행해 주세요."
     },
     "init": {
-      "loading": "Initializing...",
-      "start": "Start Saving History"
+      "loading": "초기화 중...",
+      "start": "기록 저장 시작하기"
     },
     "search": {
-      "placeholder": "Search commits..."
+      "placeholder": "커밋 검색..."
     },
     "action": {
-      "zoom_out": "Zoom Out",
-      "zoom_in": "Zoom In",
-      "reset_camera": "Reset View"
+      "zoom_out": "축소",
+      "zoom_in": "확대",
+      "reset_camera": "카메라 리셋"
     }
   },
   "history": {
     "table": {
-      "message": "Message",
-      "hash": "Hash"
+      "message": "메시지",
+      "hash": "해시"
     }
   },
   "layout": {
     "alert": {
-      "no_folder_save": "Cannot save because no folder is open.",
-      "save_success": "State saved successfully.\nMessage: \"{{message}}\"",
-      "save_failed": "Failed to save: {{error}}",
-      "create_branch_success": "Created and switched to new route \"{{branchName}}\".",
-      "create_branch_failed": "Failed to create route: {{error}}",
-      "switch_branch_success": "Switched to route \"{{branchName}}\".",
-      "switch_branch_failed": "Failed to switch route: {{error}}",
-      "merge_success": "Adopted to main and switched route.",
-      "merge_failed": "Failed to adopt to main:\n{{error}}",
-      "save_local_only": "Saved locally (saving to Time Machine was skipped).",
-      "no_folder_to_save": "Cannot save because no folder is open. Please open a folder from the left sidebar.",
-      "resolve_conflict_success": "All conflicts resolved and adopted to main.",
-      "abort_merge_failed": "Failed to restore to original state:\n{{error}}"
+      "no_folder_save": "열려 있는 폴더가 없어 저장할 수 없습니다.",
+      "save_success": "상태가 성공적으로 기록되었습니다.\n메시지: '{{message}}'",
+      "save_failed": "저장 실패: {{error}}",
+      "create_branch_success": "새로운 루트 '{{branchName}}'을(를) 만들고 전환했습니다.",
+      "create_branch_failed": "루트 생성 실패: {{error}}",
+      "switch_branch_success": "루트 '{{branchName}}'(으)로 전환했습니다.",
+      "switch_branch_failed": "루트 전환 실패: {{error}}",
+      "merge_success": "성공적으로 본방(main)에 합치고 루트를 전환했습니다.",
+      "merge_failed": "본방 반영 실패:\n{{error}}",
+      "save_local_only": "로컬에만 저장되었습니다 (타임머신 기록은 건너뛰었습니다).",
+      "no_folder_to_save": "열려 있는 폴더가 없어 저장할 수 없습니다. 왼쪽 사이드바에서 프로젝트 폴더를 열어주세요.",
+      "resolve_conflict_success": "모든 충돌이 성공적으로 해결되어 본방에 반영되었습니다.",
+      "abort_merge_failed": "원래 상태로 복구하는데 실패했습니다:\n{{error}}"
     },
     "confirm": {
-      "merge": "Do you want to merge current changes into main?"
+      "merge": "현재 변경 사항을 본방(main)에 합치시겠습니까?"
     },
     "tooltip": {
-      "switch_route": "Switch Route",
-      "merge_to_main": "Adopt changes from this route to main",
-      "create_route": "Create New Route"
+      "switch_route": "루트 전환하기",
+      "merge_to_main": "이 루트의 변경 사항을 본방에 반영하기",
+      "create_route": "새로운 루트 만들기"
     },
     "action": {
-      "new_route": "New Route",
-      "saving": "Saving..."
+      "new_route": "새 루트",
+      "saving": "저장 중..."
     }
   },
   "tree": {
     "action": {
-      "unignore": "Keep in save",
-      "ignore": "Exclude from save"
+      "unignore": "제외 취소 (저장 대상에 포함)",
+      "ignore": "저장 대상에서 제외"
     }
   }
 }

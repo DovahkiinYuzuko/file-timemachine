@@ -11,6 +11,12 @@
   --success-color: #22c55e;
   --warning-color: #f59e0b;
   --input-bg: #ffffff;
+  
+  /* Tooltip Variables (GitHub Light Inspired) */
+  --tooltip-bg: #ffffff;
+  --tooltip-color: #0f172a;
+  --tooltip-border: #e2e8f0;
+  --tooltip-shadow: 0 4px 12px rgba(15, 23, 42, 0.08), 0 1px 3px rgba(15, 23, 42, 0.04);
 }
 
 [data-theme="dark"] {
@@ -26,6 +32,12 @@
   --success-color: #4ade80;
   --warning-color: #fbbf24;
   --input-bg: #1a1a1a;
+
+  /* Tooltip Variables (Deep Dark) */
+  --tooltip-bg: #1e1e1e;
+  --tooltip-color: #eeeeee;
+  --tooltip-border: #333333;
+  --tooltip-shadow: 0 6px 16px rgba(0, 0, 0, 0.4);
 }
 
 /* Reset and Base Styles */

@@ -65,12 +65,12 @@
     "action": {
       "back_to_preview": "Back to Preview",
       "show_diff": "Show Diff",
-      "back_to_latest": "最新に戻る"
+      "back_to_latest": "返回最新版本"
     },
     "no_changes": "No changes found.",
     "video_not_supported": "Your browser does not support the video tag.",
     "audio_not_supported": "Your browser does not support the audio element.",
-    "time_traveling": "過去の保存地点 [{{hash}}] を閲覧中"
+    "time_traveling": "正在查看过去的保存点 [{{hash}}]"
   },
   "settings": {
     "github": {
@@ -187,148 +187,148 @@
     }
   },
   "help": {
-    "title": "Help & Git Commands Cheatsheet",
-    "description": "Explanation of app operations and corresponding Git commands.",
+    "title": "帮助 & Git 常用命令速查表",
+    "description": "应用操作和对应 Git 命令的解释说明。",
     "table": {
-      "operation": "App Operation",
-      "command": "Git Command",
-      "explanation": "Explanation"
+      "operation": "应用操作",
+      "command": "Git 命令",
+      "explanation": "解释说明"
     },
     "commands": {
       "save": {
-        "op": "Save",
+        "op": "保存",
         "cmd": "git commit",
-        "desc": "Records the current state."
+        "desc": "记录当前状态。"
       },
       "trial": {
-        "op": "Trial Route",
+        "op": "尝试路由",
         "cmd": "git branch",
-        "desc": "Creates a new path (branch)."
+        "desc": "创建一条新路径（分支）。"
       },
       "switch": {
-        "op": "Switch",
+        "op": "切换",
         "cmd": "git checkout",
-        "desc": "Moves to a past or different path."
+        "desc": "移动到过去或另一条路径。"
       },
       "merge": {
-        "op": "Adopt to Main",
+        "op": "采用到主线",
         "cmd": "git merge",
-        "desc": "Merges a good idea into the main path."
+        "desc": "将优秀的想法合并到主路径（main）。"
       },
       "search": {
-        "op": "Search Content",
+        "op": "内容搜索",
         "cmd": "git grep",
-        "desc": "Searches through all past records."
+        "desc": "在所有历史记录中进行搜索。"
       },
       "sync": {
-        "op": "Sync",
+        "op": "同步",
         "cmd": "git push/pull",
-        "desc": "Syncs with the online vault."
+        "desc": "与云端保险库进行数据同步。"
       }
     },
-    "footer": "*Check the '?' next to each button for more detailed terms."
+    "footer": "*请点击每个按钮旁的 “?” 查看更详细的术语说明。"
   },
   "tooltip": {
-    "root_management": "Called 'Branch' in Git. Manages different paths of work.",
-    "history_list": "Called 'Log' in Git. Check your save history.",
-    "save_button": "Called 'Commit' in Git. Save current state with a name."
+    "root_management": "在 Git 中被称为 “分支” (Branch)。用于管理工作的分叉路径。",
+    "history_list": "在 Git 中被称为 “日志” (Log)。可以查看您的保存历史记录。",
+    "save_button": "在 Git 中被称为 “提交” (Commit)。将当前状态命名并保存。"
   },
   "conflict": {
-    "no_conflicts": "No conflicts found.",
-    "commit_message": "Resolved conflicts during merge to main",
-    "title": "本番との競合を解決",
-    "description": "以下のファイルで本番（main）との内容がぶつかっています。どちらの内容を採用するか選んでください。",
-    "current_branch": "お試し側を採用",
-    "main_branch": "本番（main）を採用",
-    "resolve_and_merge": "解決を完了して本番に反映",
-    "abort": "中止して戻る",
-    "error_loading": "競合リストの取得に失敗しました。",
-    "error_resolving": "解決処理中にエラーが発生しました。",
-    "preview_title": "競合箇所を確認",
-    "select_to_preview": "ファイルを選択して中身を確認できます",
-    "loading_content": "ファイルを読み込み中..."
+    "no_conflicts": "未发现冲突文件。",
+    "commit_message": "采用到主线时解决冲突",
+    "title": "解决与主线 (main) 的冲突",
+    "description": "以下文件与主线 (main) 的内容发生冲突。请选择保留哪一方的内容。",
+    "current_branch": "采用尝试路由的内容",
+    "main_branch": "采用主线 (main) 的内容",
+    "resolve_and_merge": "完成解决并采用到主线",
+    "abort": "取消并返回",
+    "error_loading": "获取冲突列表失败。",
+    "error_resolving": "解决冲突时发生错误。",
+    "preview_title": "查看冲突内容",
+    "select_to_preview": "选择文件以查看具体冲突内容",
+    "loading_content": "正在加载文件内容..."
   },
   "branch": {
     "modal": {
-      "title": "Create New Route",
-      "desc": "Keep your current state and try new changes in a separate route.",
-      "input_label": "Route Name",
-      "placeholder": "e.g., test-design",
-      "input_tip": "* Alphanumeric characters and hyphens allowed.",
-      "submit": "Create",
-      "error_empty": "Please enter a route name.",
-      "error_invalid": "Route name can only contain alphanumeric characters, hyphens (-), and underscores (_)."
+      "title": "创建新路由",
+      "desc": "在保持当前状态不变的情况下，可以创建新路径以尝试新的修改。",
+      "input_label": "路由名称",
+      "placeholder": "例如：test-design",
+      "input_tip": "* 仅限输入半角英数字和连字符。",
+      "submit": "创建",
+      "error_empty": "请输入路由名称。",
+      "error_invalid": "路由名称只能包含半角英数字、连字符 (-) 和下划线 (_)。"
     },
     "switch": {
-      "title": "Switch Route",
-      "desc": "Switching to another route will change the files to that route's state.",
-      "error_fetch": "Failed to get the list of routes."
+      "title": "切换路由",
+      "desc": "切换到另一个路由后，文件状态将变成该路由保存的状态。",
+      "error_fetch": "获取路由列表失败。"
     },
     "delete": {
-      "confirm": "ルート「{{name}}」を本当に削除しますか？\n（このルートに保存されているお試し内容はすべて破棄されます）",
-      "success": "ルート「{{name}}」を削除しました。",
-      "tooltip": "このルートを削除"
+      "confirm": "确定要删除路由 “{{name}}” 吗？\n（该路由中保存的所有尝试修改都将被丢弃）",
+      "success": "已删除路由 “{{name}}”。",
+      "tooltip": "删除此路由"
     }
   },
   "graph": {
     "empty": {
-      "no_folder_title": "No folder selected",
-      "no_folder_desc": "Select a project from \"Open Folder\" in the sidebar to see the history map here.",
-      "no_history_title": "No history found",
-      "no_history_desc": "Please initialize the repository to start saving history (commits) in the Time Machine."
+      "no_folder_title": "未选择文件夹",
+      "no_folder_desc": "在侧边栏选择 “打开文件夹” 并载入项目后，此处将显示历史路线图。",
+      "no_history_title": "未找到历史记录",
+      "no_history_desc": "为了使用时光机记录历史（提交），请先运行初始化仓库。"
     },
     "init": {
-      "loading": "Initializing...",
-      "start": "Start Saving History"
+      "loading": "正在初始化...",
+      "start": "开始记录历史"
     },
     "search": {
-      "placeholder": "Search commits..."
+      "placeholder": "搜索提交..."
     },
     "action": {
-      "zoom_out": "Zoom Out",
-      "zoom_in": "Zoom In",
-      "reset_camera": "Reset View"
+      "zoom_out": "缩小",
+      "zoom_in": "放大",
+      "reset_camera": "重置视图"
     }
   },
   "history": {
     "table": {
-      "message": "Message",
-      "hash": "Hash"
+      "message": "提交信息",
+      "hash": "哈希值"
     }
   },
   "layout": {
     "alert": {
-      "no_folder_save": "Cannot save because no folder is open.",
-      "save_success": "State saved successfully.\nMessage: \"{{message}}\"",
-      "save_failed": "Failed to save: {{error}}",
-      "create_branch_success": "Created and switched to new route \"{{branchName}}\".",
-      "create_branch_failed": "Failed to create route: {{error}}",
-      "switch_branch_success": "Switched to route \"{{branchName}}\".",
-      "switch_branch_failed": "Failed to switch route: {{error}}",
-      "merge_success": "Adopted to main and switched route.",
-      "merge_failed": "Failed to adopt to main:\n{{error}}",
-      "save_local_only": "Saved locally (saving to Time Machine was skipped).",
-      "no_folder_to_save": "Cannot save because no folder is open. Please open a folder from the left sidebar.",
-      "resolve_conflict_success": "All conflicts resolved and adopted to main.",
-      "abort_merge_failed": "Failed to restore to original state:\n{{error}}"
+      "no_folder_save": "由于未打开文件夹，无法进行保存。",
+      "save_success": "状态保存成功。\n信息: “{{message}}”",
+      "save_failed": "保存失败: {{error}}",
+      "create_branch_success": "已成功创建并切换至新路由 “{{branchName}}”。",
+      "create_branch_failed": "创建路由失败: {{error}}",
+      "switch_branch_success": "已切换至路由 “{{branchName}}”。",
+      "switch_branch_failed": "切换路由失败: {{error}}",
+      "merge_success": "已成功采用到主线 (main) 并切换路由。",
+      "merge_failed": "采用到主线失败:\n{{error}}",
+      "save_local_only": "已保存至本地（跳过了保存到时光机）。",
+      "no_folder_to_save": "由于未打开文件夹，无法进行保存。请在左侧边栏打开项目文件夹。",
+      "resolve_conflict_success": "已解决所有冲突并成功采用到主线。",
+      "abort_merge_failed": "恢复到先前状态失败:\n{{error}}"
     },
     "confirm": {
-      "merge": "Do you want to merge current changes into main?"
+      "merge": "确定要将当前的修改合并（采用）到主线 (main) 吗？"
     },
     "tooltip": {
-      "switch_route": "Switch Route",
-      "merge_to_main": "Adopt changes from this route to main",
-      "create_route": "Create New Route"
+      "switch_route": "切换路由",
+      "merge_to_main": "将此路由的修改采用到主线",
+      "create_route": "创建新路由"
     },
     "action": {
-      "new_route": "New Route",
-      "saving": "Saving..."
+      "new_route": "新路由",
+      "saving": "正在保存..."
     }
   },
   "tree": {
     "action": {
-      "unignore": "Keep in save",
-      "ignore": "Exclude from save"
+      "unignore": "取消排除（保留在保存对象中）",
+      "ignore": "排除在保存对象外"
     }
   }
 }

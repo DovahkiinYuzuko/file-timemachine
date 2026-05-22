@@ -452,7 +452,7 @@ const MainLayout: FC = () => {
                         <header className="panel-header">
                           <h2>
                             {t("common.root_management")}
-                            <Tooltip content={t("tooltip.root_management")} position="bottom" />
+                            <Tooltip content={t("tooltip.root_management")} position="bottom" align="start" />
                           </h2>
                         </header>
                         <div className="panel-body">
@@ -475,7 +475,7 @@ const MainLayout: FC = () => {
                         <header className="panel-header">
                           <h2>
                             {t("common.history_list")}
-                            <Tooltip content={t("tooltip.history_list")} position="bottom" />
+                            <Tooltip content={t("tooltip.history_list")} position="bottom" align="start" />
                           </h2>
                         </header>
                         <div className="panel-body">
@@ -580,7 +580,7 @@ const MainLayout: FC = () => {
                 </>
               )}
             </button>
-            <Tooltip content={t("tooltip.save_button")} position="top" />
+            <Tooltip content={t("tooltip.save_button")} position="top" align="end" />
           </div>
         </footer>
       </div>

@@ -6,16 +6,16 @@
     "history_list": "इतिहास सूची",
     "preview": "पूर्वावलोकन",
     "sidebar": {
-      "main_nav": "Main Navigation",
+      "main_nav": "मुख्य नेविगेशन",
       "files": "फ़ाइलें",
       "history": "इतिहास",
       "settings": "सेटिंग्स",
       "help": "सहायता"
     },
     "action": {
-      "close": "Close",
-      "retry": "Retry",
-      "cancel": "Cancel"
+      "close": "बंद करें",
+      "retry": "पुनः प्रयास करें",
+      "cancel": "रद्द करें"
     },
     "placeholder": {
       "file_tree": "(यहाँ फ़ाइल ट्री दिखाई देगा)",
@@ -26,7 +26,7 @@
       "binary_file_preview_not_supported": "बाइनरी फ़ाइल पूर्वावलोकन समर्थित नहीं है",
       "unknown_file_type": "अज्ञात फ़ाइल प्रारूप",
       "no_history": "अभी तक कोई इतिहास नहीं है",
-      "file_too_large": "ファイルが大きすぎます (最大 5MB)"
+      "file_too_large": "फ़ाइल बहुत बड़ी है (अधिकतम 5 एमबी)"
     },
     "error": {
       "failed_to_fetch_logs": "इतिहास प्राप्त करने में विफल"
@@ -35,27 +35,27 @@
       "git_graph_description": "Git कमिट इतिहास का विज़ुअलाइज़ेशन ग्राफ़",
       "file_preview": "{{path}} का पूर्वावलोकन",
       "preview_of": "{{path}} की सामग्री",
-      "show_help": "Show Help"
+      "show_help": "सहायता दिखाएं"
     },
     "graph_style": {
-      "tree": "Tree",
-      "metro": "Metro"
+      "tree": "ट्री",
+      "metro": "मेट्रो मैप"
     },
     "git_mode": {
-      "label": "Git Mode",
-      "whitelist": "Whitelist",
-      "blacklist": "Blacklist",
-      "whitelist_short": "Whitelist",
-      "blacklist_short": "Blacklist",
-      "tooltip": "Click to toggle Git mode.",
-      "tooltip_whitelist": "Whitelist (Saves only the checked files)",
-      "tooltip_blacklist": "Blacklist (Saves all except checked files)"
+      "label": "प्रबंधन मोड",
+      "whitelist": "केवल चयनित फ़ाइलों को सहेजें",
+      "blacklist": "चयनित को छोड़कर सभी फ़ाइलों को सहेजें",
+      "whitelist_short": "व्हाइटलिस्ट",
+      "blacklist_short": "ब्लैकलिस्ट",
+      "tooltip": "प्रबंधन मोड स्विच करने के लिए क्लिक करें",
+      "tooltip_whitelist": "व्हाइटलिस्ट (केवल चयनित फ़ाइलों को सहेजता है)",
+      "tooltip_blacklist": "ब्लैकलिस्ट (चयनित फ़ाइलों को छोड़कर सभी को सहेजता है)"
     },
-    "file_name": "File Name",
-    "file_size": "Size",
-    "last_modified": "Last Modified",
-    "loading": "Loading...",
-    "empty_directory": "No files found"
+    "file_name": "फ़ाइल का नाम",
+    "file_size": "आकार",
+    "last_modified": "अंतिम संशोधन",
+    "loading": "लोड हो रहा है...",
+    "empty_directory": "कोई फ़ाइल नहीं मिली"
   },
   "preview": {
     "unknown_type": {
@@ -65,12 +65,12 @@
     "action": {
       "back_to_preview": "Back to Preview",
       "show_diff": "Show Diff",
-      "back_to_latest": "最新に戻る"
+      "back_to_latest": "नवीनतम पर वापस जाएं"
     },
     "no_changes": "No changes found.",
     "video_not_supported": "Your browser does not support the video tag.",
     "audio_not_supported": "Your browser does not support the audio element.",
-    "time_traveling": "過去の保存地点 [{{hash}}] を閲覧中"
+    "time_traveling": "पिछले सहेजे गए स्थान [{{hash}}] को देखना"
   },
   "settings": {
     "github": {
@@ -187,148 +187,148 @@
     }
   },
   "help": {
-    "title": "Help & Git Commands Cheatsheet",
-    "description": "Explanation of app operations and corresponding Git commands.",
+    "title": "सहायता और गिट (Git) कमांड त्वरित मार्गदर्शिका",
+    "description": "ऐप के संचालन और उनके संबंधित गिट कमांड का विवरण।",
     "table": {
-      "operation": "App Operation",
-      "command": "Git Command",
-      "explanation": "Explanation"
+      "operation": "ऐप का संचालन",
+      "command": "गिट कमांड",
+      "explanation": "विवरण"
     },
     "commands": {
       "save": {
-        "op": "Save",
+        "op": "सहेजें",
         "cmd": "git commit",
-        "desc": "Records the current state."
+        "desc": "वर्तमान कार्य स्थिति को रिकॉर्ड करता है।"
       },
       "trial": {
-        "op": "Trial Route",
+        "op": "परीक्षण मार्ग",
         "cmd": "git branch",
-        "desc": "Creates a new path (branch)."
+        "desc": "एक नया, अलग मार्ग (शाखा) बनाता है।"
       },
       "switch": {
-        "op": "Switch",
+        "op": "बदलें",
         "cmd": "git checkout",
-        "desc": "Moves to a past or different path."
+        "desc": "पिछले या किसी अन्य मार्ग पर जाता है।"
       },
       "merge": {
-        "op": "Adopt to Main",
+        "op": "मुख्य में अपनाएं",
         "cmd": "git merge",
-        "desc": "Merges a good idea into the main path."
+        "desc": "अच्छे विचारों को मुख्य मार्ग (main) में मिलाता है।"
       },
       "search": {
-        "op": "Search Content",
+        "op": "सामग्री खोजें",
         "cmd": "git grep",
-        "desc": "Searches through all past records."
+        "desc": "सभी पिछले रिकॉर्ड में सामग्री खोजता है।"
       },
       "sync": {
-        "op": "Sync",
+        "op": "सिंक करें",
         "cmd": "git push/pull",
-        "desc": "Syncs with the online vault."
+        "desc": "ऑनलाइन तिजोरी के साथ डेटा का आदान-प्रदान करता है।"
       }
     },
-    "footer": "*Check the '?' next to each button for more detailed terms."
+    "footer": "※ शर्तों के विस्तृत विवरण के लिए प्रत्येक बटन के पास '?' सहायता बटन पर क्लिक करें।"
   },
   "tooltip": {
-    "root_management": "Called 'Branch' in Git. Manages different paths of work.",
-    "history_list": "Called 'Log' in Git. Check your save history.",
-    "save_button": "Called 'Commit' in Git. Save current state with a name."
+    "root_management": "गिट में इसे 'Branch' (शाखा) कहा जाता है। यह आपके काम के अलग-अलग रास्तों को प्रबंधित करता है।",
+    "history_list": "गिट में इसे 'Log' (सजिल) कहा जाता है। आप यहाँ अपना सहेजा गया इतिहास देख सकते हैं।",
+    "save_button": "गिट में इसे 'Commit' (प्रतिबद्धता) कहा जाता. वर्तमान स्थिति को एक नाम देकर सहेजता है।"
   },
   "conflict": {
-    "no_conflicts": "No conflicts found.",
-    "commit_message": "Resolved conflicts during merge to main",
-    "title": "本番との競合を解決",
-    "description": "以下のファイルで本番（main）との内容がぶつかっています。どちらの内容を採用するか選んでください。",
-    "current_branch": "お試し側を採用",
-    "main_branch": "本番（main）を採用",
-    "resolve_and_merge": "解決を完了して本番に反映",
-    "abort": "中止して戻る",
-    "error_loading": "競合リストの取得に失敗しました。",
-    "error_resolving": "解決処理中にエラーが発生しました。",
-    "preview_title": "競合箇所を確認",
-    "select_to_preview": "ファイルを選択して中身を確認できます",
-    "loading_content": "ファイルを読み込み中..."
+    "no_conflicts": "कोई विरोधी फ़ाइल नहीं मिली।",
+    "commit_message": "मुख्य मार्ग में विलय के दौरान संघर्षों का समाधान",
+    "title": "मुख्य मार्ग (main) के साथ संघर्ष हल करें",
+    "description": "निम्नलिखित फ़ाइलें मुख्य मार्ग (main) के साथ संघर्ष करती हैं। कृपया चुनें कि आप कौन सा संस्करण रखना चाहते हैं।",
+    "current_branch": "परीक्षण मार्ग का अपनाएं",
+    "main_branch": "मुख्य मार्ग (main) अपनाएं",
+    "resolve_and_merge": "संघर्ष हल करें और मुख्य में शामिल करें",
+    "abort": "रद्द करें और वापस जाएं",
+    "error_loading": "संघर्ष सूची लोड करने में विफल।",
+    "error_resolving": "संघर्ष समाधान के दौरान त्रुटि।",
+    "preview_title": "संघर्ष स्थल की जांच करें",
+    "select_to_preview": "फ़ाइल की सामग्री और संघर्षों की जांच करने के लिए उसका चयन करें",
+    "loading_content": "फ़ाइल सामग्री लोड हो रही है..."
   },
   "branch": {
     "modal": {
-      "title": "Create New Route",
-      "desc": "Keep your current state and try new changes in a separate route.",
-      "input_label": "Route Name",
-      "placeholder": "e.g., test-design",
-      "input_tip": "* Alphanumeric characters and hyphens allowed.",
-      "submit": "Create",
-      "error_empty": "Please enter a route name.",
-      "error_invalid": "Route name can only contain alphanumeric characters, hyphens (-), and underscores (_)."
+      "title": "नया मार्ग बनाएं",
+      "desc": "आप अपनी वर्तमान स्थिति को बरकरार रखते हुए एक अलग मार्ग में नए बदलावों का परीक्षण कर सकते हैं।",
+      "input_label": "मार्ग का नाम",
+      "placeholder": "जैसे. test-design",
+      "input_tip": "※ केवल अल्फ़ान्यूमेरिक वर्ण और हाइफ़न की अनुमति है।",
+      "submit": "बनाएं",
+      "error_empty": "कृपया मार्ग का नाम दर्ज करें।",
+      "error_invalid": "मार्ग के नाम में केवल अल्फ़ान्यूमेरिक वर्ण, हाइफ़न (-) और अंडरस्कोर (_) हो सकते हैं।"
     },
     "switch": {
-      "title": "Switch Route",
-      "desc": "Switching to another route will change the files to that route's state.",
-      "error_fetch": "Failed to get the list of routes."
+      "title": "मार्ग बदलें",
+      "desc": "किसी अन्य मार्ग पर जाने से फ़ाइलों की स्थिति उस मार्ग की स्थिति में बदल जाएगी।",
+      "error_fetch": "मार्ग सूची प्राप्त करने में विफल।"
     },
     "delete": {
-      "confirm": "ルート「{{name}}」を本当に削除しますか？\n（このルートに保存されているお試し内容はすべて破棄されます）",
-      "success": "ルート「{{name}}」を削除しました。",
-      "tooltip": "このルートを削除"
+      "confirm": "क्या आप सचमुच मार्ग «{{name}}» को हटाना चाहते हैं?\n(इस परीक्षण मार्ग पर सहेजे गए सभी बदलाव हटा दिए जाएंगे)",
+      "success": "मार्ग «{{name}}» को हटा दिया गया है।",
+      "tooltip": "इस मार्ग को हटाएं"
     }
   },
   "graph": {
     "empty": {
-      "no_folder_title": "No folder selected",
-      "no_folder_desc": "Select a project from \"Open Folder\" in the sidebar to see the history map here.",
-      "no_history_title": "No history found",
-      "no_history_desc": "Please initialize the repository to start saving history (commits) in the Time Machine."
+      "no_folder_title": "कोई फ़ोल्डर नहीं चुना गया",
+      "no_folder_desc": "यहाँ इतिहास मानचित्र प्रदर्शित करने के लिए साइडबार में «फ़ोल्डर खोलें» का चयन करें।",
+      "no_history_title": "कोई इतिहास नहीं मिला",
+      "no_history_desc": "टाइम मशीन में इतिहास (कमिट) सहेजना शुरू करने के लिए कृपया रिपॉजिटरी प्रारंभ करें।"
     },
     "init": {
-      "loading": "Initializing...",
-      "start": "Start Saving History"
+      "loading": "प्रारंभ हो रहा है...",
+      "start": "इतिहास रिकॉर्ड करना शुरू करें"
     },
     "search": {
-      "placeholder": "Search commits..."
+      "placeholder": "कमिट खोजें..."
     },
     "action": {
-      "zoom_out": "Zoom Out",
-      "zoom_in": "Zoom In",
-      "reset_camera": "Reset View"
+      "zoom_out": "ज़ूम आउट",
+      "zoom_in": "ज़ूम इन",
+      "reset_camera": "दृश्य रीसेट करें"
     }
   },
   "history": {
     "table": {
-      "message": "Message",
-      "hash": "Hash"
+      "message": "संदेश",
+      "hash": "हैश"
     }
   },
   "layout": {
     "alert": {
-      "no_folder_save": "Cannot save because no folder is open.",
-      "save_success": "State saved successfully.\nMessage: \"{{message}}\"",
-      "save_failed": "Failed to save: {{error}}",
-      "create_branch_success": "Created and switched to new route \"{{branchName}}\".",
-      "create_branch_failed": "Failed to create route: {{error}}",
-      "switch_branch_success": "Switched to route \"{{branchName}}\".",
-      "switch_branch_failed": "Failed to switch route: {{error}}",
-      "merge_success": "Adopted to main and switched route.",
-      "merge_failed": "Failed to adopt to main:\n{{error}}",
-      "save_local_only": "Saved locally (saving to Time Machine was skipped).",
-      "no_folder_to_save": "Cannot save because no folder is open. Please open a folder from the left sidebar.",
-      "resolve_conflict_success": "All conflicts resolved and adopted to main.",
-      "abort_merge_failed": "Failed to restore to original state:\n{{error}}"
+      "no_folder_save": "सहेजना संभव नहीं है क्योंकि कोई फ़ोल्डर खुला नहीं है।",
+      "save_success": "स्थिति सफलतापूर्वक सहेजी गई।\nसंदेश: «{{message}}»",
+      "save_failed": "सहेजना विफल रहा: {{error}}",
+      "create_branch_success": "नया मार्ग «{{branchName}}» बनाया गया और उस पर स्विच किया गया।",
+      "create_branch_failed": "मार्ग बनाने में विफल: {{error}}",
+      "switch_branch_success": "मार्ग «{{branchName}}» पर स्विच किया गया।",
+      "switch_branch_failed": "मार्ग बदलने में विफल: {{error}}",
+      "merge_success": "मुख्य (main) मार्ग में सफलतापूर्वक शामिल किया गया और मार्ग बदला गया।",
+      "merge_failed": "मुख्य मार्ग में शामिल करने में विफल:\n{{error}}",
+      "save_local_only": "केवल स्थानीय रूप से सहेजा गया (टाइम मशीन में सहेजना छोड़ दिया गया)।",
+      "no_folder_to_save": "सहेजना संभव नहीं है क्योंकि कोई फ़ोल्डर खुला नहीं है। कृपया बाएं साइडबार से एक प्रोजेक्ट फ़ोल्डर खोलें।",
+      "resolve_conflict_success": "सभी संघर्षों का समाधान कर दिया गया और मुख्य में शामिल किया गया।",
+      "abort_merge_failed": "मूल स्थिति में पुनर्स्थापित करने में विफल:\n{{error}}"
     },
     "confirm": {
-      "merge": "Do you want to merge current changes into main?"
+      "merge": "क्या आप वर्तमान परिवर्तनों को मुख्य मार्ग (main) में विलय कर शामिल करना चाहते हैं?"
     },
     "tooltip": {
-      "switch_route": "Switch Route",
-      "merge_to_main": "Adopt changes from this route to main",
-      "create_route": "Create New Route"
+      "switch_route": "मार्ग बदलें",
+      "merge_to_main": "इस मार्ग के परिवर्तनों को मुख्य में शामिल करें",
+      "create_route": "नया मार्ग बनाएं"
     },
     "action": {
-      "new_route": "New Route",
-      "saving": "Saving..."
+      "new_route": "नया मार्ग",
+      "saving": "सहेज रहा है..."
     }
   },
   "tree": {
     "action": {
-      "unignore": "Keep in save",
-      "ignore": "Exclude from save"
+      "unignore": "बहिष्करण रद्द करें (सहेजने में रखें)",
+      "ignore": "सहेजने से बाहर रखें"
     }
   }
 }

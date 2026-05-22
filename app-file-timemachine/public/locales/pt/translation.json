@@ -6,16 +6,16 @@
     "history_list": "Lista de histórico",
     "preview": "Pré-visualização",
     "sidebar": {
-      "main_nav": "Main Navigation",
+      "main_nav": "Navegação Principal",
       "files": "Arquivos",
       "history": "Histórico",
       "settings": "Configurações",
       "help": "Ajuda"
     },
     "action": {
-      "close": "Close",
-      "retry": "Retry",
-      "cancel": "Cancel"
+      "close": "Fechar",
+      "retry": "Repetir",
+      "cancel": "Cancelar"
     },
     "placeholder": {
       "file_tree": "(A árvore de arquivos será exibida aqui)",
@@ -26,7 +26,7 @@
       "binary_file_preview_not_supported": "A pré-visualização de arquivos binários não é suportada",
       "unknown_file_type": "Formato de arquivo desconhecido",
       "no_history": "Ainda não há histórico",
-      "file_too_large": "ファイルが大きすぎます (最大 5MB)"
+      "file_too_large": "Arquivo muito grande (máx. 5MB)"
     },
     "error": {
       "failed_to_fetch_logs": "Falha ao obter o histórico"
@@ -35,27 +35,27 @@
       "git_graph_description": "Gráfico de visualização do histórico de commits do Git",
       "file_preview": "Pré-visualização de {{path}}",
       "preview_of": "Conteúdo de {{path}}",
-      "show_help": "Show Help"
+      "show_help": "Mostrar ajuda"
     },
     "graph_style": {
-      "tree": "Tree",
-      "metro": "Metro"
+      "tree": "Árvore",
+      "metro": "Mapa de metrô"
     },
     "git_mode": {
-      "label": "Git Mode",
-      "whitelist": "Whitelist",
-      "blacklist": "Blacklist",
-      "whitelist_short": "Whitelist",
-      "blacklist_short": "Blacklist",
-      "tooltip": "Click to toggle Git mode.",
-      "tooltip_whitelist": "Whitelist (Saves only the checked files)",
-      "tooltip_blacklist": "Blacklist (Saves all except checked files)"
+      "label": "Modo de Gestão",
+      "whitelist": "Salvar apenas arquivos marcados",
+      "blacklist": "Salvar todos exceto arquivos marcados",
+      "whitelist_short": "Lista branca",
+      "blacklist_short": "Lista negra",
+      "tooltip": "Clique para alterar o modo de gestão",
+      "tooltip_whitelist": "Lista branca (salva apenas os arquivos marcados)",
+      "tooltip_blacklist": "Lista negra (salva todos os arquivos exceto os marcados)"
     },
-    "file_name": "File Name",
-    "file_size": "Size",
-    "last_modified": "Last Modified",
-    "loading": "Loading...",
-    "empty_directory": "No files found"
+    "file_name": "Nome do arquivo",
+    "file_size": "Tamanho",
+    "last_modified": "Última modificação",
+    "loading": "Carregando...",
+    "empty_directory": "Nenhum arquivo encontrado"
   },
   "preview": {
     "unknown_type": {
@@ -65,12 +65,12 @@
     "action": {
       "back_to_preview": "Back to Preview",
       "show_diff": "Show Diff",
-      "back_to_latest": "最新に戻る"
+      "back_to_latest": "Voltar ao mais recente"
     },
     "no_changes": "No changes found.",
     "video_not_supported": "Your browser does not support the video tag.",
     "audio_not_supported": "Your browser does not support the audio element.",
-    "time_traveling": "過去の保存地点 [{{hash}}] を閲覧中"
+    "time_traveling": "Visualizando ponto de salvamento anterior [{{hash}}]"
   },
   "settings": {
     "github": {
@@ -187,148 +187,148 @@
     }
   },
   "help": {
-    "title": "Help & Git Commands Cheatsheet",
-    "description": "Explanation of app operations and corresponding Git commands.",
+    "title": "Ajuda e Guia de comandos Git",
+    "description": "Explicação das operações do aplicativo e dos comandos Git correspondentes.",
     "table": {
-      "operation": "App Operation",
-      "command": "Git Command",
-      "explanation": "Explanation"
+      "operation": "Operação do aplicativo",
+      "command": "Comando Git",
+      "explanation": "Explicação"
     },
     "commands": {
       "save": {
-        "op": "Save",
+        "op": "Salvar",
         "cmd": "git commit",
-        "desc": "Records the current state."
+        "desc": "Grava o estado atual do trabalho."
       },
       "trial": {
-        "op": "Trial Route",
+        "op": "Rota de teste",
         "cmd": "git branch",
-        "desc": "Creates a new path (branch)."
+        "desc": "Cria uma nova rota separada (ramo)."
       },
       "switch": {
-        "op": "Switch",
+        "op": "Alternar",
         "cmd": "git checkout",
-        "desc": "Moves to a past or different path."
+        "desc": "Muda para uma versão anterior ou outro caminho."
       },
       "merge": {
-        "op": "Adopt to Main",
+        "op": "Adotar no principal",
         "cmd": "git merge",
-        "desc": "Merges a good idea into the main path."
+        "desc": "Mescla boas ideias com a rota principal (main)."
       },
       "search": {
-        "op": "Search Content",
+        "op": "Buscar no conteúdo",
         "cmd": "git grep",
-        "desc": "Searches through all past records."
+        "desc": "Busca conteúdo em todos os registros anteriores."
       },
       "sync": {
-        "op": "Sync",
+        "op": "Sincronizar",
         "cmd": "git push/pull",
-        "desc": "Syncs with the online vault."
+        "desc": "Troca dados com o cofre online."
       }
     },
-    "footer": "*Check the '?' next to each button for more detailed terms."
+    "footer": "※ Para obter uma explicação detalhada dos termos, consulte o botão de ajuda '?' ao lado de cada botão."
   },
   "tooltip": {
-    "root_management": "Called 'Branch' in Git. Manages different paths of work.",
-    "history_list": "Called 'Log' in Git. Check your save history.",
-    "save_button": "Called 'Commit' in Git. Save current state with a name."
+    "root_management": "Chamado de 'Branch' (ramo) no Git. Gerencia os diferentes caminhos do seu trabalho.",
+    "history_list": "Chamado de 'Log' no Git. Permite consultar o histórico de salvamentos.",
+    "save_button": "Chamado de 'Commit' no Git. Salva o estado atual com um nome."
   },
   "conflict": {
-    "no_conflicts": "No conflicts found.",
-    "commit_message": "Resolved conflicts during merge to main",
-    "title": "本番との競合を解決",
-    "description": "以下のファイルで本番（main）との内容がぶつかっています。どちらの内容を採用するか選んでください。",
-    "current_branch": "お試し側を採用",
-    "main_branch": "本番（main）を採用",
-    "resolve_and_merge": "解決を完了して本番に反映",
-    "abort": "中止して戻る",
-    "error_loading": "競合リストの取得に失敗しました。",
-    "error_resolving": "解決処理中にエラーが発生しました。",
-    "preview_title": "競合箇所を確認",
-    "select_to_preview": "ファイルを選択して中身を確認できます",
-    "loading_content": "ファイルを読み込み中..."
+    "no_conflicts": "Nenhum arquivo em conflito encontrado.",
+    "commit_message": "Resolução de conflitos ao adotar na rota principal",
+    "title": "Resolver conflitos com a principal (main)",
+    "description": "Os seguintes arquivos apresentam conflitos com o caminho principal (main). Escolha qual versão deseja conservar.",
+    "current_branch": "Adotar rota de teste",
+    "main_branch": "Adotar principal (main)",
+    "resolve_and_merge": "Resolver conflitos e adotar no principal",
+    "abort": "Cancelar e voltar",
+    "error_loading": "Falha ao carregar a lista de conflitos.",
+    "error_resolving": "Erro durante a resolução de conflitos.",
+    "preview_title": "Verificar conflito",
+    "select_to_preview": "Selecione um arquivo para verificar seu conteúdo e conflitos",
+    "loading_content": "Carregando conteúdo do arquivo..."
   },
   "branch": {
     "modal": {
-      "title": "Create New Route",
-      "desc": "Keep your current state and try new changes in a separate route.",
-      "input_label": "Route Name",
-      "placeholder": "e.g., test-design",
-      "input_tip": "* Alphanumeric characters and hyphens allowed.",
-      "submit": "Create",
-      "error_empty": "Please enter a route name.",
-      "error_invalid": "Route name can only contain alphanumeric characters, hyphens (-), and underscores (_)."
+      "title": "Criar nova rota",
+      "desc": "Você pode experimentar novas alterações em uma rota separada enquanto mantém o estado atual intacto.",
+      "input_label": "Nome da rota",
+      "placeholder": "ex. test-design",
+      "input_tip": "※ Apenas caracteres alfanuméricos e hífens são permitidos.",
+      "submit": "Criar",
+      "error_empty": "Insira um nome para a rota.",
+      "error_invalid": "O nome da rota só pode conter caracteres alfanuméricos, hífens (-) e sublinhados (_)."
     },
     "switch": {
-      "title": "Switch Route",
-      "desc": "Switching to another route will change the files to that route's state.",
-      "error_fetch": "Failed to get the list of routes."
+      "title": "Alternar rota",
+      "desc": "Ao alternar para outra rota, o estado dos arquivos mudará para o daquela rota.",
+      "error_fetch": "Falha ao obter a lista de rotas."
     },
     "delete": {
-      "confirm": "ルート「{{name}}」を本当に削除しますか？\n（このルートに保存されているお試し内容はすべて破棄されます）",
-      "success": "ルート「{{name}}」を削除しました。",
-      "tooltip": "このルートを削除"
+      "confirm": "Deseja realmente excluir a rota «{{name}}»?\n(Todas as alterações salvas nesta rota de teste serão descartadas)",
+      "success": "Rota «{{name}}» excluída com sucesso.",
+      "tooltip": "Excluir esta rota"
     }
   },
   "graph": {
     "empty": {
-      "no_folder_title": "No folder selected",
-      "no_folder_desc": "Select a project from \"Open Folder\" in the sidebar to see the history map here.",
-      "no_history_title": "No history found",
-      "no_history_desc": "Please initialize the repository to start saving history (commits) in the Time Machine."
+      "no_folder_title": "Nenhuma pasta selecionada",
+      "no_folder_desc": "Selecione «Abrir pasta» na barra lateral para carregar o projeto e ver o mapa aqui.",
+      "no_history_title": "Nenhum histórico encontrado",
+      "no_history_desc": "Inicialize o repositório para começar a gravar o histórico (commits) na máquina do tempo."
     },
     "init": {
-      "loading": "Initializing...",
-      "start": "Start Saving History"
+      "loading": "Inicializando...",
+      "start": "Iniciar gravação de histórico"
     },
     "search": {
-      "placeholder": "Search commits..."
+      "placeholder": "Buscar commits..."
     },
     "action": {
-      "zoom_out": "Zoom Out",
-      "zoom_in": "Zoom In",
-      "reset_camera": "Reset View"
+      "zoom_out": "Afastar",
+      "zoom_in": "Aproximar",
+      "reset_camera": "Redefinir visualização"
     }
   },
   "history": {
     "table": {
-      "message": "Message",
+      "message": "Mensagem",
       "hash": "Hash"
     }
   },
   "layout": {
     "alert": {
-      "no_folder_save": "Cannot save because no folder is open.",
-      "save_success": "State saved successfully.\nMessage: \"{{message}}\"",
-      "save_failed": "Failed to save: {{error}}",
-      "create_branch_success": "Created and switched to new route \"{{branchName}}\".",
-      "create_branch_failed": "Failed to create route: {{error}}",
-      "switch_branch_success": "Switched to route \"{{branchName}}\".",
-      "switch_branch_failed": "Failed to switch route: {{error}}",
-      "merge_success": "Adopted to main and switched route.",
-      "merge_failed": "Failed to adopt to main:\n{{error}}",
-      "save_local_only": "Saved locally (saving to Time Machine was skipped).",
-      "no_folder_to_save": "Cannot save because no folder is open. Please open a folder from the left sidebar.",
-      "resolve_conflict_success": "All conflicts resolved and adopted to main.",
-      "abort_merge_failed": "Failed to restore to original state:\n{{error}}"
+      "no_folder_save": "Não é possível salvar porque nenhuma pasta está aberta.",
+      "save_success": "Estado gravado com sucesso.\nMensagem: «{{message}}»",
+      "save_failed": "Falha ao salvar: {{error}}",
+      "create_branch_success": "Nova rota «{{branchName}}» criada e selecionada.",
+      "create_branch_failed": "Falha ao criar rota: {{error}}",
+      "switch_branch_success": "Alternado para a rota «{{branchName}}».",
+      "switch_branch_failed": "Falha ao alternar rota: {{error}}",
+      "merge_success": "Adotado com sucesso no principal (main) e alternada a rota.",
+      "merge_failed": "Falha ao adotar no principal:\n{{error}}",
+      "save_local_only": "Salvo localmente (a gravação na máquina do tempo foi ignorada).",
+      "no_folder_to_save": "Não é possível salvar porque nenhuma pasta está aberta. Abra uma pasta de projeto na barra lateral esquerda.",
+      "resolve_conflict_success": "Todos os conflitos foram resolvidos e adotados no principal.",
+      "abort_merge_failed": "Falha ao restaurar ao estado original:\n{{error}}"
     },
     "confirm": {
-      "merge": "Do you want to merge current changes into main?"
+      "merge": "Deseja mesclar e adotar as alterações atuais na rota principal (main)?"
     },
     "tooltip": {
-      "switch_route": "Switch Route",
-      "merge_to_main": "Adopt changes from this route to main",
-      "create_route": "Create New Route"
+      "switch_route": "Alternar rota",
+      "merge_to_main": "Adotar alterações desta rota no principal",
+      "create_route": "Criar nova rota"
     },
     "action": {
-      "new_route": "New Route",
-      "saving": "Saving..."
+      "new_route": "Nova rota",
+      "saving": "Salvando..."
     }
   },
   "tree": {
     "action": {
-      "unignore": "Keep in save",
-      "ignore": "Exclude from save"
+      "unignore": "Cancelar exclusão (manter no salvamento)",
+      "ignore": "Excluir do salvamento"
     }
   }
 }

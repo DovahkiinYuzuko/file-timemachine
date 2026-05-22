@@ -84,8 +84,8 @@ const HelpModal: FC<HelpModalProps> = ({ isOpen, onClose }) => {
                 return (
                   <tr key={item.key}>
                     <td>
-                      <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-                        <Icon size={18} style={{ color: 'var(--primary-color, #646cff)' }} aria-hidden="true" />
+                      <div className="git-command-op-container">
+                        <Icon size={18} className="git-command-icon" aria-hidden="true" />
                         {t(`help.commands.${item.key}.op`)}
                       </div>
                     </td>

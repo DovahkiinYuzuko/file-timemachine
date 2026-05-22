@@ -6,16 +6,16 @@
     "history_list": "รายการประวัติ",
     "preview": "ตัวอย่าง",
     "sidebar": {
-      "main_nav": "Main Navigation",
+      "main_nav": "การนำทางหลัก",
       "files": "ไฟล์",
       "history": "ประวัติ",
       "settings": "ตั้งค่า",
       "help": "ช่วยเหลือ"
     },
     "action": {
-      "close": "Close",
-      "retry": "Retry",
-      "cancel": "Cancel"
+      "close": "ปิด",
+      "retry": "ลองใหม่",
+      "cancel": "ยกเลิก"
     },
     "placeholder": {
       "file_tree": "(โครงสร้างไฟล์จะแสดงที่นี่)",
@@ -26,7 +26,7 @@
       "binary_file_preview_not_supported": "ไม่รองรับการดูตัวอย่างไฟล์ไบนารี",
       "unknown_file_type": "รูปแบบไฟล์ที่ไม่รู้จัก",
       "no_history": "ยังไม่มีประวัติ",
-      "file_too_large": "ファイルが大きすぎます (最大 5MB)"
+      "file_too_large": "ขนาดไฟล์ใหญ่เกินไป (สูงสุด 5MB)"
     },
     "error": {
       "failed_to_fetch_logs": "ดึงข้อมูลประวัติไม่สำเร็จ"
@@ -35,27 +35,27 @@
       "git_graph_description": "กราฟแสดงประวัติการคอมมิต Git",
       "file_preview": "ตัวอย่างของ {{path}}",
       "preview_of": "เนื้อหาของ {{path}}",
-      "show_help": "Show Help"
+      "show_help": "แสดงความช่วยเหลือ"
     },
     "graph_style": {
-      "tree": "Tree",
-      "metro": "Metro"
+      "tree": "ต้นไม้",
+      "metro": "แผนที่รถไฟใต้ดิน"
     },
     "git_mode": {
-      "label": "Git Mode",
-      "whitelist": "Whitelist",
-      "blacklist": "Blacklist",
-      "whitelist_short": "Whitelist",
-      "blacklist_short": "Blacklist",
-      "tooltip": "Click to toggle Git mode.",
-      "tooltip_whitelist": "Whitelist (Saves only the checked files)",
-      "tooltip_blacklist": "Blacklist (Saves all except checked files)"
+      "label": "โหมดการจัดการ",
+      "whitelist": "บันทึกเฉพาะไฟล์ที่เลือก",
+      "blacklist": "บันทึกทุกไฟล์ยกเว้นที่เลือก",
+      "whitelist_short": "ไวต์ลิสต์",
+      "blacklist_short": "แบล็กลิสต์",
+      "tooltip": "คลิกเพื่อสลับโหมดการจัดการ",
+      "tooltip_whitelist": "ไวต์ลิสต์ (บันทึกเฉพาะไฟล์ที่ทำเครื่องหมายเลือก)",
+      "tooltip_blacklist": "แบล็กลิสต์ (บันทึกทุกไฟล์ยกเว้นที่ทำเครื่องหมายเลือก)"
     },
-    "file_name": "File Name",
-    "file_size": "Size",
-    "last_modified": "Last Modified",
-    "loading": "Loading...",
-    "empty_directory": "No files found"
+    "file_name": "ชื่อไฟล์",
+    "file_size": "ขนาด",
+    "last_modified": "แก้ไขล่าสุด",
+    "loading": "กำลังโหลด...",
+    "empty_directory": "ไม่พบไฟล์ที่ต้องการ"
   },
   "preview": {
     "unknown_type": {
@@ -65,12 +65,12 @@
     "action": {
       "back_to_preview": "Back to Preview",
       "show_diff": "Show Diff",
-      "back_to_latest": "最新に戻る"
+      "back_to_latest": "กลับไปเวอร์ชันล่าสุด"
     },
     "no_changes": "No changes found.",
     "video_not_supported": "Your browser does not support the video tag.",
     "audio_not_supported": "Your browser does not support the audio element.",
-    "time_traveling": "過去の保存地点 [{{hash}}] を閲覧中"
+    "time_traveling": "กำลังดูจุดบันทึกในอดีต [{{hash}}]"
   },
   "settings": {
     "github": {
@@ -187,148 +187,148 @@
     }
   },
   "help": {
-    "title": "Help & Git Commands Cheatsheet",
-    "description": "Explanation of app operations and corresponding Git commands.",
+    "title": "ความช่วยเหลือ & คู่มืออ้างอิงด่วนคำสั่ง Git",
+    "description": "คำอธิบายการทำงานของแอปพลิเคชันและคำสั่ง Git ที่เกี่ยวข้อง",
     "table": {
-      "operation": "App Operation",
-      "command": "Git Command",
-      "explanation": "Explanation"
+      "operation": "การทำงานแอป",
+      "command": "คำสั่ง Git",
+      "explanation": "คำอธิบาย"
     },
     "commands": {
       "save": {
-        "op": "Save",
+        "op": "บันทึก",
         "cmd": "git commit",
-        "desc": "Records the current state."
+        "desc": "บันทึกสถานะการทำงานในปัจจุบัน"
       },
       "trial": {
-        "op": "Trial Route",
+        "op": "เส้นทางทดลอง",
         "cmd": "git branch",
-        "desc": "Creates a new path (branch)."
+        "desc": "สร้างเส้นทางใหม่ที่แยกออกจากกัน (กิ่ง/สาขา)"
       },
       "switch": {
-        "op": "Switch",
+        "op": "สลับกิ่ง",
         "cmd": "git checkout",
-        "desc": "Moves to a past or different path."
+        "desc": "เคลื่อนย้ายไปยังจุดบันทึกในอดีตหรือเส้นทางอื่น"
       },
       "merge": {
-        "op": "Adopt to Main",
+        "op": "ใช้ในสายหลัก",
         "cmd": "git merge",
-        "desc": "Merges a good idea into the main path."
+        "desc": "ผสานรวมไอเดียที่ดีเข้ากับเส้นทางหลัก (main)"
       },
       "search": {
-        "op": "Search Content",
+        "op": "ค้นหาในเนื้อหา",
         "cmd": "git grep",
-        "desc": "Searches through all past records."
+        "desc": "ค้นหาเนื้อหาภายในบันทึกประวัติทั้งหมดที่ผ่านมา"
       },
       "sync": {
-        "op": "Sync",
+        "op": "ซิงค์",
         "cmd": "git push/pull",
-        "desc": "Syncs with the online vault."
+        "desc": "แลกเปลี่ยนข้อมูลกับตู้เซฟออนไลน์"
       }
     },
-    "footer": "*Check the '?' next to each button for more detailed terms."
+    "footer": "※ หากต้องการคำอธิบายคำศัพท์โดยละเอียด ให้คลิกที่ปุ่มช่วยเหลือ '?' ข้างๆ แต่ละปุ่ม"
   },
   "tooltip": {
-    "root_management": "Called 'Branch' in Git. Manages different paths of work.",
-    "history_list": "Called 'Log' in Git. Check your save history.",
-    "save_button": "Called 'Commit' in Git. Save current state with a name."
+    "root_management": "ใน Git เรียกว่า 'Branch' (กิ่งก้าน/สาขา) ใช้สำหรับจัดการเส้นทางการทำงานที่แยกออกจากกัน",
+    "history_list": "ใน Git เรียกว่า 'Log' (บันทึก) คุณสามารถตรวจสอบประวัติการบันทึกที่ผ่านมาได้",
+    "save_button": "ใน Git เรียกว่า 'Commit' (การยืนยัน) บันทึกสถานะปัจจุบันโดยตั้งชื่อกำกับไว้"
   },
   "conflict": {
-    "no_conflicts": "No conflicts found.",
-    "commit_message": "Resolved conflicts during merge to main",
-    "title": "本番との競合を解決",
-    "description": "以下のファイルで本番（main）との内容がぶつかっています。どちらの内容を採用するか選んでください。",
-    "current_branch": "お試し側を採用",
-    "main_branch": "本番（main）を採用",
-    "resolve_and_merge": "解決を完了して本番に反映",
-    "abort": "中止して戻る",
-    "error_loading": "競合リストの取得に失敗しました。",
-    "error_resolving": "解決処理中にエラーが発生しました。",
-    "preview_title": "競合箇所を確認",
-    "select_to_preview": "ファイルを選択して中身を確認できます",
-    "loading_content": "ファイルを読み込み中..."
+    "no_conflicts": "ไม่มีไฟล์ที่ขัดแย้งในขณะนี้",
+    "commit_message": "แก้ไขข้อขัดแย้งขณะผสานเข้าสู่สายหลัก",
+    "title": "แก้ไขข้อขัดแย้งกับสายหลัก (main)",
+    "description": "ไฟล์ต่อไปนี้มีเนื้อหาที่ขัดแย้งกันกับสายหลัก (main) โปรดเลือกเนื้อหาจากฝั่งที่คุณต้องการเก็บรักษาไว้",
+    "current_branch": "ใช้จากเส้นทางทดลอง",
+    "main_branch": "ใช้จากสายหลัก (main)",
+    "resolve_and_merge": "แก้ไขเสร็จสิ้นและนำเข้าสู่สายหลัก",
+    "abort": "ยกเลิกและย้อนกลับ",
+    "error_loading": "โหลดรายการที่ขัดแย้งไม่สำเร็จ",
+    "error_resolving": "เกิดข้อผิดพลาดระหว่างดำเนินการแก้ไขข้อขัดแย้ง",
+    "preview_title": "ตรวจสอบจุดที่ขัดแย้ง",
+    "select_to_preview": "เลือกไฟล์เพื่อตรวจสอบเนื้อหาและส่วนที่เกิดข้อขัดแย้ง",
+    "loading_content": "กำลังโหลดเนื้อหาไฟล์..."
   },
   "branch": {
     "modal": {
-      "title": "Create New Route",
-      "desc": "Keep your current state and try new changes in a separate route.",
-      "input_label": "Route Name",
-      "placeholder": "e.g., test-design",
-      "input_tip": "* Alphanumeric characters and hyphens allowed.",
-      "submit": "Create",
-      "error_empty": "Please enter a route name.",
-      "error_invalid": "Route name can only contain alphanumeric characters, hyphens (-), and underscores (_)."
+      "title": "สร้างเส้นทางใหม่",
+      "desc": "คุณสามารถทดลองการเปลี่ยนแปลงใหม่ๆ ในเส้นทางแยกต่างหากได้โดยที่สถานะปัจจุบันจะไม่ได้รับผลกระทบ",
+      "input_label": "ชื่อเส้นทาง",
+      "placeholder": "เช่น. test-design",
+      "input_tip": "※ อนุญาตเฉพาะตัวอักษรภาษาอังกฤษ ตัวเลข และเครื่องหมายยติภังค์ (-) เท่านั้น",
+      "submit": "สร้าง",
+      "error_empty": "โปรดกรอกชื่อเส้นทาง",
+      "error_invalid": "ชื่อเส้นทางสามารถประกอบด้วยตัวอักษร ตัวเลข ไฮเฟน (-) และขีดล่าง (_) เท่านั้น"
     },
     "switch": {
-      "title": "Switch Route",
-      "desc": "Switching to another route will change the files to that route's state.",
-      "error_fetch": "Failed to get the list of routes."
+      "title": "สลับเส้นทาง",
+      "desc": "เมื่อสลับไปยังเส้นทางอื่น สถานะของไฟล์ต่างๆ จะเปลี่ยนไปตามสถานะของเส้นทางนั้นๆ",
+      "error_fetch": "ดึงข้อมูลรายการเส้นทางไม่สำเร็จ"
     },
     "delete": {
-      "confirm": "ルート「{{name}}」を本当に削除しますか？\n（このルートに保存されているお試し内容はすべて破棄されます）",
-      "success": "ルート「{{name}}」を削除しました。",
-      "tooltip": "このルートを削除"
+      "confirm": "คุณแน่ใจหรือไม่ว่าต้องการลบเส้นทาง «{{name}}»?\n(การเปลี่ยนแปลงทดลองทั้งหมดที่บันทึกไว้ในเส้นทางนี้จะถูกทำลาย)",
+      "success": "ลบเส้นทาง «{{name}}» สำเร็จแล้ว",
+      "tooltip": "ลบเส้นทางนี้"
     }
   },
   "graph": {
     "empty": {
-      "no_folder_title": "No folder selected",
-      "no_folder_desc": "Select a project from \"Open Folder\" in the sidebar to see the history map here.",
-      "no_history_title": "No history found",
-      "no_history_desc": "Please initialize the repository to start saving history (commits) in the Time Machine."
+      "no_folder_title": "ยังไม่ได้เลือกโฟลเดอร์",
+      "no_folder_desc": "เลือก \"เปิดโฟลเดอร์\" จากแถบด้านข้างเพื่อโหลดโปรเจกต์และแสดงแผนผังประวัติที่นี่",
+      "no_history_title": "ไม่พบประวัติการทำงาน",
+      "no_history_desc": "โปรดรันการเริ่มต้นคลังเก็บข้อมูล (repository initialization) เพื่อเริ่มบันทึกประวัติการเปลี่ยนแปลงในไทม์แมชชีน"
     },
     "init": {
-      "loading": "Initializing...",
-      "start": "Start Saving History"
+      "loading": "กำลังเริ่มต้น...",
+      "start": "เริ่มบันทึกประวัติ"
     },
     "search": {
-      "placeholder": "Search commits..."
+      "placeholder": "ค้นหาการบันทึก..."
     },
     "action": {
-      "zoom_out": "Zoom Out",
-      "zoom_in": "Zoom In",
-      "reset_camera": "Reset View"
+      "zoom_out": "ซูมออก",
+      "zoom_in": "ซูมเข้า",
+      "reset_camera": "รีเซ็ตมุมมอง"
     }
   },
   "history": {
     "table": {
-      "message": "Message",
-      "hash": "Hash"
+      "message": "ข้อความการบันทึก",
+      "hash": "ค่าแฮช"
     }
   },
   "layout": {
     "alert": {
-      "no_folder_save": "Cannot save because no folder is open.",
-      "save_success": "State saved successfully.\nMessage: \"{{message}}\"",
-      "save_failed": "Failed to save: {{error}}",
-      "create_branch_success": "Created and switched to new route \"{{branchName}}\".",
-      "create_branch_failed": "Failed to create route: {{error}}",
-      "switch_branch_success": "Switched to route \"{{branchName}}\".",
-      "switch_branch_failed": "Failed to switch route: {{error}}",
-      "merge_success": "Adopted to main and switched route.",
-      "merge_failed": "Failed to adopt to main:\n{{error}}",
-      "save_local_only": "Saved locally (saving to Time Machine was skipped).",
-      "no_folder_to_save": "Cannot save because no folder is open. Please open a folder from the left sidebar.",
-      "resolve_conflict_success": "All conflicts resolved and adopted to main.",
-      "abort_merge_failed": "Failed to restore to original state:\n{{error}}"
+      "no_folder_save": "ไม่สามารถบันทึกได้เนื่องจากไม่ได้เปิดโฟลเดอร์ไว้",
+      "save_success": "บันทึกสถานะเสร็จสิ้นสำเร็จ\nข้อความ: «{{message}}»",
+      "save_failed": "บันทึกไม่สำเร็จ: {{error}}",
+      "create_branch_success": "สร้างและสลับไปยังเส้นทางใหม่ «{{branchName}}» สำเร็จ",
+      "create_branch_failed": "สร้างเส้นทางไม่สำเร็จ: {{error}}",
+      "switch_branch_success": "สลับไปยังเส้นทาง «{{branchName}}» แล้ว",
+      "switch_branch_failed": "สลับเส้นทางไม่สำเร็จ: {{error}}",
+      "merge_success": "นำเข้าสู่สายหลัก (main) และสลับเส้นทางสำเร็จ",
+      "merge_failed": "นำเข้าสู่สายหลักไม่สำเร็จ:\n{{error}}",
+      "save_local_only": "บันทึกในเครื่องเฉพาะที่แล้ว (ข้ามการบันทึกลงในไทม์แมชชีน)",
+      "no_folder_to_save": "ไม่สามารถบันทึกได้เนื่องจากไม่ได้เปิดโฟลเดอร์ไว้ โปรดเปิดโฟลเดอร์โปรเจกต์จากแถบด้านข้างซ้าย",
+      "resolve_conflict_success": "แก้ไขข้อขัดแย้งทั้งหมดและนำเข้าสู่สายหลักสำเร็จแล้ว",
+      "abort_merge_failed": "กู้คืนสถานะเดิมไม่สำเร็จ:\n{{error}}"
     },
     "confirm": {
-      "merge": "Do you want to merge current changes into main?"
+      "merge": "คุณต้องการผสานและนำการเปลี่ยนแปลงปัจจุบันเข้าสู่สายหลัก (main) หรือไม่?"
     },
     "tooltip": {
-      "switch_route": "Switch Route",
-      "merge_to_main": "Adopt changes from this route to main",
-      "create_route": "Create New Route"
+      "switch_route": "สลับเส้นทาง",
+      "merge_to_main": "นำการเปลี่ยนแปลงของเส้นทางนี้เข้าสู่สายหลัก",
+      "create_route": "สร้างเส้นทางใหม่"
     },
     "action": {
-      "new_route": "New Route",
-      "saving": "Saving..."
+      "new_route": "เส้นทางใหม่",
+      "saving": "กำลังบันทึก..."
     }
   },
   "tree": {
     "action": {
-      "unignore": "Keep in save",
-      "ignore": "Exclude from save"
+      "unignore": "ยกเลิกการยกเว้น (รวมไว้ในการบันทึก)",
+      "ignore": "ยกเว้นจากการบันทึก"
     }
   }
 }

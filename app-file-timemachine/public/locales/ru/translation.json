@@ -65,12 +65,12 @@
     "action": {
       "back_to_preview": "Back to Preview",
       "show_diff": "Show Diff",
-      "back_to_latest": "最新に戻る"
+      "back_to_latest": "Вернуться к последней версии"
     },
     "no_changes": "No changes found.",
     "video_not_supported": "Your browser does not support the video tag.",
     "audio_not_supported": "Your browser does not support the audio element.",
-    "time_traveling": "過去の保存地点 [{{hash}}] を閲覧中"
+    "time_traveling": "Просмотр прошлой точки сохранения [{{hash}}]"
   },
   "settings": {
     "github": {
@@ -187,148 +187,148 @@
     }
   },
   "help": {
-    "title": "Help & Git Commands Cheatsheet",
-    "description": "Explanation of app operations and corresponding Git commands.",
+    "title": "Справка и шпаргалка по командам Git",
+    "description": "Объяснение операций приложения и соответствующих им команд Git.",
     "table": {
-      "operation": "App Operation",
-      "command": "Git Command",
-      "explanation": "Explanation"
+      "operation": "Операция приложения",
+      "command": "Команда Git",
+      "explanation": "Объяснение"
     },
     "commands": {
       "save": {
-        "op": "Save",
+        "op": "Сохранить",
         "cmd": "git commit",
-        "desc": "Records the current state."
+        "desc": "Записывает текущее состояние."
       },
       "trial": {
-        "op": "Trial Route",
+        "op": "Пробный маршрут",
         "cmd": "git branch",
-        "desc": "Creates a new path (branch)."
+        "desc": "Создает новый путь (ветку)."
       },
       "switch": {
-        "op": "Switch",
+        "op": "Переключить",
         "cmd": "git checkout",
-        "desc": "Moves to a past or different path."
+        "desc": "Переход к прошлому или другому пути."
       },
       "merge": {
-        "op": "Adopt to Main",
+        "op": "Принять в основную",
         "cmd": "git merge",
-        "desc": "Merges a good idea into the main path."
+        "desc": "Слияние хорошей идеи с основным путем."
       },
       "search": {
-        "op": "Search Content",
+        "op": "Искать в содержимом",
         "cmd": "git grep",
-        "desc": "Searches through all past records."
+        "desc": "Поиск по всем прошлым записям."
       },
       "sync": {
-        "op": "Sync",
+        "op": "Синхронизация",
         "cmd": "git push/pull",
-        "desc": "Syncs with the online vault."
+        "desc": "Обмен данными с онлайн-сейфом."
       }
     },
-    "footer": "*Check the '?' next to each button for more detailed terms."
+    "footer": "*Для получения подробных терминов нажмите «?» рядом с каждой кнопкой."
   },
   "tooltip": {
-    "root_management": "Called 'Branch' in Git. Manages different paths of work.",
-    "history_list": "Called 'Log' in Git. Check your save history.",
-    "save_button": "Called 'Commit' in Git. Save current state with a name."
+    "root_management": "В Git это называется «Ветка» (Branch). Управляет разветвлениями работы.",
+    "history_list": "В Git это называется «Лог» (Log). Проверяет историю сохранений.",
+    "save_button": "В Git это называется «Коммит» (Commit). Сохраняет текущее состояние с именем."
   },
   "conflict": {
-    "no_conflicts": "No conflicts found.",
-    "commit_message": "Resolved conflicts during merge to main",
-    "title": "本番との競合を解決",
-    "description": "以下のファイルで本番（main）との内容がぶつかっています。どちらの内容を採用するか選んでください。",
-    "current_branch": "お試し側を採用",
-    "main_branch": "本番（main）を採用",
-    "resolve_and_merge": "解決を完了して本番に反映",
-    "abort": "中止して戻る",
-    "error_loading": "競合リストの取得に失敗しました。",
-    "error_resolving": "解決処理中にエラーが発生しました。",
-    "preview_title": "競合箇所を確認",
-    "select_to_preview": "ファイルを選択して中身を確認できます",
-    "loading_content": "ファイルを読み込み中..."
+    "no_conflicts": "Конфликтующих файлов не найдено.",
+    "commit_message": "Разрешение конфликтов при принятии в основную ветку",
+    "title": "Разрешение конфликтов с основной веткой",
+    "description": "Содержимое следующих файлов конфликтует с основной веткой (main). Выберите, какое содержимое принять.",
+    "current_branch": "Принять пробную версию",
+    "main_branch": "Принять основную (main)",
+    "resolve_and_merge": "Завершить разрешение и применить",
+    "abort": "Отменить и вернуться",
+    "error_loading": "Не удалось получить список конфликтов.",
+    "error_resolving": "Произошла ошибка при разрешении конфликтов.",
+    "preview_title": "Просмотр конфликтов",
+    "select_to_preview": "Выберите файл для просмотра содержимого",
+    "loading_content": "Загрузка содержимого файла..."
   },
   "branch": {
     "modal": {
-      "title": "Create New Route",
-      "desc": "Keep your current state and try new changes in a separate route.",
-      "input_label": "Route Name",
-      "placeholder": "e.g., test-design",
-      "input_tip": "* Alphanumeric characters and hyphens allowed.",
-      "submit": "Create",
-      "error_empty": "Please enter a route name.",
-      "error_invalid": "Route name can only contain alphanumeric characters, hyphens (-), and underscores (_)."
+      "title": "Создать новый маршрут",
+      "desc": "Сохраняя текущее состояние, вы можете опробовать новые изменения в отдельном маршруте.",
+      "input_label": "Имя маршрута",
+      "placeholder": "например, test-design",
+      "input_tip": "* Разрешены буквы, цифры и дефисы.",
+      "submit": "Создать",
+      "error_empty": "Пожалуйста, введите имя маршрута.",
+      "error_invalid": "Имя маршрута может содержать только латинские буквы, цифры, дефис (-) и подчеркивание (_)."
     },
     "switch": {
-      "title": "Switch Route",
-      "desc": "Switching to another route will change the files to that route's state.",
-      "error_fetch": "Failed to get the list of routes."
+      "title": "Переключение маршрута",
+      "desc": "При переключении на другой маршрут файлы примут состояние этого маршрута.",
+      "error_fetch": "Не удалось получить список маршрутов."
     },
     "delete": {
-      "confirm": "ルート「{{name}}」を本当に削除しますか？\n（このルートに保存されているお試し内容はすべて破棄されます）",
-      "success": "ルート「{{name}}」を削除しました。",
-      "tooltip": "このルートを削除"
+      "confirm": "Вы действительно хотите удалить маршрут «{{name}}»?\n(Все пробные данные, сохраненные в этом маршруте, будут безвозвратно удалены)",
+      "success": "Маршрут «{{name}}» успешно удален.",
+      "tooltip": "Удалить этот маршрут"
     }
   },
   "graph": {
     "empty": {
-      "no_folder_title": "No folder selected",
-      "no_folder_desc": "Select a project from \"Open Folder\" in the sidebar to see the history map here.",
-      "no_history_title": "No history found",
-      "no_history_desc": "Please initialize the repository to start saving history (commits) in the Time Machine."
+      "no_folder_title": "Папка не выбрана",
+      "no_folder_desc": "Выберите проект с помощью кнопки «Открыть папку» на боковой панели, чтобы увидеть карту истории.",
+      "no_history_title": "История не найдена",
+      "no_history_desc": "Пожалуйста, инициализируйте репозиторий, чтобы начать запись истории в машине времени файлов."
     },
     "init": {
-      "loading": "Initializing...",
-      "start": "Start Saving History"
+      "loading": "Инициализация...",
+      "start": "Начать запись истории"
     },
     "search": {
-      "placeholder": "Search commits..."
+      "placeholder": "Поиск коммитов..."
     },
     "action": {
-      "zoom_out": "Zoom Out",
-      "zoom_in": "Zoom In",
-      "reset_camera": "Reset View"
+      "zoom_out": "Уменьшить",
+      "zoom_in": "Увеличить",
+      "reset_camera": "Сбросить вид"
     }
   },
   "history": {
     "table": {
-      "message": "Message",
-      "hash": "Hash"
+      "message": "Сообщение",
+      "hash": "Хэш"
     }
   },
   "layout": {
     "alert": {
-      "no_folder_save": "Cannot save because no folder is open.",
-      "save_success": "State saved successfully.\nMessage: \"{{message}}\"",
-      "save_failed": "Failed to save: {{error}}",
-      "create_branch_success": "Created and switched to new route \"{{branchName}}\".",
-      "create_branch_failed": "Failed to create route: {{error}}",
-      "switch_branch_success": "Switched to route \"{{branchName}}\".",
-      "switch_branch_failed": "Failed to switch route: {{error}}",
-      "merge_success": "Adopted to main and switched route.",
-      "merge_failed": "Failed to adopt to main:\n{{error}}",
-      "save_local_only": "Saved locally (saving to Time Machine was skipped).",
-      "no_folder_to_save": "Cannot save because no folder is open. Please open a folder from the left sidebar.",
-      "resolve_conflict_success": "All conflicts resolved and adopted to main.",
-      "abort_merge_failed": "Failed to restore to original state:\n{{error}}"
+      "no_folder_save": "Невозможно сохранить, так как папка не открыта.",
+      "save_success": "Состояние успешно сохранено.\nСообщение: «{{message}}»",
+      "save_failed": "Ошибка сохранения: {{error}}",
+      "create_branch_success": "Создан новый маршрут «{{branchName}}», выполнен переход.",
+      "create_branch_failed": "Не удалось создать маршрут: {{error}}",
+      "switch_branch_success": "Маршрут переключен на «{{branchName}}».",
+      "switch_branch_failed": "Не удалось переключить маршрут: {{error}}",
+      "merge_success": "Успешно принято в основную ветку, маршрут переключен.",
+      "merge_failed": "Не удалось принять в основную ветку:\n{{error}}",
+      "save_local_only": "Сохранено локально (запись в машину времени пропущена).",
+      "no_folder_to_save": "Невозможно сохранить, так как папка не открыта. Откройте папку на боковой панели.",
+      "resolve_conflict_success": "Все конфликты разрешены и приняты в основную ветку.",
+      "abort_merge_failed": "Не удалось восстановить исходное состояние:\n{{error}}"
     },
     "confirm": {
-      "merge": "Do you want to merge current changes into main?"
+      "merge": "Вы действительно хотите слить текущие изменения с основной веткой (main)?"
     },
     "tooltip": {
-      "switch_route": "Switch Route",
-      "merge_to_main": "Adopt changes from this route to main",
-      "create_route": "Create New Route"
+      "switch_route": "Переключить маршрут",
+      "merge_to_main": "Принять изменения этого маршрута в основную",
+      "create_route": "Создать новый маршрут"
     },
     "action": {
-      "new_route": "New Route",
-      "saving": "Saving..."
+      "new_route": "Новый маршрут",
+      "saving": "Сохранение..."
     }
   },
   "tree": {
     "action": {
-      "unignore": "Keep in save",
-      "ignore": "Exclude from save"
+      "unignore": "Включить в сохранение",
+      "ignore": "Исключить из сохранения"
     }
   }
 }

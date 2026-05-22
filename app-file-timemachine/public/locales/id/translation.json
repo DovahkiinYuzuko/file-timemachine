@@ -6,16 +6,16 @@
     "history_list": "Daftar Riwayat",
     "preview": "Pratinjau",
     "sidebar": {
-      "main_nav": "Main Navigation",
+      "main_nav": "Navigasi Utama",
       "files": "File",
       "history": "Riwayat",
       "settings": "Pengaturan",
       "help": "Bantuan"
     },
     "action": {
-      "close": "Close",
-      "retry": "Retry",
-      "cancel": "Cancel"
+      "close": "Tutup",
+      "retry": "Coba Lagi",
+      "cancel": "Batal"
     },
     "placeholder": {
       "file_tree": "(Pohon file akan ditampilkan di sini)",
@@ -26,7 +26,7 @@
       "binary_file_preview_not_supported": "Pratinjau file biner tidak didukung",
       "unknown_file_type": "Format file tidak dikenal",
       "no_history": "Belum ada riwayat",
-      "file_too_large": "ファイルが大きすぎます (最大 5MB)"
+      "file_too_large": "Ukuran file terlalu besar (maks. 5MB)"
     },
     "error": {
       "failed_to_fetch_logs": "Gagal mengambil riwayat"
@@ -35,27 +35,27 @@
       "git_graph_description": "Grafik visualisasi riwayat commit Git",
       "file_preview": "Pratinjau dari {{path}}",
       "preview_of": "Konten dari {{path}}",
-      "show_help": "Show Help"
+      "show_help": "Tampilkan Bantuan"
     },
     "graph_style": {
-      "tree": "Tree",
-      "metro": "Metro"
+      "tree": "Pohon",
+      "metro": "Peta Metro"
     },
     "git_mode": {
-      "label": "Git Mode",
-      "whitelist": "Whitelist",
-      "blacklist": "Blacklist",
+      "label": "Mode Kelola",
+      "whitelist": "Simpan file yang dicentang saja",
+      "blacklist": "Simpan semua kecuali yang dicentang",
       "whitelist_short": "Whitelist",
       "blacklist_short": "Blacklist",
-      "tooltip": "Click to toggle Git mode.",
-      "tooltip_whitelist": "Whitelist (Saves only the checked files)",
-      "tooltip_blacklist": "Blacklist (Saves all except checked files)"
+      "tooltip": "Klik untuk mengganti mode kelola",
+      "tooltip_whitelist": "Whitelist (Menyimpan hanya file yang dicentang)",
+      "tooltip_blacklist": "Blacklist (Menyimpan semua file kecuali yang dicentang)"
     },
-    "file_name": "File Name",
-    "file_size": "Size",
-    "last_modified": "Last Modified",
-    "loading": "Loading...",
-    "empty_directory": "No files found"
+    "file_name": "Nama File",
+    "file_size": "Ukuran",
+    "last_modified": "Terakhir Diubah",
+    "loading": "Memuat...",
+    "empty_directory": "File tidak ditemukan"
   },
   "preview": {
     "unknown_type": {
@@ -65,12 +65,12 @@
     "action": {
       "back_to_preview": "Back to Preview",
       "show_diff": "Show Diff",
-      "back_to_latest": "最新に戻る"
+      "back_to_latest": "Kembali ke Terbaru"
     },
     "no_changes": "No changes found.",
     "video_not_supported": "Your browser does not support the video tag.",
     "audio_not_supported": "Your browser does not support the audio element.",
-    "time_traveling": "過去の保存地点 [{{hash}}] を閲覧中"
+    "time_traveling": "Melihat titik penyimpanan masa lalu [{{hash}}]"
   },
   "settings": {
     "github": {
@@ -187,148 +187,148 @@
     }
   },
   "help": {
-    "title": "Help & Git Commands Cheatsheet",
-    "description": "Explanation of app operations and corresponding Git commands.",
+    "title": "Bantuan & Panduan Cepat Perintah Git",
+    "description": "Penjelasan tentang pengoperasian aplikasi dan perintah Git yang sesuai.",
     "table": {
-      "operation": "App Operation",
-      "command": "Git Command",
-      "explanation": "Explanation"
+      "operation": "Pengoperasian Aplikasi",
+      "command": "Perintah Git",
+      "explanation": "Penjelasan"
     },
     "commands": {
       "save": {
-        "op": "Save",
+        "op": "Simpan",
         "cmd": "git commit",
-        "desc": "Records the current state."
+        "desc": "Merekam kondisi pekerjaan saat ini."
       },
       "trial": {
-        "op": "Trial Route",
+        "op": "Rute Percobaan",
         "cmd": "git branch",
-        "desc": "Creates a new path (branch)."
+        "desc": "Membuat jalur cabang baru yang terpisah."
       },
       "switch": {
-        "op": "Switch",
+        "op": "Beralih",
         "cmd": "git checkout",
-        "desc": "Moves to a past or different path."
+        "desc": "Berpindah ke masa lalu atau jalur lain."
       },
       "merge": {
-        "op": "Adopt to Main",
+        "op": "Terapkan ke Utama",
         "cmd": "git merge",
-        "desc": "Merges a good idea into the main path."
+        "desc": "Menggabungkan ide bagus ke jalur utama (main)."
       },
       "search": {
-        "op": "Search Content",
+        "op": "Cari di Konten",
         "cmd": "git grep",
-        "desc": "Searches through all past records."
+        "desc": "Mencari konten di semua rekaman masa lalu."
       },
       "sync": {
-        "op": "Sync",
+        "op": "Sinkronisasi",
         "cmd": "git push/pull",
-        "desc": "Syncs with the online vault."
+        "desc": "Bertukar data dengan brankas online."
       }
     },
-    "footer": "*Check the '?' next to each button for more detailed terms."
+    "footer": "※ Untuk penjelasan istilah yang lebih mendalam, silakan klik tombol bantuan '?' di samping setiap tombol."
   },
   "tooltip": {
-    "root_management": "Called 'Branch' in Git. Manages different paths of work.",
-    "history_list": "Called 'Log' in Git. Check your save history.",
-    "save_button": "Called 'Commit' in Git. Save current state with a name."
+    "root_management": "Disebut 'Branch' (cabang) di Git. Mengelola jalur kerja yang berbeda.",
+    "history_list": "Disebut 'Log' di Git. Memungkinkan Anda memeriksa riwayat penyimpanan.",
+    "save_button": "Disebut 'Commit' di Git. Menyimpan status saat ini dengan memberi nama."
   },
   "conflict": {
-    "no_conflicts": "No conflicts found.",
-    "commit_message": "Resolved conflicts during merge to main",
-    "title": "本番との競合を解決",
-    "description": "以下のファイルで本番（main）との内容がぶつかっています。どちらの内容を採用するか選んでください。",
-    "current_branch": "お試し側を採用",
-    "main_branch": "本番（main）を採用",
-    "resolve_and_merge": "解決を完了して本番に反映",
-    "abort": "中止して戻る",
-    "error_loading": "競合リストの取得に失敗しました。",
-    "error_resolving": "解決処理中にエラーが発生しました。",
-    "preview_title": "競合箇所を確認",
-    "select_to_preview": "ファイルを選択して中身を確認できます",
-    "loading_content": "ファイルを読み込み中..."
+    "no_conflicts": "Tidak ada file yang konflik saat ini.",
+    "commit_message": "Menyelesaikan konflik saat digabungkan ke jalur utama",
+    "title": "Selesaikan Konflik dengan Utama (main)",
+    "description": "File berikut bertabrakan dengan isi jalur utama (main). Pilih konten dari sisi mana yang ingin Anda pertahankan.",
+    "current_branch": "Gunakan Rute Percobaan",
+    "main_branch": "Gunakan Utama (main)",
+    "resolve_and_merge": "Selesaikan Konflik dan Gabungkan",
+    "abort": "Batalkan dan Kembali",
+    "error_loading": "Gagal memuat daftar konflik.",
+    "error_resolving": "Terjadi kesalahan saat menyelesaikan konflik.",
+    "preview_title": "Periksa Bagian Konflik",
+    "select_to_preview": "Pilih file untuk memeriksa isi dan bagian yang konflik",
+    "loading_content": "Memuat isi file..."
   },
   "branch": {
     "modal": {
-      "title": "Create New Route",
-      "desc": "Keep your current state and try new changes in a separate route.",
-      "input_label": "Route Name",
-      "placeholder": "e.g., test-design",
-      "input_tip": "* Alphanumeric characters and hyphens allowed.",
-      "submit": "Create",
-      "error_empty": "Please enter a route name.",
-      "error_invalid": "Route name can only contain alphanumeric characters, hyphens (-), and underscores (_)."
+      "title": "Buat Rute Baru",
+      "desc": "Anda dapat mencoba perubahan baru di rute terpisah sambil menjaga status saat ini tetap utuh.",
+      "input_label": "Nama Rute",
+      "placeholder": "misal. test-design",
+      "input_tip": "※ Hanya karakter alfanumerik dan tanda hubung yang diperbolehkan.",
+      "submit": "Buat",
+      "error_empty": "Silakan masukkan nama rute.",
+      "error_invalid": "Nama rute hanya boleh berisi karakter alfanumerik, tanda hubung (-), dan garis bawah (_)."
     },
     "switch": {
-      "title": "Switch Route",
-      "desc": "Switching to another route will change the files to that route's state.",
-      "error_fetch": "Failed to get the list of routes."
+      "title": "Alihkan Rute",
+      "desc": "Beralih ke rute lain akan mengubah keadaan file menjadi keadaan rute tersebut.",
+      "error_fetch": "Gagal mendapatkan daftar rute."
     },
     "delete": {
-      "confirm": "ルート「{{name}}」を本当に削除しますか？\n（このルートに保存されているお試し内容はすべて破棄されます）",
-      "success": "ルート「{{name}}」を削除しました。",
-      "tooltip": "このルートを削除"
+      "confirm": "Apakah Anda yakin ingin menghapus rute «{{name}}»?\n(Semua perubahan uji coba yang disimpan di rute ini akan dibuang)",
+      "success": "Rute «{{name}}» telah dihapus.",
+      "tooltip": "Hapus rute ini"
     }
   },
   "graph": {
     "empty": {
-      "no_folder_title": "No folder selected",
-      "no_folder_desc": "Select a project from \"Open Folder\" in the sidebar to see the history map here.",
-      "no_history_title": "No history found",
-      "no_history_desc": "Please initialize the repository to start saving history (commits) in the Time Machine."
+      "no_folder_title": "Folder belum dipilih",
+      "no_folder_desc": "Pilih \"Buka Folder\" di bilah samping untuk memuat proyek dan melihat peta riwayat di sini.",
+      "no_history_title": "Riwayat tidak ditemukan",
+      "no_history_desc": "Silakan jalankan inisialisasi repositori untuk mulai menyimpan riwayat (commits) di mesin waktu."
     },
     "init": {
-      "loading": "Initializing...",
-      "start": "Start Saving History"
+      "loading": "Menginisialisasi...",
+      "start": "Mulai Menyimpan Riwayat"
     },
     "search": {
-      "placeholder": "Search commits..."
+      "placeholder": "Cari commits..."
     },
     "action": {
-      "zoom_out": "Zoom Out",
-      "zoom_in": "Zoom In",
-      "reset_camera": "Reset View"
+      "zoom_out": "Perkecil",
+      "zoom_in": "Perbesar",
+      "reset_camera": "Atur Ulang Tampilan"
     }
   },
   "history": {
     "table": {
-      "message": "Message",
+      "message": "Pesan",
       "hash": "Hash"
     }
   },
   "layout": {
     "alert": {
-      "no_folder_save": "Cannot save because no folder is open.",
-      "save_success": "State saved successfully.\nMessage: \"{{message}}\"",
-      "save_failed": "Failed to save: {{error}}",
-      "create_branch_success": "Created and switched to new route \"{{branchName}}\".",
-      "create_branch_failed": "Failed to create route: {{error}}",
-      "switch_branch_success": "Switched to route \"{{branchName}}\".",
-      "switch_branch_failed": "Failed to switch route: {{error}}",
-      "merge_success": "Adopted to main and switched route.",
-      "merge_failed": "Failed to adopt to main:\n{{error}}",
-      "save_local_only": "Saved locally (saving to Time Machine was skipped).",
-      "no_folder_to_save": "Cannot save because no folder is open. Please open a folder from the left sidebar.",
-      "resolve_conflict_success": "All conflicts resolved and adopted to main.",
-      "abort_merge_failed": "Failed to restore to original state:\n{{error}}"
+      "no_folder_save": "Tidak dapat menyimpan karena tidak ada folder yang terbuka.",
+      "save_success": "Kondisi berhasil disimpan.\nPesan: «{{message}}»",
+      "save_failed": "Gagal menyimpan: {{error}}",
+      "create_branch_success": "Berhasil membuat dan beralih ke rute baru «{{branchName}}».",
+      "create_branch_failed": "Gagal membuat rute: {{error}}",
+      "switch_branch_success": "Beralih ke rute «{{branchName}}».",
+      "switch_branch_failed": "Gagal beralih rute: {{error}}",
+      "merge_success": "Berhasil diterapkan ke utama (main) dan beralih rute.",
+      "merge_failed": "Gagal menerapkan ke utama:\n{{error}}",
+      "save_local_only": "Disimpan secara lokal (penyimpanan ke mesin waktu dilewati).",
+      "no_folder_to_save": "Tidak dapat menyimpan karena tidak ada folder yang terbuka. Silakan buka folder proyek dari bilah samping kiri.",
+      "resolve_conflict_success": "Semua konflik berhasil diselesaikan dan diterapkan ke utama.",
+      "abort_merge_failed": "Gagal mengembalikan ke kondisi semula:\n{{error}}"
     },
     "confirm": {
-      "merge": "Do you want to merge current changes into main?"
+      "merge": "Apakah Anda ingin menggabungkan dan menerapkan perubahan saat ini ke utama (main)?"
     },
     "tooltip": {
-      "switch_route": "Switch Route",
-      "merge_to_main": "Adopt changes from this route to main",
-      "create_route": "Create New Route"
+      "switch_route": "Alihkan Rute",
+      "merge_to_main": "Terapkan perubahan dari rute ini ke utama",
+      "create_route": "Buat Rute Baru"
     },
     "action": {
-      "new_route": "New Route",
-      "saving": "Saving..."
+      "new_route": "Rute Baru",
+      "saving": "Menyimpan..."
     }
   },
   "tree": {
     "action": {
-      "unignore": "Keep in save",
-      "ignore": "Exclude from save"
+      "unignore": "Batal kecualikan (simpan dalam simpanan)",
+      "ignore": "Kecualikan dari simpanan"
     }
   }
 }

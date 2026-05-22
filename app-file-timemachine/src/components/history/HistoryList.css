@@ -24,6 +24,7 @@
   position: sticky;
   top: 0;
   z-index: 1;
+  white-space: nowrap; /* ヘッダー文字の改行を防止 */
 }
 
 .history-table tr:hover {
@@ -33,6 +34,7 @@
 .history-hash {
   font-family: monospace;
   color: var(--text-muted, #586069);
+  white-space: nowrap; /* ハッシュ値自体の改行を防止 */
 }
 
 .history-message {

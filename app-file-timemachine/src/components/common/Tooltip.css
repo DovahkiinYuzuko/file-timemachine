@@ -1,8 +1,10 @@
+/* app-file-timemachine/src/components/common/Tooltip.css */
 .tooltip-container {
   display: inline-flex;
   align-items: center;
   position: relative;
   vertical-align: middle;
+  margin-left: 6px; /* タイトルとの密着を防ぐ上品な余白 */
 }
 
 .tooltip-trigger {
@@ -18,6 +20,8 @@
   opacity: 0.7;
   transition: opacity 0.2s ease, outline 0.2s ease;
   border-radius: 50%;
+  width: 16px;  /* トリガーサイズを安定化 */
+  height: 16px; /* トリガーサイズを安定化 */
 }
 
 .tooltip-trigger:hover,
@@ -33,23 +37,23 @@
 /* Base tooltip layout */
 .tooltip-content {
   position: absolute;
-  background-color: var(--bg-color-dark, #1a1a1a);
-  color: var(--text-color, #e0e0e0);
+  background-color: var(--tooltip-bg, #ffffff);
+  color: var(--tooltip-color, #0f172a);
   padding: 0.5rem 0.75rem;
   border-radius: 6px;
   font-size: 0.8rem;
   line-height: 1.5;
   white-space: normal;
   width: max-content;
-  max-width: 250px;
+  max-width: 260px;
   word-break: break-word;
   pointer-events: none;
   opacity: 0;
   visibility: hidden;
-  transition: opacity 0.2s ease, visibility 0.2s ease, transform 0.2s ease;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
-  z-index: 10000; /* Ensure it is above any panel resize handles or preview views */
-  border: 1px solid var(--border-color, #333);
+  transition: opacity 0.2s cubic-bezier(0.4, 0, 0.2, 1), visibility 0.2s ease, transform 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: var(--tooltip-shadow, 0 6px 16px rgba(0, 0, 0, 0.15));
+  z-index: 10000;
+  border: 1px solid var(--tooltip-border, #cbd5e1);
 }
 
 .tooltip-content::after,
@@ -61,144 +65,236 @@
   border-color: transparent;
 }
 
-/* === TOP POSITION === */
+/* === POSITION: TOP === */
 .tooltip-top {
   bottom: 100%;
   left: 50%;
-  transform: translateX(-50%) translateY(-8px);
+  transform: translateX(-50%) translateY(0px);
 }
-
 .tooltip-top::after {
   top: 100%;
   left: 50%;
   transform: translateX(-50%);
-  border-top-color: var(--border-color, #333);
+  border-top-color: var(--tooltip-border, #cbd5e1);
 }
-
 .tooltip-top::before {
   top: 100%;
   left: 50%;
   transform: translateX(-50%) translateY(-1px);
   border-width: 5px;
-  border-top-color: var(--bg-color-dark, #1a1a1a);
+  border-top-color: var(--tooltip-bg, #ffffff);
   z-index: 1;
 }
 
-/* === BOTTOM POSITION === */
+/* TOP + align-start (左端揃え・はみ出し防止) */
+.tooltip-top.tooltip-align-start {
+  left: 0;
+  transform: translateY(0px);
+}
+.tooltip-top.tooltip-align-start::after,
+.tooltip-top.tooltip-align-start::before {
+  left: 8px;
+  transform: none;
+}
+
+/* TOP + align-end (右端揃え・はみ出し防止) */
+.tooltip-top.tooltip-align-end {
+  left: auto;
+  right: 0;
+  transform: translateY(0px);
+}
+.tooltip-top.tooltip-align-end::after,
+.tooltip-top.tooltip-align-end::before {
+  left: auto;
+  right: 8px;
+  transform: none;
+}
+
+
+/* === POSITION: BOTTOM === */
 .tooltip-bottom {
   top: 100%;
   left: 50%;
-  transform: translateX(-50%) translateY(8px);
+  transform: translateX(-50%) translateY(0px);
 }
-
 .tooltip-bottom::after {
   bottom: 100%;
   left: 50%;
   transform: translateX(-50%);
-  border-bottom-color: var(--border-color, #333);
+  border-bottom-color: var(--tooltip-border, #cbd5e1);
 }
-
 .tooltip-bottom::before {
   bottom: 100%;
   left: 50%;
   transform: translateX(-50%) translateY(1px);
   border-width: 5px;
-  border-bottom-color: var(--bg-color-dark, #1a1a1a);
+  border-bottom-color: var(--tooltip-bg, #ffffff);
   z-index: 1;
 }
 
-/* === LEFT POSITION === */
+/* BOTTOM + align-start (左端揃え・はみ出し防止) */
+.tooltip-bottom.tooltip-align-start {
+  left: 0;
+  transform: translateY(0px);
+}
+.tooltip-bottom.tooltip-align-start::after,
+.tooltip-bottom.tooltip-align-start::before {
+  left: 8px;
+  transform: none;
+}
+
+/* BOTTOM + align-end (右端揃え・はみ出し防止) */
+.tooltip-bottom.tooltip-align-end {
+  left: auto;
+  right: 0;
+  transform: translateY(0px);
+}
+.tooltip-bottom.tooltip-align-end::after,
+.tooltip-bottom.tooltip-align-end::before {
+  left: auto;
+  right: 8px;
+  transform: none;
+}
+
+
+/* === POSITION: LEFT === */
 .tooltip-left {
   right: 100%;
   top: 50%;
-  transform: translateY(-50%) translateX(-8px);
+  transform: translateY(-50%) translateX(0px);
 }
-
 .tooltip-left::after {
   left: 100%;
   top: 50%;
   transform: translateY(-50%);
-  border-left-color: var(--border-color, #333);
+  border-left-color: var(--tooltip-border, #cbd5e1);
 }
-
 .tooltip-left::before {
   left: 100%;
   top: 50%;
   transform: translateY(-50%) translateX(-1px);
   border-width: 5px;
-  border-left-color: var(--bg-color-dark, #1a1a1a);
+  border-left-color: var(--tooltip-bg, #ffffff);
   z-index: 1;
 }
 
-/* === RIGHT POSITION === */
+/* LEFT + align-start */
+.tooltip-left.tooltip-align-start {
+  top: 0;
+  transform: translateX(0px);
+}
+.tooltip-left.tooltip-align-start::after,
+.tooltip-left.tooltip-align-start::before {
+  top: 8px;
+  transform: none;
+}
+
+/* LEFT + align-end */
+.tooltip-left.tooltip-align-end {
+  top: auto;
+  bottom: 0;
+  transform: translateX(0px);
+}
+.tooltip-left.tooltip-align-end::after,
+.tooltip-left.tooltip-align-end::before {
+  top: auto;
+  bottom: 8px;
+  transform: none;
+}
+
+
+/* === POSITION: RIGHT === */
 .tooltip-right {
   left: 100%;
   top: 50%;
-  transform: translateY(-50%) translateX(8px);
+  transform: translateY(-50%) translateX(0px);
 }
-
 .tooltip-right::after {
   right: 100%;
   top: 50%;
   transform: translateY(-50%);
-  border-right-color: var(--border-color, #333);
+  border-right-color: var(--tooltip-border, #cbd5e1);
 }
-
 .tooltip-right::before {
   right: 100%;
   top: 50%;
   transform: translateY(-50%) translateX(1px);
   border-width: 5px;
-  border-right-color: var(--bg-color-dark, #1a1a1a);
+  border-right-color: var(--tooltip-bg, #ffffff);
   z-index: 1;
 }
 
-/* Hover/Focus States showing tooltips */
-.tooltip-container:hover .tooltip-top {
-  opacity: 1;
-  visibility: visible;
-  transform: translateX(-50%) translateY(-4px);
+/* RIGHT + align-start */
+.tooltip-right.tooltip-align-start {
+  top: 0;
+  transform: translateX(0px);
+}
+.tooltip-right.tooltip-align-start::after,
+.tooltip-right.tooltip-align-start::before {
+  top: 8px;
+  transform: none;
 }
 
-.tooltip-container:hover .tooltip-bottom {
-  opacity: 1;
-  visibility: visible;
-  transform: translateX(-50%) translateY(4px);
+/* RIGHT + align-end */
+.tooltip-right.tooltip-align-end {
+  top: auto;
+  bottom: 0;
+  transform: translateX(0px);
+}
+.tooltip-right.tooltip-align-end::after,
+.tooltip-right.tooltip-align-end::before {
+  top: auto;
+  bottom: 8px;
+  transform: none;
 }
 
-.tooltip-container:hover .tooltip-left {
+
+/* === VISIBLE STATES (クラスベースのアニメーション) === */
+.tooltip-content.visible {
   opacity: 1;
   visibility: visible;
-  transform: translateY(-50%) translateX(-4px);
 }
 
-.tooltip-container:hover .tooltip-right {
-  opacity: 1;
-  visibility: visible;
-  transform: translateY(-50%) translateX(4px);
+/* TOP の浮き上がり */
+.tooltip-top.tooltip-align-center.visible {
+  transform: translateX(-50%) translateY(-6px);
+}
+.tooltip-top.tooltip-align-start.visible {
+  transform: translateY(-6px);
+}
+.tooltip-top.tooltip-align-end.visible {
+  transform: translateY(-6px);
 }
 
-/* Keyboard accessibility triggers */
-.tooltip-trigger:focus-visible + .tooltip-top {
-  opacity: 1;
-  visibility: visible;
-  transform: translateX(-50%) translateY(-4px);
+/* BOTTOM の浮き下がり */
+.tooltip-bottom.tooltip-align-center.visible {
+  transform: translateX(-50%) translateY(6px);
+}
+.tooltip-bottom.tooltip-align-start.visible {
+  transform: translateY(6px);
+}
+.tooltip-bottom.tooltip-align-end.visible {
+  transform: translateY(6px);
 }
 
-.tooltip-trigger:focus-visible + .tooltip-bottom {
-  opacity: 1;
-  visibility: visible;
-  transform: translateX(-50%) translateY(4px);
+/* LEFT の浮き出し */
+.tooltip-left.tooltip-align-center.visible {
+  transform: translateY(-50%) translateX(-6px);
+}
+.tooltip-left.tooltip-align-start.visible {
+  transform: translateX(-6px);
+}
+.tooltip-left.tooltip-align-end.visible {
+  transform: translateX(-6px);
 }
 
-.tooltip-trigger:focus-visible + .tooltip-left {
-  opacity: 1;
-  visibility: visible;
-  transform: translateY(-50%) translateX(-4px);
+/* RIGHT の浮き出し */
+.tooltip-right.tooltip-align-center.visible {
+  transform: translateY(-50%) translateX(6px);
 }
-
-.tooltip-trigger:focus-visible + .tooltip-right {
-  opacity: 1;
-  visibility: visible;
-  transform: translateY(-50%) translateX(4px);
+.tooltip-right.tooltip-align-start.visible {
+  transform: translateX(6px);
+}
+.tooltip-right.tooltip-align-end.visible {
+  transform: translateX(6px);
 }

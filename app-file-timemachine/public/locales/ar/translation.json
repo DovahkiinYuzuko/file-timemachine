@@ -6,16 +6,16 @@
     "history_list": "قائمة السجل",
     "preview": "معاينة",
     "sidebar": {
-      "main_nav": "Main Navigation",
+      "main_nav": "التنقل الرئيسي",
       "files": "الملفات",
       "history": "السجل",
       "settings": "الإعدادات",
       "help": "مساعدة"
     },
     "action": {
-      "close": "Close",
-      "retry": "Retry",
-      "cancel": "Cancel"
+      "close": "إغلاق",
+      "retry": "إعادة المحاولة",
+      "cancel": "إلغاء"
     },
     "placeholder": {
       "file_tree": "(ستظهر شجرة الملفات هنا)",
@@ -26,7 +26,7 @@
       "binary_file_preview_not_supported": "معاينة الملفات الثنائية غير مدعومة",
       "unknown_file_type": "تنسيق ملف غير معروف",
       "no_history": "لا يوجد سجل بعد",
-      "file_too_large": "ファイルが大きすぎます (最大 5MB)"
+      "file_too_large": "الملف كبير جداً (الحد الأقصى 5 ميجابايت)"
     },
     "error": {
       "failed_to_fetch_logs": "فشل في جلب السجل"
@@ -35,27 +35,27 @@
       "git_graph_description": "رسم بياني لتصور سجل التزام Git",
       "file_preview": "معاينة {{path}}",
       "preview_of": "محتوى {{path}}",
-      "show_help": "Show Help"
+      "show_help": "عرض المساعدة"
     },
     "graph_style": {
-      "tree": "Tree",
-      "metro": "Metro"
+      "tree": "شجرة",
+      "metro": "خريطة مترو"
     },
     "git_mode": {
-      "label": "Git Mode",
-      "whitelist": "Whitelist",
-      "blacklist": "Blacklist",
-      "whitelist_short": "Whitelist",
-      "blacklist_short": "Blacklist",
-      "tooltip": "Click to toggle Git mode.",
-      "tooltip_whitelist": "Whitelist (Saves only the checked files)",
-      "tooltip_blacklist": "Blacklist (Saves all except checked files)"
+      "label": "وضع الإدارة",
+      "whitelist": "حفظ الملفات المحددة فقط",
+      "blacklist": "حفظ جميع الملفات عدا المحددة",
+      "whitelist_short": "القائمة البيضاء",
+      "blacklist_short": "القائمة السوداء",
+      "tooltip": "انقر للتبديل بين أوضاع الإدارة",
+      "tooltip_whitelist": "القائمة البيضاء (يتم حفظ الملفات المحددة فقط)",
+      "tooltip_blacklist": "القائمة السوداء (يتم حفظ جميع الملفات عدا المحددة)"
     },
-    "file_name": "File Name",
-    "file_size": "Size",
-    "last_modified": "Last Modified",
-    "loading": "Loading...",
-    "empty_directory": "No files found"
+    "file_name": "اسم الملف",
+    "file_size": "الحجم",
+    "last_modified": "آخر تعديل",
+    "loading": "جاري التحميل...",
+    "empty_directory": "لم يتم العثور على ملفات"
   },
   "preview": {
     "unknown_type": {
@@ -65,12 +65,12 @@
     "action": {
       "back_to_preview": "Back to Preview",
       "show_diff": "Show Diff",
-      "back_to_latest": "最新に戻る"
+      "back_to_latest": "العودة إلى الأحدث"
     },
     "no_changes": "No changes found.",
     "video_not_supported": "Your browser does not support the video tag.",
     "audio_not_supported": "Your browser does not support the audio element.",
-    "time_traveling": "過去の保存地点 [{{hash}}] を閲覧中"
+    "time_traveling": "عرض نقطة الحفظ السابقة [{{hash}}]"
   },
   "settings": {
     "github": {
@@ -187,148 +187,148 @@
     }
   },
   "help": {
-    "title": "Help & Git Commands Cheatsheet",
-    "description": "Explanation of app operations and corresponding Git commands.",
+    "title": "المساعدة ودليل أوامر Git السريع",
+    "description": "شرح لعمليات التطبيق وأوامر Git المقابلة لها.",
     "table": {
-      "operation": "App Operation",
-      "command": "Git Command",
-      "explanation": "Explanation"
+      "operation": "عملية التطبيق",
+      "command": "أمر Git",
+      "explanation": "الشرح"
     },
     "commands": {
       "save": {
-        "op": "Save",
+        "op": "حفظ",
         "cmd": "git commit",
-        "desc": "Records the current state."
+        "desc": "يسجل الحالة الحالية للعمل."
       },
       "trial": {
-        "op": "Trial Route",
+        "op": "مسار تجريبي",
         "cmd": "git branch",
-        "desc": "Creates a new path (branch)."
+        "desc": "ينشئ مساراً منفصلاً جديداً (فرعاً)."
       },
       "switch": {
-        "op": "Switch",
+        "op": "تبديل",
         "cmd": "git checkout",
-        "desc": "Moves to a past or different path."
+        "desc": "ينتقل إلى مسار سابق أو مسار آخر."
       },
       "merge": {
-        "op": "Adopt to Main",
+        "op": "اعتماد في الرئيسي",
         "cmd": "git merge",
-        "desc": "Merges a good idea into the main path."
+        "desc": "يدمج التغييرات الجيدة في المسار الرئيسي."
       },
       "search": {
-        "op": "Search Content",
+        "op": "بحث في المحتوى",
         "cmd": "git grep",
-        "desc": "Searches through all past records."
+        "desc": "يبحث في جميع السجلات السابقة."
       },
       "sync": {
-        "op": "Sync",
+        "op": "مزامنة",
         "cmd": "git push/pull",
-        "desc": "Syncs with the online vault."
+        "desc": "يتبادل البيانات مع الخزنة عبر الإنترنت."
       }
     },
-    "footer": "*Check the '?' next to each button for more detailed terms."
+    "footer": "※ لمزيد من التفاصيل حول المصطلحات، انقر على زر المساعدة «؟» المجاور لكل زر."
   },
   "tooltip": {
-    "root_management": "Called 'Branch' in Git. Manages different paths of work.",
-    "history_list": "Called 'Log' in Git. Check your save history.",
-    "save_button": "Called 'Commit' in Git. Save current state with a name."
+    "root_management": "تُسمى في Git بـ 'Branch' (الفرع). تدير مسارات العمل المنفصلة.",
+    "history_list": "تُسمى في Git بـ 'Log' (السجل). يمكنك من خلالها مراجعة سجل الحفظ الخاص بك.",
+    "save_button": "تُسمى في Git بـ 'Commit' (التزام). تحفظ الحالة الحالية باسم محدد."
   },
   "conflict": {
-    "no_conflicts": "No conflicts found.",
-    "commit_message": "Resolved conflicts during merge to main",
-    "title": "本番との競合を解決",
-    "description": "以下のファイルで本番（main）との内容がぶつかっています。どちらの内容を採用するか選んでください。",
-    "current_branch": "お試し側を採用",
-    "main_branch": "本番（main）を採用",
-    "resolve_and_merge": "解決を完了して本番に反映",
-    "abort": "中止して戻る",
-    "error_loading": "競合リストの取得に失敗しました。",
-    "error_resolving": "解決処理中にエラーが発生しました。",
-    "preview_title": "競合箇所を確認",
-    "select_to_preview": "ファイルを選択して中身を確認できます",
-    "loading_content": "ファイルを読み込み中..."
+    "no_conflicts": "لا توجد ملفات متعارضة حالياً.",
+    "commit_message": "حل التعارضات أثناء الدمج في الرئيسي",
+    "title": "حل التعارض مع الرئيسي (main)",
+    "description": "تتعارض محتويات الملفات التالية مع المسار الرئيسي (main). يرجى اختيار المحتوى الذي ترغب في اعتماده.",
+    "current_branch": "اعتماد المسار التجريبي",
+    "main_branch": "اعتماد الرئيسي (main)",
+    "resolve_and_merge": "إكمال الحل والدمج في الرئيسي",
+    "abort": "إلغاء والعودة",
+    "error_loading": "فشل في تحميل قائمة التعارضات.",
+    "error_resolving": "حدث خطأ أثناء محاولة حل التعارض.",
+    "preview_title": "معاينة التعارض",
+    "select_to_preview": "اختر ملفاً لمعاينة محتوياته وحل التعارض",
+    "loading_content": "جاري تحميل محتوى الملف..."
   },
   "branch": {
     "modal": {
-      "title": "Create New Route",
-      "desc": "Keep your current state and try new changes in a separate route.",
-      "input_label": "Route Name",
-      "placeholder": "e.g., test-design",
-      "input_tip": "* Alphanumeric characters and hyphens allowed.",
-      "submit": "Create",
-      "error_empty": "Please enter a route name.",
-      "error_invalid": "Route name can only contain alphanumeric characters, hyphens (-), and underscores (_)."
+      "title": "إنشاء مسار جديد",
+      "desc": "يمكنك تجربة تغييرات جديدة في مسار منفصل مع الحفاظ على الحالة الحالية دون تغيير.",
+      "input_label": "اسم المسار",
+      "placeholder": "مثال: test-design",
+      "input_tip": "※ يسمح فقط بالأحرف الإنجليزية والأرقام والواصلة (-).",
+      "submit": "إنشاء",
+      "error_empty": "يرجى إدخال اسم المسار.",
+      "error_invalid": "يجب أن يحتوي اسم المسار على أحرف إنجليزية وأرقام وواصلة (-) وشرطة سفلية (_) فقط."
     },
     "switch": {
-      "title": "Switch Route",
-      "desc": "Switching to another route will change the files to that route's state.",
-      "error_fetch": "Failed to get the list of routes."
+      "title": "تبديل المسار",
+      "desc": "عند التبديل إلى مسار آخر، ستتغير حالة الملفات لتطابق حالة ذلك المسار.",
+      "error_fetch": "فشل في جلب قائمة المسارات."
     },
     "delete": {
-      "confirm": "ルート「{{name}}」を本当に削除しますか？\n（このルートに保存されているお試し内容はすべて破棄されます）",
-      "success": "ルート「{{name}}」を削除しました。",
-      "tooltip": "このルートを削除"
+      "confirm": "هل أنت متأكد من رغبتك في حذف المسار «{{name}}»؟\n(سيتم التخلص من كافة التعديلات المحفوظة في هذا المسار التجريبي)",
+      "success": "تم حذف المسار «{{name}}» بنجاح.",
+      "tooltip": "حذف هذا المسار"
     }
   },
   "graph": {
     "empty": {
-      "no_folder_title": "No folder selected",
-      "no_folder_desc": "Select a project from \"Open Folder\" in the sidebar to see the history map here.",
-      "no_history_title": "No history found",
-      "no_history_desc": "Please initialize the repository to start saving history (commits) in the Time Machine."
+      "no_folder_title": "لم يتم اختيار مجلد",
+      "no_folder_desc": "يرجى اختيار مشروع من خلال زر «فتح مجلد» في الشريط الجانبي لعرض مخطط السجل هنا.",
+      "no_history_title": "لم يتم العثور على سجلات",
+      "no_history_desc": "يرجى تهيئة المستودع لبدء تسجيل تاريخ الحفظ (الالتزامات) في آلة الزمن."
     },
     "init": {
-      "loading": "Initializing...",
-      "start": "Start Saving History"
+      "loading": "جاري التهيئة...",
+      "start": "بدء تسجيل السجل"
     },
     "search": {
-      "placeholder": "Search commits..."
+      "placeholder": "البحث في الالتزامات..."
     },
     "action": {
-      "zoom_out": "Zoom Out",
-      "zoom_in": "Zoom In",
-      "reset_camera": "Reset View"
+      "zoom_out": "تصغير",
+      "zoom_in": "تكبير",
+      "reset_camera": "إعادة تعيين الرؤية"
     }
   },
   "history": {
     "table": {
-      "message": "Message",
-      "hash": "Hash"
+      "message": "رسالة الالتزام",
+      "hash": "مفتاح الهاش"
     }
   },
   "layout": {
     "alert": {
-      "no_folder_save": "Cannot save because no folder is open.",
-      "save_success": "State saved successfully.\nMessage: \"{{message}}\"",
-      "save_failed": "Failed to save: {{error}}",
-      "create_branch_success": "Created and switched to new route \"{{branchName}}\".",
-      "create_branch_failed": "Failed to create route: {{error}}",
-      "switch_branch_success": "Switched to route \"{{branchName}}\".",
-      "switch_branch_failed": "Failed to switch route: {{error}}",
-      "merge_success": "Adopted to main and switched route.",
-      "merge_failed": "Failed to adopt to main:\n{{error}}",
-      "save_local_only": "Saved locally (saving to Time Machine was skipped).",
-      "no_folder_to_save": "Cannot save because no folder is open. Please open a folder from the left sidebar.",
-      "resolve_conflict_success": "All conflicts resolved and adopted to main.",
-      "abort_merge_failed": "Failed to restore to original state:\n{{error}}"
+      "no_folder_save": "لا يمكن الحفظ لعدم فتح أي مجلد.",
+      "save_success": "تم تسجيل الحالة بنجاح.\nالرسالة: «{{message}}»",
+      "save_failed": "فشل الحفظ: {{error}}",
+      "create_branch_success": "تم إنشاء المسار التجريبي الجديد «{{branchName}}» والتبديل إليه بنجاح.",
+      "create_branch_failed": "فشل إنشاء المسار: {{error}}",
+      "switch_branch_success": "تم التبديل إلى المسار «{{branchName}}» بنجاح.",
+      "switch_branch_failed": "فشل التبديل إلى المسار: {{error}}",
+      "merge_success": "تم الاعتماد والدمج في الرئيسي (main) وتبديل المسار بنجاح.",
+      "merge_failed": "فشل الاعتماد والدمج في الرئيسي:\n{{error}}",
+      "save_local_only": "تم الحفظ محلياً فقط (تم تخطي التسجيل في آلة الزمن).",
+      "no_folder_to_save": "لا يمكن الحفظ لعدم فتح أي مجلد. يرجى فتح مجلد مشروع من الشريط الجانبي الأيسر.",
+      "resolve_conflict_success": "تم حل جميع التعارضات والدمج في الرئيسي بنجاح.",
+      "abort_merge_failed": "فشل في استعادة الحالة الأصلية:\n{{error}}"
     },
     "confirm": {
-      "merge": "Do you want to merge current changes into main?"
+      "merge": "هل ترغب في دمج التغييرات الحالية واعتمادها في الرئيسي (main)؟"
     },
     "tooltip": {
-      "switch_route": "Switch Route",
-      "merge_to_main": "Adopt changes from this route to main",
-      "create_route": "Create New Route"
+      "switch_route": "تبديل المسار",
+      "merge_to_main": "اعتماد تغييرات هذا المسار في الرئيسي",
+      "create_route": "إنشاء مسار جديد"
     },
     "action": {
-      "new_route": "New Route",
-      "saving": "Saving..."
+      "new_route": "مسار جديد",
+      "saving": "جاري الحفظ..."
     }
   },
   "tree": {
     "action": {
-      "unignore": "Keep in save",
-      "ignore": "Exclude from save"
+      "unignore": "إلغاء الاستبعاد (تضمين في الحفظ)",
+      "ignore": "استبعاد من الحفظ"
     }
   }
 }

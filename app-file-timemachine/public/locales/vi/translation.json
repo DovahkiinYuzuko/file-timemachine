@@ -6,16 +6,16 @@
     "history_list": "Danh sách lịch sử",
     "preview": "Xem trước",
     "sidebar": {
-      "main_nav": "Main Navigation",
+      "main_nav": "Điều hướng chính",
       "files": "Tệp",
       "history": "Lịch sử",
       "settings": "Cài đặt",
       "help": "Trợ giúp"
     },
     "action": {
-      "close": "Close",
-      "retry": "Retry",
-      "cancel": "Cancel"
+      "close": "Đóng",
+      "retry": "Thử lại",
+      "cancel": "Hủy bỏ"
     },
     "placeholder": {
       "file_tree": "(Cây tệp sẽ hiển thị ở đây)",
@@ -26,7 +26,7 @@
       "binary_file_preview_not_supported": "Không hỗ trợ xem trước tệp nhị phân",
       "unknown_file_type": "Định dạng tệp không xác định",
       "no_history": "Chưa có lịch sử",
-      "file_too_large": "ファイルが大きすぎます (最大 5MB)"
+      "file_too_large": "Kích thước tệp quá lớn (tối đa 5MB)"
     },
     "error": {
       "failed_to_fetch_logs": "Lấy lịch sử thất bại"
@@ -35,27 +35,27 @@
       "git_graph_description": "Biểu đồ trực quan hóa lịch sử commit Git",
       "file_preview": "Xem trước của {{path}}",
       "preview_of": "Nội dung của {{path}}",
-      "show_help": "Show Help"
+      "show_help": "Hiển thị trợ giúp"
     },
     "graph_style": {
-      "tree": "Tree",
-      "metro": "Metro"
+      "tree": "Cây",
+      "metro": "Bản đồ tàu điện"
     },
     "git_mode": {
-      "label": "Git Mode",
-      "whitelist": "Whitelist",
-      "blacklist": "Blacklist",
-      "whitelist_short": "Whitelist",
-      "blacklist_short": "Blacklist",
-      "tooltip": "Click to toggle Git mode.",
-      "tooltip_whitelist": "Whitelist (Saves only the checked files)",
-      "tooltip_blacklist": "Blacklist (Saves all except checked files)"
+      "label": "Chế độ quản lý",
+      "whitelist": "Chỉ lưu những tệp đã chọn",
+      "blacklist": "Lưu tất cả trừ những tệp đã chọn",
+      "whitelist_short": "Danh sách trắng",
+      "blacklist_short": "Danh sách đen",
+      "tooltip": "Nhấp để chuyển đổi chế độ quản lý",
+      "tooltip_whitelist": "Danh sách trắng (chỉ lưu những tệp đã chọn)",
+      "tooltip_blacklist": "Danh sách đen (lưu tất cả các tệp ngoại trừ những tệp đã chọn)"
     },
-    "file_name": "File Name",
-    "file_size": "Size",
-    "last_modified": "Last Modified",
-    "loading": "Loading...",
-    "empty_directory": "No files found"
+    "file_name": "Tên tệp",
+    "file_size": "Kích thước",
+    "last_modified": "Sửa đổi cuối",
+    "loading": "Đang tải...",
+    "empty_directory": "Không tìm thấy tệp nào"
   },
   "preview": {
     "unknown_type": {
@@ -65,12 +65,12 @@
     "action": {
       "back_to_preview": "Back to Preview",
       "show_diff": "Show Diff",
-      "back_to_latest": "最新に戻る"
+      "back_to_latest": "Trở về phiên bản mới nhất"
     },
     "no_changes": "No changes found.",
     "video_not_supported": "Your browser does not support the video tag.",
     "audio_not_supported": "Your browser does not support the audio element.",
-    "time_traveling": "過去の保存地点 [{{hash}}] を閲覧中"
+    "time_traveling": "Đang xem điểm lưu trữ trong quá khứ [{{hash}}]"
   },
   "settings": {
     "github": {
@@ -187,148 +187,148 @@
     }
   },
   "help": {
-    "title": "Help & Git Commands Cheatsheet",
-    "description": "Explanation of app operations and corresponding Git commands.",
+    "title": "Trợ giúp & Bảng tra cứu nhanh lệnh Git",
+    "description": "Giải thích về các thao tác trong ứng dụng và các lệnh Git tương ứng.",
     "table": {
-      "operation": "App Operation",
-      "command": "Git Command",
-      "explanation": "Explanation"
+      "operation": "Thao tác ứng dụng",
+      "command": "Lệnh Git",
+      "explanation": "Giải thích"
     },
     "commands": {
       "save": {
-        "op": "Save",
+        "op": "Lưu trữ",
         "cmd": "git commit",
-        "desc": "Records the current state."
+        "desc": "Ghi lại trạng thái công việc hiện tại."
       },
       "trial": {
-        "op": "Trial Route",
+        "op": "Nhánh thử nghiệm",
         "cmd": "git branch",
-        "desc": "Creates a new path (branch)."
+        "desc": "Tạo một đường lối thay đổi mới riêng biệt (nhánh)."
       },
       "switch": {
-        "op": "Switch",
+        "op": "Chuyển nhánh",
         "cmd": "git checkout",
-        "desc": "Moves to a past or different path."
+        "desc": "Di chuyển về quá khứ hoặc một nhánh công việc khác."
       },
       "merge": {
-        "op": "Adopt to Main",
+        "op": "Áp dụng vào chính",
         "cmd": "git merge",
-        "desc": "Merges a good idea into the main path."
+        "desc": "Hợp nhất các ý tưởng tốt vào nhánh chính (main)."
       },
       "search": {
-        "op": "Search Content",
+        "op": "Tìm trong nội dung",
         "cmd": "git grep",
-        "desc": "Searches through all past records."
+        "desc": "Tìm kiếm nội dung trong toàn bộ lịch sử đã lưu."
       },
       "sync": {
-        "op": "Sync",
+        "op": "Đồng bộ",
         "cmd": "git push/pull",
-        "desc": "Syncs with the online vault."
+        "desc": "Trao đổi dữ liệu với két an toàn trực tuyến."
       }
     },
-    "footer": "*Check the '?' next to each button for more detailed terms."
+    "footer": "※ Để biết giải thích thuật ngữ chi tiết hơn, hãy nhấp vào nút trợ giúp '?' bên cạnh mỗi nút bấm."
   },
   "tooltip": {
-    "root_management": "Called 'Branch' in Git. Manages different paths of work.",
-    "history_list": "Called 'Log' in Git. Check your save history.",
-    "save_button": "Called 'Commit' in Git. Save current state with a name."
+    "root_management": "Trong Git được gọi là 'Branch' (nhánh). Quản lý các nhánh công việc khác nhau.",
+    "history_list": "Trong Git được gọi là 'Log' (nhật ký). Giúp kiểm tra lịch sử lưu trữ của bạn.",
+    "save_button": "Trong Git được gọi là 'Commit' (ghi nhận). Lưu trạng thái hiện tại kèm theo tên gọi."
   },
   "conflict": {
-    "no_conflicts": "No conflicts found.",
-    "commit_message": "Resolved conflicts during merge to main",
-    "title": "本番との競合を解決",
-    "description": "以下のファイルで本番（main）との内容がぶつかっています。どちらの内容を採用するか選んでください。",
-    "current_branch": "お試し側を採用",
-    "main_branch": "本番（main）を採用",
-    "resolve_and_merge": "解決を完了して本番に反映",
-    "abort": "中止して戻る",
-    "error_loading": "競合リストの取得に失敗しました。",
-    "error_resolving": "解決処理中にエラーが発生しました。",
-    "preview_title": "競合箇所を確認",
-    "select_to_preview": "ファイルを選択して中身を確認できます",
-    "loading_content": "ファイルを読み込み中..."
+    "no_conflicts": "Không có tệp nào bị xung đột tại thời điểm này.",
+    "commit_message": "Giải quyết xung đột trong quá trình áp dụng vào nhánh chính",
+    "title": "Giải quyết xung đột với nhánh chính (main)",
+    "description": "Các tệp sau đây bị xung đột nội dung với nhánh chính (main). Vui lòng chọn giữ lại nội dung bên phía nào.",
+    "current_branch": "Áp dụng phía thử nghiệm",
+    "main_branch": "Áp dụng phía chính (main)",
+    "resolve_and_merge": "Hoàn tất giải quyết và áp dụng vào chính",
+    "abort": "Hủy bỏ và quay lại",
+    "error_loading": "Tải danh sách xung đột thất bại.",
+    "error_resolving": "Gặp lỗi trong quá trình giải quyết xung đột.",
+    "preview_title": "Kiểm tra điểm xung đột",
+    "select_to_preview": "Chọn tệp để kiểm tra nội dung và phần bị xung đột",
+    "loading_content": "Đang tải nội dung tệp..."
   },
   "branch": {
     "modal": {
-      "title": "Create New Route",
-      "desc": "Keep your current state and try new changes in a separate route.",
-      "input_label": "Route Name",
-      "placeholder": "e.g., test-design",
-      "input_tip": "* Alphanumeric characters and hyphens allowed.",
-      "submit": "Create",
-      "error_empty": "Please enter a route name.",
-      "error_invalid": "Route name can only contain alphanumeric characters, hyphens (-), and underscores (_)."
+      "title": "Tạo nhánh mới",
+      "desc": "Bạn có thể thử nghiệm các thay đổi mới trong một nhánh riêng biệt trong khi vẫn giữ nguyên trạng thái hiện tại.",
+      "input_label": "Tên nhánh",
+      "placeholder": "vd. test-design",
+      "input_tip": "※ Chỉ cho phép nhập các ký tự chữ cái tiếng Anh, chữ số và dấu gạch nối.",
+      "submit": "Tạo mới",
+      "error_empty": "Vui lòng nhập tên nhánh.",
+      "error_invalid": "Tên nhánh chỉ được chứa các ký tự chữ, số, dấu gạch nối (-) và dấu gạch dưới (_)."
     },
     "switch": {
-      "title": "Switch Route",
-      "desc": "Switching to another route will change the files to that route's state.",
-      "error_fetch": "Failed to get the list of routes."
+      "title": "Chuyển nhánh",
+      "desc": "Khi chuyển sang nhánh khác, trạng thái của các tệp sẽ thay đổi theo trạng thái của nhánh đó.",
+      "error_fetch": "Tải danh sách nhánh thất bại."
     },
     "delete": {
-      "confirm": "ルート「{{name}}」を本当に削除しますか？\n（このルートに保存されているお試し内容はすべて破棄されます）",
-      "success": "ルート「{{name}}」を削除しました。",
-      "tooltip": "このルートを削除"
+      "confirm": "Bạn có chắc chắn muốn xóa nhánh «{{name}}» không?\n(Tất cả các thay đổi thử nghiệm được lưu trên nhánh này sẽ bị hủy bỏ)",
+      "success": "Đã xóa nhánh «{{name}}» thành công.",
+      "tooltip": "Xóa nhánh này"
     }
   },
   "graph": {
     "empty": {
-      "no_folder_title": "No folder selected",
-      "no_folder_desc": "Select a project from \"Open Folder\" in the sidebar to see the history map here.",
-      "no_history_title": "No history found",
-      "no_history_desc": "Please initialize the repository to start saving history (commits) in the Time Machine."
+      "no_folder_title": "Chưa chọn thư mục",
+      "no_folder_desc": "Chọn \"Mở Thư Mục\" trên thanh bên để tải dự án và hiển thị bản đồ lịch sử tại đây.",
+      "no_history_title": "Không tìm thấy lịch sử",
+      "no_history_desc": "Vui lòng chạy khởi tạo kho lưu trữ (repository initialization) để bắt đầu ghi lại lịch sử (commits) trong cỗ máy thời gian."
     },
     "init": {
-      "loading": "Initializing...",
-      "start": "Start Saving History"
+      "loading": "Đang khởi tạo...",
+      "start": "Bắt đầu ghi lịch sử"
     },
     "search": {
-      "placeholder": "Search commits..."
+      "placeholder": "Tìm kiếm commits..."
     },
     "action": {
-      "zoom_out": "Zoom Out",
-      "zoom_in": "Zoom In",
-      "reset_camera": "Reset View"
+      "zoom_out": "Thu nhỏ",
+      "zoom_in": "Phóng to",
+      "reset_camera": "Đặt lại góc nhìn"
     }
   },
   "history": {
     "table": {
-      "message": "Message",
-      "hash": "Hash"
+      "message": "Thông điệp",
+      "hash": "Mã hash"
     }
   },
   "layout": {
     "alert": {
-      "no_folder_save": "Cannot save because no folder is open.",
-      "save_success": "State saved successfully.\nMessage: \"{{message}}\"",
-      "save_failed": "Failed to save: {{error}}",
-      "create_branch_success": "Created and switched to new route \"{{branchName}}\".",
-      "create_branch_failed": "Failed to create route: {{error}}",
-      "switch_branch_success": "Switched to route \"{{branchName}}\".",
-      "switch_branch_failed": "Failed to switch route: {{error}}",
-      "merge_success": "Adopted to main and switched route.",
-      "merge_failed": "Failed to adopt to main:\n{{error}}",
-      "save_local_only": "Saved locally (saving to Time Machine was skipped).",
-      "no_folder_to_save": "Cannot save because no folder is open. Please open a folder from the left sidebar.",
-      "resolve_conflict_success": "All conflicts resolved and adopted to main.",
-      "abort_merge_failed": "Failed to restore to original state:\n{{error}}"
+      "no_folder_save": "Không thể lưu vì không có thư mục nào đang mở.",
+      "save_success": "Đã ghi nhận trạng thái thành công.\nThông điệp: «{{message}}»",
+      "save_failed": "Lưu thất bại: {{error}}",
+      "create_branch_success": "Đã tạo và chuyển sang nhánh mới «{{branchName}}» thành công.",
+      "create_branch_failed": "Tạo nhánh thất bại: {{error}}",
+      "switch_branch_success": "Đã chuyển sang nhánh «{{branchName}}».",
+      "switch_branch_failed": "Chuyển nhánh thất bại: {{error}}",
+      "merge_success": "Áp dụng vào chính (main) thành công và chuyển nhánh.",
+      "merge_failed": "Áp dụng vào chính thất bại:\n{{error}}",
+      "save_local_only": "Đã lưu trên máy cục bộ (bỏ qua việc ghi nhận vào cỗ máy thời gian).",
+      "no_folder_to_save": "Không thể lưu vì không có thư mục nào đang mở. Vui lòng mở thư mục dự án từ thanh bên trái.",
+      "resolve_conflict_success": "Đã giải quyết tất cả xung đột và áp dụng vào chính thành công.",
+      "abort_merge_failed": "Khôi phục lại trạng thái ban đầu thất bại:\n{{error}}"
     },
     "confirm": {
-      "merge": "Do you want to merge current changes into main?"
+      "merge": "Bạn có muốn hợp nhất và áp dụng những thay đổi hiện tại vào chính (main) không?"
     },
     "tooltip": {
-      "switch_route": "Switch Route",
-      "merge_to_main": "Adopt changes from this route to main",
-      "create_route": "Create New Route"
+      "switch_route": "Chuyển nhánh",
+      "merge_to_main": "Áp dụng thay đổi từ nhánh này vào chính",
+      "create_route": "Tạo nhánh mới"
     },
     "action": {
-      "new_route": "New Route",
-      "saving": "Saving..."
+      "new_route": "Nhánh mới",
+      "saving": "Đang lưu..."
     }
   },
   "tree": {
     "action": {
-      "unignore": "Keep in save",
-      "ignore": "Exclude from save"
+      "unignore": "Hủy loại bỏ (giữ lại trong lưu trữ)",
+      "ignore": "Loại bỏ khỏi lưu trữ"
     }
   }
 }
