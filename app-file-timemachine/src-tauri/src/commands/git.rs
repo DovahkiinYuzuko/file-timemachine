@@ -2,7 +2,7 @@ use serde::{Deserialize, Serialize};
 use std::process::Command;
 use std::path::Path;
 use std::fs;
-use log::{info, debug};
+use log::{info, debug, error};
 use super::config::{GitMode, ProjectConfig, get_project_config, set_project_config};
 use super::preview::{FilePreviewContent, parse_file_content_bytes};
 
@@ -823,6 +823,160 @@ pub async fn git_delete_branch(path: String, branch_name: String) -> Result<Stri
     }
 
     Ok(format!("ルート '{}' を削除しました。", branch_name))
+}
+
+#[tauri::command]
+pub async fn git_get_remote(path: String) -> Result<Option<String>, String> {
+    let repo_path = dunce::canonicalize(Path::new(&path))
+        .map_err(|e| format!("パスの正規化に失敗したよ: {}", e))?;
+
+    let output = Command::new("git")
+        .arg("remote")
+        .arg("get-url")
+        .arg("origin")
+        .current_dir(&repo_path)
+        .output();
+
+    match output {
+        Ok(out) => {
+            if out.status.success() {
+                let url = String::from_utf8_lossy(&out.stdout).trim().to_string();
+                Ok(Some(url))
+            } else {
+                Ok(None)
+            }
+        }
+        Err(_) => Ok(None)
+    }
+}
+
+#[tauri::command]
+pub async fn git_set_remote(path: String, remote_url: String) -> Result<(), String> {
+    let repo_path = dunce::canonicalize(Path::new(&path))
+        .map_err(|e| format!("パスの正規化に失敗したよ: {}", e))?;
+
+    // すでに origin があれば削除する（上書きするため）
+    let _ = Command::new("git")
+        .arg("remote")
+        .arg("remove")
+        .arg("origin")
+        .current_dir(&repo_path)
+        .status();
+
+    let status = Command::new("git")
+        .arg("remote")
+        .arg("add")
+        .arg("origin")
+        .arg(&remote_url)
+        .current_dir(&repo_path)
+        .status()
+        .map_err(|e| format!("git remote add に失敗したよ: {}", e))?;
+
+    if !status.success() {
+        return Err("リモートリポジトリの設定に失敗したよ。URLが正しいか確認してね。".to_string());
+    }
+
+    Ok(())
+}
+
+/// トークンを含めた認証付きの安全な一時URLを構築するヘルパー関数
+fn build_auth_url(remote_url: &str, token: &str) -> Result<String, String> {
+    if remote_url.starts_with("https://") {
+        let stripped = remote_url.trim_start_matches("https://");
+        Ok(format!("https://{}@{}", token, stripped))
+    } else if remote_url.starts_with("http://") {
+        let stripped = remote_url.trim_start_matches("http://");
+        Ok(format!("http://{}@{}", token, stripped))
+    } else {
+        Ok(remote_url.to_string())
+    }
+}
+
+#[tauri::command]
+pub async fn git_push(path: String, token: String, branch: String) -> Result<String, String> {
+    let repo_path = dunce::canonicalize(Path::new(&path))
+        .map_err(|e| format!("パスの正規化に失敗したよ: {}", e))?;
+
+    // 1. リモートURLを取得
+    let remote_opt = git_get_remote(path.clone()).await?;
+    let remote_url = match remote_opt {
+        Some(url) => url,
+        None => return Err("リモートリポジトリが設定されていないよ。まず紐付けを設定してね。".to_string())
+    };
+
+    // 2. 認証付きURLを生成
+    let auth_url = build_auth_url(&remote_url, &token)?;
+
+    info!("Git Pushを開始します: ブランチ={}, リモート={}", branch, remote_url);
+
+    // 3. プッシュの実行（-u オプション付きで上流を設定）
+    let output = Command::new("git")
+        .arg("push")
+        .arg("-u")
+        .arg(&auth_url)
+        .arg(&branch)
+        .current_dir(&repo_path)
+        .output()
+        .map_err(|e| format!("git pushの実行に失敗したよ: {}", e))?;
+
+    if output.status.success() {
+        info!("Git Pushが成功しました");
+        let stdout = String::from_utf8_lossy(&output.stdout).trim().to_string();
+        Ok(stdout)
+    } else {
+        let stderr = String::from_utf8_lossy(&output.stderr).trim().to_string();
+        error!("Git Pushが失敗しました: {}", stderr);
+        // セキュリティのためエラーログ内の生トークンをマスクする
+        let masked_error = stderr.replace(&token, "******");
+        Err(format!("クラウドへの送信（Push）に失敗したよ。\n詳細: {}", masked_error))
+    }
+}
+
+#[tauri::command]
+pub async fn git_pull(path: String, token: String, branch: String) -> Result<String, String> {
+    let repo_path = dunce::canonicalize(Path::new(&path))
+        .map_err(|e| format!("パスの正規化に失敗したよ: {}", e))?;
+
+    // 1. リモートURLを取得
+    let remote_opt = git_get_remote(path.clone()).await?;
+    let remote_url = match remote_opt {
+        Some(url) => url,
+        None => return Err("リモートリポジトリが設定されていないよ。まず紐付けを設定してね。".to_string())
+    };
+
+    // 2. 認証付きURLを生成
+    let auth_url = build_auth_url(&remote_url, &token)?;
+
+    info!("Git Pullを開始します: ブランチ={}, リモート={}", branch, remote_url);
+
+    // 3. プルの実行
+    let output = Command::new("git")
+        .arg("pull")
+        .arg(&auth_url)
+        .arg(&branch)
+        .current_dir(&repo_path)
+        .output()
+        .map_err(|e| format!("git pullの実行に失敗したよ: {}", e))?;
+
+    if output.status.success() {
+        info!("Git Pullが成功しました");
+        let stdout = String::from_utf8_lossy(&output.stdout).trim().to_string();
+        Ok(stdout)
+    } else {
+        let stderr = String::from_utf8_lossy(&output.stderr).trim().to_string();
+        let stdout = String::from_utf8_lossy(&output.stdout).trim().to_string();
+        error!("Git Pullが失敗しました: {}", stderr);
+
+        // 競合が発生した場合の判定
+        if stderr.contains("CONFLICT") || stdout.contains("CONFLICT") {
+            debug!("プル中にマージ競合を検知しました。");
+            return Err("CONFLICT".to_string());
+        }
+
+        // セキュリティのためエラーログ内の生トークンをマスクする
+        let masked_error = stderr.replace(&token, "******");
+        Err(format!("クラウドからの受信（Pull）に失敗したよ。\n詳細: {}", masked_error))
+    }
 }
 
 

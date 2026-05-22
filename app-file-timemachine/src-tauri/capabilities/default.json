@@ -7,6 +7,8 @@
     "core:default",
     "opener:default",
     "dialog:default",
-    "log:default"
+    "log:default",
+    "window-state:default",
+    "shell:default"
   ]
 }

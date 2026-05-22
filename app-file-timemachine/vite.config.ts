@@ -29,4 +29,23 @@ export default defineConfig(async () => ({
       ignored: ["**/src-tauri/**"],
     },
   },
+  build: {
+    minify: "esbuild",
+    sourcemap: false,
+    rollupOptions: {
+      output: {
+        manualChunks(id) {
+          if (id.includes("node_modules")) {
+            if (id.includes("lucide-react")) {
+              return "lucide";
+            }
+            if (id.includes("@gitgraph")) {
+              return "gitgraph";
+            }
+            return "vendor";
+          }
+        },
+      },
+    },
+  },
 }));

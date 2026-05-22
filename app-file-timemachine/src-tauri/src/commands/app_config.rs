@@ -10,6 +10,8 @@ pub struct AppConfig {
     pub setup_completed: Option<bool>,
     pub settings_theme: Option<String>,
     pub settings_auto_scan: Option<bool>,
+    pub github_token: Option<String>,
+    pub github_username: Option<String>,
 }
 
 const APP_CONFIG_FILE_NAME: &str = "app_config.json";

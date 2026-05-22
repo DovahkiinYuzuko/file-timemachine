@@ -4,3 +4,4 @@ pub mod files;
 pub mod config;
 pub mod preview;
 pub mod app_config;
+pub mod github;

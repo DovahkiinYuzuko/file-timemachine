@@ -210,3 +210,161 @@ input:checked + .slider:before {
   from { opacity: 0; }
   to { opacity: 1; }
 }
+
+/* GitHub 連携プレミアム拡張のスタイル */
+.github-account-card {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: var(--hover-bg);
+  border: 1px solid var(--border-color);
+  padding: 0.85rem 1.25rem;
+  border-radius: 8px;
+  animation: fadeIn 0.25s ease-out;
+}
+
+.github-account-info {
+  display: flex;
+  align-items: center;
+  gap: 0.85rem;
+}
+
+.github-avatar {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  border: 1px solid var(--border-color);
+  object-fit: cover;
+}
+
+.github-avatar-placeholder {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background-color: #24292e;
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.github-account-details {
+  display: flex;
+  flex-direction: column;
+  gap: 0.15rem;
+}
+
+.github-username {
+  font-weight: 600;
+  font-size: 0.95rem;
+  color: var(--text-color);
+}
+
+.github-status {
+  font-size: 0.75rem;
+  color: #2ea44f;
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+  font-weight: 500;
+}
+
+.status-icon-check {
+  stroke-width: 3px;
+}
+
+.github-disconnect-btn {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  background-color: transparent;
+  color: var(--text-muted);
+  border: 1px solid var(--border-color);
+  padding: 0.5rem 0.75rem;
+  border-radius: 6px;
+  font-size: 0.85rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.github-disconnect-btn:hover {
+  background-color: #e02020;
+  color: white;
+  border-color: #e02020;
+}
+
+.github-connect-container {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.github-desc {
+  font-size: 0.85rem;
+  color: var(--text-muted);
+  margin: 0 0 0.25rem 0;
+  line-height: 1.5;
+}
+
+.github-action-buttons {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  width: 100%;
+}
+
+.cli-import-btn {
+  background-color: #24292e !important;
+}
+
+.cli-import-btn:hover {
+  background-color: #1b1f23 !important;
+}
+
+.pat-toggle-btn {
+  background-color: transparent !important;
+  color: var(--text-color) !important;
+  border: 1px solid var(--border-color) !important;
+}
+
+.pat-toggle-btn:hover {
+  background-color: var(--hover-bg) !important;
+}
+
+.pat-input-form {
+  display: flex;
+  gap: 0.5rem;
+  margin-top: 0.5rem;
+  animation: fadeIn 0.2s ease-out;
+}
+
+.pat-input {
+  flex: 1;
+}
+
+.pat-submit-btn {
+  background-color: var(--accent-color, #0066ff);
+  color: white;
+  border: none;
+  padding: 0.6rem 1rem;
+  border-radius: 6px;
+  font-size: 0.9rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.2s;
+  white-space: nowrap;
+}
+
+.pat-submit-btn:hover {
+  background-color: var(--accent-hover-color, #0052cc);
+}
+
+.github-error-msg {
+  font-size: 0.8rem;
+  color: #e02020;
+  margin: 0.5rem 0 0 0;
+  white-space: pre-wrap;
+  line-height: 1.4;
+}
+

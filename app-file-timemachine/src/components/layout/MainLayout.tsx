@@ -1,7 +1,7 @@
 import { type FC, useState, useEffect } from "react";
 import { useTranslation } from "react-i18next";
 import { Panel, Group as PanelGroup, Separator as PanelResizeHandle } from "react-resizable-panels";
-import { Save, Loader2, GitBranch, GitBranchPlus, GitMerge } from "lucide-react";
+import { Save, Loader2, GitBranch, GitBranchPlus, GitMerge, RefreshCw } from "lucide-react";
 import Sidebar, { type SidebarTab } from "./Sidebar";
 import FileTree from "../tree/FileTree";
 import FilePreview from "../preview/FilePreview";
@@ -14,12 +14,14 @@ import CommitMessageModal from "../common/CommitMessageModal";
 import CreateBranchModal from "../common/CreateBranchModal";
 import SwitchBranchModal from "../common/SwitchBranchModal";
 import ConflictResolverModal from "../common/ConflictResolverModal";
+import { SyncSettingsModal } from "../settings/SyncSettingsModal";
 import Tooltip from "../common/Tooltip";
 import logger from "../../utils/logger";
 import { type SafetyIssue } from "../../utils/safety";
 import { invoke } from "@tauri-apps/api/core";
 import { getAppConfig, updateAppConfig } from "../../api/config";
 import "./MainLayout.css";
+
 
 /**
  * Accessibility Strategy:
@@ -52,6 +54,12 @@ const MainLayout: FC = () => {
   const [isSwitchBranchModalOpen, setIsSwitchBranchModalOpen] = useState(false);
   const [isConflictModalOpen, setIsConflictModalOpen] = useState(false);
   const [selectedCommitHash, setSelectedCommitHash] = useState<string | null>(null);
+
+  // クラウド同期用ステート
+  const [isSyncing, setIsSyncing] = useState(false);
+  const [isSyncSettingsOpen, setIsSyncSettingsOpen] = useState(false);
+  const [githubTokenForSync, setGithubTokenForSync] = useState<string | null>(null);
+
 
   // 現在のブランチ名を取得
   useEffect(() => {
@@ -250,6 +258,80 @@ const MainLayout: FC = () => {
     await proceedToSaveOrCommit();
   };
 
+  // クラウド同期処理の実行
+  const executeSync = async (remoteUrl: string, token: string) => {
+    if (!projectPath) return;
+    setIsSyncing(true);
+    logger.info(`クラウド同期を開始します: リモート=${remoteUrl}, ブランチ=${currentBranch}`);
+
+    try {
+      // 1. Git Pull
+      logger.info("Git Pull（クラウドから受信）を実行中...");
+      await invoke("git_pull", {
+        path: projectPath,
+        token: token,
+        branch: currentBranch,
+      });
+      logger.info("Git Pullに成功しました。続けてGit Pushを実行します。");
+
+      // 2. Git Push
+      logger.info("Git Push（クラウドへ送信）を実行中...");
+      const pushRes = await invoke<string>("git_push", {
+        path: projectPath,
+        token: token,
+        branch: currentBranch,
+      });
+      logger.info(`Git Pushに成功しました: ${pushRes}`);
+
+      setHistoryRefreshKey((prev) => prev + 1);
+      alert("クラウドとの同期が完了したよ！これでバックアップもバッチリ！");
+    } catch (error) {
+      if (error === "CONFLICT") {
+        logger.warn("プル中にマージ競合を検知しました。競合解決モーダルを起動します。");
+        setIsConflictModalOpen(true);
+      } else {
+        logger.error(`クラウド同期エラー: ${error}`);
+        alert(error);
+      }
+    } finally {
+      setIsSyncing(false);
+    }
+  };
+
+  const handleSyncClick = async () => {
+    if (!projectPath) {
+      alert("プロジェクトフォルダを開いてから同期してね！");
+      return;
+    }
+
+    try {
+      const config = await getAppConfig();
+      const token = config.github_token;
+      
+      if (!token) {
+        logger.warn("GitHub連携トークンが見つかりません。");
+        alert("クラウドと同期するには、まず設定画面からGitHubアカウントと連携してね！");
+        setIsSettingsModalOpen(true);
+        return;
+      }
+
+      setGithubTokenForSync(token);
+
+      // リモート設定をチェック
+      const remoteUrl = await invoke<string | null>("git_get_remote", { path: projectPath });
+      if (!remoteUrl) {
+        logger.info("リモートリポジトリが設定されていません。同期設定モーダルを開きます。");
+        setIsSyncSettingsOpen(true);
+      } else {
+        // 同期を実行
+        await executeSync(remoteUrl, token);
+      }
+    } catch (error) {
+      logger.error(`同期準備中にエラーが発生したよ: ${error}`);
+      alert(`同期の準備で失敗しちゃったみたい:\n${error}`);
+    }
+  };
+
   const handleTabChange = (tab: SidebarTab) => {
     logger.debug(`サイドバーのアクションを受信: ${tab}`);
     if (tab === "settings") {
@@ -415,6 +497,21 @@ const MainLayout: FC = () => {
                 <span>{t("layout.action.new_route")}</span>
               </button>
             )}
+            {projectPath && (
+              <button
+                className="sync-cloud-btn"
+                onClick={handleSyncClick}
+                disabled={isSyncing || isCommitting}
+                title="クラウドと同期（Push/Pull）する"
+              >
+                {isSyncing ? (
+                  <Loader2 size={16} className="animate-spin" aria-hidden="true" />
+                ) : (
+                  <RefreshCw size={16} />
+                )}
+                <span>同期</span>
+              </button>
+            )}
             <button 
               className="save-state-btn" 
               onClick={handleSaveClick}
@@ -519,6 +616,18 @@ const MainLayout: FC = () => {
               logger.error(`アボート処理に失敗しました: ${e}`);
               alert(t("layout.alert.abort_merge_failed", { error: e }));
             }
+          }
+        }}
+      />
+
+      <SyncSettingsModal
+        isOpen={isSyncSettingsOpen}
+        onClose={() => setIsSyncSettingsOpen(false)}
+        currentFolderPath={projectPath || ""}
+        githubToken={githubTokenForSync || ""}
+        onSuccess={(remoteUrl) => {
+          if (githubTokenForSync) {
+            executeSync(remoteUrl, githubTokenForSync);
           }
         }}
       />

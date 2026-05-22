@@ -6,6 +6,8 @@ export interface AppConfig {
   setup_completed: boolean | null;
   settings_theme: string | null;
   settings_auto_scan: boolean | null;
+  github_token: string | null;
+  github_username: string | null;
 }
 
 export const getAppConfig = async (): Promise<AppConfig> => {
