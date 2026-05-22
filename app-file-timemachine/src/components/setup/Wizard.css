@@ -156,37 +156,7 @@
   to { transform: rotate(360deg); }
 }
 
-/* Simulation Toggle */
-.wizard-simulation-toggle {
-  position: absolute;
-  top: 1rem;
-  right: 1rem;
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-  cursor: pointer;
-  padding: 0.5rem 1rem;
-  border-radius: 20px;
-  background: var(--panel-bg);
-  border: 1px solid var(--border-color);
-  font-size: 0.85rem;
-  font-weight: 600;
-  color: var(--text-muted);
-  transition: all 0.2s;
-}
 
-.wizard-simulation-toggle:hover {
-  background: var(--hover-bg);
-  color: var(--text-color);
-}
-
-.icon-on {
-  color: var(--accent-color);
-}
-
-.icon-off {
-  color: var(--text-muted);
-}
 
 /* Dependency Item Details */
 .dependency-text {

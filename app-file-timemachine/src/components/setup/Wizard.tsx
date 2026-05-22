@@ -2,7 +2,7 @@ import { useState, useEffect, useRef } from "react";
 import { useTranslation } from "react-i18next";
 import { invoke } from "@tauri-apps/api/core";
 import { listen, UnlistenFn } from "@tauri-apps/api/event";
-import { CheckCircle2, XCircle, Loader2, Download, Terminal, ToggleLeft, ToggleRight } from "lucide-react";
+import { CheckCircle2, XCircle, Loader2, Download, Terminal } from "lucide-react";
 import logger from "../../utils/logger";
 import "./Wizard.css";
 
@@ -26,19 +26,18 @@ export default function Wizard({ onComplete }: WizardProps) {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   
-  const [isSimulated, setIsSimulated] = useState(false);
   const [installingTool, setInstallingTool] = useState<"git" | "gh" | null>(null);
   const [installProgress, setInstallProgress] = useState(0);
   const [installLogs, setInstallLogs] = useState<string[]>([]);
   
   const logsEndRef = useRef<HTMLDivElement>(null);
 
-  const checkDeps = async (simulated: boolean) => {
+  const checkDeps = async () => {
     setLoading(true);
     setError(null);
-    logger.info(`依存関係の診断を開始するよ (Simulated: ${simulated})`);
+    logger.info("依存関係の診断を開始するよ");
     try {
-      const result = await invoke<DependencyStatus>("check_dependencies", { simulate: simulated });
+      const result = await invoke<DependencyStatus>("check_dependencies", { simulate: false });
       setStatus(result);
       logger.debug(`診断結果: Git=${result.git}, Brew=${result.brew}, gh=${result.gh}`);
     } catch (e) {
@@ -51,8 +50,8 @@ export default function Wizard({ onComplete }: WizardProps) {
   };
 
   useEffect(() => {
-    checkDeps(isSimulated);
-  }, [isSimulated]);
+    checkDeps();
+  }, []);
 
   useEffect(() => {
     if (logsEndRef.current) {
@@ -71,14 +70,14 @@ export default function Wizard({ onComplete }: WizardProps) {
       unlisten = await listen<InstallLogPayload>("install-log", (event) => {
         setInstallLogs((prev) => [...prev, event.payload.message]);
         
-        // Progress heuristic for simulation (just for visuals)
+        // Progress heuristic for installation (just for visuals)
         setInstallProgress((prev) => {
           if (prev >= 90) return prev;
           return prev + 10;
         });
       });
 
-      await invoke("install_dependency", { tool, simulate: isSimulated });
+      await invoke("install_dependency", { tool, simulate: false });
       
       setInstallProgress(100);
       setInstallLogs((prev) => [...prev, t("setup.install_success", { tool })]);
@@ -86,7 +85,7 @@ export default function Wizard({ onComplete }: WizardProps) {
       // Wait a bit before checking deps again
       setTimeout(() => {
         setInstallingTool(null);
-        checkDeps(isSimulated);
+        checkDeps();
       }, 2000);
     } catch (e) {
       const errMsg = String(e);
@@ -107,12 +106,6 @@ export default function Wizard({ onComplete }: WizardProps) {
 
   return (
     <main className="wizard-container">
-      {/* Simulation Toggle */}
-      <div className="wizard-simulation-toggle" onClick={() => setIsSimulated(!isSimulated)}>
-        {isSimulated ? <ToggleRight className="icon-on" /> : <ToggleLeft className="icon-off" />}
-        <span>{t("setup.simulation_mode")}</span>
-      </div>
-
       <div className="wizard-card">
         <h1 className="wizard-title">{t("setup.title")}</h1>
         <p className="wizard-description">{t("setup.description")}</p>
@@ -148,7 +141,7 @@ export default function Wizard({ onComplete }: WizardProps) {
           ) : error ? (
             <div className="wizard-error">
               <p>{error}</p>
-              <button onClick={() => checkDeps(isSimulated)} className="wizard-button">
+              <button onClick={() => checkDeps()} className="wizard-button">
                 {t("setup.retry")}
               </button>
             </div>
@@ -185,7 +178,7 @@ export default function Wizard({ onComplete }: WizardProps) {
                   {allInstalled ? t("setup.finish") : t("setup.next")}
                 </button>
                 {!allInstalled && (
-                  <button onClick={() => checkDeps(isSimulated)} className="wizard-button secondary">
+                  <button onClick={() => checkDeps()} className="wizard-button secondary">
                     {t("setup.retry")}
                   </button>
                 )}
