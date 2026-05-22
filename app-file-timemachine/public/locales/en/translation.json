@@ -311,7 +311,13 @@
       "save_local_only": "Saved locally (saving to Time Machine was skipped).",
       "no_folder_to_save": "Cannot save because no folder is open. Please open a folder from the left sidebar.",
       "resolve_conflict_success": "All conflicts resolved and adopted to main.",
-      "abort_merge_failed": "Failed to restore to original state:\n{{error}}"
+      "abort_merge_failed": "Failed to restore to original state:\n{{error}}",
+      "sync_success": "Successfully synced with the cloud.",
+      "sync_no_folder": "Please open a project folder before syncing.",
+      "sync_link_required": "Please connect your GitHub account in the settings modal first.",
+      "sync_prep_failed": "Failed to prepare for cloud sync:\n{{error}}",
+      "exclude_failed": "Failed to exclude files: {{error}}",
+      "sync_failed": "Failed to sync with cloud: {{error}}"
     },
     "confirm": {
       "merge": "Do you want to merge current changes into main?"

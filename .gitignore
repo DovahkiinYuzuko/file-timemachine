@@ -13,6 +13,7 @@
 !app-icon.png
 !.github/
 !.github/**
+!変数関数仕様書.md
 
 # 3. app-file-timemachine（フロントエンドとTauri共通部）の例外許可
 !app-file-timemachine/

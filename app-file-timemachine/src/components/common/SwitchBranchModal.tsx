@@ -40,7 +40,7 @@ const SwitchBranchModal: FC<SwitchBranchModalProps> = ({
     try {
       setLoading(true);
       setErrorMsg("");
-      logger.info(`ブランチを削除するよ: ${branchName}`);
+      logger.info(`ブランチを削除します: ${branchName}`);
       const result = await invoke<string>("git_delete_branch", { 
         path: projectPath, 
         branchName 

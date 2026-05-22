@@ -315,7 +315,9 @@
       "sync_success": "クラウドとの同期が完了しました。",
       "sync_no_folder": "プロジェクトフォルダを開いてから同期してください。",
       "sync_link_required": "クラウドと同期するには、まず設定画面からGitHubアカウントと連携してください。",
-      "sync_prep_failed": "同期の準備に失敗しました：\n{{error}}"
+      "sync_prep_failed": "同期の準備に失敗しました：\n{{error}}",
+      "exclude_failed": "対象ファイルの除外処理に失敗しました：{{error}}",
+      "sync_failed": "クラウドとの同期に失敗しました：{{error}}"
     },
     "confirm": {
       "merge": "現在の変更を本番（main）に合流させますか？"

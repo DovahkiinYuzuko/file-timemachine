@@ -35,14 +35,14 @@ export default function Wizard({ onComplete }: WizardProps) {
   const checkDeps = async () => {
     setLoading(true);
     setError(null);
-    logger.info("依存関係の診断を開始するよ");
+    logger.info("依存関係の診断を開始します");
     try {
       const result = await invoke<DependencyStatus>("check_dependencies", { simulate: false });
       setStatus(result);
       logger.debug(`診断結果: Git=${result.git}, Brew=${result.brew}, gh=${result.gh}`);
     } catch (e) {
       const errMsg = String(e);
-      logger.error(`診断中にエラーが発生したよ: ${errMsg}`);
+      logger.error(`診断中にエラーが発生しました: ${errMsg}`);
       setError(errMsg);
     } finally {
       setLoading(false);

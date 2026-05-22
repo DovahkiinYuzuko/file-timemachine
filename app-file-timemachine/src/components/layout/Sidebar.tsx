@@ -27,7 +27,7 @@ const Sidebar: FC<SidebarProps> = ({ activeTab, onTabChange, onOpenFolder }) => 
   const { t } = useTranslation();
 
   const handleOpenFolder = async () => {
-    logger.debug("フォルダ選択ダイアログを開くよ");
+    logger.debug("フォルダ選択ダイアログを開きます");
     try {
       const selected = await open({
         directory: true,
@@ -35,13 +35,13 @@ const Sidebar: FC<SidebarProps> = ({ activeTab, onTabChange, onOpenFolder }) => 
         title: t("common.sidebar.open_folder"),
       });
       if (selected && typeof selected === "string") {
-        logger.info(`フォルダが選択されたよ: ${selected}`);
+        logger.info(`フォルダが選択されました: ${selected}`);
         onOpenFolder(selected);
       } else {
-        logger.debug("フォルダ選択がキャンセルされたよ");
+        logger.debug("フォルダ選択がキャンセルされました");
       }
     } catch (error) {
-      logger.error(`フォルダ選択でエラーが発生したよ: ${error}`);
+      logger.error(`フォルダ選択でエラーが発生しました: ${error}`);
     }
   };
 
@@ -75,7 +75,7 @@ const Sidebar: FC<SidebarProps> = ({ activeTab, onTabChange, onOpenFolder }) => 
               key={tab.id}
               className={`sidebar-item ${isActive ? "active" : ""}`}
               onClick={() => {
-                logger.debug(`サイドバーのタブがクリックされたよ: ${tab.id}`);
+                logger.debug(`サイドバーのタブがクリックされました: ${tab.id}`);
                 onTabChange(tab.id);
               }}
               aria-label={t(tab.labelKey)}

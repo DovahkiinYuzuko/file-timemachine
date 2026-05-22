@@ -107,15 +107,15 @@ const SettingsModal: FC<SettingsModalProps> = ({ isOpen, onClose }) => {
         
         if (config.settings_save_behavior) {
           setSaveBehavior(config.settings_save_behavior as SaveBehavior);
-          logger.debug(`設定を読み込んだよ: 保存挙動 = ${config.settings_save_behavior}`);
+          logger.debug(`設定を読み込みました: 保存挙動 = ${config.settings_save_behavior}`);
         }
         if (config.settings_auto_scan !== null) {
           setAutoScan(config.settings_auto_scan);
-          logger.debug(`設定を読み込んだよ: 自動スキャン = ${config.settings_auto_scan}`);
+          logger.debug(`設定を読み込みました: 自動スキャン = ${config.settings_auto_scan}`);
         }
         if (config.settings_theme) {
           setTheme(config.settings_theme as Theme);
-          logger.debug(`設定を読み込んだよ: テーマ = ${config.settings_theme}`);
+          logger.debug(`設定を読み込みました: テーマ = ${config.settings_theme}`);
           document.documentElement.setAttribute("data-theme", config.settings_theme);
         }
         if (config.github_token) {
@@ -125,7 +125,7 @@ const SettingsModal: FC<SettingsModalProps> = ({ isOpen, onClose }) => {
           fetchGithubUser(config.github_token);
         }
       } catch (error) {
-        logger.error(`設定の読み込みに失敗したよ: ${error}`);
+        logger.error(`設定の読み込みに失敗しました: ${error}`);
       } finally {
         setIsLoaded(true);
       }
@@ -144,9 +144,9 @@ const SettingsModal: FC<SettingsModalProps> = ({ isOpen, onClose }) => {
           settings_theme: theme,
         });
         document.documentElement.setAttribute("data-theme", theme);
-        logger.info(`設定を一括保存したよ: theme=${theme}, behavior=${saveBehavior}, autoScan=${autoScan}`);
+        logger.info(`設定を一括保存しました: theme=${theme}, behavior=${saveBehavior}, autoScan=${autoScan}`);
       } catch (error) {
-        logger.error(`設定の一括保存に失敗したよ: ${error}`);
+        logger.error(`設定の一括保存に失敗しました: ${error}`);
       }
     };
     save();
@@ -156,7 +156,7 @@ const SettingsModal: FC<SettingsModalProps> = ({ isOpen, onClose }) => {
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
       if (e.key === "Escape" && isOpen) {
-        logger.debug("Escapeキーで設定モーダルを閉じるよ");
+        logger.debug("Escapeキーの押下により設定モーダルを閉じます");
         onClose();
       }
     };
@@ -166,7 +166,7 @@ const SettingsModal: FC<SettingsModalProps> = ({ isOpen, onClose }) => {
 
   useEffect(() => {
     if (isOpen) {
-      logger.debug("設定モーダルを開いたよ");
+      logger.debug("設定モーダルを開きました");
     }
   }, [isOpen]);
 
@@ -257,7 +257,7 @@ const SettingsModal: FC<SettingsModalProps> = ({ isOpen, onClose }) => {
     <div
       className="settings-modal-overlay"
       onClick={() => {
-        logger.debug("オーバーレイクリックで設定モーダルを閉じるよ");
+        logger.debug("オーバーレイのクリックにより設定モーダルを閉じます");
         onClose();
       }}
       role="presentation"
@@ -277,7 +277,7 @@ const SettingsModal: FC<SettingsModalProps> = ({ isOpen, onClose }) => {
           <button
             className="close-btn"
             onClick={() => {
-              logger.debug("閉じるボタンで設定モーダルを閉じるよ");
+              logger.debug("閉じるボタンのクリックにより設定モーダルを閉じます");
               onClose();
             }}
             aria-label={t("common.action.close")}

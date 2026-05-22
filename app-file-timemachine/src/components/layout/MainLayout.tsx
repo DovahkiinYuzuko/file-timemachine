@@ -70,7 +70,7 @@ const MainLayout: FC = () => {
         const branch = await invoke<string>("git_get_current_branch", { path: projectPath });
         setCurrentBranch(branch);
       } catch (error) {
-        logger.error(`ブランチ名の取得に失敗したよ: ${error}`);
+        logger.error(`ブランチ名の取得に失敗しました: ${error}`);
       }
     };
     fetchBranch();
@@ -82,11 +82,11 @@ const MainLayout: FC = () => {
       try {
         const config = await getAppConfig();
         if (config.last_opened_folder) {
-          logger.info(`前回開いていたフォルダを復元したよ: ${config.last_opened_folder}`);
+          logger.info(`前回開いていたフォルダを復元しました: ${config.last_opened_folder}`);
           setProjectPath(config.last_opened_folder);
         }
       } catch (error) {
-        logger.error(`前回開いていたフォルダの復元に失敗したよ: ${error}`);
+        logger.error(`前回開いていたフォルダの復元に失敗しました: ${error}`);
       }
     };
     restoreFolder();
@@ -102,7 +102,7 @@ const MainLayout: FC = () => {
         try {
           await invoke("stop_watching");
         } catch (e) {
-          logger.error(`監視の停止に失敗したよ: ${e}`);
+          logger.error(`監視の停止に失敗しました: ${e}`);
         }
         return;
       }
@@ -110,21 +110,21 @@ const MainLayout: FC = () => {
       try {
         // バックエンドでの監視を開始
         await invoke("start_watching", { path: projectPath });
-        logger.info(`フォルダ監視を開始したよ: ${projectPath}`);
+        logger.info(`フォルダ監視を開始しました: ${projectPath}`);
 
         // イベント購読
         unlistenFn = await listen<any>("file-system-change", (event) => {
-          logger.debug(`ファイルシステム変更を受信したよ: ${JSON.stringify(event.payload)}`);
+          logger.debug(`ファイルシステム変更を受信しました: ${JSON.stringify(event.payload)}`);
           if (debounceTimer) {
             clearTimeout(debounceTimer);
           }
           debounceTimer = setTimeout(() => {
-            logger.info("ファイル変更を検知したため、ビューを自動更新するね");
+            logger.info("ファイル変更を検知したため、ビューを自動更新します。");
             setHistoryRefreshKey((prev) => prev + 1);
           }, 500); // 500ms デバウンスで十分な安全マージンを確保
         });
       } catch (error) {
-        logger.error(`フォルダ監視のセットアップに失敗したよ: ${error}`);
+        logger.error(`フォルダ監視のセットアップに失敗しました: ${error}`);
       }
     };
 
@@ -142,7 +142,7 @@ const MainLayout: FC = () => {
         try {
           await invoke("stop_watching");
         } catch (e) {
-          logger.error(`監視クリーンアップに失敗したよ: ${e}`);
+      logger.error(`監視クリーンアップに失敗しました: ${e}`);
         }
       };
       cleanupWatcher();
@@ -151,12 +151,12 @@ const MainLayout: FC = () => {
 
   // フォルダ選択時の処理
   const handleOpenFolder = async (path: string) => {
-    logger.info(`フォルダを選択したよ: ${path}`);
+    logger.info(`フォルダを選択しました: ${path}`);
     setProjectPath(path);
     try {
       await updateAppConfig({ last_opened_folder: path });
     } catch (error) {
-      logger.error(`フォルダの保存に失敗したよ: ${error}`);
+      logger.error(`フォルダの保存に失敗しました: ${error}`);
     }
   };
 
@@ -262,7 +262,7 @@ const MainLayout: FC = () => {
       const config = await getAppConfig();
       saveBehavior = config.settings_save_behavior || "confirm";
     } catch (error) {
-      logger.error(`保存設定の読み込みに失敗したよ: ${error}`);
+      logger.error(`保存設定の読み込みに失敗しました: ${error}`);
     }
 
     const now = new Date();
@@ -316,8 +316,8 @@ const MainLayout: FC = () => {
       logger.info("対象ファイルの除外処理が完了しました。保存（コミット）に進みます。");
       await proceedToSaveOrCommit();
     } catch (error) {
-      logger.error(`除外処理に失敗したよ: ${error}`);
-      alert(`除外処理に失敗したよ: ${error}`);
+      logger.error(`除外処理に失敗しました: ${error}`);
+      alert(t("layout.alert.exclude_failed", { error }));
     }
   };
 
@@ -336,7 +336,7 @@ const MainLayout: FC = () => {
       const config = await getAppConfig();
       isAutoScanEnabled = config.settings_auto_scan !== false;
     } catch (error) {
-      logger.error(`自動スキャン設定の読み込みに失敗したよ: ${error}`);
+      logger.error(`自動スキャン設定の読み込みに失敗しました: ${error}`);
     }
 
     if (isAutoScanEnabled) {
@@ -399,7 +399,7 @@ const MainLayout: FC = () => {
         setIsConflictModalOpen(true);
       } else {
         logger.error(`クラウド同期エラー: ${error}`);
-        alert(error);
+        alert(t("layout.alert.sync_failed", { error }));
       }
     } finally {
       setIsSyncing(false);

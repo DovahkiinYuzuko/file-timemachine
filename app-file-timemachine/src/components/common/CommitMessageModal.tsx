@@ -34,7 +34,7 @@ const CommitMessageModal: FC<CommitMessageModalProps> = ({
   useEffect(() => {
     if (isOpen) {
       setMessage(""); // 開くたびにクリア
-      logger.debug("コミットメッセージ入力モーダルが開いたよ");
+      logger.debug("コミットメッセージ入力モーダルが開きました。");
       
       // アニメーション完了後にフォーカスするために少し遅延を入れる
       const timer = setTimeout(() => {
@@ -45,7 +45,7 @@ const CommitMessageModal: FC<CommitMessageModalProps> = ({
 
       const handleKeyDown = (e: KeyboardEvent) => {
         if (e.key === "Escape") {
-          logger.debug("Escapeキーでコミットメッセージモーダルを閉じるよ");
+          logger.debug("Escapeキーでコミットメッセージモーダルを閉じます。");
           onClose();
         }
       };
@@ -102,7 +102,7 @@ const CommitMessageModal: FC<CommitMessageModalProps> = ({
     <div
       className="commit-modal-overlay"
       onClick={() => {
-        logger.debug("オーバーレイクリックでコミットメッセージモーダルを閉じるよ");
+        logger.debug("オーバーレイのクリックによりコミットメッセージモーダルを閉じます。");
         onClose();
       }}
       role="presentation"
@@ -123,7 +123,7 @@ const CommitMessageModal: FC<CommitMessageModalProps> = ({
           <button
             className="close-btn"
             onClick={() => {
-              logger.debug("閉じるボタンでコミットメッセージモーダルを閉じるよ");
+              logger.debug("閉じるボタンによりコミットメッセージモーダルを閉じます。");
               onClose();
             }}
             aria-label={t("common.action.close", { defaultValue: "閉じる" })}
