@@ -47,3 +47,7 @@ This application utilizes third-party software libraries, which are subject to t
 ### Tokio
 - **License**: MIT License
 - **Copyright**: Copyright (c) 2026 Tokio Contributors
+
+### Notify
+- **License**: CC0-1.0 Universal
+- **Copyright**: Copyright (c) 2013-2023 The Notify Project Developers

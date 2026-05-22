@@ -7,6 +7,7 @@ use commands::config::{get_project_config, set_project_config};
 use commands::app_config::{get_app_config, set_app_config};
 use commands::github::github_import_cli_token;
 use commands::preview::read_file_content;
+use commands::watcher::{start_watching, stop_watching, WatcherState};
 
 // Learn more about Tauri commands at https://tauri.app/develop/calling-rust/
 #[tauri::command]
@@ -17,6 +18,7 @@ fn greet(name: &str) -> String {
 #[cfg_attr(mobile, tauri::mobile_entry_point)]
 pub fn run() {
     tauri::Builder::default()
+        .manage(WatcherState { watcher: std::sync::Mutex::new(None) })
         .plugin(tauri_plugin_log::Builder::new()
             .targets([
                 tauri_plugin_log::Target::new(tauri_plugin_log::TargetKind::Stdout),
@@ -61,7 +63,9 @@ pub fn run() {
             set_project_config,
             get_app_config,
             set_app_config,
-            read_file_content
+            read_file_content,
+            start_watching,
+            stop_watching
         ])
         .run(tauri::generate_context!())
         .expect("error while running tauri application");

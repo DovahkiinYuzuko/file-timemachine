@@ -19,6 +19,7 @@ import Tooltip from "../common/Tooltip";
 import logger from "../../utils/logger";
 import { type SafetyIssue, analyzeFilesForSafety } from "../../utils/safety";
 import { invoke } from "@tauri-apps/api/core";
+import { listen, type UnlistenFn } from "@tauri-apps/api/event";
 import { getAppConfig, updateAppConfig } from "../../api/config";
 import "./MainLayout.css";
 
@@ -90,6 +91,63 @@ const MainLayout: FC = () => {
     };
     restoreFolder();
   }, []);
+
+  // フォルダ監視とファイル変更イベントの購読
+  useEffect(() => {
+    let unlistenFn: UnlistenFn | null = null;
+    let debounceTimer: ReturnType<typeof setTimeout> | null = null;
+
+    const setupWatcher = async () => {
+      if (!projectPath) {
+        try {
+          await invoke("stop_watching");
+        } catch (e) {
+          logger.error(`監視の停止に失敗したよ: ${e}`);
+        }
+        return;
+      }
+
+      try {
+        // バックエンドでの監視を開始
+        await invoke("start_watching", { path: projectPath });
+        logger.info(`フォルダ監視を開始したよ: ${projectPath}`);
+
+        // イベント購読
+        unlistenFn = await listen<any>("file-system-change", (event) => {
+          logger.debug(`ファイルシステム変更を受信したよ: ${JSON.stringify(event.payload)}`);
+          if (debounceTimer) {
+            clearTimeout(debounceTimer);
+          }
+          debounceTimer = setTimeout(() => {
+            logger.info("ファイル変更を検知したため、ビューを自動更新するね");
+            setHistoryRefreshKey((prev) => prev + 1);
+          }, 500); // 500ms デバウンスで十分な安全マージンを確保
+        });
+      } catch (error) {
+        logger.error(`フォルダ監視のセットアップに失敗したよ: ${error}`);
+      }
+    };
+
+    setupWatcher();
+
+    // クリーンアップ処理
+    return () => {
+      if (unlistenFn) {
+        unlistenFn();
+      }
+      if (debounceTimer) {
+        clearTimeout(debounceTimer);
+      }
+      const cleanupWatcher = async () => {
+        try {
+          await invoke("stop_watching");
+        } catch (e) {
+          logger.error(`監視クリーンアップに失敗したよ: ${e}`);
+        }
+      };
+      cleanupWatcher();
+    };
+  }, [projectPath]);
 
   // フォルダ選択時の処理
   const handleOpenFolder = async (path: string) => {
