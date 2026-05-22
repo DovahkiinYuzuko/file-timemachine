@@ -104,7 +104,7 @@ pub fn get_file_tree(root_path: String) -> Result<Vec<FileEntry>, String> {
 
         if let Some(mut stdin) = child.stdin.take() {
             for path in &paths_to_check {
-                let rel_path = path.strip_prefix(&root_str).unwrap_or(path).trim_start_matches(|c| c == '\\' || c == '/');
+                let rel_path = path.strip_prefix(&root_str).unwrap_or(path).trim_start_matches(['\\', '/']);
                 // Windowsのバックスラッシュをスラッシュに正規化してから渡す
                 let rel_path_normalized = rel_path.replace('\\', "/");
                 log::debug!("[check-ignore stdin] 送信パス: {:?}", rel_path_normalized);
@@ -132,7 +132,7 @@ pub fn get_file_tree(root_path: String) -> Result<Vec<FileEntry>, String> {
     log::info!("全部で {} 件のアイテムを見つけたよ！ツリー形式に組み立てるね。", entries.len());      
 
     let mut entry_map: HashMap<PathBuf, FileEntry> = entries.into_iter().map(|(p, mut e)| {
-        let rel_path = e.path.strip_prefix(&root_str).unwrap_or(&e.path).trim_start_matches(|c| c == '\\' || c == '/');    
+        let rel_path = e.path.strip_prefix(&root_str).unwrap_or(&e.path).trim_start_matches(['\\', '/']);    
         let normalized_rel_path = rel_path.replace('\\', "/");
         let matched = ignored_set.contains(&normalized_rel_path);
         log::debug!(

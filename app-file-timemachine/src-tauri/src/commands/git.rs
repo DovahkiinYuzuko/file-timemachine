@@ -6,6 +6,17 @@ use log::{info, debug, error};
 use super::config::{GitMode, ProjectConfig, get_project_config, set_project_config};
 use super::preview::{FilePreviewContent, parse_file_content_bytes};
 
+fn is_safe_git_ref(name: &str) -> bool {
+    if name.is_empty() {
+        return false;
+    }
+    if name.starts_with('-') {
+        return false;
+    }
+    !name.chars().any(|c| c.is_control() || c == ' ' || c == '\\' || c == '\'' || c == '"')
+}
+
+
 #[derive(Debug, Serialize, Deserialize)]
 pub struct CommitLog {
     pub hash: String,
@@ -410,6 +421,9 @@ pub async fn git_get_current_branch(path: String) -> Result<String, String> {
 
 #[tauri::command]
 pub async fn git_create_branch(path: String, branch_name: String) -> Result<String, String> {
+    if !is_safe_git_ref(&branch_name) {
+        return Err("安全ではないブランチ名です。".to_string());
+    }
     let raw_path = Path::new(&path);
     let repo_path = dunce::canonicalize(raw_path)
         .map_err(|e| format!("パスの正規化に失敗しました: {}", e))?;
@@ -470,6 +484,9 @@ pub async fn git_get_branches(path: String) -> Result<Vec<String>, String> {
 
 #[tauri::command]
 pub async fn git_checkout(path: String, branch: String) -> Result<String, String> {
+    if !is_safe_git_ref(&branch) {
+        return Err("安全ではないブランチ名です。".to_string());
+    }
     let raw_path = Path::new(&path);
     let repo_path = dunce::canonicalize(raw_path)
         .map_err(|e| format!("パスの正規化に失敗しました: {}", e))?;
@@ -536,6 +553,9 @@ pub async fn git_diff_file(path: String) -> Result<String, String> {
 
 #[tauri::command]
 pub async fn git_merge_to_main(path: String, branch: String) -> Result<String, String> {
+    if !is_safe_git_ref(&branch) {
+        return Err("安全ではないブランチ名です。".to_string());
+    }
     let raw_path = Path::new(&path);
     let repo_path = dunce::canonicalize(raw_path)
         .map_err(|e| format!("パスの正規化に失敗しました: {}", e))?;
@@ -655,6 +675,9 @@ pub async fn git_resolve_conflict(path: String, file: String, resolution: String
 
 #[tauri::command]
 pub async fn git_merge_abort(path: String, original_branch: String) -> Result<String, String> {
+    if !is_safe_git_ref(&original_branch) {
+        return Err("安全ではないブランチ名です。".to_string());
+    }
     let raw_path = Path::new(&path);
     let repo_path = dunce::canonicalize(raw_path)
         .map_err(|e| format!("パスの正規化に失敗しました: {}", e))?;
@@ -691,6 +714,9 @@ pub async fn git_show_file_content(
     commit_hash: String,
     file_path: String,
 ) -> Result<FilePreviewContent, String> {
+    if !is_safe_git_ref(&commit_hash) {
+        return Err("安全ではないコミットハッシュです。".to_string());
+    }
     let repo_path = dunce::canonicalize(Path::new(&path))
         .map_err(|e| format!("ルートパスの正規化に失敗したよ: {}", e))?;
     let file_abs_path = dunce::canonicalize(Path::new(&file_path))
@@ -734,6 +760,9 @@ pub async fn git_diff_file_commit(
     commit_hash: String,
     file_path: String,
 ) -> Result<String, String> {
+    if !is_safe_git_ref(&commit_hash) {
+        return Err("安全ではないコミットハッシュです。".to_string());
+    }
     let repo_path = dunce::canonicalize(Path::new(&path))
         .map_err(|e| format!("ルートパスの正規化に失敗したよ: {}", e))?;
     let file_abs_path = dunce::canonicalize(Path::new(&file_path))
@@ -789,6 +818,9 @@ pub async fn git_diff_file_commit(
 
 #[tauri::command]
 pub async fn git_delete_branch(path: String, branch_name: String) -> Result<String, String> {
+    if !is_safe_git_ref(&branch_name) {
+        return Err("安全ではないブランチ名です。".to_string());
+    }
     let raw_path = Path::new(&path);
     let repo_path = dunce::canonicalize(raw_path)
         .map_err(|e| format!("パスの正規化に失敗しました: {}", e))?;
@@ -895,6 +927,9 @@ fn build_auth_url(remote_url: &str, token: &str) -> Result<String, String> {
 
 #[tauri::command]
 pub async fn git_push(path: String, token: String, branch: String) -> Result<String, String> {
+    if !is_safe_git_ref(&branch) {
+        return Err("安全ではないブランチ名です。".to_string());
+    }
     let repo_path = dunce::canonicalize(Path::new(&path))
         .map_err(|e| format!("パスの正規化に失敗したよ: {}", e))?;
 
@@ -935,6 +970,9 @@ pub async fn git_push(path: String, token: String, branch: String) -> Result<Str
 
 #[tauri::command]
 pub async fn git_pull(path: String, token: String, branch: String) -> Result<String, String> {
+    if !is_safe_git_ref(&branch) {
+        return Err("安全ではないブランチ名です。".to_string());
+    }
     let repo_path = dunce::canonicalize(Path::new(&path))
         .map_err(|e| format!("パスの正規化に失敗したよ: {}", e))?;
 

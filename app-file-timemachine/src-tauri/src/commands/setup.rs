@@ -66,7 +66,7 @@ pub async fn install_dependency(app: AppHandle, tool: String, simulate: bool) ->
         emit_log(&format!("Running winget to install {}...", package));
         
         let mut child = Command::new("winget")
-            .args(&["install", "--silent", "--accept-source-agreements", "--accept-package-agreements", package])
+            .args(["install", "--silent", "--accept-source-agreements", "--accept-package-agreements", package])
             .stdout(Stdio::piped())
             .stderr(Stdio::piped())
             .spawn()
@@ -76,7 +76,7 @@ pub async fn install_dependency(app: AppHandle, tool: String, simulate: bool) ->
             let app_clone = app.clone();
             std::thread::spawn(move || {
                 let reader = BufReader::new(stdout);
-                for line in reader.lines().filter_map(|l| l.ok()) {
+                for line in reader.lines().map_while(Result::ok) {
                     let _ = app_clone.emit("install-log", InstallLogPayload { message: line });
                 }
             });
@@ -86,7 +86,7 @@ pub async fn install_dependency(app: AppHandle, tool: String, simulate: bool) ->
             let app_clone = app.clone();
             std::thread::spawn(move || {
                 let reader = BufReader::new(stderr);
-                for line in reader.lines().filter_map(|l| l.ok()) {
+                for line in reader.lines().map_while(Result::ok) {
                     let _ = app_clone.emit("install-log", InstallLogPayload { message: format!("ERROR: {}", line) });
                 }
             });
@@ -97,7 +97,7 @@ pub async fn install_dependency(app: AppHandle, tool: String, simulate: bool) ->
             emit_log("Installation completed successfully.");
             Ok(())
         } else {
-            return Err(format!("Installation failed with status: {}", status));
+            Err(format!("Installation failed with status: {}", status))
         }
     }
     
@@ -124,7 +124,7 @@ pub async fn install_dependency(app: AppHandle, tool: String, simulate: bool) ->
             let app_clone = app.clone();
             std::thread::spawn(move || {
                 let reader = BufReader::new(stdout);
-                for line in reader.lines().filter_map(|l| l.ok()) {
+                for line in reader.lines().map_while(Result::ok) {
                     let _ = app_clone.emit("install-log", InstallLogPayload { message: line });
                 }
             });
@@ -134,7 +134,7 @@ pub async fn install_dependency(app: AppHandle, tool: String, simulate: bool) ->
             let app_clone = app.clone();
             std::thread::spawn(move || {
                 let reader = BufReader::new(stderr);
-                for line in reader.lines().filter_map(|l| l.ok()) {
+                for line in reader.lines().map_while(Result::ok) {
                     let _ = app_clone.emit("install-log", InstallLogPayload { message: format!("ERROR: {}", line) });
                 }
             });
@@ -145,7 +145,7 @@ pub async fn install_dependency(app: AppHandle, tool: String, simulate: bool) ->
             emit_log("Installation completed successfully.");
             Ok(())
         } else {
-            return Err(format!("Installation failed with status: {}", status));
+            Err(format!("Installation failed with status: {}", status))
         }
     }
     

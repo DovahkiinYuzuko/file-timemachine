@@ -50,9 +50,9 @@ pub fn parse_file_content_bytes(bytes: &[u8], extension: &str) -> Result<FilePre
         } else {
             // テキストファイルとしてデコード
             let mut detector = chardetng::EncodingDetector::new();
-            detector.feed(&bytes, true);
+            detector.feed(bytes, true);
             let encoding = detector.guess(None, true);
-            let (content, _, _) = encoding.decode(&bytes);
+            let (content, _, _) = encoding.decode(bytes);
 
             Ok(FilePreviewContent {
                 content: content.into_owned(),
