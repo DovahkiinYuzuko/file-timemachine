@@ -228,9 +228,9 @@ const FilePreview: FC<FilePreviewProps> = ({ filePath, projectPath, selectedComm
       )}
 
       <header className="preview-info" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-        <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-          <FileText size={16} />
-          <h3 style={{ margin: 0 }}>{metadata?.name || filePath}</h3>
+        <div style={{ display: 'flex', alignItems: 'center', gap: '8px', minWidth: 0, flex: 1 }}>
+          <FileText size={16} style={{ flexShrink: 0 }} />
+          <h3 style={{ margin: 0, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{metadata?.name || filePath}</h3>
         </div>
         {metadata?.file_type === "text" && (
           <button 
@@ -243,7 +243,8 @@ const FilePreview: FC<FilePreviewProps> = ({ filePath, projectPath, selectedComm
               borderRadius: "4px",
               fontSize: "0.8rem",
               cursor: "pointer",
-              transition: "all 0.2s"
+              transition: "all 0.2s",
+              flexShrink: 0
             }}
           >
             {showDiff ? t("preview.action.back_to_preview") : t("preview.action.show_diff")}
