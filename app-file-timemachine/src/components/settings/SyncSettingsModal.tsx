@@ -105,7 +105,7 @@ export const SyncSettingsModal: FC<SyncSettingsModalProps> = ({
         remoteUrl: cloneUrl,
       });
 
-      logger.info("新規リポジトリの紐付けが完了したよ！");
+      logger.info("新規リポジトリの紐付けが完了しました。");
       onSuccess(cloneUrl);
       onClose();
     } catch (err: any) {
@@ -139,7 +139,7 @@ export const SyncSettingsModal: FC<SyncSettingsModalProps> = ({
         remoteUrl: existingUrl.trim(),
       });
 
-      logger.info("既存リポジトリの紐付けが完了したよ！");
+      logger.info("既存リポジトリの紐付けが完了しました。");
       onSuccess(existingUrl.trim());
       onClose();
     } catch (err: any) {

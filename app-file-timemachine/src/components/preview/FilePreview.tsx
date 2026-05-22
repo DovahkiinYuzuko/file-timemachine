@@ -120,8 +120,8 @@ const FilePreview: FC<FilePreviewProps> = ({ filePath, projectPath, selectedComm
           setMetadata(meta);
           lastModifiedRef.current = meta.modified;
 
-          if (meta.file_type === "text") {
-            logger.info(`Fetching text content for: ${filePath}`);
+          if (meta.file_type === "text" || meta.file_type === "image") {
+            logger.info(`Fetching ${meta.file_type} content for: ${filePath}`);
             const result = await invoke<PreviewContent>("read_file_content", { path: filePath });
             setTextContent(result.content);
           } else {
@@ -151,11 +151,11 @@ const FilePreview: FC<FilePreviewProps> = ({ filePath, projectPath, selectedComm
           setMetadata(newMeta);
           lastModifiedRef.current = newMeta.modified;
           
-          // テキストファイルなら中身もサイレント更新
-          if (newMeta.file_type === "text") {
+          // テキストまたは画像なら中身もサイレント更新
+          if (newMeta.file_type === "text" || newMeta.file_type === "image") {
             const result = await invoke<PreviewContent>("read_file_content", { path: filePath });
             setTextContent(result.content);
-            if (showDiff) {
+            if (newMeta.file_type === "text" && showDiff) {
               const diff = await invoke<string>("git_diff_file", { path: filePath });
               setDiffContent(diff);
             }
@@ -204,7 +204,7 @@ const FilePreview: FC<FilePreviewProps> = ({ filePath, projectPath, selectedComm
     );
   }
 
-  const assetUrl = selectedCommitHash && metadata?.file_type === "image" && textContent
+  const assetUrl = metadata?.file_type === "image" && textContent
     ? `data:${metadata.mime_type};base64,${textContent}`
     : (filePath ? convertFileSrc(filePath.replace(/\\/g, "/")) : "");
 

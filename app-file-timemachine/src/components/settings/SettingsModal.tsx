@@ -180,9 +180,9 @@ const SettingsModal: FC<SettingsModalProps> = ({ isOpen, onClose }) => {
       const token = await invoke<string>("github_import_cli_token");
       setGithubToken(token);
       await fetchGithubUser(token);
-      logger.info("GitHub CLIからトークンをインポートしたよ！");
+      logger.info("GitHub CLIからトークンをインポートしました。");
     } catch (err) {
-      logger.error(`GitHub CLIインポートに失敗したよ: ${err}`);
+      logger.error(`GitHub CLIインポートに失敗しました: ${err}`);
       setGithubError(typeof err === "string" ? err : t("settings.github.invalid_token_error"));
     } finally {
       setIsVerifying(false);
@@ -210,23 +210,23 @@ const SettingsModal: FC<SettingsModalProps> = ({ isOpen, onClose }) => {
       github_token: null,
       github_username: null,
     });
-    logger.info("GitHubの連携を解除したよ！");
+    logger.info("GitHubの連携を解除しました。");
   };
 
   const handleLanguageChange = async (lng: string) => {
-    logger.info(`言語を切り替えるよ: ${lng}`);
+    logger.info(`言語を切り替えます: ${lng}`);
     await i18n.changeLanguage(lng);
-    logger.debug(`言語の切り替えが完了したよ: ${i18n.language}`);
+    logger.debug(`言語の切り替えが完了しました: ${i18n.language}`);
   };
 
   const handleRerunWizard = async () => {
-    logger.info("環境診断ウィザードを再実行するよ");
+    logger.info("環境診断ウィザードを再実行します");
     try {
       await updateAppConfig({ setup_completed: false });
-      logger.debug("セットアップ完了フラグをリセットしたよ。アプリをリロードします。");
+      logger.debug("セットアップ完了フラグをリセットしました。アプリをリロードします。");
       window.location.reload();
     } catch (error) {
-      logger.error(`環境診断ウィザードの再設定に失敗したよ: ${error}`);
+      logger.error(`環境診断ウィザードの再設定に失敗しました: ${error}`);
     }
   };
 

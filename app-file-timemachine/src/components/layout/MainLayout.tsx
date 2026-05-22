@@ -392,7 +392,7 @@ const MainLayout: FC = () => {
       logger.info(`Git Pushに成功しました: ${pushRes}`);
 
       setHistoryRefreshKey((prev) => prev + 1);
-      alert("クラウドとの同期が完了したよ！これでバックアップもバッチリ！");
+      alert(t("layout.alert.sync_success"));
     } catch (error) {
       if (error === "CONFLICT") {
         logger.warn("プル中にマージ競合を検知しました。競合解決モーダルを起動します。");
@@ -408,7 +408,7 @@ const MainLayout: FC = () => {
 
   const handleSyncClick = async () => {
     if (!projectPath) {
-      alert("プロジェクトフォルダを開いてから同期してね！");
+      alert(t("layout.alert.sync_no_folder"));
       return;
     }
 
@@ -418,7 +418,7 @@ const MainLayout: FC = () => {
       
       if (!token) {
         logger.warn("GitHub連携トークンが見つかりません。");
-        alert("クラウドと同期するには、まず設定画面からGitHubアカウントと連携してね！");
+        alert(t("layout.alert.sync_link_required"));
         setIsSettingsModalOpen(true);
         return;
       }
@@ -435,8 +435,8 @@ const MainLayout: FC = () => {
         await executeSync(remoteUrl, token);
       }
     } catch (error) {
-      logger.error(`同期準備中にエラーが発生したよ: ${error}`);
-      alert(`同期の準備で失敗しちゃったみたい:\n${error}`);
+      logger.error(`同期準備中にエラーが発生しました: ${error}`);
+      alert(t("layout.alert.sync_prep_failed", { error }));
     }
   };
 
@@ -487,6 +487,7 @@ const MainLayout: FC = () => {
                     <div className="panel-body">
                       <FileTree 
                         rootPath={projectPath} 
+                        refreshKey={historyRefreshKey}
                         onFileSelect={(path) => {
                           logger.debug(`ファイルが選択されたよ: ${path}`);
                           setSelectedFilePath(path);

@@ -25,6 +25,7 @@ export interface ProjectConfig {
 interface FileTreeProps {
   rootPath: string | null;
   onFileSelect?: (path: string) => void;
+  refreshKey?: number;
 }
 
 /**
@@ -141,7 +142,7 @@ function updateIgnoreState(entries: FileEntry[], targetPath: string, newIsIgnore
 /**
  * ファイルツリー全体を管理するメインコンポーネント
  */
-const FileTree: FC<FileTreeProps> = ({ rootPath, onFileSelect }) => {
+const FileTree: FC<FileTreeProps> = ({ rootPath, onFileSelect, refreshKey = 0 }) => {
   const { t } = useTranslation();
   const [treeData, setTreeData] = useState<FileEntry[]>([]);
   const [isLoading, setIsLoading] = useState(false);
@@ -201,7 +202,7 @@ const FileTree: FC<FileTreeProps> = ({ rootPath, onFileSelect }) => {
   useEffect(() => {
     fetchTree();
     fetchConfig();
-  }, [rootPath]);
+  }, [rootPath, refreshKey]);
 
   const handleToggleMode = async () => {
     if (!rootPath) return;
