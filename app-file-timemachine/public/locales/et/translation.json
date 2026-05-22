@@ -1,0 +1,333 @@
+{
+  "common": {
+    "app_title": "Faili Ajamasin",
+    "file_tree": "Failipuu",
+    "root_management": "Juurnavigatsioon",
+    "history_list": "Ajaloo nimekiri",
+    "preview": "Eelvaade",
+    "sidebar": {
+      "main_nav": "Peamine navigatsioon",
+      "files": "Failid",
+      "history": "Ajalugu",
+      "settings": "Seaded",
+      "help": "Abi"
+    },
+    "action": {
+      "close": "Sulge",
+      "retry": "Proovi uuesti",
+      "cancel": "Tühista"
+    },
+    "placeholder": {
+      "file_tree": "(Failipuu kuvatakse siin)",
+      "root_management": "(Juurnavigatsioon kuvatakse siin)",
+      "history_list": "(Ajaloo nimekiri kuvatakse siin)",
+      "preview": "(Eelvaade kuvatakse siin)",
+      "select_file_to_preview": "Vali fail eelvaate kuvamiseks",
+      "binary_file_preview_not_supported": "Binaarfailide eelvaade pole toetatud",
+      "unknown_file_type": "Tundmatu failitüüp",
+      "no_history": "Ajalugu ei leitud",
+      "file_too_large": "Fail on liiga suur (maksimaalselt 5MB)"
+    },
+    "error": {
+      "failed_to_fetch_logs": "Kommiteerimise ajaloo hankimine ebaõnnestus"
+    },
+    "aria": {
+      "git_graph_description": "Git kommitte ajaloo visuaalne esitus",
+      "file_preview": "{{path}} eelvaade",
+      "preview_of": "{{path}} sisu",
+      "show_help": "Näita abi"
+    },
+    "graph_style": {
+      "tree": "Puu",
+      "metro": "Metroo"
+    },
+    "git_mode": {
+      "label": "Git režiim",
+      "whitelist": "Lubatud nimekiri",
+      "blacklist": "Keelatud nimekiri",
+      "whitelist_short": "Lubatud",
+      "blacklist_short": "Keelatud",
+      "tooltip": "Klõpsa Git režiimi vahetamiseks.",
+      "tooltip_whitelist": "Lubatud nimekiri (Salvestab ainult märgitud failid)",
+      "tooltip_blacklist": "Keelatud nimekiri (Salvestab kõik peale märgitud failide)"
+    },
+    "file_name": "Faili nimi",
+    "file_size": "Suurus",
+    "last_modified": "Viimati muudetud",
+    "loading": "Laadimine...",
+    "empty_directory": "Faile ei leitud"
+  },
+  "preview": {
+    "unknown_type": {
+      "title": "Binaarfail",
+      "message": "Selle failitüübi eelvaade pole toetatud, kuid seda hallatakse oluliste andmetena."
+    },
+    "action": {
+      "back_to_preview": "Tagasi eelvaatesse",
+      "show_diff": "Näita erinevusi (Diff)",
+      "back_to_latest": "Tagasi uusimale",
+      "diff_disabled_tooltip": "Erinevusi saab kuvada ainult tekstifailide puhul"
+    },
+    "no_changes": "Muudatusi ei leitud.",
+    "video_not_supported": "Sinu brauser ei toeta videotegi.",
+    "audio_not_supported": "Sinu brauser ei toeta helielementi.",
+    "time_traveling": "Vaatad salvestuspunkti minevikus [{{hash}}]"
+  },
+  "settings": {
+    "github": {
+      "title": "GitHubi integratsioon",
+      "login": "Logi sisse GitHubiga",
+      "desc": "Vajalik repositooriumi sünkroonimise ja varundamise funktsioonide jaoks.",
+      "connected": "Ühendatud",
+      "disconnect": "Katkesta ühendus",
+      "cli_import": "Automaatne import GitHub CLI-st",
+      "pat_toggle": "Sisesta PAT (Luba) käsitsi",
+      "pat_placeholder": "GitHub Personal Access Token (ghp_...)",
+      "connect_btn": "Ühenda",
+      "verifying": "Kontrollimine...",
+      "input_token_error": "Palun sisesta luba.",
+      "invalid_token_error": "GitHubi luba näib olevat vigane. Palun seadista uuesti.",
+      "connection_error": "Side GitHubiga ebaõnnestus. Kontrolli internetiühendust."
+    },
+    "sync": {
+      "title": "Pilve sünkroonimise seaded",
+      "tab_create": "Loo uus GitHubis",
+      "tab_link": "Lingi olemasolev repositoorium",
+      "err_repo_name_required": "Palun sisesta repositooriumi nimi.",
+      "err_repo_create_failed": "Repositooriumi loomine ebaõnnestus.",
+      "err_remote_url_required": "Palun sisesta kaugrepositooriumi URL.",
+      "err_invalid_git_url": "Palun sisesta kehtiv Git URL (alustades https:// või git@).",
+      "err_remote_set_failed": "Kaugrepositooriumi määramine ebaõnnestus.",
+      "err_default": "Ilmnes viga. Veendu, et repositooriumi nimi poleks dubleeritud.",
+      "success_linked": "Uus repositoorium on edukalt loodud ja lingitud.",
+      "success_existing_linked": "Olemasolev repositoorium on edukalt lingitud.",
+      "info_create_desc": "Loo uus repositoorium otse oma GitHubi kontole ja lingi see projekt automaatselt.",
+      "info_link_desc": "Registreeri ja sünkrooni olemasoleva repositooriumi URL-iga GitHubis.",
+      "label_repo_name": "Repositooriumi nimi",
+      "label_desc": "Kirjeldus (Valikuline)",
+      "placeholder_repo_name": "nt, minu-äge-projekt",
+      "placeholder_desc": "Sisesta repositooriumi lühike kirjeldus",
+      "label_privacy": "Privaatsuse seaded",
+      "btn_private": "Privaatne",
+      "btn_public": "Avalik",
+      "label_topics": "Teemad (Valikuline, komadega eraldatud)",
+      "placeholder_topics": "nt, react, tauri, disainitööriist",
+      "btn_create_submit": "Loo ja alusta sünkroonimist",
+      "btn_creating": "Repositooriumi loomine...",
+      "label_remote_url": "Kaugrepositooriumi URL",
+      "placeholder_remote_url": "nt, https://github.com/kasutaja/repo.git",
+      "btn_link_submit": "Lingi ja alusta sünkroonimist",
+      "btn_linking": "Seadistamine..."
+    },
+    "language": {
+      "title": "Keele seaded",
+      "select": "Vali kuvakeel"
+    },
+    "theme": {
+      "title": "Teema seaded",
+      "select": "Vali rakenduse teema",
+      "light": "Hele",
+      "dark": "Tume"
+    },
+    "behavior": {
+      "title": "Rakenduse käitumine",
+      "save_label": "Salvestamise käitumine juure vahetamisel",
+      "confirm": "Küsi iga kord (Soovitatav)",
+      "auto": "Automaatne salvestamine",
+      "none": "Ära salvesta"
+    },
+    "security": {
+      "title": "Turvalisus",
+      "auto_scan": "Automaatne haavatavuste skannimine",
+      "auto_scan_desc": "Kontrollib sõltuvuste haavatavusi enne salvestamist."
+    },
+    "setup": {
+      "title": "Käivita keskkonna viisard uuesti",
+      "desc": "Käivitab vajalike tööriistade seadistamise diagnostika viisardi uuesti.",
+      "rerun_btn": "Käivita diagnostika viisard"
+    }
+  },
+  "setup": {
+    "title": "Keskkonna seadistamise viisard",
+    "description": "Diagnoosime Faili Ajamasina kasutamiseks vajalike tööriistade paigaldamise staatust.",
+    "checking": "Diagnostika...",
+    "results": "Diagnostika tulemused",
+    "git": "Git",
+    "brew": "Homebrew",
+    "gh": "GitHub CLI (gh)",
+    "status_installed": "Paigaldatud",
+    "status_missing": "Paigaldamata",
+    "guide_missing": "Järgmised tööriistad on puudu. Palun kontrolli paigaldusjuhendit.",
+    "next": "Edasi",
+    "finish": "Lõpeta ja käivita rakendus",
+    "retry": "Proovi uuesti",
+    "optional": "(Valikuline)",
+    "git_required_desc": "Git on vajalik Ajamasina põhifunktsioonide jaoks.",
+    "gh_optional_desc": "Vajalik, kui kasutad GitHubi integratsiooni.",
+    "install_btn": "Automaatne paigaldus",
+    "installing_status": "Paigaldamine...",
+    "install_success": "Paigaldamine õnnestus.",
+    "install_failed": "Paigaldamine ebaõnnestus: ",
+    "log_title": "Üksikasjalikud logid"
+  },
+  "safety": {
+    "title": "Turvakaitse",
+    "description": "Leidsime failide hulgast, mida proovid salvestada, turvariske või hiiglaslikke faile.",
+    "issue_list_title": "Leitud probleemid:",
+    "reason": {
+      "security_risk_extension": "Potentsiaalselt privaatvõti või konfiguratsioonifail",
+      "inappropriate_directory": "Sisaldab katalooge, mis tuleks haldusest välistada",
+      "large_file": "Fail on liiga suur ja võib repositooriumi aeglustada (üle 100MB)"
+    },
+    "action": {
+      "exclude_and_save": "Välista need ja salvesta",
+      "save_anyway": "Salvesta ikkagi",
+      "cancel": "Tühista"
+    }
+  },
+  "help": {
+    "title": "Abi ja Git käskude spikker",
+    "description": "Rakenduse toimingute ja vastavate Git käskude selgitus.",
+    "table": {
+      "operation": "Rakenduse toiming",
+      "command": "Git käsk",
+      "explanation": "Selgitus"
+    },
+    "commands": {
+      "save": {
+        "op": "Salvesta",
+        "cmd": "git commit",
+        "desc": "Salvestab hetkeseisu."
+      },
+      "trial": {
+        "op": "Proovi marsruuti",
+        "cmd": "git branch",
+        "desc": "Loob uue haru (branch)."
+      },
+      "switch": {
+        "op": "Vaheta",
+        "cmd": "git checkout",
+        "desc": "Liigub eelmisele või teisele harule."
+      },
+      "merge": {
+        "op": "Võta põhiharru",
+        "cmd": "git merge",
+        "desc": "Ühendab hea idee põhiharuga."
+      },
+      "search": {
+        "op": "Otsi sisu",
+        "cmd": "git grep",
+        "desc": "Otsib läbi kõigi salvestuste."
+      },
+      "sync": {
+        "op": "Sünkrooni",
+        "cmd": "git push/pull",
+        "desc": "Sünkroonib pilvehoidlaga."
+      }
+    },
+    "footer": "*Täpsemate mõistete nägemiseks klõpsa iga nupu kõrval olevat küsimärki '?'."
+  },
+  "tooltip": {
+    "root_management": "Git-is nimetatakse seda haruks (Branch). Haldab erinevaid töömarsruute.",
+    "history_list": "Git-is nimetatakse seda logiks (Log). Vaata oma salvestusajalugu.",
+    "save_button": "Git-is nimetatakse seda kommitiks (Commit). Salvesta hetkeseis nimega."
+  },
+  "conflict": {
+    "no_conflicts": "Konflikte ei leitud.",
+    "commit_message": "Lahendatud konfliktid põhiharuga ühendamisel",
+    "title": "Lahenda konfliktid põhiharuga",
+    "description": "Järgmistes failides põrkuvad sisud kokku põhiharuga (main). Vali, milline sisu kasutusele võtta.",
+    "current_branch": "Kasuta prooviharu sisu",
+    "main_branch": "Kasuta põhiharu (main) sisu",
+    "resolve_and_merge": "Lõpeta lahendamine ja peegelda põhiharus",
+    "abort": "Katkesta ja mine tagasi",
+    "error_loading": "Konfliktide nimekirja hankimine ebaõnnestus.",
+    "error_resolving": "Konfliktide lahendamisel ilmnes viga.",
+    "preview_title": "Kontrolli konfliktseid kohti",
+    "select_to_preview": "Vali fail sisu kontrollimiseks",
+    "loading_content": "Faili sisu laadimine..."
+  },
+  "branch": {
+    "modal": {
+      "title": "Loo uus marsruut",
+      "desc": "Hoia oma praegune seis alles ja proovi uusi muudatusi eraldi marsruudil.",
+      "input_label": "Marsruudi nimi",
+      "placeholder": "nt, testi-disaini",
+      "input_tip": "* Lubatud on tähed, numbrid ja sidekriipsud.",
+      "submit": "Loo",
+      "error_empty": "Palun sisesta marsruudi nimi.",
+      "error_invalid": "Marsruudi nimi võib sisaldada ainult tähti, numbreid, sidekriipse (-) ja alakriipse (_)."
+    },
+    "switch": {
+      "title": "Vaheta marsruuti",
+      "desc": "Teisele marsruudile lülitumine muudab failid selle marsruudi olekusse.",
+      "error_fetch": "Marsruutide nimekirja hankimine ebaõnnestus."
+    },
+    "delete": {
+      "confirm": "Kas oled kindel, et soovid marsruudi „{{name}}“ kustutada?\n(Kõik sellel proovimarsruudil salvestatud muudatused hävitatakse)",
+      "success": "Marsruut „{{name}}“ on kustutatud.",
+      "tooltip": "Kustuta see marsruut"
+    }
+  },
+  "graph": {
+    "empty": {
+      "no_folder_title": "Kausta pole valitud",
+      "no_folder_desc": "Vali külgribalt „Ava kaust“ projekt, et näha selle ajaloo kaarti siin.",
+      "no_history_title": "Ajalugu ei leitud",
+      "no_history_desc": "Palun algata repositoorium (Initialize), et alustada ajaloo salvestamist Ajamasinasse."
+    },
+    "init": {
+      "loading": "Algatamine...",
+      "start": "Alusta ajaloo salvestamist"
+    },
+    "search": {
+      "placeholder": "Otsi kommitte..."
+    },
+    "action": {
+      "zoom_out": "Suurenda välja",
+      "zoom_in": "Suurenda sisse",
+      "reset_camera": "Lähtesta vaade"
+    }
+  },
+  "history": {
+    "table": {
+      "message": "Sõnum",
+      "hash": "Räsiväärtus (Hash)"
+    }
+  },
+  "layout": {
+    "alert": {
+      "no_folder_save": "Salvestamine ebaõnnestus, kuna ühtegi kausta pole avatud.",
+      "save_success": "Seisund on edukalt salvestatud.\nSõnum: \"{{message}}\"",
+      "save_failed": "Salvestamine ebaõnnestus: {{error}}",
+      "create_branch_success": "Uus marsruut „{{branchName}}“ on loodud ja sellele lülitutud.",
+      "create_branch_failed": "Marsruudi loomine ebaõnnestus: {{error}}",
+      "switch_branch_success": "Lülituti marsruudile „{{branchName}}“.",
+      "switch_branch_failed": "Marsruudile lülitumine ebaõnnestus: {{error}}",
+      "merge_success": "Võeti põhiharru ja vahetati marsruuti.",
+      "merge_failed": "Põhiharru võtmine ebaõnnestus:\n{{error}}",
+      "save_local_only": "Salvestati ainult lokaalselt (Ajamasinasse salvestamine jäeti vahele).",
+      "no_folder_to_save": "Salvestamine ebaõnnestus, kuna ühtegi kausta pole avatud. Palun ava vasakult külgribalt mõni kaust.",
+      "resolve_conflict_success": "Kõik konfliktid lahendati ja võeti põhiharru.",
+      "abort_merge_failed": "Algse seisundi taastamine ebaõnnestus:\n{{error}}"
+    },
+    "confirm": {
+      "merge": "Kas soovid praegused muudatused põhiharuga (main) ühendada?"
+    },
+    "tooltip": {
+      "switch_route": "Vaheta marsruuti",
+      "merge_to_main": "Võta selle marsruudi muudatused põhiharru",
+      "create_route": "Loo uus marsruut"
+    },
+    "action": {
+      "new_route": "Uus marsruut",
+      "saving": "Salvestamine..."
+    }
+  },
+  "tree": {
+    "action": {
+      "unignore": "Salvesta see fail",
+      "ignore": "Välista salvestamisest"
+    }
+  }
+}

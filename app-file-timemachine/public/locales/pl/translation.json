@@ -1,0 +1,333 @@
+{
+  "common": {
+    "app_title": "Wehikuł Czasu Plików",
+    "file_tree": "Drzewo plików",
+    "root_management": "Zarządzanie główne",
+    "history_list": "Lista historii",
+    "preview": "Podgląd",
+    "sidebar": {
+      "main_nav": "Główna nawigacja",
+      "files": "Pliki",
+      "history": "Historia",
+      "settings": "Ustawienia",
+      "help": "Pomoc"
+    },
+    "action": {
+      "close": "Zamknij",
+      "retry": "Spróbuj ponownie",
+      "cancel": "Anuluj"
+    },
+    "placeholder": {
+      "file_tree": "(Drzewo plików zostanie wyświetlone tutaj)",
+      "root_management": "(Zarządzanie główne zostanie wyświetlone tutaj)",
+      "history_list": "(Lista historii zostanie wyświetlona tutaj)",
+      "preview": "(Podgląd zostanie wyświetlony tutaj)",
+      "select_file_to_preview": "Wybierz plik, aby wyświetlić podgląd",
+      "binary_file_preview_not_supported": "Podgląd plików binarnych nie jest obsługiwany",
+      "unknown_file_type": "Nieznany typ pliku",
+      "no_history": "Nie znaleziono historii",
+      "file_too_large": "Plik jest zbyt duży (maksymalnie 5 MB)"
+    },
+    "error": {
+      "failed_to_fetch_logs": "Nie udało się pobrać historii zatwierdzeń"
+    },
+    "aria": {
+      "git_graph_description": "Wizualna reprezentacja historii zatwierdzeń Git",
+      "file_preview": "Podgląd {{path}}",
+      "preview_of": "Zawartość {{path}}",
+      "show_help": "Pokaż pomoc"
+    },
+    "graph_style": {
+      "tree": "Drzewo",
+      "metro": "Metro"
+    },
+    "git_mode": {
+      "label": "Tryb Git",
+      "whitelist": "Biała lista",
+      "blacklist": "Czarna lista",
+      "whitelist_short": "Biała lista",
+      "blacklist_short": "Czarna lista",
+      "tooltip": "Kliknij, aby przełączyć tryb Git.",
+      "tooltip_whitelist": "Biała lista (Zapisuje tylko zaznaczone pliki)",
+      "tooltip_blacklist": "Czarna lista (Zapisuje wszystko oprócz zaznaczonych plików)"
+    },
+    "file_name": "Nazwa pliku",
+    "file_size": "Rozmiar",
+    "last_modified": "Ostatnia modyfikacja",
+    "loading": "Ładowanie...",
+    "empty_directory": "Nie znaleziono żadnych plików"
+  },
+  "preview": {
+    "unknown_type": {
+      "title": "Plik binarny",
+      "message": "Podgląd tego typu pliku nie jest obsługiwany, ale jest on zarządzany jako ważne dane."
+    },
+    "action": {
+      "back_to_preview": "Powrót do podglądu",
+      "show_diff": "Pokaż różnice (Diff)",
+      "back_to_latest": "Powrót do najnowszego",
+      "diff_disabled_tooltip": "Różnice mogą być wyświetlane tylko dla plików tekstowych"
+    },
+    "no_changes": "Nie znaleziono żadnych zmian.",
+    "video_not_supported": "Twoja przeglądarka nie obsługuje tagu wideo.",
+    "audio_not_supported": "Twoja przeglądarka nie obsługuje elementu audio.",
+    "time_traveling": "Przeglądasz punkt zapisu z przeszłości [{{hash}}]"
+  },
+  "settings": {
+    "github": {
+      "title": "Integracja z GitHub",
+      "login": "Zaloguj się przez GitHub",
+      "desc": "Wymagane do synchronizacji repozytorium i funkcji kopii zapasowych.",
+      "connected": "Połączono",
+      "disconnect": "Odłącz",
+      "cli_import": "Automatyczny import z GitHub CLI",
+      "pat_toggle": "Ręczne wprowadzenie PAT (Tokenu)",
+      "pat_placeholder": "GitHub Personal Access Token (ghp_...)",
+      "connect_btn": "Połącz",
+      "verifying": "Weryfikacja...",
+      "input_token_error": "Wprowadź token.",
+      "invalid_token_error": "Token GitHub wydaje się nieprawidłowy. Skonfiguruj ponownie.",
+      "connection_error": "Nie udało się nawiązać połączenia z GitHubem. Sprawdź połączenie z internetem."
+    },
+    "sync": {
+      "title": "Ustawienia synchronizacji w chmurze",
+      "tab_create": "Utwórz nowe na GitHubie",
+      "tab_link": "Połącz z istniejącym repozytorium",
+      "err_repo_name_required": "Wprowadź nazwę repozytorium.",
+      "err_repo_create_failed": "Nie udało się utworzyć repozytorium.",
+      "err_remote_url_required": "Wprowadź adres URL zdalnego repozytorium.",
+      "err_invalid_git_url": "Wprowadź prawidłowy adres URL Git (zaczynający się od https:// lub git@).",
+      "err_remote_set_failed": "Nie udało się ustawić zdalnego repozytorium.",
+      "err_default": "Wystąpił błąd. Upewnij się, że nazwa repozytorium nie jest powielona.",
+      "success_linked": "Nowe repozytorium zostało pomyślnie utworzone i połączone.",
+      "success_existing_linked": "Istniejące repozytorium zostało pomyślnie połączone.",
+      "info_create_desc": "Utwórz nowe repozytorium bezpośrednio na swoim koncie GitHub i automatycznie połącz ten projekt.",
+      "info_link_desc": "Zarejestruj i synchronizuj z istniejącym adresem URL repozytorium na GitHubie.",
+      "label_repo_name": "Nazwa repozytorium",
+      "label_desc": "Opis (Opcjonalnie)",
+      "placeholder_repo_name": "np. moj-super-projekt",
+      "placeholder_desc": "Wprowadź krótki opis repozytorium",
+      "label_privacy": "Ustawienia prywatności",
+      "btn_private": "Prywatne",
+      "btn_public": "Publiczne",
+      "label_topics": "Tematy (Opcjonalnie, rozdzielone przecinkami)",
+      "placeholder_topics": "np. react, tauri, narzedzie-projektowe",
+      "btn_create_submit": "Utwórz i rozpocznij synchronizację",
+      "btn_creating": "Tworzenie repozytorium...",
+      "label_remote_url": "Adres URL zdalnego repozytorium",
+      "placeholder_remote_url": "np. https://github.com/uzytkownik/repo.git",
+      "btn_link_submit": "Połącz i rozpocznij synchronizację",
+      "btn_linking": "Konfiguracja..."
+    },
+    "language": {
+      "title": "Ustawienia języka",
+      "select": "Wybierz język wyświetlania"
+    },
+    "theme": {
+      "title": "Ustawienia motywu",
+      "select": "Wybierz motyw aplikacji",
+      "light": "Jasny",
+      "dark": "Ciemny"
+    },
+    "behavior": {
+      "title": "Zachowanie aplikacji",
+      "save_label": "Zachowanie zapisu przy przełączaniu katalogu",
+      "confirm": "Potwierdź za każdym razem (Zalecane)",
+      "auto": "Automatyczny zapis",
+      "none": "Nie zapisuj"
+    },
+    "security": {
+      "title": "Bezpieczeństwo",
+      "auto_scan": "Automatyczne skanowanie podatności",
+      "auto_scan_desc": "Sprawdza podatności zależności przed zapisaniem."
+    },
+    "setup": {
+      "title": "Uruchom ponownie kreatora środowiska",
+      "desc": "Uruchamia ponownie kreatora diagnostyki dla wymaganych narzędzi.",
+      "rerun_btn": "Uruchom kreatora diagnostyki"
+    }
+  },
+  "setup": {
+    "title": "Kreator konfiguracji środowiska",
+    "description": "Zdiagnozujemy status instalacji narzędzi wymaganych do korzystania z Wehikułu Czasu Plików.",
+    "checking": "Diagnozowanie...",
+    "results": "Wyniki diagnostyki",
+    "git": "Git",
+    "brew": "Homebrew",
+    "gh": "GitHub CLI (gh)",
+    "status_installed": "Zainstalowano",
+    "status_missing": "Niezainstalowano",
+    "guide_missing": "Brakuje następujących narzędzi. Sprawdź instrukcję instalacji.",
+    "next": "Dalej",
+    "finish": "Zakończ i uruchom aplikację",
+    "retry": "Spróbuj ponownie",
+    "optional": "(Opcjonalnie)",
+    "git_required_desc": "Git jest wymagany do podstawowych funkcji Wehikułu Czasu.",
+    "gh_optional_desc": "Wymagane w przypadku korzystania z integracji z GitHubem.",
+    "install_btn": "Automatyczna instalacja",
+    "installing_status": "Instalowanie...",
+    "install_success": "Instalacja zakończona sukcesem.",
+    "install_failed": "Instalacja nie powiodła się: ",
+    "log_title": "Szczegółowe dzienniki"
+  },
+  "safety": {
+    "title": "Tarcza bezpieczeństwa",
+    "description": "Znaleźliśmy zagrożenia bezpieczeństwa lub ogromne pliki wśród plików, które próbujesz zapisać.",
+    "issue_list_title": "Znalezione problemy:",
+    "reason": {
+      "security_risk_extension": "Potencjalnie klucz prywatny lub plik konfiguracyjny",
+      "inappropriate_directory": "Zawiera katalogi, które powinny być wykluczone z zarządzania",
+      "large_file": "Plik jest zbyt duży i może spowolnić repozytorium (powyżej 100 MB)"
+    },
+    "action": {
+      "exclude_and_save": "Wyklucz te i zapisz",
+      "save_anyway": "Zapisz mimo to",
+      "cancel": "Anuluj"
+    }
+  },
+  "help": {
+    "title": "Pomoc i ściągawka z poleceń Git",
+    "description": "Wyjaśnienie operacji w aplikacji i odpowiadających im poleceń Git.",
+    "table": {
+      "operation": "Operacja w aplikacji",
+      "command": "Polecenie Git",
+      "explanation": "Wyjaśnienie"
+    },
+    "commands": {
+      "save": {
+        "op": "Zapisz",
+        "cmd": "git commit",
+        "desc": "Rejestruje bieżący stan."
+      },
+      "trial": {
+        "op": "Trasa próbna",
+        "cmd": "git branch",
+        "desc": "Tworzy nową ścieżkę (gałąź/branch)."
+      },
+      "switch": {
+        "op": "Przełącz",
+        "cmd": "git checkout",
+        "desc": "Przechodzi do poprzedniej lub innej ścieżki."
+      },
+      "merge": {
+        "op": "Przyjmij do głównej",
+        "cmd": "git merge",
+        "desc": "Łączy dobry pomysł z główną ścieżką."
+      },
+      "search": {
+        "op": "Szukaj zawartości",
+        "cmd": "git grep",
+        "desc": "Przeszukuje całą zapisaną historię."
+      },
+      "sync": {
+        "op": "Synchronizuj",
+        "cmd": "git push/pull",
+        "desc": "Synchronizuje z internetowym skarbcem."
+      }
+    },
+    "footer": "*Kliknij przycisk „?” obok każdego przycisku, aby dowiedzieć się więcej."
+  },
+  "tooltip": {
+    "root_management": "W Git nazywane gałęzią (Branch). Zarządza różnymi ścieżkami pracy.",
+    "history_list": "W Git nazywane dziennikiem (Log). Przeglądaj historię zapisów.",
+    "save_button": "W Git nazywane zatwierdzeniem (Commit). Zapisz bieżący stan z nazwą."
+  },
+  "conflict": {
+    "no_conflicts": "Nie znaleziono konfliktów.",
+    "commit_message": "Rozwiązano konflikty podczas scalania z gałęzią główną",
+    "title": "Rozwiąż konflikty z gałęzią główną",
+    "description": "W poniższych plikach zawartość koliduje z gałęzią główną (main). Wybierz, którą zawartość chcesz zachować.",
+    "current_branch": "Użyj zawartości trasy próbnej",
+    "main_branch": "Użyj zawartości głównej (main)",
+    "resolve_and_merge": "Zakończ rozwiązywanie i scal z główną",
+    "abort": "Anuluj i wróć",
+    "error_loading": "Nie udało się pobrać listy konfliktów.",
+    "error_resolving": "Wystąpił błąd podczas rozwiązywania konfliktów.",
+    "preview_title": "Sprawdź kolizyjne miejsca",
+    "select_to_preview": "Wybierz plik, aby sprawdzić jego zawartość",
+    "loading_content": "Ładowanie zawartości pliku..."
+  },
+  "branch": {
+    "modal": {
+      "title": "Utwórz nową trasę",
+      "desc": "Zachowaj swój obecny stan i wypróbuj nowe zmiany na osobnej trasie.",
+      "input_label": "Nazwa trasy",
+      "placeholder": "np. projekt-testowy",
+      "input_tip": "* Dozwolone są litery, cyfry i myślniki.",
+      "submit": "Utwórz",
+      "error_empty": "Wprowadź nazwę trasy.",
+      "error_invalid": "Nazwa trasy może zawierać tylko litery, cyfry, myślniki (-) i podkreślenia (_)."
+    },
+    "switch": {
+      "title": "Przełącz trasę",
+      "desc": "Przełączenie na inną trasę zmieni pliki do stanu tej trasy.",
+      "error_fetch": "Nie udało się pobrać listy tras."
+    },
+    "delete": {
+      "confirm": "Czy na pewno chcesz usunąć trasę „{{name}}”?\n(Wszystkie zapisane próby na tej trasie zostaną trwale utracone)",
+      "success": "Trasa „{{name}}” została usunięta.",
+      "tooltip": "Usuń tę trasę"
+    }
+  },
+  "graph": {
+    "empty": {
+      "no_folder_title": "Nie wybrano katalogu",
+      "no_folder_desc": "Wybierz „Otwórz katalog” na pasku bocznym, aby zobaczyć mapę historii.",
+      "no_history_title": "Nie znaleziono historii",
+      "no_history_desc": "Zainicjuj repozytorium (Initialize), aby zacząć zapisywać historię w Wehikuł Czasu."
+    },
+    "init": {
+      "loading": "Inicjowanie...",
+      "start": "Zacznij zapisywać historię"
+    },
+    "search": {
+      "placeholder": "Szukaj zatwierdzeń..."
+    },
+    "action": {
+      "zoom_out": "Pomniejsz",
+      "zoom_in": "Powiększ",
+      "reset_camera": "Zresetuj widok"
+    }
+  },
+  "history": {
+    "table": {
+      "message": "Wiadomość",
+      "hash": "Skrót (Hash)"
+    }
+  },
+  "layout": {
+    "alert": {
+      "no_folder_save": "Nie można zapisać, ponieważ żaden katalog nie jest otwarty.",
+      "save_success": "Stan został zapisany pomyślnie.\nWiadomość: \"{{message}}\"",
+      "save_failed": "Zapisywanie nie powiodło się: {{error}}",
+      "create_branch_success": "Utworzono i przełączono na nową trasę „{{branchName}}”.",
+      "create_branch_failed": "Nie udało się utworzyć trasy: {{error}}",
+      "switch_branch_success": "Przełączono na trasę „{{branchName}}”.",
+      "switch_branch_failed": "Nie udało się przełączyć trasy: {{error}}",
+      "merge_success": "Przyjęto do głównej i przełączono trasę.",
+      "merge_failed": "Nie udało się przyjąć do głównej:\n{{error}}",
+      "save_local_only": "Zapisano tylko lokalnie (pominięto zapisywanie w Wehikuł Czasu).",
+      "no_folder_to_save": "Nie można zapisać, ponieważ żaden katalog nie jest otwarty. Otwórz katalog w lewym pasku bocznym.",
+      "resolve_conflict_success": "Wszystkie konflikty zostały pomyślnie rozwiązane i przyjęte do głównej.",
+      "abort_merge_failed": "Nie udało się przywrócić pierwotnego stanu:\n{{error}}"
+    },
+    "confirm": {
+      "merge": "Czy chcesz scalić bieżące zmiany z gałęzią główną (main)?"
+    },
+    "tooltip": {
+      "switch_route": "Przełącz trasę",
+      "merge_to_main": "Przyjmij zmiany z tej trasy do głównej",
+      "create_route": "Utwórz nową trasę"
+    },
+    "action": {
+      "new_route": "Nowa trasa",
+      "saving": "Zapisywanie..."
+    }
+  },
+  "tree": {
+    "action": {
+      "unignore": "Zachowaj w zapisie",
+      "ignore": "Wyklucz z zapisu"
+    }
+  }
+}

@@ -55,8 +55,8 @@
   - 履歴の中から特定の時点を選択し、その時点のファイル状態にワンクリックで復元できます。
 * **安全対策**
   - 不正なパス指定や意図しないコマンド実行を防ぐため、実行前に厳格なパス検証とコマンド引数の安全検証を実施しています。
-* **16言語対応のローカライズ**
-  - 日本語や英語をはじめとした16種類の言語に対応しており、環境に合わせて表示言語を選択できます。
+* **20言語対応のローカライズ**
+  - 日本語や英語をはじめとした20種類の言語に対応しており、環境に合わせて表示言語を選択できます。
 
 ---
 
@@ -90,7 +90,7 @@
 - デスクトップフレームワーク: Tauri v2
 - フロントエンド: React (TypeScript), Vite
 - バックエンド / システム制御: Rust
-- 多言語対応: i18next (16言語対応)
+- 多言語対応: i18next (20言語対応)
 
 #### セットアップとビルド手順
 1. リポジトリをクローンします。
@@ -107,6 +107,17 @@
    ```bash
    npm run tauri build
    ```
+
+#### 多言語の追加・拡張手順
+本アプリは `i18next` を使用してローカライズされています。新しい表示言語を追加したい場合は、以下の手順に従って拡張することができます。
+
+1. **翻訳ファイルの作成**:
+   - `app-file-timemachine/public/locales/` ディレクトリ内に、追加したい言語コード（例: `fr`, `et`）のフォルダを新規作成します。
+   - そのフォルダ内に `translation.json` を作成し、既存の言語ファイル（`en/translation.json` など）をコピーして、対応する言語にすべての値を翻訳します。
+2. **言語の定義と初期化の追加**:
+   - `app-file-timemachine/src/i18n/config.ts` を開き、`supportedLngs` 配列に、新規追加した言語コードを追加します。
+3. **設定画面への追加**:
+   - `app-file-timemachine/src/components/settings/SettingsModal.tsx` を開き、`languages` 配列オブジェクトに、追加した言語のコードと表示名（例: `{ code: "fr", name: "Français" }`）を追記します。
 
 ---
 
@@ -155,8 +166,8 @@ A list of features available in this application:
   - Allows you to select any point in the history timeline and restore files to that exact state with a single click.
 * **Security & Safety Measures**
   - Actively performs path normalization and strict command argument validation in the background to prevent unauthorized directory access or unintended command execution.
-* **16-Language Localization**
-  - Fully translated into 16 languages, letting you operate the interface in your preferred language setting.
+* **20-Language Localization**
+  - Fully translated into 20 languages, letting you operate the interface in your preferred language setting.
 
 ---
 
@@ -190,7 +201,7 @@ Information for developers wishing to build or customize this project.
 - Desktop Framework: Tauri v2
 - Frontend: React (TypeScript), Vite
 - Backend / Core Control: Rust
-- Localization: i18next (16-language support)
+- Localization: i18next (20-language support)
 
 #### Setup and Build Instructions
 1. Clone the repository.
@@ -207,3 +218,14 @@ Information for developers wishing to build or customize this project.
    ```bash
    npm run tauri build
    ```
+
+#### Adding and Extending Localization
+This application is localized using `i18next`. If you wish to add a new display language, follow these steps:
+
+1. **Create Translation File**:
+   - Inside `app-file-timemachine/public/locales/`, create a new folder named after your language code (e.g., `fr`, `et`).
+   - Create a `translation.json` file inside that folder, copy the keys from an existing file (like `en/translation.json`), and translate all values.
+2. **Register Supported Language**:
+   - Open `app-file-timemachine/src/i18n/config.ts` and add your language code to the `supportedLngs` array.
+3. **Add to Settings UI**:
+   - Open `app-file-timemachine/src/components/settings/SettingsModal.tsx` and add your language object (e.g., `{ code: "fr", name: "Français" }`) to the `languages` array.

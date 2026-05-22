@@ -1,0 +1,333 @@
+{
+  "common": {
+    "app_title": "Bestand Tijd Machine",
+    "file_tree": "Bestandsboom",
+    "root_management": "Hoofdbeheer",
+    "history_list": "Geschiedenislijst",
+    "preview": "Voorbeeld",
+    "sidebar": {
+      "main_nav": "Hoofdnavigatie",
+      "files": "Bestanden",
+      "history": "Geschiedenis",
+      "settings": "Instellingen",
+      "help": "Help"
+    },
+    "action": {
+      "close": "Sluiten",
+      "retry": "Opnieuw proberen",
+      "cancel": "Annuleren"
+    },
+    "placeholder": {
+      "file_tree": "(Bestandsboom wordt hier weergegeven)",
+      "root_management": "(Hoofdbeheer wordt hier weergegeven)",
+      "history_list": "(Geschiedenislijst wordt hier weergegeven)",
+      "preview": "(Voorbeeld wordt hier weergegeven)",
+      "select_file_to_preview": "Selecteer een bestand voor een voorbeeld",
+      "binary_file_preview_not_supported": "Voorbeeld voor binaire bestanden wordt niet ondersteund",
+      "unknown_file_type": "Onbekend bestandstype",
+      "no_history": "Geen geschiedenis gevonden",
+      "file_too_large": "Bestand is te groot (maximaal 5 MB)"
+    },
+    "error": {
+      "failed_to_fetch_logs": "Kan commit-geschiedenis niet ophalen"
+    },
+    "aria": {
+      "git_graph_description": "Een visuele weergave van de Git commit-geschiedenis",
+      "file_preview": "Voorbeeld van {{path}}",
+      "preview_of": "Inhoud van {{path}}",
+      "show_help": "Help weergeven"
+    },
+    "graph_style": {
+      "tree": "Boom",
+      "metro": "Metro"
+    },
+    "git_mode": {
+      "label": "Git Modus",
+      "whitelist": "Whitelist",
+      "blacklist": "Blacklist",
+      "whitelist_short": "Whitelist",
+      "blacklist_short": "Blacklist",
+      "tooltip": "Klik om Git-modus te wijzigen.",
+      "tooltip_whitelist": "Whitelist (Slaat alleen de geselecteerde bestanden op)",
+      "tooltip_blacklist": "Blacklist (Slaat alles op behalve de geselecteerde bestanden)"
+    },
+    "file_name": "Bestandsnaam",
+    "file_size": "Grootte",
+    "last_modified": "Laatst gewijzigd",
+    "loading": "Laden...",
+    "empty_directory": "Geen bestanden gevonden"
+  },
+  "preview": {
+    "unknown_type": {
+      "title": "Binair bestand",
+      "message": "Voorbeeld voor dit bestandstype wordt niet ondersteund, maar het wordt beheerd als belangrijke gegevens."
+    },
+    "action": {
+      "back_to_preview": "Terug naar voorbeeld",
+      "show_diff": "Verschillen tonen",
+      "back_to_latest": "Terug naar laatste",
+      "diff_disabled_tooltip": "Verschillen kunnen alleen voor tekstbestanden worden weergegeven"
+    },
+    "no_changes": "Geen wijzigingen gevonden.",
+    "video_not_supported": "Uw browser ondersteunt de videotag niet.",
+    "audio_not_supported": "Uw browser ondersteunt het audio-element niet.",
+    "time_traveling": "U bekijkt een opgeslagen geschiedenispunt [{{hash}}]"
+  },
+  "settings": {
+    "github": {
+      "title": "GitHub Integratie",
+      "login": "Inloggen met GitHub",
+      "desc": "Vereist voor synchronisatie en back-upfuncties van de repository.",
+      "connected": "Verbonden",
+      "disconnect": "Verbinding verbreken",
+      "cli_import": "Automatisch importeren uit GitHub CLI",
+      "pat_toggle": "Handmatig PAT (Token) invoeren",
+      "pat_placeholder": "GitHub Personal Access Token (ghp_...)",
+      "connect_btn": "Verbinden",
+      "verifying": "Verifiëren...",
+      "input_token_error": "Voer een token in.",
+      "invalid_token_error": "GitHub-token lijkt ongeldig. Configureer opnieuw.",
+      "connection_error": "Kan niet communiceren met GitHub. Controleer uw internetverbinding."
+    },
+    "sync": {
+      "title": "Cloud Synchronisatie Instellingen",
+      "tab_create": "Nieuw maken op GitHub",
+      "tab_link": "Bestaande repository koppelen",
+      "err_repo_name_required": "Voer een repositorynaam in.",
+      "err_repo_create_failed": "Kan repository niet maken.",
+      "err_remote_url_required": "Voer een URL voor de externe repository in.",
+      "err_invalid_git_url": "Voer een geldige Git URL in (beginnend met https:// of git@).",
+      "err_remote_set_failed": "Kan externe repository niet instellen.",
+      "err_default": "Er is een fout opgetreden. Zorg ervoor dat de repositorynaam niet dubbel is.",
+      "success_linked": "Nieuwe repository succesvol gemaakt en gekoppeld.",
+      "success_existing_linked": "Bestaande repository succesvol gekoppeld.",
+      "info_create_desc": "Maak rechtstreeks een nieuwe repository op uw GitHub-account en koppel dit project automatisch.",
+      "info_link_desc": "Registreer en synchroniseer met een bestaande repository-URL op GitHub.",
+      "label_repo_name": "Repositorynaam",
+      "label_desc": "Beschrijving (Optioneel)",
+      "placeholder_repo_name": "bijv., mijn-geweldige-project",
+      "placeholder_desc": "Voer een korte beschrijving van de repository in",
+      "label_privacy": "Privacy-instellingen",
+      "btn_private": "Privé",
+      "btn_public": "Openbaar",
+      "label_topics": "Onderwerpen (Optioneel, door komma's gescheiden)",
+      "placeholder_topics": "bijv., react, tauri, ontwerptool",
+      "btn_create_submit": "Maken en synchronisatie starten",
+      "btn_creating": "Repository maken...",
+      "label_remote_url": "Externe Repository URL",
+      "placeholder_remote_url": "bijv., https://github.com/gebruiker/repo.git",
+      "btn_link_submit": "Koppelen en synchronisatie starten",
+      "btn_linking": "Instellen..."
+    },
+    "language": {
+      "title": "Taalinstellingen",
+      "select": "Selecteer weergavetaal"
+    },
+    "theme": {
+      "title": "Themainstellingen",
+      "select": "Selecteer app-thema",
+      "light": "Licht",
+      "dark": "Donker"
+    },
+    "behavior": {
+      "title": "App-gedrag",
+      "save_label": "Opslaggedrag bij wisselen van root",
+      "confirm": "Elke keer bevestigen (Aanbevolen)",
+      "auto": "Automatisch opslaan",
+      "none": "Niet opslaan"
+    },
+    "security": {
+      "title": "Beveiliging",
+      "auto_scan": "Automatische kwetsbaarheidsscan",
+      "auto_scan_desc": "Controleert op kwetsbaarheden in afhankelijkheden voor het opslaan."
+    },
+    "setup": {
+      "title": "Omgevingsassistent opnieuw uitvoeren",
+      "desc": "Voert de diagnostische assistent voor de vereiste tools opnieuw uit.",
+      "rerun_btn": "Diagnostische assistent uitvoeren"
+    }
+  },
+  "setup": {
+    "title": "Omgevingsassistent",
+    "description": "We diagnosticeren de installatiestatus van de tools die vereist zijn voor het gebruik van Bestand Tijd Machine.",
+    "checking": "Diagnosticeren...",
+    "results": "Diagnoseresultaten",
+    "git": "Git",
+    "brew": "Homebrew",
+    "gh": "GitHub CLI (gh)",
+    "status_installed": "Geïnstalleerd",
+    "status_missing": "Niet geïnstalleerd",
+    "guide_missing": "De volgende tools ontbreken. Controleer de installatiehandleiding.",
+    "next": "Volgende",
+    "finish": "Voltooien en app starten",
+    "retry": "Opnieuw proberen",
+    "optional": "(Optioneel)",
+    "git_required_desc": "Git is vereist voor de kernfuncties van de Tijd Machine.",
+    "gh_optional_desc": "Vereist als u de GitHub-integratie gebruikt.",
+    "install_btn": "Automatische installatie",
+    "installing_status": "Installeren...",
+    "install_success": "Installatie geslaagd.",
+    "install_failed": "Installatie mislukt: ",
+    "log_title": "Gedetailleerde logboeken"
+  },
+  "safety": {
+    "title": "Beveiliging",
+    "description": "We hebben beveiligingsrisico's of extreem grote bestanden gevonden tussen de bestanden die u probeert op te slaan.",
+    "issue_list_title": "Gevonden problemen:",
+    "reason": {
+      "security_risk_extension": "Mogelijk een privésleutel of configuratiebestand",
+      "inappropriate_directory": "Bevat mappen die moeten worden uitgesloten van beheer",
+      "large_file": "Bestand is te groot en kan de repository vertragen (meer dan 100 MB)"
+    },
+    "action": {
+      "exclude_and_save": "Deze uitsluiten en opslaan",
+      "save_anyway": "Toch opslaan",
+      "cancel": "Annuleren"
+    }
+  },
+  "help": {
+    "title": "Help & Git Commands Cheatsheet",
+    "description": "Uitleg van app-bewerkingen en bijbehorende Git-commando's.",
+    "table": {
+      "operation": "App-bewerking",
+      "command": "Git-commando",
+      "explanation": "Uitleg"
+    },
+    "commands": {
+      "save": {
+        "op": "Opslaan",
+        "cmd": "git commit",
+        "desc": "Legt de huidige status vast."
+      },
+      "trial": {
+        "op": "Proefroute",
+        "cmd": "git branch",
+        "desc": "Maakt een nieuw pad (branch) aan."
+      },
+      "switch": {
+        "op": "Wisselen",
+        "cmd": "git checkout",
+        "desc": "Verplaatst naar een vorig of ander pad."
+      },
+      "merge": {
+        "op": "Overnemen in hoofdpad",
+        "cmd": "git merge",
+        "desc": "Voegt een goed idee samen met het hoofdpad."
+      },
+      "search": {
+        "op": "Inhoud zoeken",
+        "cmd": "git grep",
+        "desc": "Zoekt door alle opgeslagen gegevens."
+      },
+      "sync": {
+        "op": "Synchroniseren",
+        "cmd": "git push/pull",
+        "desc": "Synchroniseert met de online kluis."
+      }
+    },
+    "footer": "*Klik op de '?' naast elke knop voor meer gedetailleerde termen."
+  },
+  "tooltip": {
+    "root_management": "In Git een 'Branch' genoemd. Beheert verschillende werkpaden.",
+    "history_list": "In Git een 'Log' genoemd. Bekijk uw opslaggeschiedenis.",
+    "save_button": "In Git een 'Commit' genoemd. Sla de huidige status op met een naam."
+  },
+  "conflict": {
+    "no_conflicts": "Geen conflicten gevonden.",
+    "commit_message": "Conflicten opgelost tijdens samenvoegen met hoofdpad",
+    "title": "Conflicten met hoofdpad oplossen",
+    "description": "In de volgende bestanden botst de inhoud met het hoofdpad (main). Selecteer welke inhoud u wilt behouden.",
+    "current_branch": "Gebruik de inhoud van de proefroute",
+    "main_branch": "Gebruik de inhoud van het hoofdpad (main)",
+    "resolve_and_merge": "Oplossing voltooien en doorvoeren naar het hoofdpad",
+    "abort": "Annuleren en teruggaan",
+    "error_loading": "Kan de lijst met conflicten niet ophalen.",
+    "error_resolving": "Er is een fout opgetreden tijdens het oplossen van conflicten.",
+    "preview_title": "Conflicterende locaties controleren",
+    "select_to_preview": "Selecteer een bestand om de inhoud te controleren",
+    "loading_content": "Bestandsinhoud laden..."
+  },
+  "branch": {
+    "modal": {
+      "title": "Nieuwe route maken",
+      "desc": "Behoud uw huidige status en probeer nieuwe wijzigingen op een aparte route.",
+      "input_label": "Routenaam",
+      "placeholder": "bijv., test-ontwerp",
+      "input_tip": "* Alleen alfanumerieke tekens en koppeltekens zijn toegestaan.",
+      "submit": "Maken",
+      "error_empty": "Voer een routenaam in.",
+      "error_invalid": "Routenaam mag alleen alfanumerieke tekens, koppeltekens (-) en underscores (_) bevatten."
+    },
+    "switch": {
+      "title": "Route wisselen",
+      "desc": "Wisselen naar een andere route zal de bestanden veranderen naar de status van die route.",
+      "error_fetch": "Kan de lijst met routes niet ophalen."
+    },
+    "delete": {
+      "confirm": "Weet u zeker dat u de route „{{name}}” wilt verwijderen?\n(Alle opgeslagen wijzigingen op deze proefroute worden weggegooid)",
+      "success": "Route „{{name}}” is succesvol verwijderd.",
+      "tooltip": "Deze route verwijderen"
+    }
+  },
+  "graph": {
+    "empty": {
+      "no_folder_title": "Geen map geselecteerd",
+      "no_folder_desc": "Selecteer „Map openen” in de zijbalk om de geschiedeniskaart hier te bekijken.",
+      "no_history_title": "Geen geschiedenis gevonden",
+      "no_history_desc": "Initialiseer de repository om te beginnen met het opslaan van geschiedenis in de Tijd Machine."
+    },
+    "init": {
+      "loading": "Initialiseren...",
+      "start": "Geschiedenis opslaan starten"
+    },
+    "search": {
+      "placeholder": "Commits zoeken..."
+    },
+    "action": {
+      "zoom_out": "Uitzoomen",
+      "zoom_in": "Inzoomen",
+      "reset_camera": "Weergave herstellen"
+    }
+  },
+  "history": {
+    "table": {
+      "message": "Bericht",
+      "hash": "Hash"
+    }
+  },
+  "layout": {
+    "alert": {
+      "no_folder_save": "Kan niet opslaan omdat er geen map is geopend.",
+      "save_success": "Status succesvol opgeslagen.\nBericht: \"{{message}}\"",
+      "save_failed": "Opslaan mislukt: {{error}}",
+      "create_branch_success": "Nieuwe route „{{branchName}}” succesvol gemaakt en gewisseld.",
+      "create_branch_failed": "Kan route niet maken: {{error}}",
+      "switch_branch_success": "Gewisseld naar route „{{branchName}}”.",
+      "switch_branch_failed": "Kan niet naar route wisselen: {{error}}",
+      "merge_success": "Opgenomen in hoofdpad en gewisseld van route.",
+      "merge_failed": "Kan niet opnemen in hoofdpad:\n{{error}}",
+      "save_local_only": "Alleen lokaal opgeslagen (opslaan in Tijd Machine is overgeslagen).",
+      "no_folder_to_save": "Kan niet opslaan omdat er geen map open is. Open een map in de linkerzijbalk.",
+      "resolve_conflict_success": "Alle conflicten succesvol opgelost en opgenomen in het hoofdpad.",
+      "abort_merge_failed": "Kan de originele status niet herstellen:\n{{error}}"
+    },
+    "confirm": {
+      "merge": "Wilt u de huidige wijzigingen samenvoegen met het hoofdpad (main)?"
+    },
+    "tooltip": {
+      "switch_route": "Route wisselen",
+      "merge_to_main": "Wijzigingen van deze route overnemen in het hoofdpad",
+      "create_route": "Nieuwe route maken"
+    },
+    "action": {
+      "new_route": "Nieuwe route",
+      "saving": "Opslaan..."
+    }
+  },
+  "tree": {
+    "action": {
+      "unignore": "Behouden in opslag",
+      "ignore": "Uitsluiten van opslag"
+    }
+  }
+}

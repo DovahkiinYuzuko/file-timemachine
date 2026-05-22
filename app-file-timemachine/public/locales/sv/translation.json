@@ -1,0 +1,333 @@
+{
+  "common": {
+    "app_title": "Fil Tidsmaskin",
+    "file_tree": "Filträd",
+    "root_management": "Rotnavigering",
+    "history_list": "Historiklista",
+    "preview": "Förhandsgranskning",
+    "sidebar": {
+      "main_nav": "Huvudnavigering",
+      "files": "Filer",
+      "history": "Historik",
+      "settings": "Inställningar",
+      "help": "Hjälp"
+    },
+    "action": {
+      "close": "Stäng",
+      "retry": "Försök igen",
+      "cancel": "Avbryt"
+    },
+    "placeholder": {
+      "file_tree": "(Filträdet visas här)",
+      "root_management": "(Rotnavigering visas här)",
+      "history_list": "(Historiklistan visas här)",
+      "preview": "(Förhandsgranskning visas här)",
+      "select_file_to_preview": "Välj en fil att förhandsgranska",
+      "binary_file_preview_not_supported": "Förhandsgranskning stöds inte för binärfiler",
+      "unknown_file_type": "Okänd filtyp",
+      "no_history": "Ingen historik hittades",
+      "file_too_large": "Filen är för stor (max 5 MB)"
+    },
+    "error": {
+      "failed_to_fetch_logs": "Misslyckades med att hämta historik"
+    },
+    "aria": {
+      "git_graph_description": "En visuell representation av Git-historiken",
+      "file_preview": "Förhandsgranskning av {{path}}",
+      "preview_of": "Innehållet i {{path}}",
+      "show_help": "Visa hjälp"
+    },
+    "graph_style": {
+      "tree": "Träd",
+      "metro": "Tunnelbana"
+    },
+    "git_mode": {
+      "label": "Git-läge",
+      "whitelist": "Vitlista",
+      "blacklist": "Svartlista",
+      "whitelist_short": "Vitlista",
+      "blacklist_short": "Svartlista",
+      "tooltip": "Klicka för att växla Git-läge.",
+      "tooltip_whitelist": "Vitlista (Sparar endast markerade filer)",
+      "tooltip_blacklist": "Svartlista (Sparar alla utom markerade filer)"
+    },
+    "file_name": "Filnamn",
+    "file_size": "Storlek",
+    "last_modified": "Senast ändrad",
+    "loading": "Laddar...",
+    "empty_directory": "Inga filer hittades"
+  },
+  "preview": {
+    "unknown_type": {
+      "title": "Binärfil",
+      "message": "Förhandsgranskning stöds inte för denna filtyp, men den hanteras som viktiga data."
+    },
+    "action": {
+      "back_to_preview": "Tillbaka till förhandsgranskning",
+      "show_diff": "Visa skillnader (Diff)",
+      "back_to_latest": "Tillbaka till senaste",
+      "diff_disabled_tooltip": "Skillnader kan endast visas för textfiler"
+    },
+    "no_changes": "Inga ändringar hittades.",
+    "video_not_supported": "Din webbläsare stöder inte videotaggen.",
+    "audio_not_supported": "Din webbläsare stöder inte ljudelementet.",
+    "time_traveling": "Visar sparpunkt i historiken [{{hash}}]"
+  },
+  "settings": {
+    "github": {
+      "title": "GitHub-integration",
+      "login": "Logga in med GitHub",
+      "desc": "Krävs för synkronisering och säkerhetskopiering till molnet.",
+      "connected": "Ansluten",
+      "disconnect": "Koppla från",
+      "cli_import": "Importera automatiskt från GitHub CLI",
+      "pat_toggle": "Ange PAT (Token) manuellt",
+      "pat_placeholder": "GitHub Personal Access Token (ghp_...)",
+      "connect_btn": "Anslut",
+      "verifying": "Verifierar...",
+      "input_token_error": "Vänligen ange en token.",
+      "invalid_token_error": "GitHub-token verkar ogiltig. Vänligen konfigurera om.",
+      "connection_error": "Misslyckades med att kommunicera med GitHub. Kontrollera internetanslutningen."
+    },
+    "sync": {
+      "title": "Inställningar för molnsynkronisering",
+      "tab_create": "Skapa ny på GitHub",
+      "tab_link": "Länka befintligt arkiv",
+      "err_repo_name_required": "Vänligen ange ett arkivnamn.",
+      "err_repo_create_failed": "Misslyckades med att skapa arkiv.",
+      "err_remote_url_required": "Vänligen ange en fjärr-URL.",
+      "err_invalid_git_url": "Vänligen ange en giltig Git-URL (som börjar med https:// eller git@).",
+      "err_remote_set_failed": "Misslyckades med att ställa in fjärrarkiv.",
+      "err_default": "Ett fel uppstod. Kontrollera att arkivnamnet inte redan används.",
+      "success_linked": "Nytt arkiv har skapats och länkats framgångsrikt.",
+      "success_existing_linked": "Befintligt arkiv har länkats framgångsrikt.",
+      "info_create_desc": "Skapa ett nytt arkiv direkt på ditt GitHub-konto och länka automatiskt till detta projekt.",
+      "info_link_desc": "Registrera och synkronisera med en befintlig arkiv-URL på GitHub.",
+      "label_repo_name": "Arkivnamn",
+      "label_desc": "Beskrivning (Valfritt)",
+      "placeholder_repo_name": "t.ex. mitt-grymma-projekt",
+      "placeholder_desc": "Ange en kort beskrivning av arkivet",
+      "label_privacy": "Sekretessinställningar",
+      "btn_private": "Privat",
+      "btn_public": "Offentlig",
+      "label_topics": "Ämnen (Valfritt, kommaseparerat)",
+      "placeholder_topics": "t.ex. react, tauri, designverktyg",
+      "btn_create_submit": "Skapa och starta synkronisering",
+      "btn_creating": "Skapar arkiv...",
+      "label_remote_url": "Fjärrarkivets URL",
+      "placeholder_remote_url": "t.ex. https://github.com/anvandare/repo.git",
+      "btn_link_submit": "Länka och starta synkronisering",
+      "btn_linking": "Konfigurerar..."
+    },
+    "language": {
+      "title": "Språkinställningar",
+      "select": "Välj visningsspråk"
+    },
+    "theme": {
+      "title": "Temainställningar",
+      "select": "Välj apptema",
+      "light": "Ljust",
+      "dark": "Mörkt"
+    },
+    "behavior": {
+      "title": "Appbeteende",
+      "save_label": "Sparbeteende vid rotbyte",
+      "confirm": "Bekräfta varje gång (Rekommenderas)",
+      "auto": "Spara automatiskt",
+      "none": "Spara inte"
+    },
+    "security": {
+      "title": "Säkerhet",
+      "auto_scan": "Automatisk sårbarhetsskanning",
+      "auto_scan_desc": "Kontrollerar sårbarheter i beroenden innan du sparar."
+    },
+    "setup": {
+      "title": "Kör installationsguiden igen",
+      "desc": "Kör diagnostikguiden för nödvändiga verktyg igen.",
+      "rerun_btn": "Kör diagnostikguiden"
+    }
+  },
+  "setup": {
+    "title": "Installationsguide för miljö",
+    "description": "Vi kommer att diagnosticera installationsstatusen för verktyg som krävs för att använda Fil Tidsmaskin.",
+    "checking": "Diagnostiserar...",
+    "results": "Diagnosresultat",
+    "git": "Git",
+    "brew": "Homebrew",
+    "gh": "GitHub CLI (gh)",
+    "status_installed": "Installerad",
+    "status_missing": "Inte installerad",
+    "guide_missing": "Följande verktyg saknas. Vänligen kontrollera installationsguiden.",
+    "next": "Nästa",
+    "finish": "Slutför och starta appen",
+    "retry": "Försök igen",
+    "optional": "(Valfritt)",
+    "git_required_desc": "Git krävs för tidsmaskinens kärnfunktioner.",
+    "gh_optional_desc": "Krävs om du använder GitHub-integration.",
+    "install_btn": "Auto-installera",
+    "installing_status": "Installerar...",
+    "install_success": "Installationen lyckades.",
+    "install_failed": "Installationen misslyckades: ",
+    "log_title": "Detaljerade loggar"
+  },
+  "safety": {
+    "title": "Säkerhetsvakt",
+    "description": "Vi hittade säkerhetsrisker eller enorma filer bland de filer du försöker spara.",
+    "issue_list_title": "Hittade problem:",
+    "reason": {
+      "security_risk_extension": "Eventuellt en privat nyckel eller konfigurationsfil",
+      "inappropriate_directory": "Inkluderar kataloger som bör exkluderas från hanteringen",
+      "large_file": "Filen är för stor och kan göra arkivet långsamt (över 100 MB)"
+    },
+    "action": {
+      "exclude_and_save": "Exkludera dessa och Spara",
+      "save_anyway": "Spara ändå",
+      "cancel": "Avbryt"
+    }
+  },
+  "help": {
+    "title": "Hjälp & lathund för Git-kommandon",
+    "description": "Förklaring av applikationsfunktioner och motsvarande Git-kommandon.",
+    "table": {
+      "operation": "Appåtgärd",
+      "command": "Git-kommando",
+      "explanation": "Förklaring"
+    },
+    "commands": {
+      "save": {
+        "op": "Spara",
+        "cmd": "git commit",
+        "desc": "Registrerar det aktuella tillståndet."
+      },
+      "trial": {
+        "op": "Testrutt",
+        "cmd": "git branch",
+        "desc": "Skapar en ny väg (gren)."
+      },
+      "switch": {
+        "op": "Växla",
+        "cmd": "git checkout",
+        "desc": "Flyttar till en tidigare eller annan väg."
+      },
+      "merge": {
+        "op": "Anta till huvudgren",
+        "cmd": "git merge",
+        "desc": "Slår samman en bra idé till huvudvägen."
+      },
+      "search": {
+        "op": "Sök innehåll",
+        "cmd": "git grep",
+        "desc": "Söker igenom alla tidigare sparade poster."
+      },
+      "sync": {
+        "op": "Synka",
+        "cmd": "git push/pull",
+        "desc": "Synkroniserar med online-valvet."
+      }
+    },
+    "footer": "*Klicka på '?' bredvid varje knapp för mer detaljerade begrepp."
+  },
+  "tooltip": {
+    "root_management": "Kallas 'Branch' i Git. Hanterar olika arbetsvägar.",
+    "history_list": "Kallas 'Log' i Git. Kontrollera din sparhistorik.",
+    "save_button": "Kallas 'Commit' i Git. Spara aktuellt tillstånd med ett namn."
+  },
+  "conflict": {
+    "no_conflicts": "Inga konflikter hittades.",
+    "commit_message": "Löste konflikter under sammanslagning till huvudgren",
+    "title": "Lös konflikter med huvudgren",
+    "description": "Följande filer har motstridigt innehåll med huvudgrenen (main). Välj vilket innehåll som ska behållas.",
+    "current_branch": "Använd testruttens innehåll",
+    "main_branch": "Använd huvudgrenens (main) innehåll",
+    "resolve_and_merge": "Slutför lösning och återspegla i huvudgrenen",
+    "abort": "Avbryt och gå tillbaka",
+    "error_loading": "Misslyckades med att hämta konfliktlistan.",
+    "error_resolving": "Ett fel uppstod under konfliktlösningen.",
+    "preview_title": "Kontrollera motstridiga områden",
+    "select_to_preview": "Välj en fil för att kontrollera innehållet",
+    "loading_content": "Läser in filinnehåll..."
+  },
+  "branch": {
+    "modal": {
+      "title": "Skapa ny rutt",
+      "desc": "Behåll ditt nuvarande tillstånd och prova nya ändringar i en separat rutt.",
+      "input_label": "Ruttnamn",
+      "placeholder": "t.ex. test-design",
+      "input_tip": "* Endast bokstäver, siffror och bindestreck är tillåtna.",
+      "submit": "Skapa",
+      "error_empty": "Vänligen ange ett ruttnamn.",
+      "error_invalid": "Ruttnamnet kan endast innehålla bokstäver, siffror, bindestreck (-) och understreck (_)."
+    },
+    "switch": {
+      "title": "Växla rutt",
+      "desc": "Att växla till en annan rutt ändrar filerna till den ruttens tillstånd.",
+      "error_fetch": "Misslyckades med att hämta ruttlistan."
+    },
+    "delete": {
+      "confirm": "Är du säker på att du vill ta bort rutten „{{name}}“?\n(Alla sparade ändringar på den här testrutten kommer att raderas)",
+      "success": "Rutten „{{name}}“ har tagits bort.",
+      "tooltip": "Ta bort den här rutten"
+    }
+  },
+  "graph": {
+    "empty": {
+      "no_folder_title": "Ingen mapp vald",
+      "no_folder_desc": "Välj ett projekt från „Öppna mapp“ i sidofältet för att se dess historikkarta här.",
+      "no_history_title": "Ingen historik hittades",
+      "no_history_desc": "Vänligen initiera arkivet för att börja spara historik i Tidsmaskinen."
+    },
+    "init": {
+      "loading": "Initierar...",
+      "start": "Börja spara historik"
+    },
+    "search": {
+      "placeholder": "Sök commits..."
+    },
+    "action": {
+      "zoom_out": "Zooma ut",
+      "zoom_in": "Zooma in",
+      "reset_camera": "Återställ vy"
+    }
+  },
+  "history": {
+    "table": {
+      "message": "Meddelande",
+      "hash": "Hash-värde"
+    }
+  },
+  "layout": {
+    "alert": {
+      "no_folder_save": "Kan inte spara eftersom ingen mapp är öppen.",
+      "save_success": "Tillståndet sparades framgångsrikt.\nMeddelande: \"{{message}}\"",
+      "save_failed": "Misslyckades med att spara: {{error}}",
+      "create_branch_success": "Ny rutt „{{branchName}}“ har skapats och växlats.",
+      "create_branch_failed": "Misslyckades med att skapa rutt: {{error}}",
+      "switch_branch_success": "Växlade till rutt „{{branchName}}“.",
+      "switch_branch_failed": "Misslyckades med att växla rutt: {{error}}",
+      "merge_success": "Antogs till huvudgrenen och växlade rutt.",
+      "merge_failed": "Misslyckades med att anta till huvudgrenen:\n{{error}}",
+      "save_local_only": "Sparade endast lokalt (sparande till Tidsmaskinen hoppades över).",
+      "no_folder_to_save": "Kan inte spara eftersom ingen mapp är öppen. Vänligen öppna en mapp från det vänstra sidofältet.",
+      "resolve_conflict_success": "Alla konflikter löstes och antogs till huvudgrenen.",
+      "abort_merge_failed": "Misslyckades med att återställa till ursprungligt tillstånd:\n{{error}}"
+    },
+    "confirm": {
+      "merge": "Vill du slå samman aktuella ändringar med huvudgrenen (main)?"
+    },
+    "tooltip": {
+      "switch_route": "Växla rutt",
+      "merge_to_main": "Anta ändringar från denna rutt till huvudgrenen",
+      "create_route": "Skapa ny rutt"
+    },
+    "action": {
+      "new_route": "Ny rutt",
+      "saving": "Sparar..."
+    }
+  },
+  "tree": {
+    "action": {
+      "unignore": "Spara den här filen",
+      "ignore": "Exkludera från sparande"
+    }
+  }
+}

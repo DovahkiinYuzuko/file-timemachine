@@ -247,6 +247,10 @@ const SettingsModal: FC<SettingsModalProps> = ({ isOpen, onClose }) => {
     { code: "ru", name: "Русский" },
     { code: "ar", name: "العربية" },
     { code: "hi", name: "हिन्दी" },
+    { code: "et", name: "Eesti" },
+    { code: "nl", name: "Nederlands" },
+    { code: "pl", name: "Polski" },
+    { code: "sv", name: "Svenska" },
   ];
 
   return (
