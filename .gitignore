@@ -4,3 +4,6 @@
 !app-file-timemachine/
 !app-file-timemachine/**
 !app-icon.png
+!.github/
+!.github/**
+!README.md
