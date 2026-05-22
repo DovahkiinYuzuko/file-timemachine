@@ -76,32 +76,6 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "7f202df86484c868dbad7eaa557ef785d5c66295e41b460ef922eca0723b842c"
 
 [[package]]
-name = "app-file-timemachine"
-version = "0.1.0"
-dependencies = [
- "base64 0.22.1",
- "chardetng",
- "chrono",
- "content_inspector",
- "dunce",
- "encoding_rs",
- "infer 0.15.0",
- "log",
- "notify",
- "serde",
- "serde_json",
- "tauri",
- "tauri-build",
- "tauri-plugin-dialog",
- "tauri-plugin-log",
- "tauri-plugin-opener",
- "tauri-plugin-shell",
- "tauri-plugin-window-state",
- "tokio",
- "walkdir",
-]
-
-[[package]]
 name = "arrayvec"
 version = "0.7.6"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -1139,6 +1113,32 @@ checksum = "38e2275cc4e4fc009b0669731a1e5ab7ebf11f469eaede2bab9309a5b4d6057f"
 dependencies = [
  "memoffset",
  "rustc_version",
+]
+
+[[package]]
+name = "file-timemachine"
+version = "0.1.0"
+dependencies = [
+ "base64 0.22.1",
+ "chardetng",
+ "chrono",
+ "content_inspector",
+ "dunce",
+ "encoding_rs",
+ "infer 0.15.0",
+ "log",
+ "notify",
+ "serde",
+ "serde_json",
+ "tauri",
+ "tauri-build",
+ "tauri-plugin-dialog",
+ "tauri-plugin-log",
+ "tauri-plugin-opener",
+ "tauri-plugin-shell",
+ "tauri-plugin-window-state",
+ "tokio",
+ "walkdir",
 ]
 
 [[package]]
