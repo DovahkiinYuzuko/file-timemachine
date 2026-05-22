@@ -6,10 +6,16 @@
     "history_list": "قائمة السجل",
     "preview": "معاينة",
     "sidebar": {
+      "main_nav": "Main Navigation",
       "files": "الملفات",
       "history": "السجل",
       "settings": "الإعدادات",
       "help": "مساعدة"
+    },
+    "action": {
+      "close": "Close",
+      "retry": "Retry",
+      "cancel": "Cancel"
     },
     "placeholder": {
       "file_tree": "(ستظهر شجرة الملفات هنا)",
@@ -19,7 +25,8 @@
       "select_file_to_preview": "اختر ملفاً للمعاينة",
       "binary_file_preview_not_supported": "معاينة الملفات الثنائية غير مدعومة",
       "unknown_file_type": "تنسيق ملف غير معروف",
-      "no_history": "لا يوجد سجل بعد"
+      "no_history": "لا يوجد سجل بعد",
+      "file_too_large": "ファイルが大きすぎます (最大 5MB)"
     },
     "error": {
       "failed_to_fetch_logs": "فشل في جلب السجل"
@@ -30,12 +37,114 @@
       "preview_of": "محتوى {{path}}",
       "show_help": "Show Help"
     },
-    "action": {
-      "retry": "Retry",
-      "close": "Close",
-      "cancel": "Cancel"
+    "graph_style": {
+      "tree": "Tree",
+      "metro": "Metro"
     },
+    "git_mode": {
+      "label": "Git Mode",
+      "whitelist": "Whitelist",
+      "blacklist": "Blacklist",
+      "whitelist_short": "Whitelist",
+      "blacklist_short": "Blacklist",
+      "tooltip": "Click to toggle Git mode.",
+      "tooltip_whitelist": "Whitelist (Saves only the checked files)",
+      "tooltip_blacklist": "Blacklist (Saves all except checked files)"
+    },
+    "file_name": "File Name",
+    "file_size": "Size",
+    "last_modified": "Last Modified",
+    "loading": "Loading...",
     "empty_directory": "No files found"
+  },
+  "preview": {
+    "unknown_type": {
+      "title": "Binary File",
+      "message": "Preview for this file type is not supported, but it is managed as important data."
+    },
+    "action": {
+      "back_to_preview": "Back to Preview",
+      "show_diff": "Show Diff",
+      "back_to_latest": "最新に戻る"
+    },
+    "no_changes": "No changes found.",
+    "video_not_supported": "Your browser does not support the video tag.",
+    "audio_not_supported": "Your browser does not support the audio element.",
+    "time_traveling": "過去の保存地点 [{{hash}}] を閲覧中"
+  },
+  "settings": {
+    "github": {
+      "title": "تكامل GitHub",
+      "login": "تسجيل الدخول باستخدام GitHub",
+      "desc": "مطلوب لمزامنة المستودعات وميزات النسخ الاحتياطي.",
+      "connected": "Connected",
+      "disconnect": "Disconnect",
+      "cli_import": "Auto-import from GitHub CLI",
+      "pat_toggle": "Manually Enter PAT (Token)",
+      "pat_placeholder": "GitHub Personal Access Token (ghp_...)",
+      "connect_btn": "Connect",
+      "verifying": "Verifying...",
+      "input_token_error": "Please enter a token.",
+      "invalid_token_error": "GitHub token seems invalid. Please reconfigure.",
+      "connection_error": "Failed to communicate with GitHub. Check your internet connection."
+    },
+    "sync": {
+      "title": "Cloud Sync Settings",
+      "tab_create": "Create New on GitHub",
+      "tab_link": "Link Existing Repository",
+      "err_repo_name_required": "Please enter a repository name.",
+      "err_repo_create_failed": "Failed to create repository.",
+      "err_remote_url_required": "Please enter a remote repository URL.",
+      "err_invalid_git_url": "Please enter a valid Git remote URL (starting with https:// or git@).",
+      "err_remote_set_failed": "Failed to set remote repository.",
+      "err_default": "An error occurred. Please make sure the repository name is not duplicated.",
+      "success_linked": "Successfully created and linked new repository.",
+      "success_existing_linked": "Successfully linked existing repository.",
+      "info_create_desc": "Directly create a new repository on your GitHub account and automatically link this project.",
+      "info_link_desc": "Register and sync with an existing repository URL on GitHub.",
+      "label_repo_name": "Repository Name",
+      "label_desc": "Description (Optional)",
+      "placeholder_repo_name": "e.g., my-awesome-project",
+      "placeholder_desc": "Enter a brief description of the repository",
+      "label_privacy": "Privacy Settings",
+      "btn_private": "Private",
+      "btn_public": "Public",
+      "label_topics": "Topics (Optional, comma-separated)",
+      "placeholder_topics": "e.g., react, tauri, design-tool",
+      "btn_create_submit": "Create and Start Sync",
+      "btn_creating": "Creating repository...",
+      "label_remote_url": "Remote Repository URL",
+      "placeholder_remote_url": "e.g., https://github.com/user/repo.git",
+      "btn_link_submit": "Link and Start Sync",
+      "btn_linking": "Setting up..."
+    },
+    "language": {
+      "title": "إعدادات اللغة",
+      "select": "اختر لغة العرض"
+    },
+    "theme": {
+      "title": "إعدادات المظهر",
+      "select": "اختر مظهر التطبيق",
+      "light": "فاتح",
+      "dark": "داكن"
+    },
+    "behavior": {
+      "title": "سلوك التطبيق",
+      "save_label": "سلوك الحفظ عند تبديل المسارات",
+      "confirm": "تأكيد في كل مرة (موصى به)",
+      "auto": "حفظ تلقائي",
+      "none": "عدم الحفظ"
+    },
+    "security": {
+      "title": "الأمان",
+      "auto_scan": "فحص تلقائي للثغرات",
+      "auto_scan_desc": "يفحص الثغرات الأمنية في التبعيات قبل الحفظ."
+    },
+    "setup": {
+      "title": "إعادة تشغيل معالج الإعداد",
+      "desc": "يعيد تشغيل معالج تشخيص الإعداد للأدوات المطلوبة.",
+      "rerun_btn": "تشغيل معالج التشخيص"
+    }
   },
   "setup": {
     "title": "معالج تشخيص البيئة",
@@ -77,9 +186,67 @@
       "cancel": "إلغاء"
     }
   },
+  "help": {
+    "title": "Help & Git Commands Cheatsheet",
+    "description": "Explanation of app operations and corresponding Git commands.",
+    "table": {
+      "operation": "App Operation",
+      "command": "Git Command",
+      "explanation": "Explanation"
+    },
+    "commands": {
+      "save": {
+        "op": "Save",
+        "cmd": "git commit",
+        "desc": "Records the current state."
+      },
+      "trial": {
+        "op": "Trial Route",
+        "cmd": "git branch",
+        "desc": "Creates a new path (branch)."
+      },
+      "switch": {
+        "op": "Switch",
+        "cmd": "git checkout",
+        "desc": "Moves to a past or different path."
+      },
+      "merge": {
+        "op": "Adopt to Main",
+        "cmd": "git merge",
+        "desc": "Merges a good idea into the main path."
+      },
+      "search": {
+        "op": "Search Content",
+        "cmd": "git grep",
+        "desc": "Searches through all past records."
+      },
+      "sync": {
+        "op": "Sync",
+        "cmd": "git push/pull",
+        "desc": "Syncs with the online vault."
+      }
+    },
+    "footer": "*Check the '?' next to each button for more detailed terms."
+  },
+  "tooltip": {
+    "root_management": "Called 'Branch' in Git. Manages different paths of work.",
+    "history_list": "Called 'Log' in Git. Check your save history.",
+    "save_button": "Called 'Commit' in Git. Save current state with a name."
+  },
   "conflict": {
     "no_conflicts": "No conflicts found.",
-    "commit_message": "Resolved conflicts during merge to main"
+    "commit_message": "Resolved conflicts during merge to main",
+    "title": "本番との競合を解決",
+    "description": "以下のファイルで本番（main）との内容がぶつかっています。どちらの内容を採用するか選んでください。",
+    "current_branch": "お試し側を採用",
+    "main_branch": "本番（main）を採用",
+    "resolve_and_merge": "解決を完了して本番に反映",
+    "abort": "中止して戻る",
+    "error_loading": "競合リストの取得に失敗しました。",
+    "error_resolving": "解決処理中にエラーが発生しました。",
+    "preview_title": "競合箇所を確認",
+    "select_to_preview": "ファイルを選択して中身を確認できます",
+    "loading_content": "ファイルを読み込み中..."
   },
   "branch": {
     "modal": {
@@ -96,6 +263,11 @@
       "title": "Switch Route",
       "desc": "Switching to another route will change the files to that route's state.",
       "error_fetch": "Failed to get the list of routes."
+    },
+    "delete": {
+      "confirm": "ルート「{{name}}」を本当に削除しますか？\n（このルートに保存されているお試し内容はすべて破棄されます）",
+      "success": "ルート「{{name}}」を削除しました。",
+      "tooltip": "このルートを削除"
     }
   },
   "graph": {
@@ -153,53 +325,10 @@
       "saving": "Saving..."
     }
   },
-  "preview": {
-    "action": {
-      "back_to_preview": "Back to Preview",
-      "show_diff": "Show Diff"
-    },
-    "no_changes": "No changes found.",
-    "video_not_supported": "Your browser does not support the video tag.",
-    "audio_not_supported": "Your browser does not support the audio element."
-  },
   "tree": {
     "action": {
       "unignore": "Keep in save",
       "ignore": "Exclude from save"
-    }
-  },
-  "settings": {
-    "github": {
-      "title": "تكامل GitHub",
-      "login": "تسجيل الدخول باستخدام GitHub",
-      "desc": "مطلوب لمزامنة المستودعات وميزات النسخ الاحتياطي."
-    },
-    "language": {
-      "title": "إعدادات اللغة",
-      "select": "اختر لغة العرض"
-    },
-    "theme": {
-      "title": "إعدادات المظهر",
-      "select": "اختر مظهر التطبيق",
-      "light": "فاتح",
-      "dark": "داكن"
-    },
-    "behavior": {
-      "title": "سلوك التطبيق",
-      "save_label": "سلوك الحفظ عند تبديل المسارات",
-      "confirm": "تأكيد في كل مرة (موصى به)",
-      "auto": "حفظ تلقائي",
-      "none": "عدم الحفظ"
-    },
-    "security": {
-      "title": "الأمان",
-      "auto_scan": "فحص تلقائي للثغرات",
-      "auto_scan_desc": "يفحص الثغرات الأمنية في التبعيات قبل الحفظ."
-    },
-    "setup": {
-      "title": "إعادة تشغيل معالج الإعداد",
-      "desc": "يعيد تشغيل معالج تشخيص الإعداد للأدوات المطلوبة.",
-      "rerun_btn": "تشغيل معالج التشخيص"
     }
   }
 }

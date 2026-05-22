@@ -30,55 +30,175 @@
   outline-offset: 2px;
 }
 
+/* Base tooltip layout */
 .tooltip-content {
   position: absolute;
-  bottom: 100%;
-  left: 50%;
-  transform: translateX(-50%) translateY(-8px);
   background-color: var(--bg-color-dark, #1a1a1a);
   color: var(--text-color, #e0e0e0);
   padding: 0.5rem 0.75rem;
-  border-radius: 4px;
-  font-size: 0.875rem;
-  line-height: 1.4;
-  white-space: nowrap;
+  border-radius: 6px;
+  font-size: 0.8rem;
+  line-height: 1.5;
+  white-space: normal;
+  width: max-content;
+  max-width: 250px;
+  word-break: break-word;
   pointer-events: none;
   opacity: 0;
   visibility: hidden;
   transition: opacity 0.2s ease, visibility 0.2s ease, transform 0.2s ease;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
-  z-index: 1000;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+  z-index: 10000; /* Ensure it is above any panel resize handles or preview views */
   border: 1px solid var(--border-color, #333);
 }
 
-/* Arrow */
-.tooltip-content::after {
-  content: "";
-  position: absolute;
-  top: 100%;
-  left: 50%;
-  transform: translateX(-50%);
-  border-width: 6px;
-  border-style: solid;
-  border-color: var(--border-color, #333) transparent transparent transparent;
-}
-
-/* Inner arrow to cover border */
+.tooltip-content::after,
 .tooltip-content::before {
   content: "";
   position: absolute;
+  border-style: solid;
+  border-width: 6px;
+  border-color: transparent;
+}
+
+/* === TOP POSITION === */
+.tooltip-top {
+  bottom: 100%;
+  left: 50%;
+  transform: translateX(-50%) translateY(-8px);
+}
+
+.tooltip-top::after {
+  top: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+  border-top-color: var(--border-color, #333);
+}
+
+.tooltip-top::before {
   top: 100%;
   left: 50%;
   transform: translateX(-50%) translateY(-1px);
   border-width: 5px;
-  border-style: solid;
-  border-color: var(--bg-color-dark, #1a1a1a) transparent transparent transparent;
+  border-top-color: var(--bg-color-dark, #1a1a1a);
   z-index: 1;
 }
 
-.tooltip-container:hover .tooltip-content,
-.tooltip-trigger:focus-visible + .tooltip-content {
+/* === BOTTOM POSITION === */
+.tooltip-bottom {
+  top: 100%;
+  left: 50%;
+  transform: translateX(-50%) translateY(8px);
+}
+
+.tooltip-bottom::after {
+  bottom: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+  border-bottom-color: var(--border-color, #333);
+}
+
+.tooltip-bottom::before {
+  bottom: 100%;
+  left: 50%;
+  transform: translateX(-50%) translateY(1px);
+  border-width: 5px;
+  border-bottom-color: var(--bg-color-dark, #1a1a1a);
+  z-index: 1;
+}
+
+/* === LEFT POSITION === */
+.tooltip-left {
+  right: 100%;
+  top: 50%;
+  transform: translateY(-50%) translateX(-8px);
+}
+
+.tooltip-left::after {
+  left: 100%;
+  top: 50%;
+  transform: translateY(-50%);
+  border-left-color: var(--border-color, #333);
+}
+
+.tooltip-left::before {
+  left: 100%;
+  top: 50%;
+  transform: translateY(-50%) translateX(-1px);
+  border-width: 5px;
+  border-left-color: var(--bg-color-dark, #1a1a1a);
+  z-index: 1;
+}
+
+/* === RIGHT POSITION === */
+.tooltip-right {
+  left: 100%;
+  top: 50%;
+  transform: translateY(-50%) translateX(8px);
+}
+
+.tooltip-right::after {
+  right: 100%;
+  top: 50%;
+  transform: translateY(-50%);
+  border-right-color: var(--border-color, #333);
+}
+
+.tooltip-right::before {
+  right: 100%;
+  top: 50%;
+  transform: translateY(-50%) translateX(1px);
+  border-width: 5px;
+  border-right-color: var(--bg-color-dark, #1a1a1a);
+  z-index: 1;
+}
+
+/* Hover/Focus States showing tooltips */
+.tooltip-container:hover .tooltip-top {
   opacity: 1;
   visibility: visible;
   transform: translateX(-50%) translateY(-4px);
+}
+
+.tooltip-container:hover .tooltip-bottom {
+  opacity: 1;
+  visibility: visible;
+  transform: translateX(-50%) translateY(4px);
+}
+
+.tooltip-container:hover .tooltip-left {
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(-50%) translateX(-4px);
+}
+
+.tooltip-container:hover .tooltip-right {
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(-50%) translateX(4px);
+}
+
+/* Keyboard accessibility triggers */
+.tooltip-trigger:focus-visible + .tooltip-top {
+  opacity: 1;
+  visibility: visible;
+  transform: translateX(-50%) translateY(-4px);
+}
+
+.tooltip-trigger:focus-visible + .tooltip-bottom {
+  opacity: 1;
+  visibility: visible;
+  transform: translateX(-50%) translateY(4px);
+}
+
+.tooltip-trigger:focus-visible + .tooltip-left {
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(-50%) translateX(-4px);
+}
+
+.tooltip-trigger:focus-visible + .tooltip-right {
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(-50%) translateX(4px);
 }

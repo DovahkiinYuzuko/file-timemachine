@@ -5,6 +5,7 @@ import "./Tooltip.css";
 
 interface TooltipProps {
   content: string;
+  position?: "top" | "bottom" | "left" | "right";
 }
 
 /**
@@ -14,7 +15,7 @@ interface TooltipProps {
  * - The trigger button uses aria-describedby to link to the tooltip content.
  * - Keyboard focus and mouse hover both trigger the tooltip.
  */
-const Tooltip: FC<TooltipProps> = ({ content }) => {
+const Tooltip: FC<TooltipProps> = ({ content, position = "top" }) => {
   const { t } = useTranslation();
   const [isVisible, setIsVisible] = useState(false);
   const tooltipId = useId();
@@ -37,7 +38,7 @@ const Tooltip: FC<TooltipProps> = ({ content }) => {
       {isVisible && (
         <div 
           id={tooltipId}
-          className="tooltip-content" 
+          className={`tooltip-content tooltip-${position}`} 
           role="tooltip"
         >
           {content}

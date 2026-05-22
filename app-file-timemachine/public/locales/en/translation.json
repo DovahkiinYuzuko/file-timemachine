@@ -25,7 +25,8 @@
       "select_file_to_preview": "Select a file to preview",
       "binary_file_preview_not_supported": "Preview for binary files is not supported",
       "unknown_file_type": "Unknown file type",
-      "no_history": "No history found"
+      "no_history": "No history found",
+      "file_too_large": "ファイルが大きすぎます (最大 5MB)"
     },
     "error": {
       "failed_to_fetch_logs": "Failed to fetch commit history"
@@ -63,11 +64,13 @@
     },
     "action": {
       "back_to_preview": "Back to Preview",
-      "show_diff": "Show Diff"
+      "show_diff": "Show Diff",
+      "back_to_latest": "最新に戻る"
     },
     "no_changes": "No changes found.",
     "video_not_supported": "Your browser does not support the video tag.",
-    "audio_not_supported": "Your browser does not support the audio element."
+    "audio_not_supported": "Your browser does not support the audio element.",
+    "time_traveling": "過去の保存地点 [{{hash}}] を閲覧中"
   },
   "settings": {
     "github": {
@@ -232,7 +235,18 @@
   },
   "conflict": {
     "no_conflicts": "No conflicts found.",
-    "commit_message": "Resolved conflicts during merge to main"
+    "commit_message": "Resolved conflicts during merge to main",
+    "title": "本番との競合を解決",
+    "description": "以下のファイルで本番（main）との内容がぶつかっています。どちらの内容を採用するか選んでください。",
+    "current_branch": "お試し側を採用",
+    "main_branch": "本番（main）を採用",
+    "resolve_and_merge": "解決を完了して本番に反映",
+    "abort": "中止して戻る",
+    "error_loading": "競合リストの取得に失敗しました。",
+    "error_resolving": "解決処理中にエラーが発生しました。",
+    "preview_title": "競合箇所を確認",
+    "select_to_preview": "ファイルを選択して中身を確認できます",
+    "loading_content": "ファイルを読み込み中..."
   },
   "branch": {
     "modal": {
@@ -249,6 +263,11 @@
       "title": "Switch Route",
       "desc": "Switching to another route will change the files to that route's state.",
       "error_fetch": "Failed to get the list of routes."
+    },
+    "delete": {
+      "confirm": "ルート「{{name}}」を本当に削除しますか？\n（このルートに保存されているお試し内容はすべて破棄されます）",
+      "success": "ルート「{{name}}」を削除しました。",
+      "tooltip": "このルートを削除"
     }
   },
   "graph": {

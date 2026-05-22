@@ -452,7 +452,7 @@ const MainLayout: FC = () => {
                         <header className="panel-header">
                           <h2>
                             {t("common.root_management")}
-                            <Tooltip content={t("tooltip.root_management")} />
+                            <Tooltip content={t("tooltip.root_management")} position="bottom" />
                           </h2>
                         </header>
                         <div className="panel-body">
@@ -475,7 +475,7 @@ const MainLayout: FC = () => {
                         <header className="panel-header">
                           <h2>
                             {t("common.history_list")}
-                            <Tooltip content={t("tooltip.history_list")} />
+                            <Tooltip content={t("tooltip.history_list")} position="bottom" />
                           </h2>
                         </header>
                         <div className="panel-body">
@@ -552,14 +552,14 @@ const MainLayout: FC = () => {
                 className="sync-cloud-btn"
                 onClick={handleSyncClick}
                 disabled={isSyncing || isCommitting}
-                title="クラウドと同期（Push/Pull）する"
+                title={t("help.commands.sync.desc")}
               >
                 {isSyncing ? (
                   <Loader2 size={16} className="animate-spin" aria-hidden="true" />
                 ) : (
                   <RefreshCw size={16} />
                 )}
-                <span>同期</span>
+                <span>{t("help.commands.sync.op")}</span>
               </button>
             )}
             <button 
@@ -580,7 +580,7 @@ const MainLayout: FC = () => {
                 </>
               )}
             </button>
-            <Tooltip content={t("tooltip.save_button")} />
+            <Tooltip content={t("tooltip.save_button")} position="top" />
           </div>
         </footer>
       </div>

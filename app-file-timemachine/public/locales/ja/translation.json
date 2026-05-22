@@ -12,8 +12,10 @@
       "settings": "設定",
       "help": "ヘルプ"
     },
-    "error": {
-      "failed_to_fetch_logs": "履歴の取得に失敗しました"
+    "action": {
+      "close": "閉じる",
+      "retry": "再試行",
+      "cancel": "キャンセル"
     },
     "placeholder": {
       "file_tree": "（ここにファイルツリーが表示されます）",
@@ -25,6 +27,9 @@
       "unknown_file_type": "不明なファイル形式です",
       "no_history": "履歴がまだありません",
       "file_too_large": "ファイルが大きすぎます (最大 5MB)"
+    },
+    "error": {
+      "failed_to_fetch_logs": "履歴の取得に失敗しました"
     },
     "aria": {
       "git_graph_description": "Gitのコミット履歴を可視化したグラフです",
@@ -50,11 +55,6 @@
     "file_size": "サイズ",
     "last_modified": "最終更新",
     "loading": "読み込み中...",
-    "action": {
-      "retry": "再試行",
-      "close": "閉じる",
-      "cancel": "キャンセル"
-    },
     "empty_directory": "ファイルが見つかりません"
   },
   "preview": {
@@ -67,10 +67,10 @@
       "show_diff": "差分(Diff)を表示",
       "back_to_latest": "最新に戻る"
     },
-    "time_traveling": "過去の保存地点 [{{hash}}] を閲覧中",
     "no_changes": "変更点はありません。",
     "video_not_supported": "お使いのブラウザはビデオタグをサポートしていません。",
-    "audio_not_supported": "お使いのブラウザはオーディオ要素をサポートしていません。"
+    "audio_not_supported": "お使いのブラウザはオーディオ要素をサポートしていません。",
+    "time_traveling": "過去の保存地点 [{{hash}}] を閲覧中"
   },
   "settings": {
     "github": {
@@ -234,6 +234,8 @@
     "save_button": "Gitでは「コミット」と呼びます。今の状態に名前をつけて保存します。"
   },
   "conflict": {
+    "no_conflicts": "競合しているファイルはありません。",
+    "commit_message": "本番への採用に伴う競合の解決",
     "title": "本番との競合を解決",
     "description": "以下のファイルで本番（main）との内容がぶつかっています。どちらの内容を採用するか選んでください。",
     "current_branch": "お試し側を採用",
@@ -244,9 +246,7 @@
     "error_resolving": "解決処理中にエラーが発生しました。",
     "preview_title": "競合箇所を確認",
     "select_to_preview": "ファイルを選択して中身を確認できます",
-    "loading_content": "ファイルを読み込み中...",
-    "no_conflicts": "競合しているファイルはありません。",
-    "commit_message": "本番への採用に伴う競合の解決"
+    "loading_content": "ファイルを読み込み中..."
   },
   "branch": {
     "modal": {
