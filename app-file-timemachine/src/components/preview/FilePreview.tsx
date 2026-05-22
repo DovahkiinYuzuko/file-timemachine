@@ -232,24 +232,29 @@ const FilePreview: FC<FilePreviewProps> = ({ filePath, projectPath, selectedComm
           <FileText size={16} style={{ flexShrink: 0 }} />
           <h3 style={{ margin: 0, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{metadata?.name || filePath}</h3>
         </div>
-        {metadata?.file_type === "text" && (
-          <button 
-            onClick={() => setShowDiff(!showDiff)}
-            style={{ 
-              background: showDiff ? "var(--accent-color)" : "transparent",
-              color: showDiff ? "white" : "var(--text-color)",
-              border: `1px solid ${showDiff ? "var(--accent-color)" : "var(--border-color)"}`,
-              padding: "4px 8px",
-              borderRadius: "4px",
-              fontSize: "0.8rem",
-              cursor: "pointer",
-              transition: "all 0.2s",
-              flexShrink: 0
-            }}
-          >
-            {showDiff ? t("preview.action.back_to_preview") : t("preview.action.show_diff")}
-          </button>
-        )}
+        <button 
+          onClick={() => {
+            if (metadata?.file_type === "text") {
+              setShowDiff(!showDiff);
+            }
+          }}
+          disabled={metadata?.file_type !== "text"}
+          title={metadata?.file_type !== "text" ? t("preview.action.diff_disabled_tooltip") : undefined}
+          style={{ 
+            background: showDiff ? "var(--accent-color)" : "transparent",
+            color: showDiff ? "white" : (metadata?.file_type !== "text" ? "var(--text-muted)" : "var(--text-color)"),
+            border: `1px solid ${showDiff ? "var(--accent-color)" : "var(--border-color)"}`,
+            padding: "4px 8px",
+            borderRadius: "4px",
+            fontSize: "0.8rem",
+            cursor: metadata?.file_type !== "text" ? "not-allowed" : "pointer",
+            opacity: metadata?.file_type !== "text" ? 0.5 : 1,
+            transition: "all 0.2s",
+            flexShrink: 0
+          }}
+        >
+          {showDiff ? t("preview.action.back_to_preview") : t("preview.action.show_diff")}
+        </button>
       </header>
       
       <div className="preview-body">

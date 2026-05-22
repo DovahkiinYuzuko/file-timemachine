@@ -65,7 +65,8 @@
     "action": {
       "back_to_preview": "Back to Preview",
       "show_diff": "Show Diff",
-      "back_to_latest": "नवीनतम पर वापस जाएं"
+      "back_to_latest": "नवीनतम पर वापस जाएं",
+      "diff_disabled_tooltip": "अंतर केवल पाठ फ़ाइलों के लिए प्रदर्शित किया जा सकता है"
     },
     "no_changes": "No changes found.",
     "video_not_supported": "Your browser does not support the video tag.",

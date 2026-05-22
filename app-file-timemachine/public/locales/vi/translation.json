@@ -65,7 +65,8 @@
     "action": {
       "back_to_preview": "Back to Preview",
       "show_diff": "Show Diff",
-      "back_to_latest": "Trở về phiên bản mới nhất"
+      "back_to_latest": "Trở về phiên bản mới nhất",
+      "diff_disabled_tooltip": "Chỉ có thể hiển thị khác biệt cho các tệp văn bản"
     },
     "no_changes": "No changes found.",
     "video_not_supported": "Your browser does not support the video tag.",

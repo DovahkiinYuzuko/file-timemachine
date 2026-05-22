@@ -65,7 +65,8 @@
     "action": {
       "back_to_preview": "Back to Preview",
       "show_diff": "Show Diff",
-      "back_to_latest": "返回最新版本"
+      "back_to_latest": "返回最新版本",
+      "diff_disabled_tooltip": "僅支援顯示文字檔案的差異"
     },
     "no_changes": "No changes found.",
     "video_not_supported": "Your browser does not support the video tag.",

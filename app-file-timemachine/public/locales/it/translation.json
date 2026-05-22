@@ -65,7 +65,8 @@
     "action": {
       "back_to_preview": "Back to Preview",
       "show_diff": "Show Diff",
-      "back_to_latest": "Torna all'ultimo"
+      "back_to_latest": "Torna all'ultimo",
+      "diff_disabled_tooltip": "Le differenze possono essere visualizzate solo per i file di testo"
     },
     "no_changes": "No changes found.",
     "video_not_supported": "Your browser does not support the video tag.",

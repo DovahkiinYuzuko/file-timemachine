@@ -65,7 +65,8 @@
     "action": {
       "back_to_preview": "Back to Preview",
       "show_diff": "Show Diff",
-      "back_to_latest": "최신 버전으로 돌아가기"
+      "back_to_latest": "최신 버전으로 돌아가기",
+      "diff_disabled_tooltip": "텍스트 파일만 차분을 표시할 수 있습니다"
     },
     "no_changes": "No changes found.",
     "video_not_supported": "Your browser does not support the video tag.",

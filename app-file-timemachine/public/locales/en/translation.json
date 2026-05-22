@@ -65,7 +65,8 @@
     "action": {
       "back_to_preview": "Back to Preview",
       "show_diff": "Show Diff",
-      "back_to_latest": "最新に戻る"
+      "back_to_latest": "最新に戻る",
+      "diff_disabled_tooltip": "Diff can only be displayed for text files"
     },
     "no_changes": "No changes found.",
     "video_not_supported": "Your browser does not support the video tag.",

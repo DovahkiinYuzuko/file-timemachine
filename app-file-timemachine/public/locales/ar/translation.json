@@ -65,7 +65,8 @@
     "action": {
       "back_to_preview": "Back to Preview",
       "show_diff": "Show Diff",
-      "back_to_latest": "العودة إلى الأحدث"
+      "back_to_latest": "العودة إلى الأحدث",
+      "diff_disabled_tooltip": "يمكن عرض الفروق لملفات النصوص فقط"
     },
     "no_changes": "No changes found.",
     "video_not_supported": "Your browser does not support the video tag.",

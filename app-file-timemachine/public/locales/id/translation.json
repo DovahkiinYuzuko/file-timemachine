@@ -65,7 +65,8 @@
     "action": {
       "back_to_preview": "Back to Preview",
       "show_diff": "Show Diff",
-      "back_to_latest": "Kembali ke Terbaru"
+      "back_to_latest": "Kembali ke Terbaru",
+      "diff_disabled_tooltip": "Perbedaan hanya dapat ditampilkan untuk berkas teks"
     },
     "no_changes": "No changes found.",
     "video_not_supported": "Your browser does not support the video tag.",

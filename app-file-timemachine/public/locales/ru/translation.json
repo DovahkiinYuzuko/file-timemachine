@@ -65,7 +65,8 @@
     "action": {
       "back_to_preview": "Back to Preview",
       "show_diff": "Show Diff",
-      "back_to_latest": "Вернуться к последней версии"
+      "back_to_latest": "Вернуться к последней версии",
+      "diff_disabled_tooltip": "Различия могут быть отображены только для текстовых файлов"
     },
     "no_changes": "No changes found.",
     "video_not_supported": "Your browser does not support the video tag.",

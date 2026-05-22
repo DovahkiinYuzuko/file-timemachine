@@ -65,7 +65,8 @@
     "action": {
       "back_to_preview": "プレビューに戻る",
       "show_diff": "差分(Diff)を表示",
-      "back_to_latest": "最新に戻る"
+      "back_to_latest": "最新に戻る",
+      "diff_disabled_tooltip": "テキストファイルのみ差分を表示できます"
     },
     "no_changes": "変更点はありません。",
     "video_not_supported": "お使いのブラウザはビデオタグをサポートしていません。",

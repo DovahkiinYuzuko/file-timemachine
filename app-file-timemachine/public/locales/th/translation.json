@@ -65,7 +65,8 @@
     "action": {
       "back_to_preview": "Back to Preview",
       "show_diff": "Show Diff",
-      "back_to_latest": "กลับไปเวอร์ชันล่าสุด"
+      "back_to_latest": "กลับไปเวอร์ชันล่าสุด",
+      "diff_disabled_tooltip": "สามารถแสดงส่วนต่างได้เฉพาะไฟล์ข้อความเท่านั้น"
     },
     "no_changes": "No changes found.",
     "video_not_supported": "Your browser does not support the video tag.",
