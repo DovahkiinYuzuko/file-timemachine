@@ -5,7 +5,7 @@
 </p>
 
 <p align="center">
-  <strong>ファイルの過去・現在を自由に行き来できるタイムマシン / A Visual Git GUI for Everyone</strong>
+  <strong>直感的にファイル履歴を確認・復元できるGUIツール / A Visual Git GUI for Everyone</strong>
 </p>
 
 <p align="center">
@@ -16,81 +16,73 @@
 
 ## 日本語
 
-### 💡 開発者の想い
-**「Git」という素晴らしい魔法を、すべてのPCユーザーの手に。**
+### 開発の背景
+ファイルの履歴管理や、変更された箇所の確認は、日常的な作業において重要なニーズです。しかし、それを実現するための一般的なバージョン管理システム（Gitなど）はコマンドラインでの操作が主流であり、コマンドの知識を持たないユーザーにとっては導入のハードルが高いという課題がありました。
 
-「さっき保存した内容、やっぱり昨日の時点に戻したいな…」  
-「あのファイルのどこを書き換えたか、一目で確認できたらいいのに…」  
-
-ファイルを扱うすべての人にとって、こうした「過去に戻りたい」「変更点を知りたい」という願いは日常茶飯事です。エンジニアの世界には、それを完璧に叶えてくれる「Git（ギット）」という世界最高峰のシステムがあります。
-
-しかし、Gitは黒い画面で難しい呪文（コマンド）を打ち込む必要があり、専門知識のない一般のユーザー（非エンジニア）にとっては非常に敷居が高いものでした。「こんなに便利な魔法があるのに、一部のエンジニアだけで独占されているのはもったいない！」
-
-そんな想いから生まれたのが、この**「ファイルタイムマシン」**です。難しい専門用語やコマンドを覚える必要は一切ありません。誰でも直感的に、まるでタイムマシンを操作するように、安全で強力なファイル管理の恩恵を受けられるように設計しました。
+本アプリは、専門知識がないPCユーザーでも、直感的な操作でファイルの履歴管理（過去の状態への復元や変更点の確認）を行えるようにすることを目指して開発されました。
 
 ---
 
-### 🛠️ 実は裏で動いていること（Gitの紹介）
-このアプリは魔法のように見えますが、実は裏で世界中のプロ開発者が愛用する**「Git」**を動かしています。
+### アプリの仕組みについて
+本アプリは、裏側でバージョン管理システム「Git」を呼び出すことで動作するGUI（グラフィカル・ユーザー・インターフェース）ツールです。
 
-あなたがアプリのボタンを「ポチッ」と押すたびに、アプリがあなたの代わりに裏で「ファイルを保存する」「過去の記録を掘り起こす」といった難しいコマンドをGitに指示しています。
-複雑で壊れやすいGitコマンドの操作をすべてアプリが肩代わりしてくれるため、あなたは難しいことを一切気にせず、安全にファイルのタイムトラベルを楽しむことができます。
-
----
-
-### ✨ このアプリで出来ること
-難しい言葉は一切なし！このアプリを使えば、以下のことがすべて簡単に行えます。
-
-* **履歴のタイムライン表示（グラフ可視化）**
-  - ファイルの変更履歴が、一本の美しい路線図（グラフ）のように視覚的に表示されます。いつ、どんな変更が行われたかが一目でわかります。
-* **過去との違いをチェック（ファイル比較）**
-  - 過去の時点のファイルと現在のファイルで「どこが新しく追加され、どこが削除されたか」を色分けして並べて表示します。
-* **ワンクリックでタイムトラベル（過去バージョンの復元）**
-  - 「あの時の状態に戻したい！」と思ったら、履歴からその時点を選んで復元ボタンを押すだけ。一瞬で過去のファイルがよみがえります。
-* **安全第一のセキュリティ対策（裏で危険をブロック）**
-  - 不正なファイル操作や、システムを壊すような危険なコマンドが実行されないよう、アプリの裏側で強力な安全検証（セキュリティブロック）を常に行っています。
-* **世界中で使える16言語対応**
-  - 日本語や英語をはじめ、世界中の16の言語に対応しており、お好みの言語で操作できます。
+ユーザーが画面上で行った操作（フォルダの指定や履歴の選択、復元など）を、アプリが自動的にGitコマンドに変換して実行します。これにより、コマンドの直接入力に伴う誤操作のリスクを抑えつつ、安全にファイルの履歴管理を行うことができます。
 
 ---
 
-### 📦 インストール方法（一般ユーザー向け）
+### 主な機能
+本アプリで利用可能な機能の一覧です。
 
-このアプリは、Windows、Mac、Linuxのどれでも動作します！
+* **履歴のタイムライン表示**
+  - ファイルの変更履歴をグラフとして視覚的に表示します。いつ変更が行われたのかをひと目で確認できます。
+* **ファイル変更箇所の比較 (Diff)**
+  - 過去の時点のファイルと現在のファイルを並べ、変更された行（追加・削除）を色分けして視覚的に比較できます。
+* **ファイルの復元**
+  - 履歴の中から特定の時点を選択し、その時点のファイル状態にワンクリックで復元できます。
+* **安全対策**
+  - 不正なパス指定や意図しないコマンド実行を防ぐため、実行前に厳格なパス検証とコマンド引数の安全検証を実施しています。
+* **16言語対応のローカライズ**
+  - 日本語や英語をはじめとした16種類の言語に対応しており、環境に合わせて表示言語を選択できます。
+
+---
+
+### インストール方法
+
+Windows、macOS、Linuxで動作します。
 
 1. **ダウンロード**
-   - このページの右側にある **Releases** （または最新リリース）から、お使いのパソコンに合ったインストーラーをダウンロードします。
-     - **Windowsをお使いの方**: `.msi` または `.exe` ファイルをダウンロードします。
-     - **Macをお使いの方**: `.dmg` ファイルをダウンロードします。
+   - 本リポジトリの **Releases** ページから、ご利用のOSに対応したインストーラーをダウンロードします。
+     - **Windows**: `.msi` または `.exe` ファイル
+     - **macOS**: `.dmg` ファイル
 2. **インストール**
-   - ダウンロードしたファイルをダブルクリックして、画面の指示に従ってインストールするだけで準備完了です！
+   - ダウンロードしたファイルを実行し、画面の指示に従ってインストールを行ってください。
 
 ---
 
-### 🚀 基本的な使い方（3つのステップ）
+### 基本的な使い方
 
-1. **フォルダを選択する**
-   - アプリを起動し、過去を記録・管理したいファイルが入っているフォルダを選択します。
-2. **履歴を見る**
-   - 変更が行われると、自動的に美しいタイムラインが作られていきます。過去の時点をクリックすると、その時のファイルの様子や変更点を確認できます。
-3. **過去に戻す**
-   - 戻したい履歴を選択して「復元」ボタンを押すだけで、ファイルがその瞬間の状態に戻ります！
+1. **フォルダの指定**
+   - アプリを起動後、変更履歴を記録・管理したいファイルが保存されているフォルダを選択します。
+2. **履歴の確認**
+   - ファイルに変更が加わると自動的に履歴が記録されます。タイムライン上の各ノードをクリックすると、その時点の変更内容や差分を確認できます。
+3. **過去の状態への復元**
+   - 復元したい時点を選択し、「復元」ボタンを押すことで、指定した時点のファイル状態に戻すことができます。
 
 ---
 
-### 💻 開発者向け情報 (For Developers)
+### 開発者向け情報
 
-開発者として本プロジェクトをビルド・カスタマイズしたい方向けの情報です。
+本プロジェクトをご自身でビルド・開発する方向けの情報です。
 
 #### 技術スタック
 - **デスクトップフレームワーク**: Tauri v2
 - **フロントエンド**: React (TypeScript), Vite
-- **バックエンド / コマンド制御**: Rust
-- **ローカライズ**: i18next (16言語対応)
+- **バックエンド / システム制御**: Rust
+- **多言語対応**: i18next (16言語対応)
 
 #### セットアップとビルド手順
 1. リポジトリをクローンします。
-2. `app-file-timemachine` ディレクトリに移動し、依存関係をインストールします。
+2. `app-file-timemachine` ディレクトリに移動し、必要なパッケージをインストールします。
    ```bash
    cd app-file-timemachine
    npm install
@@ -99,7 +91,7 @@
    ```bash
    npm run tauri dev
    ```
-4. リリース用パッケージ（インストーラー）をビルドします。
+4. リリース用のインストーラーをビルドします。
    ```bash
    npm run tauri build
    ```
@@ -108,70 +100,63 @@
 
 ## English
 
-### 💡 Developer's Vision
-**Bringing the Magic of "Git" to Every PC User.**
+### Background
+Managing file history and identifying modifications are essential requirements in daily computing tasks. However, mainstream version control systems (such as Git) primarily rely on command-line interfaces, creating a high barrier to entry for users without specialized command-line experience.
 
-"I wish I could revert the changes I made to this file yesterday..."  
-"If only I could see at a glance what exactly was changed in this document..."  
-
-For anyone who works with files, the desire to "go back in time" or "compare differences" is a daily occurrence. In the engineering world, there is a legendary system called "Git" that fulfills these wishes flawlessly.
-
-However, Git has traditionally required typing cryptic commands into a black terminal screen, making it incredibly intimidating for general users without a programming background. We thought, "It's a shame that such a powerful magic is locked away for only engineers to use!"
-
-That's why we created **"File Time Machine"**. You don't need to know any technical jargon or command-line wizardry. It is designed so that anyone can intuitively enjoy the security and power of file version control—just like operating a real time machine.
+This application was developed to allow any user to manage file history—including checking modifications and reverting files to prior states—using intuitive graphical controls, without requiring technical command-line knowledge.
 
 ---
 
-### 🛠️ What's Happening Under the Hood (Introduction to Git)
-While this app might feel like magic, it is actually powered by **Git**, the industry-standard version control system trusted by professional developers worldwide.
+### How the App Works
+This application functions as a Graphical User Interface (GUI) wrapper that calls the "Git" version control system in the background.
 
-Every time you click a button in the app, it acts as your translator, converting your clicks into complex Git commands behind the scenes. Because the app handles all the fragile and complicated command-line operations for you, you can safely travel through your file history without a single worry.
-
----
-
-### ✨ Features
-We kept the jargon out! Here is what you can easily do with this app:
-
-* **Visual History Timeline (Graph Visualization)**
-  - Your file changes are mapped onto a beautiful, train-route-style timeline. You can see when and what was changed at a single glance.
-* **Compare Differences Side-by-Side (Diff Viewer)**
-  - Compare the past version with the current one. The app highlights newly added parts and deleted parts in distinct colors, side-by-side.
-* **One-Click Time Travel (Version Restoring)**
-  - "I want to go back to this exact moment!" Just select that point in history and click the restore button. Your files are instantly brought back to life as they were.
-* **Safety First (In-App Security Verification)**
-  - To prevent system errors or malicious executions, the app constantly runs robust security checks in the background, keeping your files and system completely safe.
-* **16-Language Localization Support**
-  - Fully translated into 16 languages, allowing you to use the app comfortably in your preferred language.
+When you interact with the interface (such as selecting a folder, reviewing history, or reverting a file), the application automatically translates these actions into the appropriate Git commands. This approach minimizes the risk of accidental command-line errors and ensures safe, consistent file history management.
 
 ---
 
-### 📦 How to Install (For General Users)
+### Key Features
+A list of features available in this application:
 
-This app runs smoothly on Windows, macOS, and Linux!
+* **Visual History Timeline**
+  - Displays file modification history visually as a timeline graph, making it easy to identify when changes occurred.
+* **Side-by-Side Diff Viewer**
+  - Displays historical and current versions of a file side-by-side, color-coding added and deleted lines for clear comparison.
+* **One-Click File Restore**
+  - Allows you to select any point in the history timeline and restore files to that exact state with a single click.
+* **Security & Safety Measures**
+  - Actively performs path normalization and strict command argument validation in the background to prevent unauthorized directory access or unintended command execution.
+* **16-Language Localization**
+  - Fully translated into 16 languages, letting you operate the interface in your preferred language setting.
+
+---
+
+### Installation
+
+Compatible with Windows, macOS, and Linux.
 
 1. **Download**
-   - Go to the **Releases** section on the right side of this page and download the package for your OS:
-     - **Windows**: Download the `.msi` or `.exe` installer.
-     - **macOS**: Download the `.dmg` installer.
+   - Go to the **Releases** page of this repository and download the appropriate installer for your operating system:
+     - **Windows**: `.msi` or `.exe` file
+     - **macOS**: `.dmg` file
 2. **Install**
-   - Double-click the downloaded file and follow the on-screen instructions to get started!
+   - Run the downloaded installer file and follow the on-screen instructions.
 
 ---
 
-### 🚀 Basic Usage (3 Simple Steps)
+### Basic Usage
 
-1. **Choose a Folder**
-   - Open the app and select the folder containing the files you want to manage.
-2. **Explore History**
-   - As you change files, a beautiful timeline is built automatically. Click on any past point to view the file states and review what changed.
-3. **Revert in One Click**
-   - Select the desired historical state and click the "Restore" button to instantly revert your files!
+1. **Select a Folder**
+   - Launch the application and select the folder containing the files you wish to track.
+2. **Review History**
+   - The application automatically records a new point in history when files are modified. Click on any timeline node to view file contents and modifications at that moment.
+3. **Restore Prior Version**
+   - Select the historical point you wish to revert to, and click the "Restore" button to revert your files to that state.
 
 ---
 
-### 💻 For Developers
+### For Developers
 
-Information for developers who wish to build or customize the project.
+Information for developers wishing to build or customize this project.
 
 #### Tech Stack
 - **Desktop Framework**: Tauri v2
@@ -186,7 +171,7 @@ Information for developers who wish to build or customize the project.
    cd app-file-timemachine
    npm install
    ```
-3. Run the application in development mode:
+3. Launch the application in development mode:
    ```bash
    npm run tauri dev
    ```
