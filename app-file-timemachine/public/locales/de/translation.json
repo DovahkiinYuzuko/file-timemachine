@@ -50,7 +50,17 @@
     "guide_missing": "Die folgenden Tools fehlen. Bitte lesen Sie die Installationsanleitung.",
     "next": "Weiter",
     "finish": "Abschließen und App starten",
-    "retry": "Wiederholen"
+    "retry": "Wiederholen",
+    "optional": "(Optional)",
+    "git_required_desc": "Git ist für die Kernfunktionen der Time Machine erforderlich.",
+    "gh_optional_desc": "Erforderlich, wenn Sie die GitHub-Integration verwenden.",
+    "install_btn": "Automatische Installation",
+    "installing_status": "Installation läuft...",
+    "install_success": "Installation erfolgreich!",
+    "install_failed": "Installation fehlgeschlagen: ",
+    "log_title": "Detaillierte Protokolle",
+    "simulation_mode": "Debug-Simulationsmodus",
+    "simulation_toggle": "Nicht installierten Zustand simulieren"
   },
   "safety": {
     "title": "Sicherheitsschutz",
@@ -156,6 +166,40 @@
     "action": {
       "unignore": "Keep in save",
       "ignore": "Exclude from save"
+    }
+  },
+  "settings": {
+    "github": {
+      "title": "GitHub-Integration",
+      "login": "Mit GitHub anmelden",
+      "desc": "Erforderlich für Repository-Synchronisierung und Backups."
+    },
+    "language": {
+      "title": "Spracheinstellungen",
+      "select": "Anzeigesprache auswählen"
+    },
+    "theme": {
+      "title": "Theme-Einstellungen",
+      "select": "App-Theme auswählen",
+      "light": "Hell",
+      "dark": "Dunkel"
+    },
+    "behavior": {
+      "title": "App-Verhalten",
+      "save_label": "Speicherverhalten beim Routenwechsel",
+      "confirm": "Jedes Mal bestätigen (Empfohlen)",
+      "auto": "Automatisch speichern",
+      "none": "Nicht speichern"
+    },
+    "security": {
+      "title": "Sicherheit",
+      "auto_scan": "Automatische Schwachstellenanalyse",
+      "auto_scan_desc": "Überprüft Abhängigkeiten vor dem Speichern auf Schwachstellen."
+    },
+    "setup": {
+      "title": "Umgebungs-Assistent erneut ausführen",
+      "desc": "Führt den Diagnose-Assistenten for erforderliche Tools erneut aus.",
+      "rerun_btn": "Diagnose-Assistent ausführen"
     }
   }
 }

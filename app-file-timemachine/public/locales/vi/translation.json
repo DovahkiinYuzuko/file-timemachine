@@ -50,7 +50,17 @@
     "guide_missing": "Thiếu các công cụ sau. Vui lòng kiểm tra hướng dẫn cài đặt.",
     "next": "Tiếp theo",
     "finish": "Hoàn tất và khởi chạy ứng dụng",
-    "retry": "Thử lại"
+    "retry": "Thử lại",
+    "optional": "(Tùy chọn)",
+    "git_required_desc": "Git là bắt buộc cho tính năng cốt lõi của Time Machine.",
+    "gh_optional_desc": "Yêu cầu nếu bạn sử dụng tích hợp GitHub.",
+    "install_btn": "Tự động cài đặt",
+    "installing_status": "Đang cài đặt...",
+    "install_success": "Cài đặt thành công!",
+    "install_failed": "Cài đặt thất bại: ",
+    "log_title": "Nhật ký chi tiết",
+    "simulation_mode": "Chế độ mô phỏng gỡ lỗi",
+    "simulation_toggle": "Mô phỏng trạng thái chưa cài đặt"
   },
   "safety": {
     "title": "Bảo vệ an toàn",
@@ -156,6 +166,40 @@
     "action": {
       "unignore": "Keep in save",
       "ignore": "Exclude from save"
+    }
+  },
+  "settings": {
+    "github": {
+      "title": "Tích hợp GitHub",
+      "login": "Đăng nhập bằng GitHub",
+      "desc": "Yêu cầu cho tính năng đồng bộ hóa và sao lưu kho lưu trữ."
+    },
+    "language": {
+      "title": "Cài đặt ngôn ngữ",
+      "select": "Chọn ngôn ngữ hiển thị"
+    },
+    "theme": {
+      "title": "Cài đặt giao diện",
+      "select": "Chọn giao diện ứng dụng",
+      "light": "Sáng",
+      "dark": "Tối"
+    },
+    "behavior": {
+      "title": "Hành vi ứng dụng",
+      "save_label": "Hành vi lưu khi chuyển tuyến",
+      "confirm": "Xác nhận mỗi lần (Khuyên dùng)",
+      "auto": "Tự động lưu",
+      "none": "Không lưu"
+    },
+    "security": {
+      "title": "Bảo mật",
+      "auto_scan": "Tự động quét lỗ hổng",
+      "auto_scan_desc": "Kiểm tra lỗ hổng phụ thuộc trước khi lưu."
+    },
+    "setup": {
+      "title": "Chạy lại Trình hướng dẫn",
+      "desc": "Chạy lại trình hướng dẫn chẩn đoán cài đặt cho các công cụ bắt buộc.",
+      "rerun_btn": "Chạy Trình chẩn đoán"
     }
   }
 }

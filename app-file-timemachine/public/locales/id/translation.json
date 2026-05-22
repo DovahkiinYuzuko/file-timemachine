@@ -50,7 +50,17 @@
     "guide_missing": "Alat berikut kurang. Silakan periksa panduan instalasi.",
     "next": "Berikutnya",
     "finish": "Selesai dan Mulai Aplikasi",
-    "retry": "Coba Lagi"
+    "retry": "Coba Lagi",
+    "optional": "(Opsional)",
+    "git_required_desc": "Git diperlukan untuk fitur utama Time Machine.",
+    "gh_optional_desc": "Diperlukan jika Anda menggunakan integrasi GitHub.",
+    "install_btn": "Instal Otomatis",
+    "installing_status": "Menginstal...",
+    "install_success": "Instalasi Berhasil!",
+    "install_failed": "Instalasi Gagal: ",
+    "log_title": "Log Detail",
+    "simulation_mode": "Mode Simulasi Debug",
+    "simulation_toggle": "Simulasikan Status Belum Terinstal"
   },
   "safety": {
     "title": "Penjaga Keamanan",
@@ -156,6 +166,40 @@
     "action": {
       "unignore": "Keep in save",
       "ignore": "Exclude from save"
+    }
+  },
+  "settings": {
+    "github": {
+      "title": "Integrasi GitHub",
+      "login": "Masuk dengan GitHub",
+      "desc": "Diperlukan untuk sinkronisasi dan pencadangan repositori."
+    },
+    "language": {
+      "title": "Pengaturan Bahasa",
+      "select": "Pilih bahasa tampilan"
+    },
+    "theme": {
+      "title": "Pengaturan Tema",
+      "select": "Pilih tema aplikasi",
+      "light": "Terang",
+      "dark": "Gelap"
+    },
+    "behavior": {
+      "title": "Perilaku Aplikasi",
+      "save_label": "Perilaku penyimpanan saat beralih rute",
+      "confirm": "Konfirmasi setiap kali (Direkomendasikan)",
+      "auto": "Simpan otomatis",
+      "none": "Jangan simpan"
+    },
+    "security": {
+      "title": "Keamanan",
+      "auto_scan": "Pemindaian Kerentanan Otomatis",
+      "auto_scan_desc": "Memeriksa kerentanan dependensi sebelum menyimpan."
+    },
+    "setup": {
+      "title": "Jalankan Ulang Panduan Lingkungan",
+      "desc": "Menjalankan ulang panduan diagnosis untuk alat yang diperlukan.",
+      "rerun_btn": "Jalankan Panduan Diagnosis"
     }
   }
 }

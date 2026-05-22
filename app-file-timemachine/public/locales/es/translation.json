@@ -50,7 +50,17 @@
     "guide_missing": "Faltan las siguientes herramientas. Por favor, consulte la guía de instalación.",
     "next": "Siguiente",
     "finish": "Finalizar e iniciar la aplicación",
-    "retry": "Reintentar"
+    "retry": "Reintentar",
+    "optional": "(Opcional)",
+    "git_required_desc": "Git es necesario para las funciones principales de Time Machine.",
+    "gh_optional_desc": "Requerido si utiliza la integración con GitHub.",
+    "install_btn": "Instalación automática",
+    "installing_status": "Instalando...",
+    "install_success": "¡Instalación completada con éxito!",
+    "install_failed": "Instalación fallida: ",
+    "log_title": "Registros detallados",
+    "simulation_mode": "Modo de simulación de depuración",
+    "simulation_toggle": "Simular estado no instalado"
   },
   "safety": {
     "title": "Protector de seguridad",
@@ -156,6 +166,40 @@
     "action": {
       "unignore": "Keep in save",
       "ignore": "Exclude from save"
+    }
+  },
+  "settings": {
+    "github": {
+      "title": "Integración con GitHub",
+      "login": "Iniciar sesión con GitHub",
+      "desc": "Requerido para la sincronización y copia de seguridad de repositorios."
+    },
+    "language": {
+      "title": "Ajustes de idioma",
+      "select": "Seleccionar idioma de pantalla"
+    },
+    "theme": {
+      "title": "Ajustes de tema",
+      "select": "Seleccionar tema de la aplicación",
+      "light": "Claro",
+      "dark": "Oscuro"
+    },
+    "behavior": {
+      "title": "Comportamiento de la aplicación",
+      "save_label": "Comportamiento al cambiar de ruta",
+      "confirm": "Confirmar cada vez (Recomendado)",
+      "auto": "Guardar automáticamente",
+      "none": "No guardar"
+    },
+    "security": {
+      "title": "Seguridad",
+      "auto_scan": "Escaneo automático de vulnerabilidades",
+      "auto_scan_desc": "Comprueba vulnerabilidades en las dependencias antes de guardar."
+    },
+    "setup": {
+      "title": "Reejecutar asistente de entorno",
+      "desc": "Ejecuta de nuevo el asistente de diagnóstico para las herramientas requeridas.",
+      "rerun_btn": "Ejecutar asistente de diagnóstico"
     }
   }
 }

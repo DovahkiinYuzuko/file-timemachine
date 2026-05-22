@@ -50,7 +50,17 @@
     "guide_missing": "Mancano i seguenti strumenti. Consultare la guida all'installazione.",
     "next": "Avanti",
     "finish": "Concludi e avvia l'app",
-    "retry": "Riprova"
+    "retry": "Riprova",
+    "optional": "(Opzionale)",
+    "git_required_desc": "Git è richiesto per le funzionalità principali di Time Machine.",
+    "gh_optional_desc": "Richiesto se usi l'integrazione GitHub.",
+    "install_btn": "Installazione automatica",
+    "installing_status": "Installazione...",
+    "install_success": "Installazione completata con successo!",
+    "install_failed": "Installazione non riuscita: ",
+    "log_title": "Registri dettagliati",
+    "simulation_mode": "Modalità simulazione debug",
+    "simulation_toggle": "Simula stato non installato"
   },
   "safety": {
     "title": "Protezione di sicurezza",
@@ -156,6 +166,40 @@
     "action": {
       "unignore": "Keep in save",
       "ignore": "Exclude from save"
+    }
+  },
+  "settings": {
+    "github": {
+      "title": "Integrazione GitHub",
+      "login": "Accedi con GitHub",
+      "desc": "Richiesto per la sincronizzazione e il backup dei repository."
+    },
+    "language": {
+      "title": "Impostazioni lingua",
+      "select": "Seleziona lingua di visualizzazione"
+    },
+    "theme": {
+      "title": "Impostazioni tema",
+      "select": "Seleziona tema dell'app",
+      "light": "Chiaro",
+      "dark": "Scuro"
+    },
+    "behavior": {
+      "title": "Comportamento dell'app",
+      "save_label": "Comportamento al cambio di rotta",
+      "confirm": "Conferma ogni volta (Consigliato)",
+      "auto": "Salvataggio automatico",
+      "none": "Non salvare"
+    },
+    "security": {
+      "title": "Sicurezza",
+      "auto_scan": "Scansione automatica vulnerabilità",
+      "auto_scan_desc": "Controlla le vulnerabilità delle dipendenze prima del salvataggio."
+    },
+    "setup": {
+      "title": "Riesegui procedura guidata",
+      "desc": "Esegue nuovamente la procedura di diagnostica per gli strumenti richiesti.",
+      "rerun_btn": "Esegui procedura guidata"
     }
   }
 }

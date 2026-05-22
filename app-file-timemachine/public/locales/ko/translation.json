@@ -50,7 +50,17 @@
     "guide_missing": "다음 도구가 부족합니다. 설치 가이드를 확인해 주세요.",
     "next": "다음",
     "finish": "완료하고 앱 시작",
-    "retry": "재시도"
+    "retry": "재시도",
+    "optional": "(선택)",
+    "git_required_desc": "Git은 타임머신의 핵심 기능에 필요합니다.",
+    "gh_optional_desc": "GitHub 연동을 사용하는 경우에 필요합니다.",
+    "install_btn": "자동 설치",
+    "installing_status": "설치 중...",
+    "install_success": "설치 성공!",
+    "install_failed": "설치 실패: ",
+    "log_title": "상세 로그",
+    "simulation_mode": "디버г 시뮬레이션 모드",
+    "simulation_toggle": "미설치 상태 시뮬레이션"
   },
   "safety": {
     "title": "안전 가드",
@@ -156,6 +166,40 @@
     "action": {
       "unignore": "Keep in save",
       "ignore": "Exclude from save"
+    }
+  },
+  "settings": {
+    "github": {
+      "title": "GitHub 연동",
+      "login": "GitHub으로 로그인",
+      "desc": "저장소 동기화 및 백업 기능에 필요합니다."
+    },
+    "language": {
+      "title": "언어 설정",
+      "select": "표시 언어 선택"
+    },
+    "theme": {
+      "title": "테마 설정",
+      "select": "앱 테마 선택",
+      "light": "라이트",
+      "dark": "다크"
+    },
+    "behavior": {
+      "title": "앱 동작",
+      "save_label": "루트 전환 시 저장 설정",
+      "confirm": "매번 확인 (권장)",
+      "auto": "자동 저장",
+      "none": "저장 안 함"
+    },
+    "security": {
+      "title": "보안",
+      "auto_scan": "자동 취약점 스캔",
+      "auto_scan_desc": "저장하기 전에 의존성 취약점을 검사합니다."
+    },
+    "setup": {
+      "title": "환경 진단 마법사 재실행",
+      "desc": "필요한 도구의 설정 진단 마법사를 다시 실행합니다.",
+      "rerun_btn": "진단 마법사 실행"
     }
   }
 }

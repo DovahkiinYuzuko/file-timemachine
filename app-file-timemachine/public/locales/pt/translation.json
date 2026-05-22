@@ -50,7 +50,17 @@
     "guide_missing": "Faltam as seguintes ferramentas. Por favor, consulte o guia de instalação.",
     "next": "Próximo",
     "finish": "Concluir e iniciar o aplicativo",
-    "retry": "Repetir"
+    "retry": "Repetir",
+    "optional": "(Opcional)",
+    "git_required_desc": "Git é necessário para os recursos principais do Time Machine.",
+    "gh_optional_desc": "Necessário se você usar a integração com GitHub.",
+    "install_btn": "Instalação automática",
+    "installing_status": "Instalando...",
+    "install_success": "Instalação bem-sucedida!",
+    "install_failed": "Falha na instalação: ",
+    "log_title": "Registros detalhados",
+    "simulation_mode": "Modo de simulação de depuração",
+    "simulation_toggle": "Simular estado não instalado"
   },
   "safety": {
     "title": "Protetor de segurança",
@@ -156,6 +166,40 @@
     "action": {
       "unignore": "Keep in save",
       "ignore": "Exclude from save"
+    }
+  },
+  "settings": {
+    "github": {
+      "title": "Integração com GitHub",
+      "login": "Entrar com GitHub",
+      "desc": "Necessário para sincronização e backup de repositórios."
+    },
+    "language": {
+      "title": "Configurações de idioma",
+      "select": "Selecionar idioma de exibição"
+    },
+    "theme": {
+      "title": "Configurações de tema",
+      "select": "Selecionar tema do aplicativo",
+      "light": "Claro",
+      "dark": "Escuro"
+    },
+    "behavior": {
+      "title": "Comportamento do aplicativo",
+      "save_label": "Comportamento ao mudar de rota",
+      "confirm": "Confirmar sempre (Recomendado)",
+      "auto": "Salvar automaticamente",
+      "none": "Não salvar"
+    },
+    "security": {
+      "title": "Segurança",
+      "auto_scan": "Escaneamento automático de vulnerabilidades",
+      "auto_scan_desc": "Verifica vulnerabilidades nas dependências antes de salvar."
+    },
+    "setup": {
+      "title": "Reexecutar assistente de ambiente",
+      "desc": "Executa novamente o assistente de diagnóstico para as ferramentas necessárias.",
+      "rerun_btn": "Executar assistente de diagnóstico"
     }
   }
 }

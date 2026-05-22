@@ -50,7 +50,17 @@
     "guide_missing": "缺少以下工具。请查看安装指南。",
     "next": "下一步",
     "finish": "完成并启动应用",
-    "retry": "重试"
+    "retry": "重试",
+    "optional": "(可选)",
+    "git_required_desc": "Git 是时间机器核心功能所必需的。",
+    "gh_optional_desc": "如果您使用 GitHub 集成，则需要此项。",
+    "install_btn": "自动安装",
+    "installing_status": "正在安装...",
+    "install_success": "安装成功！",
+    "install_failed": "安装失败: ",
+    "log_title": "详细日志",
+    "simulation_mode": "调试模拟模式",
+    "simulation_toggle": "模拟未安装状态"
   },
   "safety": {
     "title": "安全卫士",
@@ -156,6 +166,40 @@
     "action": {
       "unignore": "Keep in save",
       "ignore": "Exclude from save"
+    }
+  },
+  "settings": {
+    "github": {
+      "title": "GitHub 关联",
+      "login": "使用 GitHub 登录",
+      "desc": "用于仓库同步及备份功能。"
+    },
+    "language": {
+      "title": "语言设置",
+      "select": "选择显示语言"
+    },
+    "theme": {
+      "title": "主题设置",
+      "select": "选择应用主题",
+      "light": "浅色",
+      "dark": "深色"
+    },
+    "behavior": {
+      "title": "应用行为",
+      "save_label": "切换根目录时的保存设置",
+      "confirm": "每次确认（推荐）",
+      "auto": "自动保存",
+      "none": "不保存"
+    },
+    "security": {
+      "title": "安全",
+      "auto_scan": "自动漏洞扫描",
+      "auto_scan_desc": "在保存前检查依赖项漏洞。"
+    },
+    "setup": {
+      "title": "重新运行环境向导",
+      "desc": "重新运行所需工具的设置诊断向导。",
+      "rerun_btn": "运行诊断向导"
     }
   }
 }

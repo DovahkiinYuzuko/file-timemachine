@@ -50,7 +50,17 @@
     "guide_missing": "Les outils suivants sont manquants. Veuillez consulter le guide d'installation.",
     "next": "Suivant",
     "finish": "Terminer et lancer l'application",
-    "retry": "Réessayer"
+    "retry": "Réessayer",
+    "optional": "(Optionnel)",
+    "git_required_desc": "Git est requis pour les fonctionnalités de base de Time Machine.",
+    "gh_optional_desc": "Requis si vous utilisez l'intégration GitHub.",
+    "install_btn": "Installation automatique",
+    "installing_status": "Installation en cours...",
+    "install_success": "Installation réussie !",
+    "install_failed": "Échec de l'installation : ",
+    "log_title": "Journaux détaillés",
+    "simulation_mode": "Mode simulation de débogage",
+    "simulation_toggle": "Simuler un état non installé"
   },
   "safety": {
     "title": "Protecteur de sécurité",
@@ -156,6 +166,40 @@
     "action": {
       "unignore": "Keep in save",
       "ignore": "Exclude from save"
+    }
+  },
+  "settings": {
+    "github": {
+      "title": "Intégration GitHub",
+      "login": "Se connecter avec GitHub",
+      "desc": "Requis pour la synchronisation et la sauvegarde des dépôts."
+    },
+    "language": {
+      "title": "Paramètres de langue",
+      "select": "Sélectionner la langue d'affichage"
+    },
+    "theme": {
+      "title": "Paramètres de thème",
+      "select": "Sélectionner le thème de l'application",
+      "light": "Clair",
+      "dark": "Sombre"
+    },
+    "behavior": {
+      "title": "Comportement de l'application",
+      "save_label": "Comportement lors du changement de route",
+      "confirm": "Confirmer à chaque fois (Recommandé)",
+      "auto": "Sauvegarder automatiquement",
+      "none": "Ne pas sauvegarder"
+    },
+    "security": {
+      "title": "Sécurité",
+      "auto_scan": "Analyse automatique de vulnérabilités",
+      "auto_scan_desc": "Vérifie les vulnérabilités des dépendances avant de sauvegarder."
+    },
+    "setup": {
+      "title": "Relancer l'assistant d'environnement",
+      "desc": "Exécute à nouveau l'assistant de diagnostic pour les outils requis.",
+      "rerun_btn": "Lancer l'assistant de diagnostic"
     }
   }
 }
