@@ -216,7 +216,7 @@ const GitGraph: FC<GitGraphProps> = ({ projectPath, refreshKey, onInitSuccess, s
           // 親が1つ
           const parentHash = commit.parents[0];
           const parentBranchName = commitBranchNameMap.get(parentHash) || "main";
-          const parentBranch = branches.get(parentBranchName);
+          const parentBranch = branches.get(parentBranchName) || branches.get("main") || mainBranch;
 
           const siblings = childrenMap.get(parentHash) || [];
           const myIndex = siblings.indexOf(commit.hash);
@@ -233,7 +233,8 @@ const GitGraph: FC<GitGraphProps> = ({ projectPath, refreshKey, onInitSuccess, s
                 branchColors.set(newBranchName, cudColors[nextColorIndex++ % cudColors.length]);
               }
             }
-            newBranch.commit({
+            const activeNewBranch = newBranch || branches.get("main") || mainBranch;
+            activeNewBranch.commit({
               hash: shortHash,
               subject: "",
               author: "User",
@@ -244,7 +245,8 @@ const GitGraph: FC<GitGraphProps> = ({ projectPath, refreshKey, onInitSuccess, s
             commitBranchInfoMap.set(commit.hash, { name: newBranchName, color: branchColors.get(newBranchName)! });
           } else {
             // 1番目の子 ＝ 親と同じブランチを継続
-            parentBranch.commit({
+            const activeParentBranch = parentBranch || branches.get("main") || mainBranch;
+            activeParentBranch.commit({
               hash: shortHash,
               subject: "",
               author: "User",
@@ -285,7 +287,7 @@ const GitGraph: FC<GitGraphProps> = ({ projectPath, refreshKey, onInitSuccess, s
             commitBranchNameMap.set(commit.hash, branchName1);
             commitBranchInfoMap.set(commit.hash, { name: branchName1, color: branchColors.get(branchName1) || cudColors[0] });
           } else {
-            const activeBranch = branch1 || branches.get("main");
+            const activeBranch = branch1 || branches.get("main") || mainBranch;
             activeBranch.commit({
               hash: shortHash,
               subject: "",

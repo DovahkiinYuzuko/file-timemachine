@@ -195,6 +195,24 @@ const FilePreview: FC<FilePreviewProps> = ({ filePath, projectPath, selectedComm
     );
   }
 
+  const isNotYetCreated = error && (
+    error.includes("exists on disk, but not in") || 
+    error.includes("does not exist in") ||
+    error.includes("exists on disk, but not")
+  );
+
+  if (isNotYetCreated) {
+    return (
+      <div className="preview-empty" role="status" style={{ display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center', height: '100%', gap: '12px', padding: '2rem', textAlign: 'center' }}>
+        <Info size={48} strokeWidth={1.5} style={{ color: "var(--text-muted)" }} />
+        <h2 style={{ fontSize: "1.2rem", fontWeight: 600, margin: 0 }}>{t("preview.not_yet_created.title")}</h2>
+        <p style={{ fontSize: "0.85rem", color: "var(--text-muted)", margin: 0, maxWidth: "320px" }}>
+          {t("preview.not_yet_created.message")}
+        </p>
+      </div>
+    );
+  }
+
   if (error) {
     return (
       <div className="preview-error" role="alert">

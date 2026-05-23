@@ -63,6 +63,10 @@
       "title": "Binary File",
       "message": "Preview for this file type is not supported, but it is managed as important data."
     },
+    "not_yet_created": {
+      "title": "File Not Yet Created",
+      "message": "At this save point, this file had not been created yet."
+    },
     "action": {
       "back_to_preview": "Back to Preview",
       "show_diff": "Show Diff",
