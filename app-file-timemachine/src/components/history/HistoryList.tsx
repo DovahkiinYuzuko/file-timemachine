@@ -186,7 +186,7 @@ const HistoryList: FC<HistoryListProps> = ({ projectPath, refreshKey = 0, select
             <th 
               onClick={handleSortToggle} 
               style={{ cursor: "pointer", userSelect: "none" }}
-              title={sortDesc ? "新しい順" : "古い順"}
+              title={sortDesc ? t("common.sort.desc") : t("common.sort.asc")}
             >
               <div style={{ display: "flex", alignItems: "center", gap: "4px" }}>
                 {t("common.last_modified")}

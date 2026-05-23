@@ -56,7 +56,11 @@
     "last_modified": "Last Modified",
     "loading": "Loading...",
     "empty_directory": "No files found",
-    "search": "Search files..."
+    "search": "Search files...",
+    "sort": {
+      "desc": "Newest first",
+      "asc": "Oldest first"
+    }
   },
   "preview": {
     "unknown_type": {

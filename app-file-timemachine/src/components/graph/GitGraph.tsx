@@ -634,7 +634,7 @@ const GitGraph: FC<GitGraphProps> = ({ projectPath, refreshKey, onInitSuccess, s
           <button
             className="zoom-btn reset-btn"
             onClick={handleSortToggle}
-            title={sortDesc ? "新しい順" : "古い順"}
+            title={sortDesc ? t("common.sort.desc") : t("common.sort.asc")}
           >
             {sortDesc ? <ArrowDown size={14} /> : <ArrowUp size={14} />}
           </button>

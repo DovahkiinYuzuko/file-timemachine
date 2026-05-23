@@ -56,7 +56,11 @@
     "last_modified": "最終更新",
     "loading": "読み込み中...",
     "empty_directory": "ファイルが見つかりません",
-    "search": "ファイル名を検索..."
+    "search": "ファイル名を検索...",
+    "sort": {
+      "desc": "新しい順",
+      "asc": "古い順"
+    }
   },
   "preview": {
     "unknown_type": {
