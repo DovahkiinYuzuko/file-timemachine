@@ -79,13 +79,25 @@ const HistoryList: FC<HistoryListProps> = ({ projectPath, refreshKey = 0, select
     };
   }, [projectPath, refreshKey]);
 
-  // 外部からの選択変更時に自動スクロール
+  // 外部からの選択変更時に自動スクロール (ペインがズレるのを防ぐ安全な手動座標計算スクロール)
   useEffect(() => {
     if (selectedCommitHash && containerRef.current) {
       const el = document.getElementById(`history-row-${selectedCommitHash}`);
       if (el) {
-        // center にすると対象が見やすくなる
-        el.scrollIntoView({ behavior: "smooth", block: "center" });
+        const container = containerRef.current;
+        const containerRect = container.getBoundingClientRect();
+        const elRect = el.getBoundingClientRect();
+        
+        // 要素のコンテナ内での相対的なY座標
+        const relativeTop = elRect.top - containerRect.top + container.scrollTop;
+        
+        // 要素がコンテナの中央に配置されるようにスクロール位置を計算
+        const targetScrollTop = relativeTop - (container.clientHeight / 2) + (el.clientHeight / 2);
+        
+        container.scrollTo({
+          top: targetScrollTop,
+          behavior: "smooth"
+        });
       }
     }
   }, [selectedCommitHash, sortDesc]);
