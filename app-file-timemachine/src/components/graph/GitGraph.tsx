@@ -183,11 +183,13 @@ const GitGraph: FC<GitGraphProps> = ({ projectPath, refreshKey, onInitSuccess, s
         }
 
         const handleCommitClick = () => {
-          if (selectedCommitHash === commit.hash) {
-            onCommitSelect(null);
-          } else {
-            onCommitSelect(commit.hash);
-          }
+          setTimeout(() => {
+            if (selectedCommitHash === commit.hash) {
+              onCommitSelect(null);
+            } else {
+              onCommitSelect(commit.hash);
+            }
+          }, 0);
         };
 
         if (commit.parents.length === 0) {

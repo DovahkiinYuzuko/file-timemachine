@@ -1,5 +1,6 @@
 use serde::{Deserialize, Serialize};
-use std::process::{Command, Stdio};
+use std::process::Stdio;
+use crate::SafeCommand as Command;
 use tauri::{AppHandle, Emitter};
 use std::io::{BufRead, BufReader};
 use std::time::Duration;

@@ -1,5 +1,22 @@
 mod commands;
 
+#[cfg(target_os = "windows")]
+use std::os::windows::process::CommandExt;
+
+pub struct SafeCommand;
+
+impl SafeCommand {
+    pub fn new<S: AsRef<std::ffi::OsStr>>(program: S) -> std::process::Command {
+        let mut cmd = std::process::Command::new(program);
+        #[cfg(target_os = "windows")]
+        {
+            cmd.creation_flags(0x08000000); // CREATE_NO_WINDOW = 0x08000000
+        }
+        cmd
+    }
+}
+
+
 use commands::setup::{check_dependencies, install_dependency};
 use commands::git::{git_init, git_commit, git_log, update_gitignore, switch_git_mode, git_get_current_branch, git_create_branch, git_get_branches, git_checkout, git_diff_file, git_merge_to_main, git_get_conflicts, git_resolve_conflict, git_merge_abort, git_show_file_content, git_diff_file_commit, git_delete_branch, git_get_remote, git_set_remote, git_push, git_pull, git_get_uncommitted_files};
 use commands::files::{get_file_tree, get_file_info};

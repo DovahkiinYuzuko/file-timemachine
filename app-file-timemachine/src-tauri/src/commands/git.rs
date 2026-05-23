@@ -1,5 +1,5 @@
 use serde::{Deserialize, Serialize};
-use std::process::Command;
+use crate::SafeCommand as Command;
 use std::path::Path;
 use std::fs;
 use log::{info, debug, error};

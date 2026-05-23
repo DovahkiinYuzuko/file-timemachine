@@ -1,4 +1,4 @@
-use std::process::Command;
+use crate::SafeCommand as Command;
 use log::{info, error};
 
 /// GitHub CLI (`gh`) が認証済みの場合、そのアクセストークンを自動的に取得して返すコマンド。

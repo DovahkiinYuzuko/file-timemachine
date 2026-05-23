@@ -75,10 +75,22 @@
 
 1. **フォルダの指定**
    - アプリを起動後、変更履歴を記録・管理したいファイルが保存されているフォルダを選択します。
-2. **履歴の確認**
-   - ファイルに変更が加わると自動的に履歴が記録されます。タイムライン上の各ノードをクリックすると、その時点の変更内容や差分を確認できます。
-3. **過去の状態への復元**
-   - 復元したい時点を選択し、「復元」ボタンを押すことで、指定した時点のファイル状態に戻すことができます。
+
+2. **履歴の確認と「タイムトラベルプレビュー」 (のぞき見機能)**
+   - フォルダ内のファイルに変更が加わると、自動的にセーブポイント（履歴）がタイムライン上に記録されます。
+   - タイムラインや履歴リストから過去のセーブポイントを選択すると、一時的に「タイムトラベル状態」になり、過去のファイル内容を画面上で安全にのぞき見（プレビュー）できます。
+   - この状態では**PC内の実際のファイルは一切書き換わらない**ため、現在の作業データが消える心配はありません。プレビュー上部にある「最新に戻る」ボタンを押せば、いつでも現在の状態に安全に戻れます。
+
+3. **「間違い探し」機能 (Diff比較)**
+   - タイムトラベルプレビュー中に画面右上の「差分を表示」ボタンを押すことで、現在の最新状態と選択した過去の状態で、ファイルのどの行がどう書き換わったか（追加・削除）を色分けして視覚的に比較できます。
+
+4. **「お試しルート」による安全なファイル復元 (物理復元)**
+   - 過去の特定のセーブポイントから作業をやり直したい（物理ファイルを過去の状態に戻したい）場合は、その履歴を選択した状態で「新しいお試しルートを作る（ブランチ分岐）」を実行します。
+   - これにより、フォルダ内の物理ファイル群がその過去の時点の状態に安全に書き換わります。
+   - ルートを切り替える際、書きかけの未保存変更がある場合は、アプリが自動的に「作業中バックアップ」として保存してから切り替えるため、データが紛失するリスクはありません。
+
+5. **本番ルートへの「採用」 (マージ合流)**
+   - お試しルートで作業した内容がうまくいった場合、「今のルートを本番に採用」ボタンを押すことで、お試しルートの内容が本番（main）に統合され、物理ファイルの状態が確定します。
 
 ---
 
@@ -186,10 +198,22 @@ A list of features available in this application:
 
 1. **Select a Folder**
    - Launch the application and select the folder containing the files you wish to track.
-2. **Review History**
-   - The application automatically records a new point in history when files are modified. Click on any timeline node to view file contents and modifications at that moment.
-3. **Restore Prior Version**
-   - Select the historical point you wish to revert to, and click the "Restore" button to revert your files to that state.
+
+2. **Review History and "Time Travel Preview" (Safe Inspection)**
+   - The application automatically records a new point in history (save point) on the timeline when files are modified.
+   - Click on any timeline node or history list item to enter "Time Travel" preview mode. You can inspect the historical content of files safely.
+   - In this mode, **physical files on your PC are not modified**, ensuring your current unsaved work remains safe. Click the "Back to Latest" button at the top of the preview to return.
+
+3. **Compare Modifications (Side-by-Side Diff)**
+   - During Time Travel preview, click the "Show Diff" button in the upper right corner to visually compare the historical version with the latest version. Added and deleted lines are clearly color-coded.
+
+4. **Restore Files with "Trial Routes" (Physical Restore)**
+   - If you want to physically revert files to a past state and restart your work, select that historical point and click "Create New Trial Route" (Branching).
+   - This physically updates the actual files in your folder to that past state.
+   - Any unsaved modifications in your workspace are automatically backed up under the hood before switching, ensuring no data is ever lost.
+
+5. **Adopt a Route to Main (Merging)**
+   - Once your trial changes are successful, click the "Adopt this route to main" button to merge your trial route back into the main timeline, permanently updating your primary files.
 
 ---
 

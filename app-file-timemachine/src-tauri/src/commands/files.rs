@@ -1,7 +1,8 @@
 use serde::Serialize;
 use walkdir::WalkDir;
 use std::collections::HashMap;
-use std::process::{Command, Stdio};
+use std::process::Stdio;
+use crate::SafeCommand as Command;
 use std::io::{Write, Read};
 use std::path::PathBuf;
 
