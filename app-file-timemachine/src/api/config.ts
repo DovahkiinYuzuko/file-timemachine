@@ -1,5 +1,14 @@
 import { invoke } from "@tauri-apps/api/core";
 
+export interface ProjectPosition {
+  gitgraph_scale?: number | null;
+  gitgraph_offset_x?: number | null;
+  gitgraph_offset_y?: number | null;
+  history_list_scroll_y?: number | null;
+  gitgraph_sort_desc?: boolean | null;
+  history_list_sort_desc?: boolean | null;
+}
+
 export interface AppConfig {
   last_opened_folder: string | null;
   settings_save_behavior: string | null;
@@ -8,6 +17,7 @@ export interface AppConfig {
   settings_auto_scan: boolean | null;
   github_token: string | null;
   github_username: string | null;
+  project_positions?: Record<string, ProjectPosition> | null;
 }
 
 export const getAppConfig = async (): Promise<AppConfig> => {

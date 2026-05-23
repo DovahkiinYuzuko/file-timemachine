@@ -482,7 +482,7 @@ const MainLayout: FC = () => {
                 <Panel defaultSize={25} minSize={20}>
                   <section className="panel-content" aria-label={t("common.file_tree")}>
                     <header className="panel-header">
-                      <h2>{t("common.file_tree")}</h2>
+                      <h2><span className="panel-title-text">{t("common.file_tree")}</span></h2>
                     </header>
                     <div className="panel-body">
                       <FileTree 
@@ -510,7 +510,7 @@ const MainLayout: FC = () => {
                       <section className="panel-content" aria-label={t("common.root_management")}>
                         <header className="panel-header">
                           <h2>
-                            {t("common.root_management")}
+                            <span className="panel-title-text">{t("common.root_management")}</span>
                             <Tooltip content={t("tooltip.root_management")} position="bottom" align="start" />
                           </h2>
                         </header>
@@ -533,7 +533,7 @@ const MainLayout: FC = () => {
                       <section className="panel-content" aria-label={t("common.history_list")}>
                         <header className="panel-header">
                           <h2>
-                            {t("common.history_list")}
+                            <span className="panel-title-text">{t("common.history_list")}</span>
                             <Tooltip content={t("tooltip.history_list")} position="bottom" align="start" />
                           </h2>
                         </header>
@@ -557,7 +557,7 @@ const MainLayout: FC = () => {
             <Panel defaultSize={activeTab === "files" ? 75 : 60} minSize={30}>
               <section className="panel-content" aria-label={t("common.preview")}>
                 <header className="panel-header">
-                  <h2>{t("common.preview")}</h2>
+                  <h2><span className="panel-title-text">{t("common.preview")}</span></h2>
                 </header>
                 <div className="panel-body">
                   <FilePreview 

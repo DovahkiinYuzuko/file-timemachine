@@ -3,6 +3,16 @@ use std::fs;
 use tauri::Manager;
 use log::{info, error};
 
+#[derive(Debug, Serialize, Deserialize, Default, Clone)]
+pub struct ProjectPosition {
+    pub gitgraph_scale: Option<f64>,
+    pub gitgraph_offset_x: Option<f64>,
+    pub gitgraph_offset_y: Option<f64>,
+    pub history_list_scroll_y: Option<i32>,
+    pub gitgraph_sort_desc: Option<bool>,
+    pub history_list_sort_desc: Option<bool>,
+}
+
 #[derive(Debug, Serialize, Deserialize, Default)]
 pub struct AppConfig {
     pub last_opened_folder: Option<String>,
@@ -12,6 +22,7 @@ pub struct AppConfig {
     pub settings_auto_scan: Option<bool>,
     pub github_token: Option<String>,
     pub github_username: Option<String>,
+    pub project_positions: Option<std::collections::HashMap<String, ProjectPosition>>,
 }
 
 const APP_CONFIG_FILE_NAME: &str = "app_config.json";

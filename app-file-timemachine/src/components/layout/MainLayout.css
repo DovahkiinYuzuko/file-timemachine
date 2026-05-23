@@ -37,6 +37,7 @@
   margin-bottom: 0.5rem;
   color: var(--text-muted);
   user-select: none;
+  overflow: hidden;
 }
 
 .panel-header h2 {
@@ -47,6 +48,15 @@
   display: flex;
   align-items: center;
   gap: 8px;
+  max-width: 100%;
+  overflow: hidden;
+}
+
+.panel-title-text {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  flex: 1;
 }
 
 .panel-body {

@@ -1,8 +1,9 @@
-import { type FC, useEffect, useState, useRef, MouseEvent, WheelEvent } from "react";
-import { createGitgraph, TemplateName, templateExtend } from "@gitgraph/js";
+import { type FC, useEffect, useState, useRef, PointerEvent, WheelEvent } from "react";
+import { createGitgraph, TemplateName, templateExtend, Orientation } from "@gitgraph/js";
 import { invoke } from "@tauri-apps/api/core";
 import { useTranslation } from "react-i18next";
-import { FolderOpen, History, Loader2, Maximize, Search, X } from "lucide-react";
+import { FolderOpen, History, Loader2, Maximize, Search, X, ArrowDown, ArrowUp } from "lucide-react";
+import { getAppConfig, updateAppConfig } from "../../api/config";
 import "./GitGraph.css";
 
 interface CommitLog {
@@ -38,6 +39,7 @@ const GitGraph: FC<GitGraphProps> = ({ projectPath, refreshKey, onInitSuccess, s
   const [isDragging, setIsDragging] = useState(false);
   const [dragStart, setDragStart] = useState({ x: 0, y: 0 });
   const [searchQuery, setSearchQuery] = useState("");
+  const [sortDesc, setSortDesc] = useState<boolean>(false);
   const [commitBranchMap, setCommitBranchMap] = useState<Map<string, { name: string; color: string }>>(new Map());
   
   const containerRef = useRef<HTMLDivElement>(null);
@@ -112,6 +114,23 @@ const GitGraph: FC<GitGraphProps> = ({ projectPath, refreshKey, onInitSuccess, s
         // 最新順（降順）のまま保存して、リストは最新が上に来るようにする
         setCommits(logs);
         setError(null);
+
+        // 描画位置の復元
+        try {
+          const config = await getAppConfig();
+          if (config.project_positions && config.project_positions[projectPath]) {
+            const pos = config.project_positions[projectPath];
+            if (pos.gitgraph_scale != null) setScale(pos.gitgraph_scale);
+            if (pos.gitgraph_offset_x != null && pos.gitgraph_offset_y != null) {
+              setOffset({ x: pos.gitgraph_offset_x, y: pos.gitgraph_offset_y });
+            }
+            if (pos.gitgraph_sort_desc != null) {
+              setSortDesc(pos.gitgraph_sort_desc);
+            }
+          }
+        } catch (err) {
+          console.error("Failed to restore gitgraph position:", err);
+        }
       } catch (e) {
         console.error("Failed to fetch logs:", e);
         setError(t("common.error.failed_to_fetch_logs"));
@@ -120,6 +139,84 @@ const GitGraph: FC<GitGraphProps> = ({ projectPath, refreshKey, onInitSuccess, s
 
     fetchLogs();
   }, [projectPath, refreshKey, t]);
+
+  // 描画位置の保存 (debounce)
+  useEffect(() => {
+    if (!projectPath || isInitializing || commits.length === 0) return;
+
+    const timeoutId = setTimeout(async () => {
+      try {
+        const config = await getAppConfig();
+        const positions = config.project_positions || {};
+        const currentPos = positions[projectPath] || {};
+        
+        // 変化がない場合は保存しない
+        if (currentPos.gitgraph_scale === scale && 
+            currentPos.gitgraph_offset_x === offset.x && 
+            currentPos.gitgraph_offset_y === offset.y) {
+          return;
+        }
+
+        await updateAppConfig({
+          project_positions: {
+            ...positions,
+            [projectPath]: {
+              ...currentPos,
+              gitgraph_scale: scale,
+              gitgraph_offset_x: offset.x,
+              gitgraph_offset_y: offset.y,
+            }
+          }
+        });
+      } catch (err) {
+        console.error("Failed to save gitgraph position:", err);
+      }
+    }, 500);
+
+    return () => clearTimeout(timeoutId);
+  }, [scale, offset, projectPath, isInitializing, commits.length]);
+
+  const handleSortToggle = async () => {
+    const newSortDesc = !sortDesc;
+    setSortDesc(newSortDesc);
+    if (!projectPath) return;
+    try {
+      const config = await getAppConfig();
+      const positions = config.project_positions || {};
+      const currentPos = positions[projectPath] || {};
+      await updateAppConfig({
+        project_positions: {
+          ...positions,
+          [projectPath]: {
+            ...currentPos,
+            gitgraph_sort_desc: newSortDesc,
+          }
+        }
+      });
+    } catch (err) {
+      console.error("Failed to save gitgraph sort state:", err);
+    }
+  };
+
+  // 外部からの選択変更時に自動パン
+  useEffect(() => {
+    if (selectedCommitHash && commits.length > 0) {
+      const displayedCommits = sortDesc ? commits : [...commits].reverse();
+      const index = displayedCommits.findIndex(c => c.hash === selectedCommitHash);
+      if (index !== -1 && viewportRef.current) {
+        const viewportHeight = viewportRef.current.clientHeight;
+        const targetY = index * 40 * scale; // コミットのY座標 (scale考慮)
+        
+        // 画面中央付近に持ってくるためのオフセット計算
+        const newOffsetY = -targetY + (viewportHeight / 2) - (20 * scale);
+        
+        setOffset(prev => ({
+          x: prev.x,
+          y: newOffsetY
+        }));
+      }
+    }
+  }, [selectedCommitHash, sortDesc, scale, commits.length]);
 
   // @gitgraph/js によるマニュアルDOMレンダリング
   // StrictMode 等の二重レンダリングによる重複を防ぐため、毎回のレンダリング前に DOM をクリアします
@@ -132,6 +229,7 @@ const GitGraph: FC<GitGraphProps> = ({ projectPath, refreshKey, onInitSuccess, s
     try {
       const gitgraph = createGitgraph(containerRef.current, {
         template: getTemplate(),
+        ...(sortDesc ? { orientation: Orientation.VerticalReverse } : {}),
       });
 
       // 古い順（昇順）にしてループ描画する
@@ -168,7 +266,8 @@ const GitGraph: FC<GitGraphProps> = ({ projectPath, refreshKey, onInitSuccess, s
       branchColors.set("main", cudColors[nextColorIndex++ % cudColors.length]);
 
       chronologicalCommits.forEach((commit) => {
-        const shortHash = commit.hash.substring(0, 7);
+        try {
+          const shortHash = commit.hash.substring(0, 7);
         
         // refsからローカルブランチ名を綺麗に抽出
         let cleanBranchName = "";
@@ -299,6 +398,23 @@ const GitGraph: FC<GitGraphProps> = ({ projectPath, refreshKey, onInitSuccess, s
             commitBranchInfoMap.set(commit.hash, { name: branchName1, color: branchColors.get(branchName1) || cudColors[0] });
           }
         }
+        } catch (err) {
+          // エラーが発生した場合の安全装置：単にmainに点を打って次へ進み、ループを完走させる
+          console.warn(`Failed to render commit ${commit.hash}, using fallback:`, err);
+          try {
+            const shortHash = commit.hash.substring(0, 7);
+            const activeBranch = branches.get("main") || mainBranch;
+            activeBranch.commit({
+              hash: shortHash,
+              subject: "",
+              author: "User",
+            });
+            commitBranchNameMap.set(commit.hash, "main");
+            commitBranchInfoMap.set(commit.hash, { name: "main", color: branchColors.get("main") || cudColors[0] });
+          } catch (fallbackErr) {
+            console.error(`Fallback failed for ${commit.hash}:`, fallbackErr);
+          }
+        }
       });
 
       // 安全なState更新（前回の値と比較して変更があった場合のみset）
@@ -322,15 +438,17 @@ const GitGraph: FC<GitGraphProps> = ({ projectPath, refreshKey, onInitSuccess, s
     } catch (e) {
       console.error("Failed to render Git graph:", e);
     }
-  }, [commits, selectedCommitHash, onCommitSelect, commitBranchMap]);
+  }, [commits, selectedCommitHash, onCommitSelect, commitBranchMap, sortDesc]);
 
-  // パン操作（ドラッグ移動）のハンドリング
-  const handleMouseDown = (e: MouseEvent<HTMLDivElement>) => {
+  // パン操作（ドラッグ移動）のハンドリング (PointerEventsによる滑らかな自由移動)
+  const handlePointerDown = (e: PointerEvent<HTMLDivElement>) => {
+    if (e.button !== 0) return; // 左クリックのみ
     setIsDragging(true);
     setDragStart({ x: e.clientX - offset.x, y: e.clientY - offset.y });
+    e.currentTarget.setPointerCapture(e.pointerId);
   };
 
-  const handleMouseMove = (e: MouseEvent<HTMLDivElement>) => {
+  const handlePointerMove = (e: PointerEvent<HTMLDivElement>) => {
     if (!isDragging) return;
     setOffset({
       x: e.clientX - dragStart.x,
@@ -338,12 +456,18 @@ const GitGraph: FC<GitGraphProps> = ({ projectPath, refreshKey, onInitSuccess, s
     });
   };
 
-  const handleMouseUp = () => {
-    setIsDragging(false);
+  const handlePointerUp = (e: PointerEvent<HTMLDivElement>) => {
+    if (isDragging) {
+      setIsDragging(false);
+      e.currentTarget.releasePointerCapture(e.pointerId);
+    }
   };
 
-  const handleMouseLeave = () => {
-    if (isDragging) setIsDragging(false);
+  const handlePointerCancel = (e: PointerEvent<HTMLDivElement>) => {
+    if (isDragging) {
+      setIsDragging(false);
+      e.currentTarget.releasePointerCapture(e.pointerId);
+    }
   };
 
   // ホイール操作（ズームとパン）のハンドリング
@@ -507,16 +631,23 @@ const GitGraph: FC<GitGraphProps> = ({ projectPath, refreshKey, onInitSuccess, s
           >
             <Maximize size={14} />
           </button>
+          <button
+            className="zoom-btn reset-btn"
+            onClick={handleSortToggle}
+            title={sortDesc ? "新しい順" : "古い順"}
+          >
+            {sortDesc ? <ArrowDown size={14} /> : <ArrowUp size={14} />}
+          </button>
         </div>
       </div>
 
       <div 
         className={`git-graph-viewport ${isDragging ? "dragging" : ""}`}
         ref={viewportRef}
-        onMouseDown={handleMouseDown}
-        onMouseMove={handleMouseMove}
-        onMouseUp={handleMouseUp}
-        onMouseLeave={handleMouseLeave}
+        onPointerDown={handlePointerDown}
+        onPointerMove={handlePointerMove}
+        onPointerUp={handlePointerUp}
+        onPointerCancel={handlePointerCancel}
         onWheel={handleWheel}
       >
         <div 
@@ -536,7 +667,7 @@ const GitGraph: FC<GitGraphProps> = ({ projectPath, refreshKey, onInitSuccess, s
             role="list"
             aria-label={t("common.aria.git_graph_description")}
           >
-            {commits.map((commit) => {
+            {(sortDesc ? commits : [...commits].reverse()).map((commit) => {
               const isMatch = !searchQuery || 
                 commit.message.toLowerCase().includes(searchQuery.toLowerCase()) || 
                 commit.hash.toLowerCase().includes(searchQuery.toLowerCase());
