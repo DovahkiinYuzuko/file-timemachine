@@ -55,7 +55,11 @@
     "file_size": "크기",
     "last_modified": "최종 수정",
     "loading": "로드 중...",
-    "empty_directory": "파일이 존재하지 않습니다"
+    "empty_directory": "파일이 존재하지 않습니다",
+    "sort": {
+      "desc": "최신순",
+      "asc": "오래된순"
+    }
   },
   "preview": {
     "unknown_type": {

@@ -55,7 +55,11 @@
     "file_size": "Suurus",
     "last_modified": "Viimati muudetud",
     "loading": "Laadimine...",
-    "empty_directory": "Faile ei leitud"
+    "empty_directory": "Faile ei leitud",
+    "sort": {
+      "desc": "Uusimad eespool",
+      "asc": "Vanimad eespool"
+    }
   },
   "preview": {
     "unknown_type": {

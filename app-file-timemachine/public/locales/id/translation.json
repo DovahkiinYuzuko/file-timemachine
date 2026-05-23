@@ -55,7 +55,11 @@
     "file_size": "Ukuran",
     "last_modified": "Terakhir Diubah",
     "loading": "Memuat...",
-    "empty_directory": "File tidak ditemukan"
+    "empty_directory": "File tidak ditemukan",
+    "sort": {
+      "desc": "Terbaru pertama",
+      "asc": "Terlama pertama"
+    }
   },
   "preview": {
     "unknown_type": {

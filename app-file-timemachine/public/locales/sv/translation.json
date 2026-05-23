@@ -55,7 +55,11 @@
     "file_size": "Storlek",
     "last_modified": "Senast ändrad",
     "loading": "Laddar...",
-    "empty_directory": "Inga filer hittades"
+    "empty_directory": "Inga filer hittades",
+    "sort": {
+      "desc": "Nyaste först",
+      "asc": "Äldsta först"
+    }
   },
   "preview": {
     "unknown_type": {

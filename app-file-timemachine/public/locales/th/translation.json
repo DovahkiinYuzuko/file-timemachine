@@ -55,7 +55,11 @@
     "file_size": "ขนาด",
     "last_modified": "แก้ไขล่าสุด",
     "loading": "กำลังโหลด...",
-    "empty_directory": "ไม่พบไฟล์ที่ต้องการ"
+    "empty_directory": "ไม่พบไฟล์ที่ต้องการ",
+    "sort": {
+      "desc": "ล่าสุดก่อน",
+      "asc": "เก่าสุดก่อน"
+    }
   },
   "preview": {
     "unknown_type": {

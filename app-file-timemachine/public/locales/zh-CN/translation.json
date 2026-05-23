@@ -55,7 +55,11 @@
     "file_size": "Size",
     "last_modified": "Last Modified",
     "loading": "Loading...",
-    "empty_directory": "No files found"
+    "empty_directory": "No files found",
+    "sort": {
+      "desc": "最新优先",
+      "asc": "最早优先"
+    }
   },
   "preview": {
     "unknown_type": {

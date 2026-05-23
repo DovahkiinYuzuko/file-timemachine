@@ -55,7 +55,11 @@
     "file_size": "Tamanho",
     "last_modified": "Última modificação",
     "loading": "Carregando...",
-    "empty_directory": "Nenhum arquivo encontrado"
+    "empty_directory": "Nenhum arquivo encontrado",
+    "sort": {
+      "desc": "Mais recentes primeiro",
+      "asc": "Mais antigos primeiro"
+    }
   },
   "preview": {
     "unknown_type": {

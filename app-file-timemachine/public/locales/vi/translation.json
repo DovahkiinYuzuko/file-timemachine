@@ -55,7 +55,11 @@
     "file_size": "Kích thước",
     "last_modified": "Sửa đổi cuối",
     "loading": "Đang tải...",
-    "empty_directory": "Không tìm thấy tệp nào"
+    "empty_directory": "Không tìm thấy tệp nào",
+    "sort": {
+      "desc": "Mới nhất trước",
+      "asc": "Cũ nhất trước"
+    }
   },
   "preview": {
     "unknown_type": {

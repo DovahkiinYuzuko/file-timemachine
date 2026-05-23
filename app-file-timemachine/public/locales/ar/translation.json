@@ -55,7 +55,11 @@
     "file_size": "الحجم",
     "last_modified": "آخر تعديل",
     "loading": "جاري التحميل...",
-    "empty_directory": "لم يتم العثور على ملفات"
+    "empty_directory": "لم يتم العثور على ملفات",
+    "sort": {
+      "desc": "الأحدث أولاً",
+      "asc": "الأقدم أولاً"
+    }
   },
   "preview": {
     "unknown_type": {

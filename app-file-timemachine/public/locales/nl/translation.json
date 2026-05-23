@@ -55,7 +55,11 @@
     "file_size": "Grootte",
     "last_modified": "Laatst gewijzigd",
     "loading": "Laden...",
-    "empty_directory": "Geen bestanden gevonden"
+    "empty_directory": "Geen bestanden gevonden",
+    "sort": {
+      "desc": "Nieuwste eerst",
+      "asc": "Oudste eerst"
+    }
   },
   "preview": {
     "unknown_type": {

@@ -55,7 +55,11 @@
     "file_size": "आकार",
     "last_modified": "अंतिम संशोधन",
     "loading": "लोड हो रहा है...",
-    "empty_directory": "कोई फ़ाइल नहीं मिली"
+    "empty_directory": "कोई फ़ाइल नहीं मिली",
+    "sort": {
+      "desc": "सबसे नया पहले",
+      "asc": "सबसे पुराना पहले"
+    }
   },
   "preview": {
     "unknown_type": {
