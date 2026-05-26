@@ -696,6 +696,12 @@ const MainLayout: FC = () => {
         projectPath={projectPath}
         currentBranch={currentBranch}
         onDeleted={() => setHistoryRefreshKey(prev => prev + 1)}
+        onRenamed={(oldName, newName) => {
+          if (currentBranch === oldName) {
+            setCurrentBranch(newName);
+          }
+          setHistoryRefreshKey(prev => prev + 1);
+        }}
       />
 
       <ConflictResolverModal

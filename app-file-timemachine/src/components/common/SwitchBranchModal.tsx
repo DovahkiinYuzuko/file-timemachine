@@ -1,6 +1,6 @@
 import { type FC, useState, useEffect, useRef } from "react";
 import { useTranslation } from "react-i18next";
-import { X, GitBranch, Loader2, Check, Trash2 } from "lucide-react";
+import { X, GitBranch, Loader2, Check, Trash2, Pencil } from "lucide-react";
 import { invoke } from "@tauri-apps/api/core";
 import logger from "../../utils/logger";
 import "./CommitMessageModal.css"; // Reuse the same CSS for modal structure
@@ -12,6 +12,7 @@ interface SwitchBranchModalProps {
   projectPath: string | null;
   currentBranch: string;
   onDeleted?: () => void;
+  onRenamed?: (oldName: string, newName: string) => void;
 }
 
 const SwitchBranchModal: FC<SwitchBranchModalProps> = ({
@@ -21,12 +22,73 @@ const SwitchBranchModal: FC<SwitchBranchModalProps> = ({
   projectPath,
   currentBranch,
   onDeleted,
+  onRenamed,
 }) => {
   const { t } = useTranslation();
   const [branches, setBranches] = useState<string[]>([]);
   const [loading, setLoading] = useState(false);
   const [errorMsg, setErrorMsg] = useState("");
+  const [editingBranch, setEditingBranch] = useState<string | null>(null);
+  const [editNameInput, setEditNameInput] = useState<string>("");
   const modalRef = useRef<HTMLDivElement>(null);
+
+  // ブランチ名バリデーションヘルパー
+  const validateBranchName = (name: string): string | null => {
+    if (!name.trim()) {
+      return t("branch.rename.error_empty");
+    }
+    const branchNameRegex = /^[a-zA-Z0-9\-_./]+$/;
+    if (!branchNameRegex.test(name)) {
+      return t("branch.rename.error_invalid");
+    }
+    return null;
+  };
+
+  // ブランチ名変更処理
+  const handleRenameBranch = async (oldName: string, newName: string) => {
+    if (!projectPath) return;
+
+    const trimmedNewName = newName.trim();
+    if (trimmedNewName === oldName) {
+      setEditingBranch(null);
+      return;
+    }
+
+    const validationError = validateBranchName(trimmedNewName);
+    if (validationError) {
+      alert(validationError);
+      return;
+    }
+
+    try {
+      setLoading(true);
+      setErrorMsg("");
+      logger.info(`Renaming branch from ${oldName} to ${trimmedNewName}`);
+      const result = await invoke<string>("git_rename_branch", {
+        path: projectPath,
+        oldName,
+        newName: trimmedNewName,
+      });
+      logger.info(result);
+
+      // ブランチ一覧を再取得
+      const list = await invoke<string[]>("git_get_branches", { path: projectPath });
+      setBranches(list);
+
+      // 親側にも名前変更を通知
+      if (onRenamed) {
+        onRenamed(oldName, trimmedNewName);
+      }
+
+      alert(t("branch.rename.success", { oldName, newName: trimmedNewName }));
+      setEditingBranch(null);
+    } catch (error) {
+      logger.error(`Failed to rename branch: ${error}`);
+      alert(t("branch.rename.error", { error: String(error) }));
+    } finally {
+      setLoading(false);
+    }
+  };
 
   // ブランチ削除処理
   const handleDeleteBranch = async (branchName: string) => {
@@ -175,6 +237,7 @@ const SwitchBranchModal: FC<SwitchBranchModalProps> = ({
             <div style={{ display: "flex", flexDirection: "column", gap: "8px", marginTop: "1rem" }}>
               {branches.map(branch => {
                 const isCurrent = branch === currentBranch;
+                const isEditing = editingBranch === branch;
                 return (
                   <div
                     key={branch}
@@ -190,61 +253,154 @@ const SwitchBranchModal: FC<SwitchBranchModalProps> = ({
                       transition: "all 0.2s",
                     }}
                   >
-                    <button
-                      onClick={() => {
-                        if (!isCurrent) {
-                          onSwitch(branch);
-                        }
-                      }}
-                      style={{
-                        display: "flex",
-                        alignItems: "center",
-                        gap: "8px",
-                        background: "none",
-                        border: "none",
-                        color: "inherit",
-                        cursor: isCurrent ? "default" : "pointer",
-                        flex: 1,
-                        textAlign: "left",
-                        padding: 0,
-                        fontWeight: isCurrent ? "bold" : "normal",
-                      }}
-                    >
-                      <GitBranch size={16} />
-                      <span>{branch}</span>
-                      {isCurrent && <Check size={16} style={{ marginLeft: "8px" }} />}
-                    </button>
-                    
-                    {branch !== "main" && !isCurrent && (
-                      <button
-                        onClick={(e) => {
-                          e.stopPropagation();
-                          handleDeleteBranch(branch);
-                        }}
-                        title={t("branch.delete.tooltip")}
-                        style={{
-                          background: "none",
-                          border: "none",
-                          color: "var(--text-muted)",
-                          cursor: "pointer",
-                          padding: "4px",
-                          display: "flex",
-                          alignItems: "center",
-                          justifyContent: "center",
-                          borderRadius: "4px",
-                          transition: "all 0.2s",
-                        }}
-                        onMouseOver={(e) => {
-                          e.currentTarget.style.color = "var(--danger-color)";
-                          e.currentTarget.style.backgroundColor = "rgba(248, 113, 113, 0.15)";
-                        }}
-                        onMouseOut={(e) => {
-                          e.currentTarget.style.color = "var(--text-muted)";
-                          e.currentTarget.style.backgroundColor = "transparent";
-                        }}
-                      >
-                        <Trash2 size={16} />
-                      </button>
+                    {isEditing ? (
+                      <div style={{ display: "flex", alignItems: "center", gap: "8px", flex: 1 }}>
+                        <GitBranch size={16} style={{ color: isCurrent ? "white" : "var(--text-muted)" }} />
+                        <input
+                          type="text"
+                          value={editNameInput}
+                          onChange={(e) => setEditNameInput(e.target.value)}
+                          style={{
+                            flex: 1,
+                            padding: "4px 8px",
+                            borderRadius: "4px",
+                            border: "1px solid var(--border-color)",
+                            backgroundColor: "var(--bg-color)",
+                            color: "var(--text-color)",
+                            outline: "none",
+                          }}
+                          autoFocus
+                          onKeyDown={(e) => {
+                            if (e.key === "Enter") {
+                              handleRenameBranch(branch, editNameInput);
+                            } else if (e.key === "Escape") {
+                              setEditingBranch(null);
+                            }
+                          }}
+                        />
+                        <button
+                          onClick={() => handleRenameBranch(branch, editNameInput)}
+                          style={{
+                            background: "none",
+                            border: "none",
+                            color: isCurrent ? "white" : "var(--accent-color)",
+                            cursor: "pointer",
+                            padding: "4px",
+                            display: "flex",
+                            alignItems: "center",
+                          }}
+                        >
+                          <Check size={16} />
+                        </button>
+                        <button
+                          onClick={() => setEditingBranch(null)}
+                          style={{
+                            background: "none",
+                            border: "none",
+                            color: isCurrent ? "rgba(255,255,255,0.7)" : "var(--text-muted)",
+                            cursor: "pointer",
+                            padding: "4px",
+                            display: "flex",
+                            alignItems: "center",
+                          }}
+                        >
+                          <X size={16} />
+                        </button>
+                      </div>
+                    ) : (
+                      <>
+                        <button
+                          onClick={() => {
+                            if (!isCurrent) {
+                              onSwitch(branch);
+                            }
+                          }}
+                          style={{
+                            display: "flex",
+                            alignItems: "center",
+                            gap: "8px",
+                            background: "none",
+                            border: "none",
+                            color: "inherit",
+                            cursor: isCurrent ? "default" : "pointer",
+                            flex: 1,
+                            textAlign: "left",
+                            padding: 0,
+                            fontWeight: isCurrent ? "bold" : "normal",
+                          }}
+                        >
+                          <GitBranch size={16} />
+                          <span>{branch}</span>
+                          {isCurrent && <Check size={16} style={{ marginLeft: "8px" }} />}
+                        </button>
+                        
+                        <div style={{ display: "flex", alignItems: "center", gap: "4px" }}>
+                          {branch !== "main" && (
+                            <button
+                              onClick={(e) => {
+                                e.stopPropagation();
+                                setEditingBranch(branch);
+                                setEditNameInput(branch);
+                              }}
+                              title={t("branch.rename.tooltip")}
+                              style={{
+                                background: "none",
+                                border: "none",
+                                color: isCurrent ? "rgba(255,255,255,0.7)" : "var(--text-muted)",
+                                cursor: "pointer",
+                                padding: "4px",
+                                display: "flex",
+                                alignItems: "center",
+                                justifyContent: "center",
+                                borderRadius: "4px",
+                                transition: "all 0.2s",
+                              }}
+                              onMouseOver={(e) => {
+                                e.currentTarget.style.color = isCurrent ? "white" : "var(--accent-color)";
+                                e.currentTarget.style.backgroundColor = isCurrent ? "rgba(255,255,255,0.15)" : "rgba(128, 128, 128, 0.15)";
+                              }}
+                              onMouseOut={(e) => {
+                                e.currentTarget.style.color = isCurrent ? "rgba(255,255,255,0.7)" : "var(--text-muted)";
+                                e.currentTarget.style.backgroundColor = "transparent";
+                              }}
+                            >
+                              <Pencil size={16} />
+                            </button>
+                          )}
+
+                          {branch !== "main" && !isCurrent && (
+                            <button
+                              onClick={(e) => {
+                                e.stopPropagation();
+                                handleDeleteBranch(branch);
+                              }}
+                              title={t("branch.delete.tooltip")}
+                              style={{
+                                background: "none",
+                                border: "none",
+                                color: "var(--text-muted)",
+                                cursor: "pointer",
+                                padding: "4px",
+                                display: "flex",
+                                alignItems: "center",
+                                justifyContent: "center",
+                                borderRadius: "4px",
+                                transition: "all 0.2s",
+                              }}
+                              onMouseOver={(e) => {
+                                e.currentTarget.style.color = "var(--danger-color)";
+                                e.currentTarget.style.backgroundColor = "rgba(248, 113, 113, 0.15)";
+                              }}
+                              onMouseOut={(e) => {
+                                e.currentTarget.style.color = "var(--text-muted)";
+                                e.currentTarget.style.backgroundColor = "transparent";
+                              }}
+                            >
+                              <Trash2 size={16} />
+                            </button>
+                          )}
+                        </div>
+                      </>
                     )}
                   </div>
                 );

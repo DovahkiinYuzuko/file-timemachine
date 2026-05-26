@@ -18,7 +18,7 @@ impl SafeCommand {
 
 
 use commands::setup::{check_dependencies, install_dependency};
-use commands::git::{git_init, git_commit, git_log, update_gitignore, switch_git_mode, git_get_current_branch, git_create_branch, git_get_branches, git_checkout, git_diff_file, git_merge_to_main, git_get_conflicts, git_resolve_conflict, git_merge_abort, git_show_file_content, git_diff_file_commit, git_delete_branch, git_get_remote, git_set_remote, git_push, git_pull, git_get_uncommitted_files};
+use commands::git::{git_init, git_commit, git_log, update_gitignore, switch_git_mode, git_get_current_branch, git_create_branch, git_get_branches, git_checkout, git_diff_file, git_merge_to_main, git_get_conflicts, git_resolve_conflict, git_merge_abort, git_show_file_content, git_diff_file_commit, git_delete_branch, git_rename_branch, git_get_remote, git_set_remote, git_push, git_pull, git_get_uncommitted_files};
 use commands::files::{get_file_tree, get_file_info};
 use commands::config::{get_project_config, set_project_config};
 use commands::app_config::{get_app_config, set_app_config};
@@ -74,6 +74,7 @@ pub fn run() {
             git_show_file_content,
             git_diff_file_commit,
             git_delete_branch,
+            git_rename_branch,
             get_file_tree,
             get_file_info,
             get_project_config,

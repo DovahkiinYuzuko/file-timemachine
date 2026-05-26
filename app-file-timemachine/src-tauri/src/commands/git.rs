@@ -885,6 +885,51 @@ pub async fn git_delete_branch(path: String, branch_name: String) -> Result<Stri
 }
 
 #[tauri::command]
+pub async fn git_rename_branch(
+    path: String,
+    old_name: String,
+    new_name: String,
+) -> Result<String, String> {
+    if !is_safe_git_ref(&old_name) || !is_safe_git_ref(&new_name) {
+        return Err("安全ではないブランチ名です。".to_string());
+    }
+    let raw_path = Path::new(&path);
+    let repo_path = dunce::canonicalize(raw_path)
+        .map_err(|e| format!("パスの正規化に失敗しました: {}", e))?;
+
+    info!("ブランチの名前を変更します: {} -> {} in {:?}", old_name, new_name, repo_path);
+
+    if !repo_path.exists() || !repo_path.is_dir() {
+        return Err("無効なディレクトリパスです。".to_string());
+    }
+
+    if old_name == "main" {
+        return Err("本番（main）ルートの名前は変更できません。".to_string());
+    }
+    if new_name == "main" {
+        return Err("他のルートを本番（main）の名前に変更することはできません。".to_string());
+    }
+
+    // git branch -m <old_name> <new_name>
+    let output = Command::new("git")
+        .arg("branch")
+        .arg("-m")
+        .arg(&old_name)
+        .arg(&new_name)
+        .current_dir(&repo_path)
+        .output()
+        .map_err(|e| format!("git branch -m の実行に失敗しました: {}", e))?;
+
+    if !output.status.success() {
+        let stderr = String::from_utf8_lossy(&output.stderr);
+        return Err(format!("ルート名の変更に失敗しました。\n詳細: {}", stderr));
+    }
+
+    Ok(format!("ルート名を '{}' から '{}' に変更しました。", old_name, new_name))
+}
+
+
+#[tauri::command]
 pub async fn git_get_remote(path: String) -> Result<Option<String>, String> {
     let repo_path = dunce::canonicalize(Path::new(&path))
         .map_err(|e| format!("パスの正規化に失敗したよ: {}", e))?;
