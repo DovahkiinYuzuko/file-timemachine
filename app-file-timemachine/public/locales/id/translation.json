@@ -335,5 +335,9 @@
       "unignore": "Batal kecualikan (simpan dalam simpanan)",
       "ignore": "Kecualikan dari simpanan"
     }
-  }
+  },
+  "error.cannot_delete_current_branch": "Tidak dapat menghapus rute yang saat ini aktif. Silakan beralih ke rute lain sebelum menghapus.",
+  "error.cannot_delete_main_branch": "Tidak dapat menghapus rute utama/produksi.",
+  "error.delete_failed": "Gagal menghapus rute.",
+  "success.delete": "Rute berhasil dihapus."
 }

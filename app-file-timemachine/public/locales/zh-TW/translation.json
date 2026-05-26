@@ -335,5 +335,9 @@
       "unignore": "取消排除（保留在儲存對象中）",
       "ignore": "排除在儲存對象外"
     }
-  }
+  },
+  "error.cannot_delete_current_branch": "無法刪除目前處於活動狀態的路線。請在刪除前切換到其他路線。",
+  "error.cannot_delete_main_branch": "無法刪除主線/生產路線。",
+  "error.delete_failed": "刪除路線失敗。",
+  "success.delete": "成功刪除路線。"
 }

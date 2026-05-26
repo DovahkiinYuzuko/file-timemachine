@@ -335,5 +335,9 @@
       "unignore": "Ausschluss aufheben (Behalten beim Speichern)",
       "ignore": "Beim Speichern ausschließen"
     }
-  }
+  },
+  "error.cannot_delete_current_branch": "Die aktuell aktive Route kann nicht gelöscht werden. Bitte wechseln Sie vor dem Löschen zu einer anderen Route.",
+  "error.cannot_delete_main_branch": "Die Haupt-/Produktionsroute kann nicht gelöscht werden.",
+  "error.delete_failed": "Fehler beim Löschen der Route.",
+  "success.delete": "Route erfolgreich gelöscht."
 }

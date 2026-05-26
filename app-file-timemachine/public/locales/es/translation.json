@@ -335,5 +335,9 @@
       "unignore": "Cancelar exclusión (conservar en guardado)",
       "ignore": "Excluir del guardado"
     }
-  }
+  },
+  "error.cannot_delete_current_branch": "No se puede eliminar la ruta actualmente activa. Cambie a otra ruta antes de eliminarla.",
+  "error.cannot_delete_main_branch": "No se puede eliminar la ruta principal/de producción.",
+  "error.delete_failed": "Error al eliminar la ruta.",
+  "success.delete": "Ruta eliminada con éxito."
 }

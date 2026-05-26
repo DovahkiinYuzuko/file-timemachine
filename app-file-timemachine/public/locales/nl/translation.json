@@ -333,5 +333,9 @@
       "unignore": "Behouden in opslag",
       "ignore": "Uitsluiten van opslag"
     }
-  }
+  },
+  "error.cannot_delete_current_branch": "Kan de momenteel actieve route niet verwijderen. Schakel over naar een andere route voordat u deze verwijdert.",
+  "error.cannot_delete_main_branch": "Kan de hoofd-/productieroute niet verwijderen.",
+  "error.delete_failed": "Kan de route niet verwijderen.",
+  "success.delete": "Route succesvol verwijderd."
 }

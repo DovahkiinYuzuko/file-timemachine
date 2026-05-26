@@ -335,5 +335,9 @@
       "unignore": "取消排除（保留在保存对象中）",
       "ignore": "排除在保存对象外"
     }
-  }
+  },
+  "error.cannot_delete_current_branch": "无法删除当前处于活动状态的路线。请在删除前切换到其他路线。",
+  "error.cannot_delete_main_branch": "无法删除主线/生产路线。",
+  "error.delete_failed": "删除路线失败。",
+  "success.delete": "成功删除路线。"
 }

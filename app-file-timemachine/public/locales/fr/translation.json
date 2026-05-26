@@ -335,5 +335,9 @@
       "unignore": "Annuler l'exclusion (conserver dans la sauvegarde)",
       "ignore": "Exclure de la sauvegarde"
     }
-  }
+  },
+  "error.cannot_delete_current_branch": "Impossible de supprimer la route actuellement active. Veuillez basculer vers une autre route avant la suppression.",
+  "error.cannot_delete_main_branch": "Impossible de supprimer la route principale/de production.",
+  "error.delete_failed": "Échec de la suppression de la route.",
+  "success.delete": "Route supprimée avec succès."
 }

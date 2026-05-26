@@ -335,5 +335,9 @@
       "unignore": "제외 취소 (저장 대상에 포함)",
       "ignore": "저장 대상에서 제외"
     }
-  }
+  },
+  "error.cannot_delete_current_branch": "현재 활성화된 루트는 삭제할 수 없습니다. 삭제하기 전에 다른 루트로 전환하십시오.",
+  "error.cannot_delete_main_branch": "기본/운영 루트는 삭제할 수 없습니다.",
+  "error.delete_failed": "루트 삭제에 실패했습니다.",
+  "success.delete": "루트를 성공적으로 삭제했습니다."
 }

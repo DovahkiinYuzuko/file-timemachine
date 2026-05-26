@@ -335,5 +335,9 @@
       "unignore": "Annulla esclusione (mantieni nel salvataggio)",
       "ignore": "Escludi dal salvataggio"
     }
-  }
+  },
+  "error.cannot_delete_current_branch": "Impossibile eliminare la rotta attualmente attiva. Passa a un'altra rotta prima di eliminare.",
+  "error.cannot_delete_main_branch": "Impossibile eliminare la rotta principale/di produzione.",
+  "error.delete_failed": "Impossibile eliminare la rotta.",
+  "success.delete": "Rotta eliminata con successo."
 }

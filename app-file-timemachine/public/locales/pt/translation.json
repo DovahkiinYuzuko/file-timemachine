@@ -335,5 +335,9 @@
       "unignore": "Cancelar exclusão (manter no salvamento)",
       "ignore": "Excluir do salvamento"
     }
-  }
+  },
+  "error.cannot_delete_current_branch": "Não é possível excluir a rota atualmente ativa. Mude para outra rota antes de excluir.",
+  "error.cannot_delete_main_branch": "Não é possível excluir a rota principal/de produção.",
+  "error.delete_failed": "Falha ao excluir a rota.",
+  "success.delete": "Rota excluída com sucesso."
 }

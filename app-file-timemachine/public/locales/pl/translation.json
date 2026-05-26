@@ -333,5 +333,9 @@
       "unignore": "Zachowaj w zapisie",
       "ignore": "Wyklucz z zapisu"
     }
-  }
+  },
+  "error.cannot_delete_current_branch": "Nie można usunąć aktualnie aktywnej trasy. Przed usunięciem przełącz się na inną trasę.",
+  "error.cannot_delete_main_branch": "Nie można usunąć trasy głównej/produkcyjnej.",
+  "error.delete_failed": "Nie udało się usunąć trasy.",
+  "success.delete": "Trasa została pomyślnie usunięta."
 }

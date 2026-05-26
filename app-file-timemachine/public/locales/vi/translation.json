@@ -335,5 +335,9 @@
       "unignore": "Hủy loại bỏ (giữ lại trong lưu trữ)",
       "ignore": "Loại bỏ khỏi lưu trữ"
     }
-  }
+  },
+  "error.cannot_delete_current_branch": "Không thể xóa tuyến đường hiện đang hoạt động. Vui lòng chuyển sang tuyến đường khác trước khi xóa.",
+  "error.cannot_delete_main_branch": "Không thể xóa tuyến đường chính/sản xuất.",
+  "error.delete_failed": "Xóa tuyến đường thất bại.",
+  "success.delete": "Đã xóa tuyến đường thành công."
 }

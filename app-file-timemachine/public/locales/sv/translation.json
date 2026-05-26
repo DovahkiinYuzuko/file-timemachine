@@ -333,5 +333,9 @@
       "unignore": "Spara den här filen",
       "ignore": "Exkludera från sparande"
     }
-  }
+  },
+  "error.cannot_delete_current_branch": "Det går inte att ta bort den aktiva rutten. Växla till en annan rutt innan du tar bort den.",
+  "error.cannot_delete_main_branch": "Det går inte att ta bort huvud-/produktionsrutten.",
+  "error.delete_failed": "Misslyckades med att ta bort rutten.",
+  "success.delete": "Rutten har tagits bort."
 }

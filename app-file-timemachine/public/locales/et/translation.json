@@ -333,5 +333,9 @@
       "unignore": "Salvesta see fail",
       "ignore": "Välista salvestamisest"
     }
-  }
+  },
+  "error.cannot_delete_current_branch": "Praegu aktiivset teekonda ei saa kustutada. Enne kustutamist lülituge teisele teekonnale.",
+  "error.cannot_delete_main_branch": "Põhi-/tootmisteekonda ei saa kustutada.",
+  "error.delete_failed": "Teekonna kustutamine ebaõnnestus.",
+  "success.delete": "Teekond edukalt kustutatud."
 }
