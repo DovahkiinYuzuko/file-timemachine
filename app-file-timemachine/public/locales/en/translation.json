@@ -354,5 +354,18 @@
       "input_label": "Save Name (Commit Message)",
       "input_tip": "* If left blank, the date will be automatically applied."
     }
-  }
+  },
+  "error.invalid_branch_name": "Invalid branch name.",
+  "error.failed_to_canonicalize_path": "Failed to canonicalize directory path.",
+  "error.invalid_directory": "Invalid directory path.",
+  "error.rename_failed": "Failed to rename route.",
+  "error.checkout_failed": "Failed to switch to the main branch. Please check for unsaved changes.",
+  "error.merge_failed": "Failed to perform merge operation.",
+  "error.cannot_delete_current_branch": "Cannot delete the currently active route. Please switch to another route before deleting.",
+  "error.cannot_delete_main_branch": "Cannot delete the main/production route.",
+  "error.delete_failed": "Failed to delete the route.",
+  "success.delete": "Successfully deleted the route.",
+  "success.rename": "Successfully renamed the route.",
+  "success.merge": "Successfully adopted changes to the main branch.",
+  "common.detail": "Details"
 }

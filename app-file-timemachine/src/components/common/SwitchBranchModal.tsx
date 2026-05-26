@@ -11,6 +11,7 @@ interface SwitchBranchModalProps {
   onSwitch: (branchName: string) => void;
   projectPath: string | null;
   currentBranch: string;
+  mainBranchName: string;
   onDeleted?: () => void;
   onRenamed?: (oldName: string, newName: string) => void;
 }
@@ -21,6 +22,7 @@ const SwitchBranchModal: FC<SwitchBranchModalProps> = ({
   onSwitch,
   projectPath,
   currentBranch,
+  mainBranchName,
   onDeleted,
   onRenamed,
 }) => {
@@ -42,6 +44,16 @@ const SwitchBranchModal: FC<SwitchBranchModalProps> = ({
       return t("branch.rename.error_invalid");
     }
     return null;
+  };
+
+  // エラー翻訳ヘルパー
+  const translateError = (error: string): string => {
+    if (error.includes(":")) {
+      const [key, ...rest] = error.split(":");
+      const detail = rest.join(":");
+      return t(key) + "\n" + t("common.detail") + ": " + detail;
+    }
+    return t(error);
   };
 
   // ブランチ名変更処理
@@ -80,11 +92,11 @@ const SwitchBranchModal: FC<SwitchBranchModalProps> = ({
         onRenamed(oldName, trimmedNewName);
       }
 
-      alert(t("branch.rename.success", { oldName, newName: trimmedNewName }));
+      alert(t(result));
       setEditingBranch(null);
     } catch (error) {
       logger.error(`Failed to rename branch: ${error}`);
-      alert(t("branch.rename.error", { error: String(error) }));
+      alert(translateError(String(error)));
     } finally {
       setLoading(false);
     }
@@ -121,7 +133,7 @@ const SwitchBranchModal: FC<SwitchBranchModalProps> = ({
       alert(t("branch.delete.success", { name: branchName }));
     } catch (error) {
       logger.error(`Failed to delete branch: ${error}`);
-      setErrorMsg(String(error));
+      setErrorMsg(translateError(String(error)));
     } finally {
       setLoading(false);
     }
@@ -335,7 +347,6 @@ const SwitchBranchModal: FC<SwitchBranchModalProps> = ({
                         </button>
                         
                         <div style={{ display: "flex", alignItems: "center", gap: "4px" }}>
-                          {branch !== "main" && (
                             <button
                               onClick={(e) => {
                                 e.stopPropagation();
@@ -366,9 +377,8 @@ const SwitchBranchModal: FC<SwitchBranchModalProps> = ({
                             >
                               <Pencil size={16} />
                             </button>
-                          )}
 
-                          {branch !== "main" && !isCurrent && (
+                          {branch !== mainBranchName && !isCurrent && (
                             <button
                               onClick={(e) => {
                                 e.stopPropagation();

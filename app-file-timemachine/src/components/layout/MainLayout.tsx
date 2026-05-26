@@ -51,6 +51,7 @@ const MainLayout: FC = () => {
   const [isCommitting, setIsCommitting] = useState(false);
   const [defaultCommitMessage, setDefaultCommitMessage] = useState("");
   const [currentBranch, setCurrentBranch] = useState<string>("main");
+  const [mainBranchName, setMainBranchName] = useState<string>("main");
   const [isCreateBranchModalOpen, setIsCreateBranchModalOpen] = useState(false);
   const [isSwitchBranchModalOpen, setIsSwitchBranchModalOpen] = useState(false);
   const [isConflictModalOpen, setIsConflictModalOpen] = useState(false);
@@ -69,8 +70,11 @@ const MainLayout: FC = () => {
       try {
         const branch = await invoke<string>("git_get_current_branch", { path: projectPath });
         setCurrentBranch(branch);
+
+        const config = await invoke<{ main_branch_name: string }>("get_project_config", { rootPath: projectPath });
+        setMainBranchName(config.main_branch_name || "main");
       } catch (error) {
-        logger.error(`Failed to get branch name: ${error}`);
+        logger.error(`Failed to get branch name or config: ${error}`);
       }
     };
     fetchBranch();
@@ -242,7 +246,7 @@ const MainLayout: FC = () => {
       logger.info(result);
 
       alert(t("layout.alert.merge_success"));
-      setCurrentBranch("main");
+      setCurrentBranch(mainBranchName);
       setHistoryRefreshKey((prev) => prev + 1);
     } catch (error) {
       if (error === "CONFLICT") {
@@ -521,6 +525,7 @@ const MainLayout: FC = () => {
                             onInitSuccess={() => setHistoryRefreshKey(prev => prev + 1)}
                             selectedCommitHash={selectedCommitHash}
                             onCommitSelect={setSelectedCommitHash}
+                            mainBranchName={mainBranchName}
                           />
                         </div>
                       </section>
@@ -586,7 +591,7 @@ const MainLayout: FC = () => {
             )}
           </div>
           <div className="footer-actions">
-            {projectPath && currentBranch !== "main" && (
+            {projectPath && currentBranch !== mainBranchName && (
               <button
                 className="merge-to-main-btn"
                 onClick={executeMergeToMain}
@@ -695,6 +700,7 @@ const MainLayout: FC = () => {
         }}
         projectPath={projectPath}
         currentBranch={currentBranch}
+        mainBranchName={mainBranchName}
         onDeleted={() => setHistoryRefreshKey(prev => prev + 1)}
         onRenamed={(oldName, newName) => {
           if (currentBranch === oldName) {
@@ -710,7 +716,7 @@ const MainLayout: FC = () => {
         onResolved={() => {
           setIsConflictModalOpen(false);
           alert(t("layout.alert.resolve_conflict_success"));
-          setCurrentBranch("main");
+          setCurrentBranch(mainBranchName);
           setHistoryRefreshKey((prev) => prev + 1);
         }}
         onCancel={async () => {

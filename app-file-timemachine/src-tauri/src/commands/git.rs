@@ -580,25 +580,31 @@ pub async fn git_diff_file(path: String) -> Result<String, String> {
 #[tauri::command]
 pub async fn git_merge_to_main(path: String, branch: String) -> Result<String, String> {
     if !is_safe_git_ref(&branch) {
-        return Err("安全ではないブランチ名です。".to_string());
+        return Err("error.invalid_branch_name".to_string());
     }
     let raw_path = Path::new(&path);
     let repo_path = dunce::canonicalize(raw_path)
-        .map_err(|e| format!("パスの正規化に失敗しました: {}", e))?;
+        .map_err(|_| "error.failed_to_canonicalize_path".to_string())?;
 
-    info!("本番（main）への採用を開始します: {} -> main", branch);
+    // プロジェクト設定から本番ブランチ名を取得（デフォルト: main）
+    let main_branch = match get_project_config(path.clone()).await {
+        Ok(config) => config.main_branch_name,
+        Err(_) => "main".to_string(),
+    };
 
-    // 1. mainブランチに切り替え
+    info!("本番（{}）への採用を開始します: {} -> {}", main_branch, branch, main_branch);
+
+    // 1. 本番ブランチに切り替え
     let checkout_output = Command::new("git")
         .arg("checkout")
-        .arg("main")
+        .arg(&main_branch)
         .current_dir(&repo_path)
         .output()
-        .map_err(|e| format!("mainブランチへの切り替えに失敗しました: {}", e))?;
+        .map_err(|e| format!("error.checkout_failed:{}", e))?;
 
     if !checkout_output.status.success() {
         let stderr = String::from_utf8_lossy(&checkout_output.stderr);
-        return Err(format!("mainブランチへの切り替えに失敗しました。未保存の変更がないか確認してください。\n詳細: {}", stderr));
+        return Err(format!("error.checkout_failed:{}", stderr));
     }
 
     // 2. マージを実行
@@ -607,10 +613,10 @@ pub async fn git_merge_to_main(path: String, branch: String) -> Result<String, S
         .arg(&branch)
         .current_dir(&repo_path)
         .output()
-        .map_err(|e| format!("マージの実行に失敗しました: {}", e))?;
+        .map_err(|e| format!("error.merge_failed:{}", e))?;
 
     if merge_output.status.success() {
-        Ok("本番への採用が完了しました。".to_string())
+        Ok("success.merge".to_string())
     } else {
         let stdout = String::from_utf8_lossy(&merge_output.stdout);
         let stderr = String::from_utf8_lossy(&merge_output.stderr);
@@ -626,7 +632,7 @@ pub async fn git_merge_to_main(path: String, branch: String) -> Result<String, S
                 .arg(&branch)
                 .current_dir(&repo_path)
                 .status();
-            Err(format!("マージ中に予期しないエラーが発生しました:\n{}", stderr))
+            Err(format!("error.merge_failed:{}", stderr))
         }
     }
 }
@@ -845,26 +851,32 @@ pub async fn git_diff_file_commit(
 #[tauri::command]
 pub async fn git_delete_branch(path: String, branch_name: String) -> Result<String, String> {
     if !is_safe_git_ref(&branch_name) {
-        return Err("安全ではないブランチ名です。".to_string());
+        return Err("error.invalid_branch_name".to_string());
     }
     let raw_path = Path::new(&path);
     let repo_path = dunce::canonicalize(raw_path)
-        .map_err(|e| format!("パスの正規化に失敗しました: {}", e))?;
+        .map_err(|_| "error.failed_to_canonicalize_path".to_string())?;
 
     info!("ブランチ '{}' を削除します: {:?}", branch_name, repo_path);
 
     if !repo_path.exists() || !repo_path.is_dir() {
-        return Err("無効なディレクトリパスです。".to_string());
+        return Err("error.invalid_directory".to_string());
     }
 
     // カレントブランチを取得してチェック
     let current_branch = git_get_current_branch(path.clone()).await?;
     if current_branch == branch_name {
-        return Err("現在使用中のルート（ブランチ）は削除できません。他のルートに切り替えてから削除してください。".to_string());
+        return Err("error.cannot_delete_current_branch".to_string());
     }
 
-    if branch_name == "main" {
-        return Err("本番（main）ルートは削除できません。".to_string());
+    // プロジェクト設定から本番ブランチ名を取得（デフォルト: main）
+    let main_branch = match get_project_config(path.clone()).await {
+        Ok(config) => config.main_branch_name,
+        Err(_) => "main".to_string(),
+    };
+
+    if branch_name == main_branch {
+        return Err("error.cannot_delete_main_branch".to_string());
     }
 
     // git branch -D <branch_name>
@@ -874,14 +886,14 @@ pub async fn git_delete_branch(path: String, branch_name: String) -> Result<Stri
         .arg(&branch_name)
         .current_dir(&repo_path)
         .output()
-        .map_err(|e| format!("git branch -D の実行に失敗しました: {}", e))?;
+        .map_err(|e| format!("error.delete_failed:{}", e))?;
 
     if !output.status.success() {
         let stderr = String::from_utf8_lossy(&output.stderr);
-        return Err(format!("ルート '{}' の削除に失敗しました。\n詳細: {}", branch_name, stderr));
+        return Err(format!("error.delete_failed:{}", stderr));
     }
 
-    Ok(format!("ルート '{}' を削除しました。", branch_name))
+    Ok("success.delete".to_string())
 }
 
 #[tauri::command]
@@ -891,23 +903,16 @@ pub async fn git_rename_branch(
     new_name: String,
 ) -> Result<String, String> {
     if !is_safe_git_ref(&old_name) || !is_safe_git_ref(&new_name) {
-        return Err("安全ではないブランチ名です。".to_string());
+        return Err("error.invalid_branch_name".to_string());
     }
     let raw_path = Path::new(&path);
     let repo_path = dunce::canonicalize(raw_path)
-        .map_err(|e| format!("パスの正規化に失敗しました: {}", e))?;
+        .map_err(|_| "error.failed_to_canonicalize_path".to_string())?;
 
     info!("ブランチの名前を変更します: {} -> {} in {:?}", old_name, new_name, repo_path);
 
     if !repo_path.exists() || !repo_path.is_dir() {
-        return Err("無効なディレクトリパスです。".to_string());
-    }
-
-    if old_name == "main" {
-        return Err("本番（main）ルートの名前は変更できません。".to_string());
-    }
-    if new_name == "main" {
-        return Err("他のルートを本番（main）の名前に変更することはできません。".to_string());
+        return Err("error.invalid_directory".to_string());
     }
 
     // git branch -m <old_name> <new_name>
@@ -918,14 +923,22 @@ pub async fn git_rename_branch(
         .arg(&new_name)
         .current_dir(&repo_path)
         .output()
-        .map_err(|e| format!("git branch -m の実行に失敗しました: {}", e))?;
+        .map_err(|e| format!("error.rename_failed:{}", e))?;
 
     if !output.status.success() {
         let stderr = String::from_utf8_lossy(&output.stderr);
-        return Err(format!("ルート名の変更に失敗しました。\n詳細: {}", stderr));
+        return Err(format!("error.rename_failed:{}", stderr));
     }
 
-    Ok(format!("ルート名を '{}' から '{}' に変更しました。", old_name, new_name))
+    // もし変更されたのが設定上の本番ブランチ名なら、ProjectConfig 内の main_branch_name も動的に変更する
+    if let Ok(mut config) = get_project_config(path.clone()).await {
+        if config.main_branch_name == old_name {
+            config.main_branch_name = new_name.clone();
+            let _ = set_project_config(path.clone(), config).await;
+        }
+    }
+
+    Ok("success.rename".to_string())
 }
 
 

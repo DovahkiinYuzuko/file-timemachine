@@ -20,6 +20,7 @@ interface GitGraphProps {
   onInitSuccess?: () => void;
   selectedCommitHash: string | null;
   onCommitSelect: (hash: string | null) => void;
+  mainBranchName: string;
 }
 
 /**
@@ -29,7 +30,7 @@ interface GitGraphProps {
  * - Interactive elements use semantic <button> tags with visual 'active' states.
  */
 
-const GitGraph: FC<GitGraphProps> = ({ projectPath, refreshKey, onInitSuccess, selectedCommitHash, onCommitSelect }) => {
+const GitGraph: FC<GitGraphProps> = ({ projectPath, refreshKey, onInitSuccess, selectedCommitHash, onCommitSelect, mainBranchName }) => {
   const { t } = useTranslation();
   const [commits, setCommits] = useState<CommitLog[]>([]);
   const [error, setError] = useState<string | null>(null);
@@ -261,9 +262,9 @@ const GitGraph: FC<GitGraphProps> = ({ projectPath, refreshKey, onInitSuccess, s
       });
 
       // 初期ベースブランチ
-      const mainBranch = gitgraph.branch("main");
-      branches.set("main", mainBranch);
-      branchColors.set("main", cudColors[nextColorIndex++ % cudColors.length]);
+      const mainBranch = gitgraph.branch(mainBranchName);
+      branches.set(mainBranchName, mainBranch);
+      branchColors.set(mainBranchName, cudColors[nextColorIndex++ % cudColors.length]);
 
       chronologicalCommits.forEach((commit) => {
         try {
@@ -293,12 +294,12 @@ const GitGraph: FC<GitGraphProps> = ({ projectPath, refreshKey, onInitSuccess, s
 
         if (commit.parents.length === 0) {
           // 親なし（初期コミットなど）
-          let branch = branches.get("main");
+          let branch = branches.get(mainBranchName);
           if (!branch) {
-            branch = gitgraph.branch("main");
-            branches.set("main", branch);
-            if (!branchColors.has("main")) {
-              branchColors.set("main", cudColors[nextColorIndex++ % cudColors.length]);
+            branch = gitgraph.branch(mainBranchName);
+            branches.set(mainBranchName, branch);
+            if (!branchColors.has(mainBranchName)) {
+              branchColors.set(mainBranchName, cudColors[nextColorIndex++ % cudColors.length]);
             }
           }
           branch.commit({
@@ -308,14 +309,14 @@ const GitGraph: FC<GitGraphProps> = ({ projectPath, refreshKey, onInitSuccess, s
             onClick: handleCommitClick,
             onMessageClick: handleCommitClick,
           });
-          commitBranchNameMap.set(commit.hash, "main");
-          commitBranchInfoMap.set(commit.hash, { name: "main", color: branchColors.get("main")! });
+          commitBranchNameMap.set(commit.hash, mainBranchName);
+          commitBranchInfoMap.set(commit.hash, { name: mainBranchName, color: branchColors.get(mainBranchName)! });
 
         } else if (commit.parents.length === 1) {
           // 親が1つ
           const parentHash = commit.parents[0];
-          const parentBranchName = commitBranchNameMap.get(parentHash) || "main";
-          const parentBranch = branches.get(parentBranchName) || branches.get("main") || mainBranch;
+          const parentBranchName = commitBranchNameMap.get(parentHash) || mainBranchName;
+          const parentBranch = branches.get(parentBranchName) || branches.get(mainBranchName) || mainBranch;
 
           const siblings = childrenMap.get(parentHash) || [];
           const myIndex = siblings.indexOf(commit.hash);
@@ -332,7 +333,7 @@ const GitGraph: FC<GitGraphProps> = ({ projectPath, refreshKey, onInitSuccess, s
                 branchColors.set(newBranchName, cudColors[nextColorIndex++ % cudColors.length]);
               }
             }
-            const activeNewBranch = newBranch || branches.get("main") || mainBranch;
+            const activeNewBranch = newBranch || branches.get(mainBranchName) || mainBranch;
             activeNewBranch.commit({
               hash: shortHash,
               subject: "",
@@ -344,7 +345,7 @@ const GitGraph: FC<GitGraphProps> = ({ projectPath, refreshKey, onInitSuccess, s
             commitBranchInfoMap.set(commit.hash, { name: newBranchName, color: branchColors.get(newBranchName)! });
           } else {
             // 1番目の子 ＝ 親と同じブランチを継続
-            const activeParentBranch = parentBranch || branches.get("main") || mainBranch;
+            const activeParentBranch = parentBranch || branches.get(mainBranchName) || mainBranch;
             activeParentBranch.commit({
               hash: shortHash,
               subject: "",
@@ -369,8 +370,8 @@ const GitGraph: FC<GitGraphProps> = ({ projectPath, refreshKey, onInitSuccess, s
           const parentHash1 = commit.parents[0];
           const parentHash2 = commit.parents[1];
 
-          const branchName1 = commitBranchNameMap.get(parentHash1) || "main";
-          const branchName2 = commitBranchNameMap.get(parentHash2) || "main";
+          const branchName1 = commitBranchNameMap.get(parentHash1) || mainBranchName;
+          const branchName2 = commitBranchNameMap.get(parentHash2) || mainBranchName;
 
           const branch1 = branches.get(branchName1);
           const branch2 = branches.get(branchName2);
@@ -386,7 +387,7 @@ const GitGraph: FC<GitGraphProps> = ({ projectPath, refreshKey, onInitSuccess, s
             commitBranchNameMap.set(commit.hash, branchName1);
             commitBranchInfoMap.set(commit.hash, { name: branchName1, color: branchColors.get(branchName1) || cudColors[0] });
           } else {
-            const activeBranch = branch1 || branches.get("main") || mainBranch;
+            const activeBranch = branch1 || branches.get(mainBranchName) || mainBranch;
             activeBranch.commit({
               hash: shortHash,
               subject: "",
@@ -403,14 +404,14 @@ const GitGraph: FC<GitGraphProps> = ({ projectPath, refreshKey, onInitSuccess, s
           console.warn(`Failed to render commit ${commit.hash}, using fallback:`, err);
           try {
             const shortHash = commit.hash.substring(0, 7);
-            const activeBranch = branches.get("main") || mainBranch;
+            const activeBranch = branches.get(mainBranchName) || mainBranch;
             activeBranch.commit({
               hash: shortHash,
               subject: "",
               author: "User",
             });
-            commitBranchNameMap.set(commit.hash, "main");
-            commitBranchInfoMap.set(commit.hash, { name: "main", color: branchColors.get("main") || cudColors[0] });
+            commitBranchNameMap.set(commit.hash, mainBranchName);
+            commitBranchInfoMap.set(commit.hash, { name: mainBranchName, color: branchColors.get(mainBranchName) || cudColors[0] });
           } catch (fallbackErr) {
             console.error(`Fallback failed for ${commit.hash}:`, fallbackErr);
           }

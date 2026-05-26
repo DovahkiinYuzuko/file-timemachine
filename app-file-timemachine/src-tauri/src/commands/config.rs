@@ -11,6 +11,10 @@ pub enum GitMode {
     Blacklist,
 }
 
+fn default_main_branch() -> String {
+    "main".to_string()
+}
+
 #[derive(Debug, Serialize, Deserialize)]
 pub struct ProjectConfig {
     pub git_mode: GitMode,
@@ -20,6 +24,8 @@ pub struct ProjectConfig {
     /// Blacklistモードで無視するエントリ（ファイル名やパターン）
     #[serde(default)]
     pub blacklist_entries: Vec<String>,
+    #[serde(default = "default_main_branch")]
+    pub main_branch_name: String,
 }
 
 impl Default for ProjectConfig {
@@ -28,6 +34,7 @@ impl Default for ProjectConfig {
             git_mode: GitMode::Blacklist,
             whitelist_entries: Vec::new(),
             blacklist_entries: Vec::new(),
+            main_branch_name: default_main_branch(),
         }
     }
 }

@@ -361,5 +361,18 @@
       "input_label": "保存の名前（コミットメッセージ）",
       "input_tip": "※空欄の場合は、日付が自動で適用されます。"
     }
-  }
+  },
+  "error.invalid_branch_name": "安全ではないブランチ名です。",
+  "error.failed_to_canonicalize_path": "パスの正規化に失敗しました。",
+  "error.invalid_directory": "無効なディレクトリパスです。",
+  "error.rename_failed": "ルート名の変更に失敗しました。",
+  "error.checkout_failed": "本番ブランチへの切り替えに失敗しました。未保存の変更がないか確認してください。",
+  "error.merge_failed": "マージの実行に失敗しました。",
+  "error.cannot_delete_current_branch": "現在使用中のルート（ブランチ）は削除できません。他のルートに切り替えてから削除してください。",
+  "error.cannot_delete_main_branch": "本番ルートは削除できません。",
+  "error.delete_failed": "ルートの削除に失敗しました。",
+  "success.delete": "ルートを削除しました。",
+  "success.rename": "ルート名の変更が完了しました。",
+  "success.merge": "本番への採用が完了しました。",
+  "common.detail": "詳細"
 }
