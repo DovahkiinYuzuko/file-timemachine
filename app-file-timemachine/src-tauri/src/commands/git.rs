@@ -611,6 +611,7 @@ pub async fn git_merge_to_main(path: String, branch: String) -> Result<String, S
         .arg(&main_branch)
         .current_dir(&repo_path)
         .output()
+        .await
         .map_err(|e| format!("error.checkout_failed:{}", e))?;
 
     if !checkout_output.status.success() {
@@ -624,6 +625,7 @@ pub async fn git_merge_to_main(path: String, branch: String) -> Result<String, S
         .arg(&branch)
         .current_dir(&repo_path)
         .output()
+        .await
         .map_err(|e| format!("error.merge_failed:{}", e))?;
 
     if merge_output.status.success() {

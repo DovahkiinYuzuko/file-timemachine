@@ -1,9 +1,7 @@
 use serde::Serialize;
 use walkdir::WalkDir;
 use std::collections::HashMap;
-use std::process::Stdio;
-use crate::SafeCommand as Command;
-use std::io::{Write, Read};
+use std::io::Read;
 use std::path::PathBuf;
 
 /// git check-ignore の出力行をパースして実際のパス文字列に変換する。
@@ -157,7 +155,7 @@ pub async fn get_file_tree(root_path: String) -> Result<Vec<FileEntry>, String> 
                 let rel_path = path.strip_prefix(&root_str_clone).unwrap_or(&path).trim_start_matches(['\\', '/']);
                 let rel_path_normalized = rel_path.replace('\\', "/");
                 log::debug!("[check-ignore stdin] 送信パス: {:?}", rel_path_normalized);
-                if let Err(e) = writeln!(stdin, "{}", rel_path_normalized) {
+                if let Err(e) = stdin.write_all(format!("{}\n", rel_path_normalized).as_bytes()).await {
                     log::error!("stdinへの書き込みに失敗したよ: {}", e);
                     break;
                 }
@@ -170,7 +168,7 @@ pub async fn get_file_tree(root_path: String) -> Result<Vec<FileEntry>, String> 
             let mut reader = tokio::io::BufReader::new(stdout);
             let mut lines = Vec::new();
             let mut line = String::new();
-            while let Ok(n) = reader.read_line(&mut line) {
+            while let Ok(n) = reader.read_line(&mut line).await {
                 if n == 0 {
                     break;
                 }
