@@ -24,7 +24,8 @@ pub async fn check_dependencies(simulate: Option<bool>) -> Result<DependencyStat
         return Ok(DependencyStatus { git: false, brew: false, gh: false });
     }
 
-    let git = check_command("git", &["--version"]);
+    let git_path = crate::find_git_executable();
+    let git = check_command(&git_path, &["--version"]);
     let brew = check_command("brew", &["--version"]);
     let gh = check_command("gh", &["--version"]);
 
