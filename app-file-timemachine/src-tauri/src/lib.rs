@@ -1,5 +1,8 @@
 mod commands;
 
+#[cfg(target_os = "windows")]
+use std::os::windows::process::CommandExt;
+
 pub fn find_git_executable() -> String {
     // 1. PATH環境変数で "git" が動くか確認
     if check_command_in_path("git", &["--version"]) {

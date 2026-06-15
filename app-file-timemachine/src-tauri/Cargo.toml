@@ -35,7 +35,7 @@ chardetng = "0.1"
 chrono = { version = "0.4", features = ["serde"] }
 content_inspector = "0.2"
 infer = "0.15"
-tokio = { version = "1", features = ["time"] }
+tokio = { version = "1", features = ["full"] }
 notify = "6.1.1"
 
 
