@@ -1,5 +1,5 @@
 use serde::{Deserialize, Serialize};
-use crate::SafeCommand as Command;
+use crate::SafeTokioCommand as Command;
 use std::path::Path;
 use std::fs;
 use log::{info, debug, error};
@@ -120,7 +120,8 @@ pub async fn update_gitignore(
             .arg("--ignore-unmatch")
             .arg(&rel_path)
             .current_dir(&repo_path)
-            .status();
+            .status()
+            .await;
 
         match rm_status {
             Ok(status) => {
@@ -263,6 +264,7 @@ pub async fn git_init(path: String) -> Result<String, String> {
             .arg("init")
             .current_dir(&repo_path)
             .status()
+            .await
             .map_err(|e| format!("git initに失敗しました: {}", e))?;
 
         if !status.success() {
@@ -276,7 +278,8 @@ pub async fn git_init(path: String) -> Result<String, String> {
         .arg("core.quotepath")
         .arg("false")
         .current_dir(&repo_path)
-        .status();
+        .status()
+        .await;
 
     // .gitignoreの生成 (存在しない場合のみ)
     let gitignore_path = repo_path.join(".gitignore");
@@ -308,6 +311,7 @@ pub async fn git_commit(path: String, message: String) -> Result<String, String>
         .arg(".")
         .current_dir(&repo_path)
         .status()
+        .await
         .map_err(|e| format!("git addに失敗しました: {}", e))?;
 
     if !add_status.success() {
@@ -321,6 +325,7 @@ pub async fn git_commit(path: String, message: String) -> Result<String, String>
         .arg(&message)
         .current_dir(&repo_path)
         .status()
+        .await
         .map_err(|e| format!("git commitに失敗しました: {}", e))?;
 
     if !commit_status.success() {
@@ -354,7 +359,8 @@ pub async fn git_log(path: String) -> Result<Vec<CommitLog>, String> {
         .arg("--pretty=format:%H_#_%P_#_%d_#_%at_#_%s")
         .current_dir(&repo_path)
         .output()
-        .map_err(|e| format!("git logの実行に失敗しました: {}", e))?;
+        .await
+        .map_err(|e| format!("git log of the execution failed: {}", e))?;
 
     if !output.status.success() {
         debug!("コミット履歴が見つかりませんでした。");
@@ -429,6 +435,7 @@ pub async fn git_get_current_branch(path: String) -> Result<String, String> {
         .arg("--show-current")
         .current_dir(&repo_path)
         .output()
+        .await
         .map_err(|e| format!("git branchの実行に失敗しました: {}", e))?;
 
     if !output.status.success() {
@@ -467,6 +474,7 @@ pub async fn git_create_branch(path: String, branch_name: String) -> Result<Stri
         .arg(&branch_name)
         .current_dir(&repo_path)
         .status()
+        .await
         .map_err(|e| format!("git checkout -b に失敗しました: {}", e))?;
 
     if !status.success() {
@@ -492,6 +500,7 @@ pub async fn git_get_branches(path: String) -> Result<Vec<String>, String> {
         .arg("--format=%(refname:short)")
         .current_dir(&repo_path)
         .output()
+        .await
         .map_err(|e| format!("git branchの実行に失敗しました: {}", e))?;
 
     if !output.status.success() {
@@ -529,6 +538,7 @@ pub async fn git_checkout(path: String, branch: String) -> Result<String, String
         .arg(&branch)
         .current_dir(&repo_path)
         .output()
+        .await
         .map_err(|e| format!("git checkout の実行に失敗しました: {}", e))?;
 
     if !output.status.success() {
@@ -562,6 +572,7 @@ pub async fn git_diff_file(path: String) -> Result<String, String> {
         .arg(&repo_path)
         .current_dir(repo_path.parent().unwrap_or(Path::new(".")))
         .output()
+        .await
         .map_err(|e| format!("git diff の実行に失敗しました: {}", e))?;
 
     if !output.status.success() {
@@ -650,6 +661,7 @@ pub async fn git_get_conflicts(path: String) -> Result<Vec<String>, String> {
         .arg("--diff-filter=U")
         .current_dir(&repo_path)
         .output()
+        .await
         .map_err(|_| "conflict.error_loading".to_string())?;
 
     if !output.status.success() {
@@ -684,6 +696,7 @@ pub async fn git_resolve_conflict(path: String, file: String, resolution: String
         .arg(safe_file)
         .current_dir(&repo_path)
         .status()
+        .await
         .map_err(|_| "conflict.error_resolving".to_string())?;
 
     if !checkout_status.success() {
@@ -696,6 +709,7 @@ pub async fn git_resolve_conflict(path: String, file: String, resolution: String
         .arg(safe_file)
         .current_dir(&repo_path)
         .status()
+        .await
         .map_err(|_| "conflict.error_resolving".to_string())?;
 
     if !add_status.success() {
@@ -722,7 +736,8 @@ pub async fn git_merge_abort(path: String, original_branch: String) -> Result<St
         .arg("merge")
         .arg("--abort")
         .current_dir(&repo_path)
-        .status();
+        .status()
+        .await;
 
     // 2. 元のブランチにチェックアウト
     let checkout_output = Command::new("git")
@@ -730,6 +745,7 @@ pub async fn git_merge_abort(path: String, original_branch: String) -> Result<St
         .arg(&original_branch)
         .current_dir(&repo_path)
         .output()
+        .await
         .map_err(|e| format!("元のブランチへの復帰に失敗しました: {}", e))?;
 
     if !checkout_output.status.success() {
@@ -770,6 +786,7 @@ pub async fn git_show_file_content(
         .arg(&show_arg)
         .current_dir(&repo_path)
         .output()
+        .await
         .map_err(|e| format!("git show の実行に失敗しました: {}", e))?;
 
     if !output.status.success() {
@@ -819,6 +836,7 @@ pub async fn git_diff_file_commit(
         .arg(&rel_path)
         .current_dir(&repo_path)
         .output()
+        .await
         .map_err(|e| format!("git diff の実行に失敗しました: {}", e))?;
 
     if !output.status.success() {
@@ -832,7 +850,8 @@ pub async fn git_diff_file_commit(
             .arg("--")
             .arg(&rel_path)
             .current_dir(&repo_path)
-            .output();
+            .output()
+            .await;
 
         if let Ok(fo) = fallback_output {
             if fo.status.success() {
@@ -886,6 +905,7 @@ pub async fn git_delete_branch(path: String, branch_name: String) -> Result<Stri
         .arg(&branch_name)
         .current_dir(&repo_path)
         .output()
+        .await
         .map_err(|e| format!("error.delete_failed:{}", e))?;
 
     if !output.status.success() {
@@ -923,6 +943,7 @@ pub async fn git_rename_branch(
         .arg(&new_name)
         .current_dir(&repo_path)
         .output()
+        .await
         .map_err(|e| format!("error.rename_failed:{}", e))?;
 
     if !output.status.success() {
@@ -952,7 +973,8 @@ pub async fn git_get_remote(path: String) -> Result<Option<String>, String> {
         .arg("get-url")
         .arg("origin")
         .current_dir(&repo_path)
-        .output();
+        .output()
+        .await;
 
     match output {
         Ok(out) => {
@@ -978,7 +1000,8 @@ pub async fn git_set_remote(path: String, remote_url: String) -> Result<(), Stri
         .arg("remove")
         .arg("origin")
         .current_dir(&repo_path)
-        .status();
+        .status()
+        .await;
 
     let status = Command::new("git")
         .arg("remote")
@@ -987,6 +1010,7 @@ pub async fn git_set_remote(path: String, remote_url: String) -> Result<(), Stri
         .arg(&remote_url)
         .current_dir(&repo_path)
         .status()
+        .await
         .map_err(|e| format!("git remote add に失敗したよ: {}", e))?;
 
     if !status.success() {
@@ -1037,6 +1061,7 @@ pub async fn git_push(path: String, token: String, branch: String) -> Result<Str
         .arg(&branch)
         .current_dir(&repo_path)
         .output()
+        .await
         .map_err(|e| format!("git pushの実行に失敗したよ: {}", e))?;
 
     if output.status.success() {
@@ -1079,6 +1104,7 @@ pub async fn git_pull(path: String, token: String, branch: String) -> Result<Str
         .arg(&branch)
         .current_dir(&repo_path)
         .output()
+        .await
         .map_err(|e| format!("git pullの実行に失敗したよ: {}", e))?;
 
     if output.status.success() {
@@ -1125,6 +1151,7 @@ pub async fn git_get_uncommitted_files(path: String) -> Result<Vec<UncommittedFi
         .arg("--porcelain")
         .current_dir(&repo_path)
         .output()
+        .await
         .map_err(|e| format!("git status の実行に失敗しました: {}", e))?;
 
     if !output.status.success() {
