@@ -53,7 +53,7 @@ pub struct FileEntry {
 }
 
 #[tauri::command]
-pub fn get_file_tree(root_path: String) -> Result<Vec<FileEntry>, String> {
+pub async fn get_file_tree(root_path: String) -> Result<Vec<FileEntry>, String> {
     let root = dunce::canonicalize(&root_path)
         .map_err(|e| format!("パスが正しくないよ: {}", e))?;
     let root_str = root.to_string_lossy().into_owned();
@@ -61,10 +61,11 @@ pub fn get_file_tree(root_path: String) -> Result<Vec<FileEntry>, String> {
     log::info!("ファイルツリーの探索を開始するよ。対象: {:?}", root);
 
     // git status --ignored --porcelain=v1 の出力を解析して、無視されているディレクトリを取得するよ
-    let status_output = Command::new("git")
+    let status_output = crate::SafeTokioCommand::new("git")
         .args(["status", "--ignored", "--porcelain=v1"])
         .current_dir(&root)
-        .output();
+        .output()
+        .await;
 
     let mut ignored_dirs = std::collections::HashSet::new();
     if let Ok(out) = status_output {
@@ -135,30 +136,55 @@ pub fn get_file_tree(root_path: String) -> Result<Vec<FileEntry>, String> {
 
     // git check-ignore を使って一括で無視状態を確認するよ
     let ignored_paths = if !paths_to_check.is_empty() {
-        let mut child = Command::new("git")
+        let mut child = crate::SafeTokioCommand::new("git")
             .args(["check-ignore", "--stdin", "--no-index"])
             .current_dir(&root)
-            .stdin(Stdio::piped())
-            .stdout(Stdio::piped())
+            .stdin(std::process::Stdio::piped())
+            .stdout(std::process::Stdio::piped())
             .spawn()
             .map_err(|e| format!("git check-ignoreの起動に失敗したよ: {}", e))?;
 
-        if let Some(mut stdin) = child.stdin.take() {
-            for path in &paths_to_check {
-                let rel_path = path.strip_prefix(&root_str).unwrap_or(path).trim_start_matches(['\\', '/']);
-                // Windowsのバックスラッシュをスラッシュに正規化してから渡す
+        let mut stdin = child.stdin.take().ok_or("stdinの取得に失敗したよ")?;
+        let stdout = child.stdout.take().ok_or("stdoutの取得に失敗したよ")?;
+
+        let paths_clone = paths_to_check.clone();
+        let root_str_clone = root_str.clone();
+
+        // stdinへの書き込みを非同期タスクとして実行し、書き込み完了後に stdin をクローズ (drop) する
+        let write_task = tokio::spawn(async move {
+            use tokio::io::AsyncWriteExt;
+            for path in paths_clone {
+                let rel_path = path.strip_prefix(&root_str_clone).unwrap_or(&path).trim_start_matches(['\\', '/']);
                 let rel_path_normalized = rel_path.replace('\\', "/");
                 log::debug!("[check-ignore stdin] 送信パス: {:?}", rel_path_normalized);
-                writeln!(stdin, "{}", rel_path_normalized).map_err(|e| format!("stdinへの書き込みに失敗したよ: {}", e))?;
+                if let Err(e) = writeln!(stdin, "{}", rel_path_normalized) {
+                    log::error!("stdinへの書き込みに失敗したよ: {}", e);
+                    break;
+                }
             }
-        }
+        });
 
-        let output = child.wait_with_output().map_err(|e| format!("git check-ignoreの待機に失敗したよ: {}", e))?;   
-        let stdout = String::from_utf8_lossy(&output.stdout);
-        log::debug!("[check-ignore stdout] 生の出力:\n{}", stdout);
-        log::debug!("[check-ignore] exit status: {:?}", output.status);
-        // オクタルエスケープ・クォートを解除して通常のUnicode文字列に変換する
-        stdout.lines().map(parse_git_ignore_output_line).collect::<Vec<String>>()
+        // stdoutの読み込み
+        let read_task = tokio::spawn(async move {
+            use tokio::io::AsyncBufReadExt;
+            let mut reader = tokio::io::BufReader::new(stdout);
+            let mut lines = Vec::new();
+            let mut line = String::new();
+            while let Ok(n) = reader.read_line(&mut line) {
+                if n == 0 {
+                    break;
+                }
+                lines.push(parse_git_ignore_output_line(&line));
+                line.clear();
+            }
+            lines
+        });
+
+        // 両方の完了を待つ
+        let _ = write_task.await;
+        let lines = read_task.await.map_err(|e| format!("読み取りタスクの実行に失敗したよ: {}", e))?;
+        let _ = child.wait().await;
+        lines
     } else {
         Vec::new()
     };
