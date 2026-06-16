@@ -54,7 +54,6 @@ pub struct FileEntry {
 pub async fn get_file_tree(root_path: String) -> Result<Vec<FileEntry>, String> {
     let root = dunce::canonicalize(&root_path)
         .map_err(|e| format!("パスが正しくないよ: {}", e))?;
-    let root_str = root.to_string_lossy().into_owned();
 
     log::info!("ファイルツリーの探索を開始するよ。対象: {:?}", root);
 
@@ -104,8 +103,17 @@ pub async fn get_file_tree(root_path: String) -> Result<Vec<FileEntry>, String> 
         let metadata = entry.metadata().map_err(|e| format!("メタデータが取れないよ: {}", e))?;
         let path_str = path.to_string_lossy().into_owned();
 
-        let rel_path = path.strip_prefix(&root).unwrap_or(path).to_string_lossy().into_owned();
-        let rel_path_normalized = rel_path.replace('\\', "/");
+        let rel_path = match path.strip_prefix(&root) {
+            Ok(p) => p.to_path_buf(),
+            Err(_) => {
+                let p_canon = dunce::canonicalize(path).unwrap_or_else(|_| path.to_path_buf());
+                let r_canon = dunce::canonicalize(&root).unwrap_or_else(|_| root.to_path_buf());
+                p_canon.strip_prefix(&r_canon)
+                    .map(|p| p.to_path_buf())
+                    .unwrap_or_else(|_| path.to_path_buf())
+            }
+        };
+        let rel_path_normalized = rel_path.to_string_lossy().replace('\\', "/");
         let rel_path_dir = if metadata.is_dir() {
             format!("{}/", rel_path_normalized)
         } else {
@@ -118,10 +126,11 @@ pub async fn get_file_tree(root_path: String) -> Result<Vec<FileEntry>, String> 
             it.skip_current_dir();
         }
 
-        paths_to_check.push(path_str.clone());
+        paths_to_check.push(rel_path_normalized.clone());
 
         entries.push((
             path.to_path_buf(),
+            rel_path_normalized,
             FileEntry {
                 name: entry.file_name().to_string_lossy().into_owned(),
                 path: path_str,
@@ -146,16 +155,13 @@ pub async fn get_file_tree(root_path: String) -> Result<Vec<FileEntry>, String> 
         let stdout = child.stdout.take().ok_or("stdoutの取得に失敗したよ")?;
 
         let paths_clone = paths_to_check.clone();
-        let root_str_clone = root_str.clone();
 
         // stdinへの書き込みを非同期タスクとして実行し、書き込み完了後に stdin をクローズ (drop) する
         let write_task = tokio::spawn(async move {
             use tokio::io::AsyncWriteExt;
             for path in paths_clone {
-                let rel_path = path.strip_prefix(&root_str_clone).unwrap_or(&path).trim_start_matches(['\\', '/']);
-                let rel_path_normalized = rel_path.replace('\\', "/");
-                log::debug!("[check-ignore stdin] 送信パス: {:?}", rel_path_normalized);
-                if let Err(e) = stdin.write_all(format!("{}\n", rel_path_normalized).as_bytes()).await {
+                log::debug!("[check-ignore stdin] 送信パス: {:?}", path);
+                if let Err(e) = stdin.write_all(format!("{}\n", path).as_bytes()).await {
                     log::error!("stdinへの書き込みに失敗したよ: {}", e);
                     break;
                 }
@@ -196,13 +202,11 @@ pub async fn get_file_tree(root_path: String) -> Result<Vec<FileEntry>, String> 
 
     log::info!("全部で {} 件のアイテムを見つけたよ！ツリー形式に組み立てるね。", entries.len());      
 
-    let mut entry_map: HashMap<PathBuf, FileEntry> = entries.into_iter().map(|(p, mut e)| {
-        let rel_path = e.path.strip_prefix(&root_str).unwrap_or(&e.path).trim_start_matches(['\\', '/']);    
-        let normalized_rel_path = rel_path.replace('\\', "/");
-        let matched = ignored_set.contains(&normalized_rel_path);
+    let mut entry_map: HashMap<PathBuf, FileEntry> = entries.into_iter().map(|(p, rel_path_normalized, mut e)| {
+        let matched = ignored_set.contains(&rel_path_normalized);
         log::debug!(
             "[is_ignored] {:?} → normalized: {:?} → matched: {}",
-            e.path, normalized_rel_path, matched
+            e.path, rel_path_normalized, matched
         );
         if matched {
             e.is_ignored = true;
