@@ -44,6 +44,3 @@
 !app-file-timemachine/src-tauri/src/
 !app-file-timemachine/src-tauri/src/**
 
-# 5. ドキュメント（変数・関数仕様書）の例外許可
-!docs/
-!docs/**
